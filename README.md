@@ -81,6 +81,42 @@ What gets created or modified
 
 **Input**: Text to be rewritten
 
+### 3. Bug Report Generator
+**Purpose**: Generate clear, well-structured bug reports for easy copying to Jira, email, or documentation
+
+**Usage**:
+- Claude Code: `/bug-report-generator`
+- Cursor: `bugReportGenerator`
+
+**Input**: Bug title, description, reproduction steps, actual/expected behavior, and optional notes
+
+### 4. Jira Issue Summary Generator
+**Purpose**: Generate AI-powered summary of Jira issue for customer communication and reporting
+
+**Usage**:
+- Claude Code: `/jira-issue-summary`
+- Cursor: `jiraIssueSummary`
+
+**Input**: Jira issue key
+
+### 5. Jira to Markdown Converter
+**Purpose**: Convert Jira ticket to Markdown format for documentation and sharing
+
+**Usage**:
+- Claude Code: `/jira-to-markdown`
+- Cursor: `jiraToMarkdown`
+
+**Input**: Jira issue key
+
+### 6. QualityQuest Scrum Task Generator
+**Purpose**: Generate detailed Scrum task content for Software Quality Assurance Engineers based on task description
+
+**Usage**:
+- Claude Code: `/qualityquest-scrum-task`
+- Cursor: `qualityquestScrumTask`
+
+**Input**: Task description
+
 ## 🛠️ Collection Workflow
 
 1. **Tool Discovery**: Identify useful QA tools and commands
