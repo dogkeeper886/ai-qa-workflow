@@ -22,6 +22,9 @@ A curated collection of tools, commands, and workflows for AI-powered QA process
 | Command | Purpose | Input |
 |---------|---------|-------|
 | `/bug-report-generator` | Generate clear, well-structured bug reports for Jira, email, or documentation | Bug title, description, reproduction steps, actual/expected behavior |
+| `/confluence-page-summary` | Generate AI-powered summary of Confluence page for customer communication and reporting | Confluence page ID |
+| `/confluence-to-markdown` | Convert Confluence page to Markdown format for documentation and sharing | Confluence page ID |
+| `/create-confluence-page` | Create a Confluence page from markdown content under a parent page | Parent page ID, page title, markdown content |
 | `/jira-issue-summary` | Generate AI-powered summary of Jira issue for customer communication | Jira issue key |
 | `/jira-to-markdown` | Convert Jira ticket to Markdown format for documentation and sharing | Jira issue key |
 | `/jira-trace` | Generate traceability matrix linking requirements to test cases | Jira issue key or requirements |
@@ -93,7 +96,10 @@ What gets created or modified
 ai-qa-workflow/
 ├── commands/                    # Source command definitions
 │   ├── bug-report-generator.md
+│   ├── confluence-page-summary.md
+│   ├── confluence-to-markdown.md
 │   ├── copy-command-to-platforms.md
+│   ├── create-confluence-page.md
 │   ├── jira-issue-summary.md
 │   ├── jira-to-markdown.md
 │   ├── jira-trace.md
