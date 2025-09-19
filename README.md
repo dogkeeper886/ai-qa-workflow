@@ -2,41 +2,57 @@
 
 A curated collection of tools, commands, and workflows for AI-powered QA processes across multiple platforms (Claude Code, Cursor, and more). This project implements a "define once, generate twice" approach to eliminate duplication and maintain consistency across different AI coding environments.
 
-## 🎯 Collection Goals
+## 🚀 Quick Start
 
-- **Tool Curation**: Collect and organize the most effective QA tools and commands
-- **Workflow Design**: Create reusable workflow patterns for common QA tasks
-- **Tool Integration**: Seamlessly connect tools across different AI coding platforms
-- **Knowledge Sharing**: Document best practices and tool usage patterns
+### For Claude Code Users
+1. Copy the `.claude/` folder to your workspace
+2. Use slash commands like `/bug-report-generator` in Claude Code
 
-## 🏗️ Collection Architecture
+### For Cursor Users  
+1. Copy the `.cursor/` folder to your workspace
+2. Use slash commands like `/bug-report-generator` in Cursor
 
-### Core Design Principles
+### For Other IDE Users
+1. Check the `commands/` folder to understand command structure
+2. Implement your own command system based on the markdown templates
+3. Use `copy-command-to-platforms.md` to convert commands to your platform format
 
-1. **One Format to Rule Them All**: Markdown-based command definitions
-2. **No Complex Schemas**: Plain text that's human-readable and editable
-3. **Minimal Tooling**: Simple scripts, not complex frameworks
-4. **Platform-Agnostic Core**: Logic that works everywhere
-5. **Platform-Specific Adapters**: Minimal code to bridge differences
+## 📋 Available Commands
 
-### File Structure
+| Command | Purpose | Input |
+|---------|---------|-------|
+| `/bug-report-generator` | Generate clear, well-structured bug reports for Jira, email, or documentation | Bug title, description, reproduction steps, actual/expected behavior |
+| `/jira-issue-summary` | Generate AI-powered summary of Jira issue for customer communication | Jira issue key |
+| `/jira-to-markdown` | Convert Jira ticket to Markdown format for documentation and sharing | Jira issue key |
+| `/jira-trace` | Generate traceability matrix linking requirements to test cases | Jira issue key or requirements |
+| `/qualityquest-scrum-task` | Generate detailed Scrum task content for QA Engineers | Task description |
+| `/rewrite-text` | Rewrite text in simple, easy words while keeping the original meaning | Text to be rewritten |
+| `/robot-log-analyzer` | Analyze Robot Framework test execution logs and generate insights | Robot Framework log file or content |
+| `/test-planning-checklist` | Generate comprehensive test planning checklist for QA projects | Project details and testing scope |
+| `/testlink-format` | Convert test cases to TestLink XML format for import | Test case data in various formats |
+| `/copy-command-to-platforms` | Copy AI command prompt files to both AI coding platforms | Command file content |
 
-```
-ai-qa-workflow/
-├── commands/                    # Source command definitions
-│   ├── copy-command-to-platforms.md
-│   └── rewrite-text.md
-├── .claude/commands/           # Claude Code format
-├── .cursor/commands/           # Cursor format
-├── docs/                       # Documentation and guides
-│   ├── brainstorming-session-results.md
-│   └── mcp-atlassian-cheatsheet.md
-└── README.md
-```
+## 📚 Documentation & Integration
 
-## 📝 Command Definition Standards
+### MCP Integrations
+- **[MCP Atlassian Cheatsheet](docs/mcp-atlassian-cheatsheet.md)**: Integration reference for Atlassian tools
+- **[MCP TestLink Cheatsheet](docs/mcp-testlink-cheatsheet.md)**: Integration reference for TestLink test management
 
-Each command follows a standardized markdown template:
+### Additional Resources
+- **[Design Guidelines](docs/brainstorming-session-results.md)**: Core design principles and standards
+
+## 🛠️ For Developers
+
+### Adding New Commands
+
+1. **Create Command File**: Add your new command to the `commands/` folder following the markdown template
+2. **Use Conversion Tool**: Use `copy-command-to-platforms.md` to convert your command to both platform formats
+3. **Deploy to Platforms**: Copy the generated files to `.claude/commands/` and `.cursor/commands/` folders
+4. **Test & Validate**: Ensure your command works correctly on both platforms
+
+### Command Template Structure
+
+Each command in `commands/` follows this standardized format:
 
 ```markdown
 # Command Name
@@ -61,89 +77,47 @@ What gets created or modified
 - Cursor: commandName, ctrl+shift+x
 ```
 
-## 🚀 Current Tools & Commands
+## 🏗️ Architecture & Standards
 
-### 1. Copy Command to Platforms
-**Purpose**: Copy AI command prompt files to both AI coding platforms
+### Core Design Principles
 
-**Usage**:
-- Claude Code: `/copy-command-to-platforms`
-- Cursor: `copyCommandToPlatforms`
+1. **One Format to Rule Them All**: Markdown-based command definitions
+2. **No Complex Schemas**: Plain text that's human-readable and editable
+3. **Minimal Tooling**: Simple scripts, not complex frameworks
+4. **Platform-Agnostic Core**: Logic that works everywhere
+5. **Platform-Specific Adapters**: Minimal code to bridge differences
 
-**Input**: Command file content
+### File Structure
 
-### 2. Rewrite Text
-**Purpose**: Rewrite text in simple, easy words while keeping the original meaning
+```
+ai-qa-workflow/
+├── commands/                    # Source command definitions
+│   ├── bug-report-generator.md
+│   ├── copy-command-to-platforms.md
+│   ├── jira-issue-summary.md
+│   ├── jira-to-markdown.md
+│   ├── jira-trace.md
+│   ├── qualityquest-scrum-task.md
+│   ├── rewrite-text.md
+│   ├── robot-log-analyzer.md
+│   ├── test-planning-checklist.md
+│   └── testlink-format.md
+├── .claude/commands/           # Claude Code format
+├── .cursor/commands/           # Cursor format
+├── docs/                       # Documentation and guides
+│   ├── brainstorming-session-results.md
+│   ├── mcp-atlassian-cheatsheet.md
+│   └── mcp-testlink-cheatsheet.md
+└── README.md
+```
 
-**Usage**:
-- Claude Code: `/rewrite-text`
-- Cursor: `rewriteText`
+### Contributing Guidelines
 
-**Input**: Text to be rewritten
-
-### 3. Bug Report Generator
-**Purpose**: Generate clear, well-structured bug reports for easy copying to Jira, email, or documentation
-
-**Usage**:
-- Claude Code: `/bug-report-generator`
-- Cursor: `bugReportGenerator`
-
-**Input**: Bug title, description, reproduction steps, actual/expected behavior, and optional notes
-
-### 4. Jira Issue Summary Generator
-**Purpose**: Generate AI-powered summary of Jira issue for customer communication and reporting
-
-**Usage**:
-- Claude Code: `/jira-issue-summary`
-- Cursor: `jiraIssueSummary`
-
-**Input**: Jira issue key
-
-### 5. Jira to Markdown Converter
-**Purpose**: Convert Jira ticket to Markdown format for documentation and sharing
-
-**Usage**:
-- Claude Code: `/jira-to-markdown`
-- Cursor: `jiraToMarkdown`
-
-**Input**: Jira issue key
-
-### 6. QualityQuest Scrum Task Generator
-**Purpose**: Generate detailed Scrum task content for Software Quality Assurance Engineers based on task description
-
-**Usage**:
-- Claude Code: `/qualityquest-scrum-task`
-- Cursor: `qualityquestScrumTask`
-
-**Input**: Task description
-
-## 🛠️ Collection Workflow
-
-1. **Tool Discovery**: Identify useful QA tools and commands
-2. **Tool Design**: Create standardized definitions following our template
-3. **Tool Integration**: Deploy tools across supported platforms
-4. **Tool Testing**: Verify tools work correctly in different environments
-5. **Tool Documentation**: Document usage patterns and best practices
-
-## 📚 Documentation
-
-- **[Design Guidelines](docs/brainstorming-session-results.md)**: Core design principles and standards
-- **[MCP Atlassian Cheatsheet](docs/mcp-atlassian-cheatsheet.md)**: Integration reference for Atlassian tools
-
-## 🔧 Integration Features
-
-- **MCP Atlassian Integration**: Seamless connection to Confluence and Jira
-- **Cross-Platform Compatibility**: Works with Claude Code, Cursor, and other AI coding platforms
-- **Version Control**: Git-based tracking of tool evolution
-- **Tool Synchronization**: Keep tools in sync across all platforms
-
-## 🤝 Contributing
-
-1. **Add New Tools**: Follow the established markdown template for new commands
-2. **Improve Existing Tools**: Enhance current tools with better functionality
-3. **Document Workflows**: Share how you use tools together in workflows
-4. **Test Across Platforms**: Verify tools work on all supported platforms
-5. **Maintain Standards**: Keep the "define once, generate twice" principle
+1. **Follow Standards**: Use the established markdown template for consistency
+2. **Test Thoroughly**: Verify commands work on both Claude Code and Cursor
+3. **Document Clearly**: Provide clear input/output descriptions
+4. **Maintain Quality**: Keep the "define once, generate twice" principle
+5. **Share Workflows**: Document how commands work together in real workflows
 
 ## 📄 License
 
