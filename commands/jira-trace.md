@@ -1,7 +1,7 @@
 # Jira Ticket Trace and Folder Organization
 
 ```
-Trace Jira tickets and organize them into a clear folder structure:
+Trace Jira tickets and organize them into a clear folder structure, including comments:
 
 Jira Issue Key: {{input}}
 
@@ -12,6 +12,7 @@ Jira Issue Key: {{input}}
 4. Use numbered prefixes (00_, 01_, 02_) for hierarchy levels
 5. Create README files for each subfolder
 6. Focus on understanding the problem
+7. Include comments from all related tickets
 
 ## Folder Structure:
 - 00_Main_Task_[TICKET].md (main task file)
