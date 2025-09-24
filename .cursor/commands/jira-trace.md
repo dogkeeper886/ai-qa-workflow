@@ -29,3 +29,4 @@ Jira Issue Key: {{input}}
 - Include ticket number in filename
 - Use underscores instead of spaces
 ```
+
