@@ -93,32 +93,3 @@ docker run --rm -i \
 "Create a new test suite called 'Authentication Tests' in project 1"
 "Archive test case 999 as it's no longer relevant"
 ```
-
-## Setup Requirements
-
-### Prerequisites
-- TestLink instance with XML-RPC API access enabled
-- TestLink API key (generate from TestLink user profile)
-- Docker or Node.js 20+
-
-### TestLink API Setup
-1. Enable XML-RPC API in TestLink configuration
-2. Generate API key from TestLink user profile:
-   - Login to TestLink
-   - Go to "My Settings"
-   - Click "Generate API Key"
-3. Ensure user has appropriate permissions
-
-## Troubleshooting
-
-### Connection Issues
-- Verify TestLink URL is accessible from Docker container
-- Check API key is valid and has permissions
-- Ensure TestLink XML-RPC API is enabled
-- Verify URL format includes full path (e.g., `http://server/testlink`)
-
-### API Errors
-- Check TestLink version compatibility (tested with TestLink 1.9.20+)
-- Verify required fields for create/update operations
-- Review TestLink server logs for detailed errors
-- Ensure user has sufficient permissions
