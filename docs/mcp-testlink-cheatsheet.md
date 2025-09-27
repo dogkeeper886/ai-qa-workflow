@@ -35,15 +35,13 @@ docker run --rm -i \
         "run",
         "--rm",
         "-i",
-        "-e",
-        "TESTLINK_URL=http://your-testlink-server.com/testlink",
-        "-e",
-        "TESTLINK_API_KEY=your_api_key_here",
+        "-e", "TESTLINK_URL",
+        "-e", "TESTLINK_API_KEY",
         "dogkeeper886/testlink-mcp:latest"
       ],
       "env": {
         "TESTLINK_URL": "http://your-testlink-server.com/testlink",
-        "TESTLINK_API_KEY": "your_testlink_api_key"
+        "TESTLINK_API_KEY": "your_api_key_here"
       }
     }
   }
