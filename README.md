@@ -15,7 +15,6 @@ A curated collection of tools, commands, and workflows for AI-powered QA process
 ### For Other IDE Users
 1. Check the `commands/` folder to understand command structure
 2. Implement your own command system based on the markdown templates
-3. Use `copy-command-to-platforms.md` to convert commands to your platform format
 
 ## 📋 Available Commands
 
@@ -33,7 +32,6 @@ A curated collection of tools, commands, and workflows for AI-powered QA process
 | `/robot-log-analyzer` | Analyze Robot Framework test execution logs and generate insights | Robot Framework log file or content |
 | `/test-planning-checklist` | Generate comprehensive test planning checklist for QA projects | Project details and testing scope |
 | `/testlink-format` | Convert test cases to TestLink XML format for import | Test case data in various formats |
-| `/copy-command-to-platforms` | Copy AI command prompt files to both AI coding platforms | Command file content |
 
 ## 📚 Documentation & Integration
 
@@ -48,10 +46,9 @@ A curated collection of tools, commands, and workflows for AI-powered QA process
 
 ### Adding New Commands
 
-1. **Create Command File**: Add your new command to the `commands/` folder following the markdown template
-2. **Use Conversion Tool**: Use `copy-command-to-platforms.md` to convert your command to both platform formats
-3. **Deploy to Platforms**: Copy the generated files to `.claude/commands/` and `.cursor/commands/` folders
-4. **Test & Validate**: Ensure your command works correctly on both platforms
+1. **Create Command File**: Add your new command to the appropriate subfolder in `commands/` (jira/, qa/, utilities/, confluence/, or testlink/) following the markdown template
+2. **Sync to Platforms**: Run `make sync-commands` to deploy to both `.claude/commands/` and `.cursor/commands/` folders
+3. **Test & Validate**: Ensure your command works correctly on both platforms
 
 ### Command Template Structure
 
@@ -95,25 +92,18 @@ What gets created or modified
 ```
 ai-qa-workflow/
 ├── commands/                    # Source command definitions
-│   ├── bug-report-generator.md
-│   ├── confluence-page-summary.md
-│   ├── confluence-to-markdown.md
-│   ├── copy-command-to-platforms.md
-│   ├── create-confluence-page.md
-│   ├── jira-issue-summary.md
-│   ├── jira-to-markdown.md
-│   ├── jira-trace.md
-│   ├── qualityquest-scrum-task.md
-│   ├── rewrite-text.md
-│   ├── robot-log-analyzer.md
-│   ├── test-planning-checklist.md
-│   └── testlink-format.md
-├── .claude/commands/           # Claude Code format
-├── .cursor/commands/           # Cursor format
-├── docs/                       # Documentation and guides
+│   ├── jira/                    # Jira-related commands
+│   ├── qa/                      # QA workflow commands
+│   ├── utilities/               # Utility commands
+│   ├── confluence/              # Confluence-related commands
+│   └── testlink/                # TestLink commands
+├── .claude/commands/            # Claude Code format (synced)
+├── .cursor/commands/            # Cursor format (synced)
+├── docs/                        # Documentation and guides
 │   ├── brainstorming-session-results.md
 │   ├── mcp-atlassian-cheatsheet.md
 │   └── mcp-testlink-cheatsheet.md
+├── Makefile                     # Command sync automation
 └── README.md
 ```
 
