@@ -1,38 +1,43 @@
-# Update TestLink Test Case
+# Create TestLink Test Case
 
 ```
-Update test case in TestLink with proper HTML formatting and TestLink compliance.
+Create new test case in TestLink with proper HTML formatting and TestLink compliance.
 
 ## Agent Instructions:
 1. Extract test case data from user input
 2. Apply HTML formatting according to guidelines below
-3. Use external ID format for updates (e.g., "PROJ-1", "ABC-12345")
-4. Call TestLink MCP update_test_case tool with formatted data
+3. Generate external ID automatically or use provided format
+4. Call TestLink MCP create_test_case tool with formatted data
+5. If preconditions are missing after creation, use update_test_case to add them
 
 ## Expected User Input Format:
 User should provide:
-- Test Case ID (external format like "PROJ-1")
+- Test Suite ID (where to create the test case)
 - Test Case Name
 - Summary/Test Objective
 - Pre-conditions (optional)
 - Test Steps with Actions and Expected Results
+- Author Login (optional, defaults to "admin")
 
 ## Agent Processing Steps:
-1. **Validate Input**: Check for required fields (ID, name, summary)
-2. **Format Summary**: Wrap in <p> tags, apply <strong> for emphasis
-3. **Format Preconditions**: Convert to <ul><li> list format
-4. **Format Steps**: Apply HTML formatting to actions and expected results
-5. **Apply HTML Entities**: Convert >, <, ", &, ' to proper entities
-6. **Call API**: Use update_test_case tool with formatted data
+1. **Validate Input**: Check for required fields (suite ID, name, summary)
+2. **Generate External ID**: Create project prefix format (e.g., "PROJ-1", "PROJ-2")
+3. **Format Summary**: Wrap in <p> tags, apply <strong> for emphasis
+4. **Format Preconditions**: Convert to <ul><li> list format
+5. **Format Steps**: Apply HTML formatting to actions and expected results
+6. **Apply HTML Entities**: Convert >, <, ", &, ' to proper entities
+7. **Call API**: Use create_test_case tool with formatted data
+8. **Post-Creation**: If preconditions missing, call update_test_case
 
 ## Example Usage:
 **User Input:**
 ```
-Update test case PROJ-1
-Name: Login Validation Test
-Summary: Verify user can login with valid credentials
+Create test case in suite 12
+Name: User Authentication Test
+Summary: Verify user can authenticate with valid credentials
 Pre-conditions:
 - Valid user account exists
+- Authentication service is running
 - Login page is accessible
 Steps:
 1. Navigate to login page
@@ -42,16 +47,19 @@ Expected: User successfully logs in and redirected to dashboard
 ```
 
 **Agent Processing:**
-1. Extract: ID="PROJ-1", name="Login Validation Test", etc.
-2. Format summary: "<p>Verify user can <strong>login</strong> with valid credentials</p>"
-3. Format preconditions: "<ul><li>Valid user account exists</li><li>Login page is accessible</li></ul>"
-4. Format steps with HTML entities and proper tags
-5. Call: update_test_case with formatted data
+1. Extract: suiteId="12", name="User Authentication Test", etc.
+2. Generate: externalId="PROJ-1" (auto-generated)
+3. Format summary: "<p>Verify user can <strong>authenticate</strong> with valid credentials</p>"
+4. Format preconditions: "<ul><li>Valid user account exists</li><li>Authentication service is running</li><li>Login page is accessible</li></ul>"
+5. Format steps with HTML entities and proper tags
+6. Call: create_test_case with formatted data
+7. Check if preconditions were applied, update if needed
 
 **API Notes:**
-- If preconditions are missing after creation, use updateTestCase to add them
-- External ID format required for updates (not numeric IDs)
 - createTestCase may not process preconditions properly - update after creation
+- External ID will be auto-generated if not provided
+- Test case will be created in specified test suite
+- Author defaults to "admin" if not specified
 
 HTML Formatting Applied Automatically:
 - Summary: <p> tags with <strong> for emphasis on key actions
@@ -85,6 +93,18 @@ Required Step Fields (handled automatically):
 - active: Integer (always 1 for active steps)
 - execution_type: Integer (1 = manual, 2 = automated)
 
+Required Create Fields:
+- testprojectid: String (project ID)
+- testsuiteid: String (test suite ID)
+- name: String (test case name)
+- authorlogin: String (author login, defaults to "admin")
+- summary: String (HTML formatted summary)
+- preconditions: String (HTML formatted preconditions)
+- steps: Array (formatted step objects)
+- importance: Integer (1=low, 2=medium, 3=high, defaults to 3)
+- execution_type: Integer (1=manual, 2=automated, defaults to 1)
+- status: Integer (1=draft, 7=final, defaults to 7)
+
 Best Practices:
 ✅ Use <strong> for UI elements like buttons, menus, fields
 ✅ Use <em> for alternatives or clarifications
@@ -93,12 +113,15 @@ Best Practices:
 ✅ Apply HTML entities for all special characters
 ✅ Keep actions clear and concise with proper formatting
 ✅ Make expected results specific and measurable
-✅ Always verify updates were successful by reading the test case
-✅ Use external ID format for updates (e.g., "PROJ-1" not "13")
+✅ Always verify creation was successful by reading the test case
+✅ Check if preconditions were applied after creation
 ✅ Update preconditions separately if missing after creation
+✅ Use descriptive external IDs (auto-generated with project prefix)
 
 Common Issues & Solutions:
-❌ "Invalid XML-RPC message" → Use external ID format instead of numeric ID
-❌ Missing preconditions after creation → Use updateTestCase to add preconditions
+❌ "Missing required fields" → Ensure testprojectid, testsuiteid, name, authorlogin are provided
+❌ "Invalid test suite ID" → Verify suite exists in the project
+❌ Missing preconditions after creation → Use update_test_case to add preconditions
 ❌ HTML not rendering → Check HTML entity usage (&gt;, &lt;, &quot;, &apos;)
+❌ "Test case already exists" → Use update_test_case instead or change name
 ```
