@@ -125,6 +125,18 @@ ai-qa-workflow/
 4. **Maintain Quality**: Keep the "define once, generate twice" principle
 5. **Share Workflows**: Document how commands work together in real workflows
 
+## 🔧 Maintenance
+
+### Syncing Commands
+
+To sync all commands from `commands/` subfolders to IDE command directories:
+
+```bash
+make sync-commands
+```
+
+This will copy all command files from `commands/jira/`, `commands/qa/`, `commands/utilities/`, `commands/confluence/`, and `commands/testlink/` to both `.cursor/commands/` and `.claude/commands/`.
+
 ## 📄 License
 
 This project is part of an internal AI QA workflow collection designed to improve testing efficiency and consistency across development teams.
