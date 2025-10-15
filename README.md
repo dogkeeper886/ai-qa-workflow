@@ -6,40 +6,38 @@ A curated collection of tools, commands, and workflows for AI-powered QA process
 
 ### Installation
 
-**Option 1: Use the installation script (Recommended)**
+The project uses a GNU-style Makefile for installation (like the classic Unix tools):
+
 ```bash
 # Clone the repository
 git clone <repository-url>
 cd ai-qa-workflow
 
-# Install to both Claude Code and Cursor
-./install.sh
+# Standard installation (installs to both Claude Code and Cursor)
+make install
 
-# Or install to specific IDE
-./install.sh --claude    # Claude Code only
-./install.sh --cursor    # Cursor only
-```
+# Install to specific IDE only
+make install-claude    # Claude Code only
+make install-cursor    # Cursor only
 
-**Option 2: Use Makefile**
-```bash
-make install-all      # Install to both IDEs
-make install-claude   # Claude Code only
-make install-cursor   # Cursor only
-```
+# Custom installation prefix
+make install prefix=/custom/path
 
-**Option 3: Manual installation**
-```bash
-# For Claude Code
-cp commands/*/*.md ~/.claude/commands/
-
-# For Cursor
-cp commands/*/*.md ~/.cursor/commands/
+# Package staging (for building RPM/DEB packages)
+make install DESTDIR=/tmp/staging prefix=/usr/local
 ```
 
 ### After Installation
 1. Restart your IDE
 2. Commands will be available as slash commands (e.g., `/bug-report-generator`)
-3. Run the installation script again anytime to update commands
+3. Run `make install` again anytime to update commands
+
+### Uninstallation
+
+```bash
+make uninstall         # Remove from default location
+make uninstall prefix=/custom/path  # Remove from custom location
+```
 
 ## 📋 Available Commands
 
@@ -72,7 +70,7 @@ cp commands/*/*.md ~/.cursor/commands/
 ### Adding New Commands
 
 1. **Create Command File**: Add your new command to the appropriate subfolder in `commands/` (jira/, qa/, utilities/, confluence/, or testlink/) following the markdown template
-2. **Test Locally**: Run `./install.sh` or `make install-all` to install to your IDEs
+2. **Test Locally**: Run `make install` to install to your IDEs
 3. **Test & Validate**: Ensure your command works correctly on both platforms
 4. **Commit**: Only the source file in `commands/` needs to be committed - no duplication!
 
@@ -127,8 +125,7 @@ ai-qa-workflow/
 │   ├── brainstorming-session-results.md
 │   ├── mcp-atlassian-cheatsheet.md
 │   └── mcp-testlink-cheatsheet.md
-├── install.sh                   # Installation script
-├── Makefile                     # Quick install targets
+├── Makefile                     # GNU-style installation makefile
 └── README.md
 
 # After installation, commands will be in:
@@ -152,9 +149,7 @@ When you pull updates from the repository, simply re-run the installation:
 
 ```bash
 git pull
-./install.sh
-# or
-make install-all
+make install
 ```
 
 This will update all commands in your IDEs with the latest versions.
@@ -162,9 +157,16 @@ This will update all commands in your IDEs with the latest versions.
 ### For Contributors
 
 1. Edit command files in the `commands/` directory
-2. Test locally with `./install.sh` or `make install-all`
+2. Test locally with `make install`
 3. Commit only the files in `commands/` - no need to sync anything!
 4. The repository stays clean with a single source of truth
+
+### Getting Help
+
+```bash
+make help    # Show all available targets and examples
+make         # Same as 'make help'
+```
 
 ## 📄 License
 
