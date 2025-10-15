@@ -88,6 +88,3 @@ help:
 	@echo "  make install DESTDIR=/tmp/staging      # Stage for package creation"
 	@echo "  make install-claude prefix=/opt/tools  # Install to /opt/tools/.claude only"
 	@echo "  make uninstall                         # Remove all installed commands"
-	@echo ""
-	@echo "For custom directory installation, use the install.sh script:"
-	@echo "  ./install.sh --path /custom/directory"
