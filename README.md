@@ -4,17 +4,42 @@ A curated collection of tools, commands, and workflows for AI-powered QA process
 
 ## 🚀 Quick Start
 
-### For Claude Code Users
-1. Copy the `.claude/` folder to your workspace
-2. Use slash commands like `/bug-report-generator` in Claude Code
+### Installation
 
-### For Cursor Users  
-1. Copy the `.cursor/` folder to your workspace
-2. Use slash commands like `/bug-report-generator` in Cursor
+**Option 1: Use the installation script (Recommended)**
+```bash
+# Clone the repository
+git clone <repository-url>
+cd ai-qa-workflow
 
-### For Other IDE Users
-1. Check the `commands/` folder to understand command structure
-2. Implement your own command system based on the markdown templates
+# Install to both Claude Code and Cursor
+./install.sh
+
+# Or install to specific IDE
+./install.sh --claude    # Claude Code only
+./install.sh --cursor    # Cursor only
+```
+
+**Option 2: Use Makefile**
+```bash
+make install-all      # Install to both IDEs
+make install-claude   # Claude Code only
+make install-cursor   # Cursor only
+```
+
+**Option 3: Manual installation**
+```bash
+# For Claude Code
+cp commands/*/*.md ~/.claude/commands/
+
+# For Cursor
+cp commands/*/*.md ~/.cursor/commands/
+```
+
+### After Installation
+1. Restart your IDE
+2. Commands will be available as slash commands (e.g., `/bug-report-generator`)
+3. Run the installation script again anytime to update commands
 
 ## 📋 Available Commands
 
@@ -47,8 +72,9 @@ A curated collection of tools, commands, and workflows for AI-powered QA process
 ### Adding New Commands
 
 1. **Create Command File**: Add your new command to the appropriate subfolder in `commands/` (jira/, qa/, utilities/, confluence/, or testlink/) following the markdown template
-2. **Sync to Platforms**: Run `make sync-commands` to deploy to both `.claude/commands/` and `.cursor/commands/` folders
+2. **Test Locally**: Run `./install.sh` or `make install-all` to install to your IDEs
 3. **Test & Validate**: Ensure your command works correctly on both platforms
+4. **Commit**: Only the source file in `commands/` needs to be committed - no duplication!
 
 ### Command Template Structure
 
@@ -91,20 +117,23 @@ What gets created or modified
 
 ```
 ai-qa-workflow/
-├── commands/                    # Source command definitions
+├── commands/                    # Source command definitions (single source of truth)
 │   ├── jira/                    # Jira-related commands
 │   ├── qa/                      # QA workflow commands
 │   ├── utilities/               # Utility commands
 │   ├── confluence/              # Confluence-related commands
 │   └── testlink/                # TestLink commands
-├── .claude/commands/            # Claude Code format (synced)
-├── .cursor/commands/            # Cursor format (synced)
 ├── docs/                        # Documentation and guides
 │   ├── brainstorming-session-results.md
 │   ├── mcp-atlassian-cheatsheet.md
 │   └── mcp-testlink-cheatsheet.md
-├── Makefile                     # Command sync automation
+├── install.sh                   # Installation script
+├── Makefile                     # Quick install targets
 └── README.md
+
+# After installation, commands will be in:
+# ~/.claude/commands/            # Your local Claude Code commands
+# ~/.cursor/commands/            # Your local Cursor commands
 ```
 
 ### Contributing Guidelines
@@ -115,17 +144,27 @@ ai-qa-workflow/
 4. **Maintain Quality**: Keep the "define once, generate twice" principle
 5. **Share Workflows**: Document how commands work together in real workflows
 
-## 🔧 Maintenance
+## 🔧 Updating Commands
 
-### Syncing Commands
+### For End Users
 
-To sync all commands from `commands/` subfolders to IDE command directories:
+When you pull updates from the repository, simply re-run the installation:
 
 ```bash
-make sync-commands
+git pull
+./install.sh
+# or
+make install-all
 ```
 
-This will copy all command files from `commands/jira/`, `commands/qa/`, `commands/utilities/`, `commands/confluence/`, and `commands/testlink/` to both `.cursor/commands/` and `.claude/commands/`.
+This will update all commands in your IDEs with the latest versions.
+
+### For Contributors
+
+1. Edit command files in the `commands/` directory
+2. Test locally with `./install.sh` or `make install-all`
+3. Commit only the files in `commands/` - no need to sync anything!
+4. The repository stays clean with a single source of truth
 
 ## 📄 License
 
