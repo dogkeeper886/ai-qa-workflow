@@ -1,53 +1,93 @@
-.PHONY: install-claude install-cursor install-all install help
+# AI QA Workflow - Command Installation Makefile
+# Follows GNU Coding Standards conventions
 
-# Default installation prefix (can be overridden: make install PREFIX=/custom/path)
-PREFIX ?= $(HOME)
+# Installation directories
+prefix      = $(HOME)
+exec_prefix = $(prefix)
+bindir      = $(exec_prefix)/bin
+datarootdir = $(prefix)/share
+datadir     = $(datarootdir)
 
-# Install commands to Claude Code
-install-claude:
-	@echo "Installing commands to Claude Code..."
-	@mkdir -p $(PREFIX)/.claude/commands
-	@cp commands/*/*.md $(PREFIX)/.claude/commands/
-	@echo "✓ Commands installed to $(PREFIX)/.claude/commands"
+# Claude Code and Cursor specific directories
+CLAUDE_DIR  = $(prefix)/.claude/commands
+CURSOR_DIR  = $(prefix)/.cursor/commands
 
-# Install commands to Cursor
-install-cursor:
-	@echo "Installing commands to Cursor..."
-	@mkdir -p $(PREFIX)/.cursor/commands
-	@cp commands/*/*.md $(PREFIX)/.cursor/commands/
-	@echo "✓ Commands installed to $(PREFIX)/.cursor/commands"
+# Source directory
+SRCDIR      = commands
 
-# Install to custom directory (use: make install DESTDIR=/path/to/dir)
-install:
-	@echo "Installing commands to custom directory..."
-	@mkdir -p $(DESTDIR)
-	@cp commands/*/*.md $(DESTDIR)/
-	@echo "✓ Commands installed to $(DESTDIR)"
+# Installation command
+INSTALL         = install
+INSTALL_DATA    = $(INSTALL) -m 644
 
-# Install commands to both IDEs
-install-all: install-claude install-cursor
-	@echo ""
-	@echo "✓ All commands installed successfully"
-	@echo "  Restart your IDE to use the commands"
+# All command files
+COMMANDS = $(wildcard $(SRCDIR)/*/*.md)
 
-# Show help
-help:
-	@echo "Available targets:"
-	@echo "  make install-claude          - Install commands to Claude Code (~/.claude/commands)"
-	@echo "  make install-cursor          - Install commands to Cursor (~/.cursor/commands)"
-	@echo "  make install-all             - Install commands to both IDEs (default)"
-	@echo "  make install DESTDIR=/path   - Install to custom directory"
-	@echo "  make help                    - Show this help message"
-	@echo ""
-	@echo "Variables:"
-	@echo "  PREFIX=/path   - Change base directory (default: HOME)"
-	@echo "  DESTDIR=/path  - Install directly to specified directory"
-	@echo ""
-	@echo "Examples:"
-	@echo "  make install-claude PREFIX=/custom/path"
-	@echo "  make install DESTDIR=/home/jack/src/TestCases"
-	@echo ""
-	@echo "Alternative: Use ./install.sh for more options"
+.PHONY: all install install-claude install-cursor uninstall clean help
 
 # Default target
-.DEFAULT_GOAL := install-all
+all:
+	@echo "Run 'make install' to install commands"
+	@echo "Run 'make help' for more options"
+
+# Standard install target - installs to both IDEs
+install: install-claude install-cursor
+	@echo ""
+	@echo "Installation complete."
+	@echo "Restart your IDE to load the commands."
+
+# Install to Claude Code
+install-claude:
+	@echo "Installing commands to Claude Code..."
+	@mkdir -p $(DESTDIR)$(CLAUDE_DIR)
+	@for file in $(COMMANDS); do \
+		$(INSTALL_DATA) $$file $(DESTDIR)$(CLAUDE_DIR)/; \
+	done
+	@echo "Commands installed to $(DESTDIR)$(CLAUDE_DIR)"
+
+# Install to Cursor
+install-cursor:
+	@echo "Installing commands to Cursor..."
+	@mkdir -p $(DESTDIR)$(CURSOR_DIR)
+	@for file in $(COMMANDS); do \
+		$(INSTALL_DATA) $$file $(DESTDIR)$(CURSOR_DIR)/; \
+	done
+	@echo "Commands installed to $(DESTDIR)$(CURSOR_DIR)"
+
+# Uninstall - remove installed commands
+uninstall:
+	@echo "Removing installed commands..."
+	@rm -f $(DESTDIR)$(CLAUDE_DIR)/*.md
+	@rmdir $(DESTDIR)$(CLAUDE_DIR) 2>/dev/null || true
+	@rm -f $(DESTDIR)$(CURSOR_DIR)/*.md
+	@rmdir $(DESTDIR)$(CURSOR_DIR) 2>/dev/null || true
+	@echo "Commands uninstalled."
+
+# Clean - nothing to clean in source directory
+clean:
+	@echo "Nothing to clean."
+
+# Help message
+help:
+	@echo "AI QA Workflow - Command Installation"
+	@echo ""
+	@echo "Targets:"
+	@echo "  make               - Show this help"
+	@echo "  make install       - Install commands to both Claude Code and Cursor"
+	@echo "  make install-claude - Install commands to Claude Code only"
+	@echo "  make install-cursor - Install commands to Cursor only"
+	@echo "  make uninstall     - Remove installed commands"
+	@echo "  make help          - Show this help message"
+	@echo ""
+	@echo "Variables (GNU standard):"
+	@echo "  prefix=DIR         - Installation prefix (default: HOME)"
+	@echo "  DESTDIR=DIR        - Stage installation to DIR (for packaging)"
+	@echo ""
+	@echo "Examples:"
+	@echo "  make install                           # Install to ~/.claude and ~/.cursor"
+	@echo "  make install prefix=/usr/local         # Install to /usr/local/.claude, etc."
+	@echo "  make install DESTDIR=/tmp/staging      # Stage for package creation"
+	@echo "  make install-claude prefix=/opt/tools  # Install to /opt/tools/.claude only"
+	@echo "  make uninstall                         # Remove all installed commands"
+	@echo ""
+	@echo "For custom directory installation, use the install.sh script:"
+	@echo "  ./install.sh --path /custom/directory"
