@@ -15,6 +15,44 @@ Enable **end-to-end test automation** from a single source of truth. Instead of 
 
 This eliminates duplication, maintains traceability, and accelerates the QA process.
 
+## Complete Test Lifecycle
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         COMPLETE TEST LIFECYCLE                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐                   │
+│  │   PHASE 1    │    │   PHASE 2    │    │   PHASE 3    │                   │
+│  │   DISCOVER   │───▶│    PLAN      │───▶│   DESIGN     │                   │
+│  │              │    │              │    │              │                   │
+│  │ Jira/Conflu- │    │ Test Plan    │    │ Test Cases   │                   │
+│  │ ence via MCP │    │ Checklist    │    │ Checklist    │                   │
+│  └──────────────┘    └──────────────┘    └──────────────┘                   │
+│         │                   │                   │                            │
+│         ▼                   ▼                   ▼                            │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐                   │
+│  │   PHASE 4    │    │   PHASE 5    │    │   PHASE 6    │                   │
+│  │   MANAGE     │───▶│   AUTOMATE   │───▶│   EXECUTE    │                   │
+│  │              │    │              │    │              │                   │
+│  │ TestLink     │    │ Test         │    │ CI/CD        │                   │
+│  │ via MCP      │    │ Framework    │    │ Pipeline     │                   │
+│  └──────────────┘    └──────────────┘    └──────────────┘                   │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+| Phase | Action | Tool/Command |
+|-------|--------|--------------|
+| 1. Discover | Gather requirements | MCP Atlassian, `/jira-trace` |
+| 2. Plan | Create test strategy | `/test-planning-checklist` |
+| 3. Design | Write test cases | `/test-case-design-checklist` |
+| 4. Manage | Import to TestLink | MCP TestLink, `/create-test-case` |
+| 5. Automate | Create YAML tests | [test-framework-template](https://github.com/dogkeeper886/test-framework-template) |
+| 6. Execute | Run and report | `npm test`, `/create-test-execution` |
+
+See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the complete workflow guide.
+
 ## Notable Features
 
 | Feature | Description |
@@ -42,24 +80,12 @@ make install
 make install-claude    # Claude Code only
 make install-cursor    # Cursor only
 ```
+
 ### After Installation
 
 1. Restart your IDE
-2. Commands available as slash commands (e.g., /jira-trace)
+2. Commands available as slash commands (e.g., `/jira-trace`)
 3. Configure MCP integrations (see [docs/integrations/](docs/integrations/))
-
-## Complete Test Lifecycle
-
-See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the full workflow.
-
-| Phase | Action | Tool/Command |
-|-------|--------|--------------|
-| 1. Discover | Gather requirements | MCP Atlassian, /jira-trace |
-| 2. Plan | Create test strategy | /test-planning-checklist |
-| 3. Design | Write test cases | /test-case-design-checklist |
-| 4. Manage | Import to TestLink | MCP TestLink commands |
-| 5. Automate | Create YAML tests | test-framework-template |
-| 6. Execute | Run and report | npm test, /create-test-execution |
 
 ## Available Commands
 
@@ -67,49 +93,49 @@ See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the
 
 | Command | Purpose |
 |---------|---------|
-| /test-planning-checklist | Create comprehensive test plan from requirements |
-| /test-case-design-checklist | Design detailed test cases from test plan |
-| /bug-report-generator | Generate well-structured bug reports |
-| /qualityquest-scrum-task | Generate Scrum task content for QA |
+| `/test-planning-checklist` | Create comprehensive test plan from requirements |
+| `/test-case-design-checklist` | Design detailed test cases from test plan |
+| `/bug-report-generator` | Generate well-structured bug reports |
+| `/qualityquest-scrum-task` | Generate Scrum task content for QA |
 
 ### Jira Commands
 
 | Command | Purpose |
 |---------|---------|
-| /jira-trace | Trace tickets and gather all related information |
-| /jira-issue-summary | Generate AI-powered issue summary |
-| /jira-to-markdown | Convert Jira ticket to Markdown |
+| `/jira-trace` | Trace tickets and gather all related information |
+| `/jira-issue-summary` | Generate AI-powered issue summary |
+| `/jira-to-markdown` | Convert Jira ticket to Markdown |
 
 ### Confluence Commands
 
 | Command | Purpose |
 |---------|---------|
-| /confluence-page-summary | Generate page summary |
-| /confluence-to-markdown | Convert page to Markdown |
-| /create-confluence-page | Create page from markdown content |
+| `/confluence-page-summary` | Generate page summary |
+| `/confluence-to-markdown` | Convert page to Markdown |
+| `/create-confluence-page` | Create page from markdown content |
 
 ### TestLink Commands
 
 | Command | Purpose |
 |---------|---------|
-| /list-projects | List all TestLink projects |
-| /list-test-suites | List test suites in project |
-| /create-test-suite | Create new test suite |
-| /create-test-case | Create test case with HTML formatting |
-| /get-test-case | Retrieve test case details |
-| /update-test-case | Update existing test case |
-| /create-test-plan | Create new test plan |
-| /add-test-case-to-test-plan | Assign test case to plan |
-| /create-test-execution | Record test execution result |
-| /execute-test-case | Execute test via browser automation |
+| `/list-projects` | List all TestLink projects |
+| `/list-test-suites` | List test suites in project |
+| `/create-test-suite` | Create new test suite |
+| `/create-test-case` | Create test case with HTML formatting |
+| `/get-test-case` | Retrieve test case details |
+| `/update-test-case` | Update existing test case |
+| `/create-test-plan` | Create new test plan |
+| `/add-test-case-to-test-plan` | Assign test case to plan |
+| `/create-test-execution` | Record test execution result |
+| `/execute-test-case` | Execute test via browser automation |
 
 ### Utility Commands
 
 | Command | Purpose |
 |---------|---------|
-| /rewrite-text | Simplify text while keeping meaning |
-| /robot-log-analyzer | Analyze Robot Framework logs |
-| /identify-test-type | Categorize test as GUI/API/Other |
+| `/rewrite-text` | Simplify text while keeping meaning |
+| `/robot-log-analyzer` | Analyze Robot Framework logs |
+| `/identify-test-type` | Categorize test as GUI/API/Other |
 
 ## Documentation
 
@@ -138,15 +164,29 @@ See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the
 
 ## Project Structure
 
-
+```
+ai-qa-workflow/
+├── commands/
+│   ├── confluence/     # Confluence commands
+│   ├── jira/           # Jira commands
+│   ├── qa/             # QA workflow commands
+│   ├── testlink/       # TestLink commands
+│   └── utilities/      # Utility commands
+├── docs/
+│   ├── integrations/   # MCP integration guides
+│   ├── workflows/      # End-to-end workflows
+│   └── design/         # Design principles
+├── Makefile            # Installation automation
+└── README.md
+```
 
 ## For Developers
 
 ### Adding New Commands
 
-1. Create markdown file in appropriate commands/ subfolder
+1. Create markdown file in appropriate `commands/` subfolder
 2. Follow the standard template (see existing commands)
-3. Test with make install
+3. Test with `make install`
 4. Commit only the source file
 
 ### Command Template
