@@ -1,177 +1,180 @@
-# AI QA Workflow Collection
+# AI QA Workflow
 
-A curated collection of tools, commands, and workflows for AI-powered QA processes across multiple platforms (Claude Code, Cursor, and more). This project implements a "define once, generate twice" approach to eliminate duplication and maintain consistency across different AI coding environments.
+A complete QA automation toolkit that connects AI coding agents with test management systems through MCP (Model Context Protocol) integrations.
 
-## 🚀 Quick Start
+## Project Goal
+
+Enable **end-to-end test automation** from a single source of truth. Instead of manually copying information between Jira, Confluence, TestLink, and test scripts, we use AI coding agents to:
+
+1. **Discover** requirements from Jira and Confluence via MCP
+2. **Plan** test strategies using intelligent checklists
+3. **Design** detailed test cases from requirements
+4. **Manage** tests in TestLink via MCP
+5. **Automate** test execution with the dual-judge framework
+6. **Report** results back to source systems
+
+This eliminates duplication, maintains traceability, and accelerates the QA process.
+
+## Notable Features
+
+| Feature | Description |
+|---------|-------------|
+| **Single Source of Truth** | Requirements flow from Jira/Confluence through test design to execution |
+| **MCP Integrations** | Direct access to Atlassian, TestLink, and Playwright via Model Context Protocol |
+| **Intelligent Commands** | AI-powered test planning and case design checklists |
+| **Dual-Judge Framework** | Test execution with both deterministic and semantic (LLM) verification |
+| **Define Once, Deploy Twice** | Commands work in both Claude Code and Cursor IDEs |
+| **Complete Workflow** | Covers discovery, planning, design, management, automation, and reporting |
+
+## Quick Start
 
 ### Installation
 
-The project uses a GNU-style Makefile for installation (like the classic Unix tools):
-
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/dogkeeper886/ai-qa-workflow
 cd ai-qa-workflow
 
-# Standard installation (installs to both Claude Code and Cursor)
+# Install commands to your IDE
 make install
 
-# Install to specific IDE only
+# Or install to specific IDE only
 make install-claude    # Claude Code only
 make install-cursor    # Cursor only
-
-# Custom installation prefix
-make install prefix=/custom/path
-
-# Package staging (for building RPM/DEB packages)
-make install DESTDIR=/tmp/staging prefix=/usr/local
 ```
-
 ### After Installation
+
 1. Restart your IDE
-2. Commands will be available as slash commands (e.g., `/bug-report-generator`)
-3. Run `make install` again anytime to update commands
+2. Commands available as slash commands (e.g., /jira-trace)
+3. Configure MCP integrations (see [docs/integrations/](docs/integrations/))
 
-### Uninstallation
+## Complete Test Lifecycle
 
-```bash
-make uninstall         # Remove from default location
-make uninstall prefix=/custom/path  # Remove from custom location
-```
+See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the full workflow.
 
-## 📋 Available Commands
+| Phase | Action | Tool/Command |
+|-------|--------|--------------|
+| 1. Discover | Gather requirements | MCP Atlassian, /jira-trace |
+| 2. Plan | Create test strategy | /test-planning-checklist |
+| 3. Design | Write test cases | /test-case-design-checklist |
+| 4. Manage | Import to TestLink | MCP TestLink commands |
+| 5. Automate | Create YAML tests | test-framework-template |
+| 6. Execute | Run and report | npm test, /create-test-execution |
 
-| Command | Purpose | Input |
-|---------|---------|-------|
-| `/bug-report-generator` | Generate clear, well-structured bug reports for Jira, email, or documentation | Bug title, description, reproduction steps, actual/expected behavior |
-| `/confluence-page-summary` | Generate AI-powered summary of Confluence page for customer communication and reporting | Confluence page ID |
-| `/confluence-to-markdown` | Convert Confluence page to Markdown format for documentation and sharing | Confluence page ID |
-| `/create-confluence-page` | Create a Confluence page from markdown content under a parent page | Parent page ID, page title, markdown content |
-| `/jira-issue-summary` | Generate AI-powered summary of Jira issue for customer communication | Jira issue key |
-| `/jira-to-markdown` | Convert Jira ticket to Markdown format for documentation and sharing | Jira issue key |
-| `/jira-trace` | Generate traceability matrix linking requirements to test cases | Jira issue key or requirements |
-| `/qualityquest-scrum-task` | Generate detailed Scrum task content for QA Engineers | Task description |
-| `/rewrite-text` | Rewrite text in simple, easy words while keeping the original meaning | Text to be rewritten |
-| `/robot-log-analyzer` | Analyze Robot Framework test execution logs and generate insights | Robot Framework log file or content |
-| `/test-planning-checklist` | Generate comprehensive test planning checklist for QA projects | Project details and testing scope |
-| `/testlink-format` | Convert test cases to TestLink XML format for import | Test case data in various formats |
+## Available Commands
 
-## 📚 Documentation & Integration
+### QA Workflow Commands
 
-### MCP Integrations
-- **[MCP Atlassian Cheatsheet](docs/mcp-atlassian-cheatsheet.md)**: Integration reference for Atlassian tools
-- **[MCP TestLink Cheatsheet](docs/mcp-testlink-cheatsheet.md)**: Integration reference for TestLink test management
+| Command | Purpose |
+|---------|---------|
+| /test-planning-checklist | Create comprehensive test plan from requirements |
+| /test-case-design-checklist | Design detailed test cases from test plan |
+| /bug-report-generator | Generate well-structured bug reports |
+| /qualityquest-scrum-task | Generate Scrum task content for QA |
 
-### Additional Resources
-- **[Design Guidelines](docs/brainstorming-session-results.md)**: Core design principles and standards
+### Jira Commands
 
-## 🛠️ For Developers
+| Command | Purpose |
+|---------|---------|
+| /jira-trace | Trace tickets and gather all related information |
+| /jira-issue-summary | Generate AI-powered issue summary |
+| /jira-to-markdown | Convert Jira ticket to Markdown |
+
+### Confluence Commands
+
+| Command | Purpose |
+|---------|---------|
+| /confluence-page-summary | Generate page summary |
+| /confluence-to-markdown | Convert page to Markdown |
+| /create-confluence-page | Create page from markdown content |
+
+### TestLink Commands
+
+| Command | Purpose |
+|---------|---------|
+| /list-projects | List all TestLink projects |
+| /list-test-suites | List test suites in project |
+| /create-test-suite | Create new test suite |
+| /create-test-case | Create test case with HTML formatting |
+| /get-test-case | Retrieve test case details |
+| /update-test-case | Update existing test case |
+| /create-test-plan | Create new test plan |
+| /add-test-case-to-test-plan | Assign test case to plan |
+| /create-test-execution | Record test execution result |
+| /execute-test-case | Execute test via browser automation |
+
+### Utility Commands
+
+| Command | Purpose |
+|---------|---------|
+| /rewrite-text | Simplify text while keeping meaning |
+| /robot-log-analyzer | Analyze Robot Framework logs |
+| /identify-test-type | Categorize test as GUI/API/Other |
+
+## Documentation
+
+### Integrations
+
+- [MCP Atlassian](docs/integrations/mcp-atlassian.md) - Jira and Confluence access
+- [MCP TestLink](docs/integrations/mcp-testlink.md) - Test management
+- [MCP Playwright](docs/integrations/mcp-playwright.md) - Browser automation
+- [Test Framework Template](docs/integrations/test-framework-template.md) - Dual-judge execution
+
+### Workflows
+
+- [Test Lifecycle](docs/workflows/test-lifecycle.md) - Complete end-to-end workflow
+
+### Design
+
+- [Principles](docs/design/principles.md) - Core design guidelines
+
+## Related Projects
+
+| Project | Purpose | Repository |
+|---------|---------|------------|
+| **Test Framework Template** | Dual-judge test execution | [dogkeeper886/test-framework-template](https://github.com/dogkeeper886/test-framework-template) |
+| **TestLink MCP** | TestLink API integration | [dogkeeper886/testlink-mcp](https://github.com/dogkeeper886/testlink-mcp) |
+| **MCP Atlassian** | Jira/Confluence integration | [sooperset/mcp-atlassian](https://github.com/sooperset/mcp-atlassian) |
+
+## Project Structure
+
+
+
+## For Developers
 
 ### Adding New Commands
 
-1. **Create Command File**: Add your new command to the appropriate subfolder in `commands/` (jira/, qa/, utilities/, confluence/, or testlink/) following the markdown template
-2. **Test Locally**: Run `make install` to install to your IDEs
-3. **Test & Validate**: Ensure your command works correctly on both platforms
-4. **Commit**: Only the source file in `commands/` needs to be committed - no duplication!
+1. Create markdown file in appropriate commands/ subfolder
+2. Follow the standard template (see existing commands)
+3. Test with make install
+4. Commit only the source file
 
-### Command Template Structure
-
-Each command in `commands/` follows this standardized format:
+### Command Template
 
 ```markdown
 # Command Name
 
 ## Purpose
-Clear, one-sentence description of what this does
+One-sentence description
 
 ## Input
 - parameter_name (type): Description
-- another_param (type, optional): Description
 
 ## Process
 1. Step one
 2. Step two
-3. Step three
 
 ## Output
-What gets created or modified
-
-## Platform Notes
-- Claude Code: /command-name
-- Cursor: commandName, ctrl+shift+x
+What gets created
 ```
 
-## 🏗️ Architecture & Standards
-
-### Core Design Principles
-
-1. **One Format to Rule Them All**: Markdown-based command definitions
-2. **No Complex Schemas**: Plain text that's human-readable and editable
-3. **Minimal Tooling**: Simple scripts, not complex frameworks
-4. **Platform-Agnostic Core**: Logic that works everywhere
-5. **Platform-Specific Adapters**: Minimal code to bridge differences
-
-### File Structure
-
-```
-ai-qa-workflow/
-├── commands/                    # Source command definitions (single source of truth)
-│   ├── jira/                    # Jira-related commands
-│   ├── qa/                      # QA workflow commands
-│   ├── utilities/               # Utility commands
-│   ├── confluence/              # Confluence-related commands
-│   └── testlink/                # TestLink commands
-├── docs/                        # Documentation and guides
-│   ├── brainstorming-session-results.md
-│   ├── mcp-atlassian-cheatsheet.md
-│   └── mcp-testlink-cheatsheet.md
-├── Makefile                     # GNU-style installation makefile
-└── README.md
-
-# After installation, commands will be in:
-# ~/.claude/commands/            # Your local Claude Code commands
-# ~/.cursor/commands/            # Your local Cursor commands
-```
-
-### Contributing Guidelines
-
-1. **Follow Standards**: Use the established markdown template for consistency
-2. **Test Thoroughly**: Verify commands work on both Claude Code and Cursor
-3. **Document Clearly**: Provide clear input/output descriptions
-4. **Maintain Quality**: Keep the "define once, generate twice" principle
-5. **Share Workflows**: Document how commands work together in real workflows
-
-## 🔧 Updating Commands
-
-### For End Users
-
-When you pull updates from the repository, simply re-run the installation:
+### Updating Commands
 
 ```bash
 git pull
-make install
+make install    # Updates all IDE commands
 ```
 
-This will update all commands in your IDEs with the latest versions.
+## License
 
-### For Contributors
-
-1. Edit command files in the `commands/` directory
-2. Test locally with `make install`
-3. Commit only the files in `commands/` - no need to sync anything!
-4. The repository stays clean with a single source of truth
-
-### Getting Help
-
-```bash
-make help    # Show all available targets and examples
-make         # Same as 'make help'
-```
-
-## 📄 License
-
-This project is part of an internal AI QA workflow collection designed to improve testing efficiency and consistency across development teams.
-
----
-
-*Built with simplicity and human-centric design in mind.*
+MIT
