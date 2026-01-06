@@ -12,8 +12,12 @@ datadir     = $(datarootdir)
 CLAUDE_DIR  = $(prefix)/.claude/commands
 CURSOR_DIR  = $(prefix)/.cursor/commands
 
-# Source directory
+# Project directory for CLAUDE.md installation (defaults to current directory)
+PROJECT_DIR = $(CURDIR)
+
+# Source directories
 SRCDIR      = commands
+TEMPLATEDIR = templates
 
 # Installation command
 INSTALL         = install
@@ -22,7 +26,14 @@ INSTALL_DATA    = $(INSTALL) -m 644
 # All command files
 COMMANDS = $(wildcard $(SRCDIR)/*/*.md)
 
-.PHONY: all install install-claude install-cursor uninstall clean help
+# Template file
+CLAUDE_MD_TEMPLATE = $(TEMPLATEDIR)/CLAUDE.md
+
+# Marker to identify AI QA Workflow section
+MARKER_START = \#\# AI QA Workflow
+MARKER_END = <!-- End AI QA Workflow -->
+
+.PHONY: all install install-claude install-cursor install-workflow uninstall uninstall-workflow clean help
 
 # Default target
 all:
@@ -34,6 +45,9 @@ install: install-claude install-cursor
 	@echo ""
 	@echo "Installation complete."
 	@echo "Restart your IDE to load the commands."
+	@echo ""
+	@echo "To add workflow guidance to your project's CLAUDE.md, run:"
+	@echo "  make install-workflow PROJECT_DIR=/path/to/your/project"
 
 # Install to Claude Code
 install-claude:
@@ -53,6 +67,31 @@ install-cursor:
 	done
 	@echo "Commands installed to $(DESTDIR)$(CURSOR_DIR)"
 
+# Install workflow guidance to project's CLAUDE.md
+install-workflow:
+	@echo "Installing AI QA Workflow to $(PROJECT_DIR)/CLAUDE.md..."
+	@if [ -f "$(PROJECT_DIR)/CLAUDE.md" ]; then \
+		if grep -q "$(MARKER_START)" "$(PROJECT_DIR)/CLAUDE.md"; then \
+			echo "AI QA Workflow section already exists in $(PROJECT_DIR)/CLAUDE.md"; \
+			echo "Use 'make uninstall-workflow' first to update."; \
+		else \
+			echo "" >> "$(PROJECT_DIR)/CLAUDE.md"; \
+			cat "$(CLAUDE_MD_TEMPLATE)" >> "$(PROJECT_DIR)/CLAUDE.md"; \
+			echo "" >> "$(PROJECT_DIR)/CLAUDE.md"; \
+			echo "$(MARKER_END)" >> "$(PROJECT_DIR)/CLAUDE.md"; \
+			echo "Appended AI QA Workflow to existing $(PROJECT_DIR)/CLAUDE.md"; \
+		fi \
+	else \
+		echo "# CLAUDE.md" > "$(PROJECT_DIR)/CLAUDE.md"; \
+		echo "" >> "$(PROJECT_DIR)/CLAUDE.md"; \
+		echo "This file provides guidance to Claude Code when working with this repository." >> "$(PROJECT_DIR)/CLAUDE.md"; \
+		echo "" >> "$(PROJECT_DIR)/CLAUDE.md"; \
+		cat "$(CLAUDE_MD_TEMPLATE)" >> "$(PROJECT_DIR)/CLAUDE.md"; \
+		echo "" >> "$(PROJECT_DIR)/CLAUDE.md"; \
+		echo "$(MARKER_END)" >> "$(PROJECT_DIR)/CLAUDE.md"; \
+		echo "Created $(PROJECT_DIR)/CLAUDE.md with AI QA Workflow"; \
+	fi
+
 # Uninstall - remove installed commands
 uninstall:
 	@echo "Removing installed commands..."
@@ -61,6 +100,20 @@ uninstall:
 	@rm -f $(DESTDIR)$(CURSOR_DIR)/*.md
 	@rmdir $(DESTDIR)$(CURSOR_DIR) 2>/dev/null || true
 	@echo "Commands uninstalled."
+
+# Remove AI QA Workflow section from project's CLAUDE.md
+uninstall-workflow:
+	@echo "Removing AI QA Workflow from $(PROJECT_DIR)/CLAUDE.md..."
+	@if [ -f "$(PROJECT_DIR)/CLAUDE.md" ]; then \
+		if grep -q "$(MARKER_START)" "$(PROJECT_DIR)/CLAUDE.md"; then \
+			sed -i '/$(MARKER_START)/,/$(MARKER_END)/d' "$(PROJECT_DIR)/CLAUDE.md"; \
+			echo "Removed AI QA Workflow section from $(PROJECT_DIR)/CLAUDE.md"; \
+		else \
+			echo "AI QA Workflow section not found in $(PROJECT_DIR)/CLAUDE.md"; \
+		fi \
+	else \
+		echo "$(PROJECT_DIR)/CLAUDE.md does not exist"; \
+	fi
 
 # Clean - nothing to clean in source directory
 clean:
@@ -71,20 +124,23 @@ help:
 	@echo "AI QA Workflow - Command Installation"
 	@echo ""
 	@echo "Targets:"
-	@echo "  make               - Show this help"
-	@echo "  make install       - Install commands to both Claude Code and Cursor"
-	@echo "  make install-claude - Install commands to Claude Code only"
-	@echo "  make install-cursor - Install commands to Cursor only"
-	@echo "  make uninstall     - Remove installed commands"
-	@echo "  make help          - Show this help message"
+	@echo "  make                  - Show this help"
+	@echo "  make install          - Install commands to both Claude Code and Cursor"
+	@echo "  make install-claude   - Install commands to Claude Code only"
+	@echo "  make install-cursor   - Install commands to Cursor only"
+	@echo "  make install-workflow - Add workflow guidance to project's CLAUDE.md"
+	@echo "  make uninstall        - Remove installed commands"
+	@echo "  make uninstall-workflow - Remove workflow section from CLAUDE.md"
+	@echo "  make help             - Show this help message"
 	@echo ""
 	@echo "Variables (GNU standard):"
-	@echo "  prefix=DIR         - Installation prefix (default: HOME)"
-	@echo "  DESTDIR=DIR        - Stage installation to DIR (for packaging)"
+	@echo "  prefix=DIR       - Installation prefix (default: HOME)"
+	@echo "  DESTDIR=DIR      - Stage installation to DIR (for packaging)"
+	@echo "  PROJECT_DIR=DIR  - Target project for CLAUDE.md (default: current dir)"
 	@echo ""
 	@echo "Examples:"
-	@echo "  make install                           # Install to ~/.claude and ~/.cursor"
-	@echo "  make install prefix=/usr/local         # Install to /usr/local/.claude, etc."
-	@echo "  make install DESTDIR=/tmp/staging      # Stage for package creation"
-	@echo "  make install-claude prefix=/opt/tools  # Install to /opt/tools/.claude only"
-	@echo "  make uninstall                         # Remove all installed commands"
+	@echo "  make install                              # Install to ~/.claude and ~/.cursor"
+	@echo "  make install-workflow                     # Add workflow to ./CLAUDE.md"
+	@echo "  make install-workflow PROJECT_DIR=~/myapp # Add workflow to ~/myapp/CLAUDE.md"
+	@echo "  make uninstall-workflow PROJECT_DIR=~/myapp"
+	@echo "  make uninstall                            # Remove all installed commands"
