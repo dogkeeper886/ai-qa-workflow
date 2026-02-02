@@ -44,12 +44,12 @@ This eliminates duplication, maintains traceability, and accelerates the QA proc
 
 | Phase | Action | Tool/Command |
 |-------|--------|--------------|
-| 1. Discover | Gather requirements | MCP Atlassian, `/jira-trace` |
-| 2. Plan | Create test strategy | `/test-planning-checklist` |
-| 3. Design | Write test cases | `/test-case-design-checklist` |
-| 4. Manage | Import to TestLink | MCP TestLink, `/create-test-case` |
+| 1. Discover | Gather requirements | MCP Atlassian, `/jr-trace` |
+| 2. Plan | Create test strategy | `/tw-plan-init` |
+| 3. Design | Write test cases | `/tw-case-init` |
+| 4. Manage | Import to TestLink | MCP TestLink, `/tl-create-case` |
 | 5. Automate | Create YAML tests | [test-framework-template](https://github.com/dogkeeper886/test-framework-template) |
-| 6. Execute | Run and report | `npm test`, `/create-test-execution` |
+| 6. Execute | Run and report | `npm test`, `/tl-create-execution` |
 
 See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the complete workflow guide.
 
@@ -84,50 +84,79 @@ make install-cursor    # Cursor only
 ### After Installation
 
 1. Restart your IDE
-2. Commands available as slash commands (e.g., `/jira-trace`)
+2. Commands available as slash commands (e.g., `/jr-trace`)
 3. Configure MCP integrations (see [docs/integrations/](docs/integrations/))
 
 ## Available Commands
 
-### QA Workflow Commands
+### Test Workflow Commands (tw-*)
 
 | Command | Purpose |
 |---------|---------|
-| `/test-planning-checklist` | Create comprehensive test plan from requirements |
-| `/test-case-design-checklist` | Design detailed test cases from test plan |
-| `/bug-report-generator` | Generate well-structured bug reports |
-| `/qualityquest-scrum-task` | Generate Scrum task content for QA |
+| `/tw-plan-init` | Initialize test planning (routes to feature/enhance/bugfix) |
+| `/tw-plan-feature` | Create test plan for new features |
+| `/tw-plan-enhance` | Create test plan for enhancements |
+| `/tw-plan-bugfix` | Create test plan for bug fixes |
+| `/tw-plan-review` | Review test plan quality |
+| `/tw-case-init` | Initialize test case creation (routes by plan type) |
+| `/tw-case-feature` | Create test cases for new features |
+| `/tw-case-enhance` | Create test cases for enhancements |
+| `/tw-case-bugfix` | Create test cases for bug fixes |
+| `/tw-case-review` | Review test case quality |
+| `/tw-diagrams` | Generate test diagrams |
+| `/tw-script-review` | Review test scripts against documentation |
+| `/tw-templates` | Test workflow templates reference |
 
-### Jira Commands
-
-| Command | Purpose |
-|---------|---------|
-| `/jira-trace` | Trace tickets and gather all related information |
-| `/jira-issue-summary` | Generate AI-powered issue summary |
-| `/jira-to-markdown` | Convert Jira ticket to Markdown |
-
-### Confluence Commands
-
-| Command | Purpose |
-|---------|---------|
-| `/confluence-page-summary` | Generate page summary |
-| `/confluence-to-markdown` | Convert page to Markdown |
-| `/create-confluence-page` | Create page from markdown content |
-
-### TestLink Commands
+### Project Commands (pm-*)
 
 | Command | Purpose |
 |---------|---------|
-| `/list-projects` | List all TestLink projects |
-| `/list-test-suites` | List test suites in project |
-| `/create-test-suite` | Create new test suite |
-| `/create-test-case` | Create test case with HTML formatting |
-| `/get-test-case` | Retrieve test case details |
-| `/update-test-case` | Update existing test case |
-| `/create-test-plan` | Create new test plan |
-| `/add-test-case-to-test-plan` | Assign test case to plan |
-| `/create-test-execution` | Record test execution result |
-| `/execute-test-case` | Execute test via browser automation |
+| `/pm-init` | Initialize test project structure |
+| `/pm-bug-report` | Generate well-structured bug reports |
+| `/pm-scrum-task` | Generate Scrum task content for QA |
+| `/pm-meeting-invite` | Create meeting invite for reviews |
+
+### Jira Commands (jr-*)
+
+| Command | Purpose |
+|---------|---------|
+| `/jr-trace` | Trace tickets and gather all related information |
+| `/jr-issue-summary` | Generate AI-powered issue summary |
+| `/jr-to-markdown` | Convert Jira ticket to Markdown |
+
+### Confluence Commands (cf-*)
+
+| Command | Purpose |
+|---------|---------|
+| `/cf-page-summary` | Generate page summary |
+| `/cf-to-markdown` | Convert page to Markdown |
+| `/cf-create-page` | Create page from markdown content |
+| `/cf-update-page` | Update existing Confluence page |
+| `/cf-review-page` | Review Confluence page quality |
+| `/cf-format-guide` | Confluence formatting guidelines |
+
+### TestLink Commands (tl-*)
+
+| Command | Purpose |
+|---------|---------|
+| `/tl-list-projects` | List all TestLink projects |
+| `/tl-list-suites` | List test suites in project |
+| `/tl-list-cases` | List test cases in suite |
+| `/tl-list-requirements` | List requirements |
+| `/tl-create-suite` | Create new test suite |
+| `/tl-create-case` | Create test case with HTML formatting |
+| `/tl-get-case` | Retrieve test case details |
+| `/tl-get-cases-for-plan` | Get test cases for a plan |
+| `/tl-update-case` | Update existing test case |
+| `/tl-update-suite` | Update existing test suite |
+| `/tl-create-plan` | Create new test plan |
+| `/tl-add-case-to-plan` | Assign test case to plan |
+| `/tl-create-execution` | Record test execution result |
+| `/tl-read-execution` | Read test execution details |
+| `/tl-execute-case` | Execute test via browser automation |
+| `/tl-sync` | Sync test cases with local files |
+| `/tl-identify-type` | Categorize test as GUI/API/Other |
+| `/tl-format` | TestLink HTML formatting reference |
 
 ### Utility Commands
 
@@ -135,7 +164,6 @@ make install-cursor    # Cursor only
 |---------|---------|
 | `/rewrite-text` | Simplify text while keeping meaning |
 | `/robot-log-analyzer` | Analyze Robot Framework logs |
-| `/identify-test-type` | Categorize test as GUI/API/Other |
 
 ## Documentation
 
@@ -167,11 +195,12 @@ make install-cursor    # Cursor only
 ```
 ai-qa-workflow/
 ├── commands/
-│   ├── confluence/     # Confluence commands
-│   ├── jira/           # Jira commands
-│   ├── qa/             # QA workflow commands
-│   ├── testlink/       # TestLink commands
-│   └── utilities/      # Utility commands
+│   ├── confluence/     # Confluence commands (cf-*)
+│   ├── jira/           # Jira commands (jr-*)
+│   ├── project/        # Project management commands (pm-*)
+│   ├── testlink/       # TestLink commands (tl-*)
+│   ├── test-workflow/  # Test planning and case workflows (tw-*)
+│   └── utility/        # Utility commands
 ├── docs/
 │   ├── integrations/   # MCP integration guides
 │   ├── workflows/      # End-to-end workflows

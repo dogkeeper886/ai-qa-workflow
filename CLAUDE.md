@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI QA Workflow is a QA automation toolkit that connects AI coding agents with test management systems through MCP (Model Context Protocol) integrations. It provides 31 slash commands for end-to-end test automation across Jira, Confluence, TestLink, and Playwright.
+AI QA Workflow is a QA automation toolkit that connects AI coding agents with test management systems through MCP (Model Context Protocol) integrations. It provides 46 slash commands for end-to-end test automation across Jira, Confluence, TestLink, and Playwright.
 
 ## Git Workflow
 
@@ -39,11 +39,12 @@ Commands are installed by copying markdown files directly to IDE command directo
 
 ```
 commands/
-├── confluence/    # Confluence page operations (4 commands)
-├── jira/          # Jira ticket tracing and conversion (3 commands)
-├── qa/            # Test planning and design checklists (4 commands)
-├── testlink/      # TestLink CRUD and execution (17 commands)
-└── utilities/     # Text rewriting, log analysis (3 commands)
+├── confluence/    # Confluence page operations (6 commands, cf-*)
+├── jira/          # Jira ticket tracing and conversion (3 commands, jr-*)
+├── project/       # Project management commands (4 commands, pm-*)
+├── testlink/      # TestLink CRUD and execution (18 commands, tl-*)
+├── test-workflow/ # Test planning and case workflows (13 commands, tw-*)
+└── utility/       # Text rewriting, log analysis (2 commands)
 docs/
 ├── integrations/  # MCP server setup guides
 ├── workflows/     # End-to-end test lifecycle guide
@@ -85,12 +86,12 @@ Commands expect these MCP servers configured in the IDE:
 ## Key Workflows
 
 The test lifecycle flows through 6 phases:
-1. **Discover** - Gather requirements via `/jira-trace`
-2. **Plan** - Create test strategy via `/test-planning-checklist`
-3. **Design** - Write test cases via `/test-case-design-checklist`
-4. **Manage** - Import to TestLink via `/create-test-case`
+1. **Discover** - Gather requirements via `/jr-trace`
+2. **Plan** - Create test strategy via `/tw-plan-init` (routes to feature/enhance/bugfix)
+3. **Design** - Write test cases via `/tw-case-init` (routes to feature/enhance/bugfix)
+4. **Manage** - Import to TestLink via `/tl-create-case`
 5. **Automate** - Create YAML tests with test-framework-template
-6. **Execute** - Run tests and record via `/create-test-execution`
+6. **Execute** - Run tests and record via `/tl-create-execution`
 
 ## TestLink HTML Formatting
 

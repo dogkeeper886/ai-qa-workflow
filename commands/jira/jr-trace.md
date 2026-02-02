@@ -1,9 +1,29 @@
-# Jira Ticket Trace and Folder Organization with Confluence Integration
+# Jira Ticket Trace and Project Structure Creation
 
 ```
-Trace Jira tickets and organize them into a clear folder structure, including comments and linked Confluence documents:
+Trace Jira tickets and create a standardized project folder structure with Confluence integration.
 
 Jira Issue Key: {{input}}
+
+## Recommended Project Structure
+
+Create this standardized structure for all new test projects:
+
+```
+[JIRA-ID]_[Short_Description]/
+├── README.md                 # Project overview and navigation
+├── confluence/               # HLD and design documentation
+│   ├── [Page_Title].md       # Confluence page content
+│   └── confluence_links.md   # Index of all Confluence links
+├── test_plan/                # Test planning documents (create later)
+│   ├── README.md             # Test plan index
+│   └── sections/             # Modular sections
+├── test_cases/               # Test cases (create later)
+│   └── README.md             # Test case index
+├── 00_Main_Task_[TICKET].md  # Main ticket details
+├── 01_[Description]_[TICKET].md  # Related tickets
+└── Ticket_Relationship_Diagram.md
+```
 
 ## Steps:
 
@@ -31,16 +51,22 @@ Look for Confluence URLs in multiple places:
 
 **Extract page IDs** (numeric ID in URL) and fetch content:
 - Use `confluence_get_page(page_id='...', convert_to_markdown=true, include_metadata=true)`
-- Save with sanitized page title as filename
+- Save to `confluence/` folder with sanitized page title
 
 ### 4. Create Folder Structure
-- Create main folder: `[TICKET]_[SHORT_DESCRIPTION]/`
-- Use flat file structure with numbered prefixes (00_, 01_)
-- Create `confluence/` subfolder if Confluence links found
-- DO NOT create empty subfolders
+
+**Required folders:**
+- `confluence/` - For HLD and design docs (only if Confluence links found)
+
+**Optional folders (create only when needed):**
+- `test_plan/` and `test_plan/sections/` - Create during test planning phase
+- `test_cases/` - Create during test case creation phase
+- `reference/` - Only if external reference docs needed
+- `archive/` - Only if archiving old versions
+
+**DO NOT create empty folders!**
 
 ### 5. Generate Documentation Files
-Create the following files in order:
 
 **a. Main Ticket File:** `00_Main_Task_[TICKET].md`
 - Full ticket details (summary, description, status, assignee, dates)
@@ -69,9 +95,9 @@ Create the following files in order:
 - Problem summary (what issue is being solved)
 - Solution overview
 - Key insights from tickets AND Confluence docs
-- Ticket relationships and progress
-- Resources and links
-- QA/Testing checklist
+- Project structure overview
+- Links to test_plan/ and test_cases/ (placeholder until created)
+- QA/Testing next steps
 
 **f. Relationship Diagram:** `Ticket_Relationship_Diagram.md`
 - Visual tree of ticket relationships
@@ -83,20 +109,35 @@ Create the following files in order:
 ## Folder Structure Example:
 
 ```
-ACX-93447_Grouped_Toast_Notification/
-├── 00_Main_Task_ACX-93447.md              # Main epic with full details
-├── 01_Feature_Request_FR-9147.md          # Parent feature request
-├── 01_HLD_Story_ACX-100342.md             # Child story (HLD)
-├── 01_UX_Design_ACX-97629.md              # Child story (UX)
-├── 01_UI_Implementation_ACX-100341.md     # Child story (UI - Bulk)
-├── 01_UI_Sleep_Notifications_ACX-100343.md # Child story (UI - Sleep)
-├── 01_API_Sleep_Notifications_ACX-100344.md # Child story (API)
-├── 01_Feature_Flag_ACX-100875.md          # Child story (Feature Flag)
-├── confluence/                            # Confluence documents
-│   ├── HLD_R1_Grouped_Toast_Notification_Enhancement.md
-│   └── confluence_links.md               # Index of all Confluence links
-├── README.md                              # Project overview & insights
-└── Ticket_Relationship_Diagram.md        # Complete trace & timeline
+PROJ-12345_Feature_Integration/
+├── README.md                              # Project overview
+├── confluence/                            # HLD and design docs
+│   ├── HLD_Feature_Name.md
+│   └── confluence_links.md
+├── 00_Main_Task_PROJ-12345.md             # Main epic
+├── 01_Feature_Request_FR-1234.md          # Related FR
+├── 01_Related_Epic_EP-5678.md             # Related epic
+└── Ticket_Relationship_Diagram.md         # Ticket trace
+```
+
+**Later, during test planning:**
+```
+PROJ-12345_Feature_Integration/
+├── ...
+├── test_plan/
+│   ├── README.md
+│   └── sections/
+│       ├── 01_Project_Business_Context.md
+│       ├── 02_Feature_Definition.md
+│       ├── 03_Scope_Boundaries.md
+│       ├── 04_Test_Strategy.md
+│       ├── 05_References_Resources.md
+│       └── 06_Revision_History.md
+└── test_cases/
+    ├── README.md
+    ├── TS-01_Configuration_Basic_Functionality.md
+    ├── TS-02_Backward_Compatibility.md
+    └── ...
 ```
 
 ## Important: Comment Retrieval
@@ -141,7 +182,6 @@ Use: `jira_get_issue(issue_key='...', comment_limit=100, expand='comments')`
 ### File Names
 - **00_** prefix for main ticket file
 - **01_** prefix for related/child tickets at same level
-- **02_** prefix if there's a second level of nesting (rare)
 - Format: `[PREFIX]_[SHORT_DESCRIPTION]_[TICKET].md`
 - Use underscores instead of spaces
 - Keep descriptions concise (2-4 words max)
@@ -149,12 +189,18 @@ Use: `jira_get_issue(issue_key='...', comment_limit=100, expand='comments')`
 ### Folder Names
 - Format: `[TICKET]_[SHORT_DESCRIPTION]/`
 - Use underscores instead of spaces
-- Example: `ACX-93447_Grouped_Toast_Notification/`
+- Example: `PROJ-12345_Feature_Integration/`
 
 ### Confluence Files
+- Save to `confluence/` folder
 - Sanitize page titles (remove special chars: `:`, `/`, `\`, `?`, `*`, `<`, `>`, `|`)
 - Limit length to ~50 characters
-- Example: `HLD_R1_Grouped_Toast_Notification_Enhancement.md`
+- Example: `confluence/HLD_R1_Add_AP_Group_name_to_NAS_ID.md`
+
+### Test Case Files (for later use)
+- Test Scenarios: `TS-XX_[Scenario_Name].md`
+- Test Cases within: `TC-01`, `TC-02`, etc. (per scenario)
+- Example: `test_cases/TS-01_Configuration_Basic_Functionality.md`
 
 ## Content Guidelines:
 
@@ -171,10 +217,10 @@ Use: `jira_get_issue(issue_key='...', comment_limit=100, expand='comments')`
 - Problem summary (2-3 paragraphs)
 - Solution overview (key features)
 - Insights from Confluence docs
-- Ticket relationships and progress
+- Project structure overview with folder descriptions
+- Next steps (test planning, test case creation)
 - Team assignments
 - Resources and external links
-- Testing checklist (for QA)
 
 ### Relationship Diagram Should Include:
 - Visual tree of ticket hierarchy
@@ -182,28 +228,29 @@ Use: `jira_get_issue(issue_key='...', comment_limit=100, expand='comments')`
 - Team member assignments
 - Progress indicators (resolved/open)
 - Confluence document references
-- Blockers and risks
 
 ## Example Workflow:
 
-1. Run command: `/jira-trace ACX-93447`
-2. Fetch ACX-93447 with all fields, comments, remotes
-3. Find Confluence link in description: `pages/233078810/`
-4. Fetch parent FR-9147 and all 6 child stories
-5. Retrieve Confluence page 233078810
-6. Create folder structure
-7. Generate all markdown files
-8. Create README with insights
-9. Create relationship diagram
-10. Review for empty folders (remove if any)
+1. Run command: `/jr-trace PROJ-12345`
+2. Fetch PROJ-12345 with all fields, comments, remotes
+3. Find Confluence link in description: `pages/123456789/`
+4. Find parent/child tickets
+5. Fetch Confluence page 123456789
+6. Create folder: `active/PROJ-12345_Feature_Integration/`
+7. Create `confluence/` subfolder with HLD document
+8. Generate ticket markdown files (00_, 01_)
+9. Create README with project overview
+10. Create relationship diagram
+11. **Do NOT create empty test_plan/ or test_cases/ folders yet**
 
 ## Tips:
 
 - **Always check changelogs** for RemoteWorkItemLink entries
 - **Retrieve comments for ALL tickets** - they contain crucial info
 - **Extract insights from Confluence** - don't just save raw content
-- **Keep folder structure flat** - avoid unnecessary nesting
-- **Remove empty folders** - only create subfolders when needed
+- **Keep folder structure minimal** - only create folders when populated
+- **Remove empty folders** - if created by mistake
 - **Include progress indicators** - show what's resolved vs. open
-- **Add QA checklists** - help testers understand what to verify
+- **Add next steps** - guide user on test planning phase
+- **Follow naming conventions** - consistent prefixes and underscores
 ```
