@@ -5,7 +5,7 @@ Synchronize TestLink test cases with local test case files. This command automat
 ## Usage
 
 When user provides:
-1. A TestLink test case ID (e.g., ACX-54117)
+1. A TestLink test case ID (e.g., PROJ-12345)
 2. A local test case file path
 
 ## Process
@@ -89,10 +89,10 @@ Provide structured summary:
 
 ## Example Usage
 
-**User:** "Sync ACX-54117 with [@03_TS-04_RESTful_API_Integration.md](file)"
+**User:** "Sync PROJ-12345 with [@03_TS-04_RESTful_API_Integration.md](file)"
 
 **Agent Response:**
-1. Retrieves ACX-54117 to get suite ID 1833978
+1. Retrieves PROJ-12345 to get suite ID 1234567
 2. Lists all test cases in suite (found 5 existing)
 3. Compares with local file (8 test cases total)
 4. Updates 2 test cases with precondition differences

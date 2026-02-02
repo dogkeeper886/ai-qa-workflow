@@ -37,7 +37,7 @@ Get test case GPDL-1
 
 ## Test Case Information
 - **ID**: GPDL-1
-- **Name**: [GUI] TC-ACX-99052-001: Device Limit Functional Validation
+- **Name**: [GUI] TC-PROJ-12345-001: Device Limit Functional Validation
 - **Status**: Final
 - **Importance**: High
 - **Execution Type**: Manual
