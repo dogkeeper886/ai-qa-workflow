@@ -37,7 +37,7 @@ Requirements for Project 1 (User Session Management):
 ┌─────────┬─────────────────────────────────────────┬─────────────────────────┐
 │   ID    │                 Title                  │       Description       │
 ├─────────┼─────────────────────────────────────────┼─────────────────────────┤
-│    6    │ BR-001: Token Rotation Session Limit   │ Session limit issue with│
+│    6    │ BR-001: Token Rotation Session Limit    │ Session limit issue with│
 │         │ Issue                                   │ token rotation         │
 │    8    │ BR-002: Customer Issue Resolution      │ Resolution of customer  │
 │         │                                         │ session limit issues    │

@@ -37,8 +37,8 @@ Test Suites for Project 1 (User Session Management):
 ┌─────────┬─────────────────────────────────────────┬─────────────────────────┐
 │   ID    │                 Name                    │       Description       │
 ├─────────┼─────────────────────────────────────────┼─────────────────────────┤
-│   12    │ User Session Management - Essential│ Essential test cases for│
-│         │ Test Cases                              │ session management validation  │
+│   12    │ User Session Management - Essential     │ Essential test cases for│
+│         │ Test Cases                              │ session limit validation │
 │   13    │ GUI Testing Suite                       │ User interface testing  │
 │   14    │ API Testing Suite                       │ Backend service testing │
 └─────────┴─────────────────────────────────────────┴─────────────────────────┘

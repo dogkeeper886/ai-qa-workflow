@@ -39,7 +39,7 @@ Available TestLink Projects:
 ┌─────────┬─────────────────────────────────┬─────────┬─────────┬─────────┐
 │   ID    │              Name               │ Prefix  │ Status  │ Active  │
 ├─────────┼─────────────────────────────────┼─────────┼─────────┼─────────┤
-│    1    │ User Session Management    │  USM   │ Active  │   Yes   │
+│    1    │ User Session Management         │  USM    │ Active  │   Yes   │
 │    2    │ Mobile App Testing              │  MAT    │ Active  │   Yes   │
 │    3    │ API Integration Tests           │  AIT    │ Active  │   Yes   │
 └─────────┴─────────────────────────────────┴─────────┴─────────┴─────────┘
