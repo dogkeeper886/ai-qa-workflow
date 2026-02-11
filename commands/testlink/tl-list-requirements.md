@@ -33,18 +33,18 @@ Show requirements for project 1
 
 **Formatted Output:**
 ```
-Requirements for Project 1 (Guest Pass Device Limitation):
+Requirements for Project 1 (User Session Management):
 ┌─────────┬─────────────────────────────────────────┬─────────────────────────┐
 │   ID    │                 Title                  │       Description       │
 ├─────────┼─────────────────────────────────────────┼─────────────────────────┤
-│    6    │ BR-001: MAC Randomization Device Limit │ Device limit issue with │
-│         │ Issue                                   │ MAC randomization      │
+│    6    │ BR-001: Token Rotation Session Limit   │ Session limit issue with│
+│         │ Issue                                   │ token rotation         │
 │    8    │ BR-002: Customer Issue Resolution      │ Resolution of customer  │
-│         │                                         │ device limit issues    │
+│         │                                         │ session limit issues    │
 └─────────┴─────────────────────────────────────────┴─────────────────────────┘
 
 Requirement Details:
-• BR-001: MAC Randomization Device Limit Issue
+• BR-001: Token Rotation Session Limit Issue
 • BR-002: Customer Issue Resolution
 ```
 
@@ -81,5 +81,5 @@ Requirement Details:
 - "List requirements for Mobile App project"
 - "Get all requirements for project 1404789"
 - "What requirements are available in project 1?"
-- "Display requirements for Guest Pass project"
+- "Display requirements for User Session project"
 ```

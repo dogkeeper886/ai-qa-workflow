@@ -12,7 +12,7 @@ Create new test execution in TestLink with proper status and execution data.
 
 ## Expected User Input Format:
 User should provide:
-- Test Case ID (NUMERIC format like "13", not "GPDL-1")
+- Test Case ID (NUMERIC format like "13", not "USM-1")
 - Test Plan ID (numeric)
 - Build ID (numeric)
 - Execution Status (p/f/b for pass/fail/block)

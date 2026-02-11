@@ -39,13 +39,13 @@ Available TestLink Projects:
 ┌─────────┬─────────────────────────────────┬─────────┬─────────┬─────────┐
 │   ID    │              Name               │ Prefix  │ Status  │ Active  │
 ├─────────┼─────────────────────────────────┼─────────┼─────────┼─────────┤
-│    1    │ Guest Pass Device Limitation    │  GPDL   │ Active  │   Yes   │
+│    1    │ User Session Management    │  USM   │ Active  │   Yes   │
 │    2    │ Mobile App Testing              │  MAT    │ Active  │   Yes   │
 │    3    │ API Integration Tests           │  AIT    │ Active  │   Yes   │
 └─────────┴─────────────────────────────────┴─────────┴─────────┴─────────┘
 
 Project Details:
-• Project 1: Guest Pass Device Limitation (GPDL) - Active
+• Project 1: User Session Management (USM) - Active
 • Project 2: Mobile App Testing (MAT) - Active  
 • Project 3: API Integration Tests (AIT) - Active
 ```

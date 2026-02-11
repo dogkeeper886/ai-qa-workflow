@@ -102,11 +102,11 @@ Review [test plan/test cases] for [TICKET] to ensure [alignment with HLD / quali
 
 ## Please Review Before Meeting
 
-**Test Plan:** [ACX-XXXXX: Test Plan - Feature Name][test-plan]
+**Test Plan:** [PROJ-XXXXX: Test Plan - Feature Name][test-plan]
 
-**Test Cases:** [ACX-XXXXX: Test Cases - Feature Name][test-cases]
+**Test Cases:** [PROJ-XXXXX: Test Cases - Feature Name][test-cases]
 
-**Epic:** [ACX-XXXXX Feature Name][epic]
+**Epic:** [PROJ-XXXXX Feature Name][epic]
 
 **HLD:** [HLD - Feature Name][hld]
 

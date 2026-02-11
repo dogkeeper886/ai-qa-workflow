@@ -12,8 +12,8 @@ Steps:
 4. Add version comment if provided
 
 ## Example Usage:
-/update-confluence-page 168790395 @test_plan/README.md
-/update-confluence-page 168790395 "Updated content here"
+/update-confluence-page 987654321 @test_plan/README.md
+/update-confluence-page 987654321 "Updated content here"
 
 ## Agent Processing:
 1. Call confluence_get_page with page_id to get current title

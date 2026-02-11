@@ -12,7 +12,7 @@ Create new test plan in TestLink with plain text formatting and TestLink complia
 
 ## Expected User Input Format:
 User should provide:
-- Project Name (e.g., "Guest Pass Device Limitation")
+- Project Name (e.g., "User Session Management")
 - Test Plan Name
 - Test Plan Description/Notes (optional)
 - Active Status (optional, defaults to active)
@@ -28,25 +28,25 @@ User should provide:
 ## Example Usage:
 **User Input:**
 ```
-Create test plan for project "Guest Pass Device Limitation"
-Name: Device Limit Validation Test Plan
-Description: Comprehensive test plan for validating device limit functionality
+Create test plan for project "User Session Management"
+Name: Session Management Validation Test Plan
+Description: Comprehensive test plan for validating session management functionality
 Scope:
-- WLAN profile configuration with device limits (1-1000)
+- user profile configuration with session limits (1-1000)
 - UI validation and boundary testing
 - Configuration persistence and data integrity
 - API functionality and error handling
 ```
 
 **Agent Processing:**
-1. Extract: projectName="Guest Pass Device Limitation", name="Device Limit Validation Test Plan", etc.
-2. Use plain text: "Comprehensive test plan for validating device limit functionality. Scope: WLAN profile configuration with device limits (1-1000), UI validation and boundary testing, Configuration persistence and data integrity, API functionality and error handling."
+1. Extract: projectName="User Session Management", name="Session Management Validation Test Plan", etc.
+2. Use plain text: "Comprehensive test plan for validating session management functionality. Scope: user profile configuration with session limits (1-1000), UI validation and boundary testing, Configuration persistence and data integrity, API functionality and error handling."
 3. Call: create_test_plan with plain text data
 4. Verify: Check creation was successful
 5. Provide HTML source for manual copy to web interface
 
 **API Notes:**
-- Must use exact project name, not project prefix (e.g., "Guest Pass Device Limitation" not "GPDL")
+- Must use exact project name, not project prefix (e.g., "User Session Management" not "USM")
 - Project name must match exactly as shown in list_projects output
 - Test plan will be created in the specified project
 - ⚠️ **IMPORTANT**: Use PLAIN TEXT only - no HTML formatting in API calls
@@ -89,9 +89,9 @@ If user wants rich formatting, provide HTML source for manual copy to TestLink w
 Use simple, clear descriptions without HTML:
 
 **Plain Text Examples:**
-- Simple description: "Comprehensive test plan for validating device limit functionality"
+- Simple description: "Comprehensive test plan for validating session management functionality"
 - Structured description: "Test Plan Overview: Brief description. Scope: First area, Second area, Third area. Test Strategy: Description of approach. Success Criteria: First criterion, Second criterion."
-- Technical details: "Test plan for Device Limit feature with MAC randomization support"
+- Technical details: "Test plan for Session Management feature with token rotation support"
 
 Required Create Fields:
 - project_id: String (exact project name, not prefix)
@@ -116,8 +116,8 @@ Common Issues & Solutions:
 ❌ User wants HTML formatting → Provide HTML source for manual copy to web interface
 
 Project Name Examples:
-✅ Correct: "Guest Pass Device Limitation"
-❌ Incorrect: "GPDL" (this is the prefix)
+✅ Correct: "User Session Management"
+❌ Incorrect: "USM" (this is the prefix)
 ❌ Incorrect: "1" (this is the numeric ID)
 
 Test Plan Naming Conventions:

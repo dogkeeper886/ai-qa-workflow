@@ -33,18 +33,18 @@ Show test suites for project 1
 
 **Formatted Output:**
 ```
-Test Suites for Project 1 (Guest Pass Device Limitation):
+Test Suites for Project 1 (User Session Management):
 ┌─────────┬─────────────────────────────────────────┬─────────────────────────┐
 │   ID    │                 Name                    │       Description       │
 ├─────────┼─────────────────────────────────────────┼─────────────────────────┤
-│   12    │ Guest Pass Device Limitation - Essential│ Essential test cases for│
-│         │ Test Cases                              │ device limit validation  │
+│   12    │ User Session Management - Essential│ Essential test cases for│
+│         │ Test Cases                              │ session management validation  │
 │   13    │ GUI Testing Suite                       │ User interface testing  │
 │   14    │ API Testing Suite                       │ Backend service testing │
 └─────────┴─────────────────────────────────────────┴─────────────────────────┘
 
 Suite Details:
-• Suite 12: Guest Pass Device Limitation - Essential Test Cases
+• Suite 12: User Session Management - Essential Test Cases
 • Suite 13: GUI Testing Suite
 • Suite 14: API Testing Suite
 ```
@@ -82,5 +82,5 @@ Suite Details:
 - "List test suites for Mobile App project"
 - "Get all test suites for project 1404789"
 - "What test suites are available in project 1?"
-- "Display test suites for Guest Pass project"
+- "Display test suites for User Session project"
 ```

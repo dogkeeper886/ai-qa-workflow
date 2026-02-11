@@ -174,8 +174,8 @@ Use: `jira_get_issue(issue_key='...', comment_limit=100, expand='comments')`
    - Some tickets have custom fields with documentation links
 
 **Always extract the numeric page ID** from URLs:
-- `/pages/233078810/` → Page ID: `233078810`
-- `pageId=233078810` → Page ID: `233078810`
+- `/pages/123456789/` → Page ID: `123456789`
+- `pageId=123456789` → Page ID: `123456789`
 
 ## Naming Rules:
 
@@ -195,7 +195,7 @@ Use: `jira_get_issue(issue_key='...', comment_limit=100, expand='comments')`
 - Save to `confluence/` folder
 - Sanitize page titles (remove special chars: `:`, `/`, `\`, `?`, `*`, `<`, `>`, `|`)
 - Limit length to ~50 characters
-- Example: `confluence/HLD_R1_Add_AP_Group_name_to_NAS_ID.md`
+- Example: `confluence/HLD_R1_Feature_Integration_Design.md`
 
 ### Test Case Files (for later use)
 - Test Scenarios: `TS-XX_[Scenario_Name].md`

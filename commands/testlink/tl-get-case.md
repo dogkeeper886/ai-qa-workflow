@@ -22,43 +22,43 @@ User should provide:
 ## Example Usage:
 **User Input:**
 ```
-Get test case GPDL-1
+Get test case USM-1
 ```
 
 **Agent Processing:**
-1. Extract: testCaseId="GPDL-1"
-2. Call: get_test_case with test_case_id="GPDL-1"
+1. Extract: testCaseId="USM-1"
+2. Call: get_test_case with test_case_id="USM-1"
 3. Format: Organize test case data into markdown
 4. Present: Display formatted test case
 
 **Formatted Output:**
 ```
-# Test Case: GPDL-1
+# Test Case: USM-1
 
 ## Test Case Information
-- **ID**: GPDL-1
-- **Name**: [GUI] TC-PROJ-12345-001: Device Limit Functional Validation
+- **ID**: USM-1
+- **Name**: [GUI] TC-PROJ-12345-001: Session Management Functional Validation
 - **Status**: Final
 - **Importance**: High
 - **Execution Type**: Manual
 
 ## Summary
-Validate complete device limit functionality including WLAN profile configuration (1-1000 devices), UI input field validation with boundary testing, and configuration persistence across save/load operations.
+Validate complete session management functionality including user profile configuration (1-1000 sessions), UI input field validation with boundary testing, and configuration persistence across save/load operations.
 
 ## Pre-conditions
-- RuckusOne cloud controller configured and operational
-- Administrative access to RuckusOne management interface
+- Cloud management platform configured and operational
+- Administrative access to cloud management interface
 - Browser automation framework (Playwright) configured
 
 ## Test Steps
 | Step | Actions | Expected Results |
 |------|---------|------------------|
-| 1 | Navigate: Wi-Fi > Wi-Fi Networks > Add Wi-Fi Network | Navigation successful |
-| 2 | Configure: Network Name > Captive Portal > Self Sign In > SMS Token | Basic configuration complete |
-| 3 | Access: Show more settings > User Connection tab | Device limit control visible |
-| 4 | Validate: Device limit spinbutton control exists and is functional | Control responsive and accessible |
-| 5 | Test minimum value: Set device limit to 1 | Value accepted, UI updates correctly |
-| 6 | Test maximum value: Set device limit to 1000 | Value accepted, UI updates correctly |
+| 1 | Navigate: Settings > Network Profiles > Add Profile | Navigation successful |
+| 2 | Configure: Profile Name > Authentication > Self Sign In > Email Token | Basic configuration complete |
+| 3 | Access: Show more settings > Session Limits tab | Session limit control visible |
+| 4 | Validate: Session limit spinbutton control exists and is functional | Control responsive and accessible |
+| 5 | Test minimum value: Set session limit to 1 | Value accepted, UI updates correctly |
+| 6 | Test maximum value: Set session limit to 1000 | Value accepted, UI updates correctly |
 ```
 
 ## MCP Tool Parameters:
@@ -92,9 +92,9 @@ Validate complete device limit functionality including WLAN profile configuratio
 ✅ User can easily understand test case content
 
 ## Common Scenarios:
-- "Get test case GPDL-1"
+- "Get test case USM-1"
 - "Show me test case 123"
 - "Display test case PROJ-5"
-- "Retrieve test case details for GPDL-2"
+- "Retrieve test case details for USM-2"
 - "Get test case information"
 ```

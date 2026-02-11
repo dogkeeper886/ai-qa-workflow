@@ -77,8 +77,8 @@ For each test case, verify the following quality criteria:
 - [ ] Preconditions use same terminology as test steps
 - [ ] No items referenced in steps that aren't set up
 
-**Good:** "AP Group 'Test-Group-A' exists with 2 APs assigned"
-**Bad:** "AP Group configured"
+**Good:** "User Group 'Test-Group-A' exists with 2 members assigned"
+**Bad:** "User Group configured"
 
 #### 3.3 Specific Actions
 - [ ] Actions use exact values, not placeholders

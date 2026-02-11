@@ -28,12 +28,12 @@ User should provide:
 **User Input:**
 ```
 Create test suite in project 1
-Name: Guest Pass Device Limitation Suite
-Details: Comprehensive test suite for validating device limit functionality with MAC randomization support. Includes GUI testing, automation testing, and customer scenario replication.
+Name: User Session Management Suite
+Details: Comprehensive test suite for validating session management functionality with token rotation support. Includes GUI testing, automation testing, and customer scenario replication.
 ```
 
 **Agent Processing:**
-1. Extract: projectId="1", name="Guest Pass Device Limitation Suite", details="..."
+1. Extract: projectId="1", name="User Session Management Suite", details="..."
 2. Format details: Apply HTML formatting for special characters
 3. Prepare data: Structure for MCP tool
 4. Call: create_test_suite with formatted data
@@ -43,8 +43,8 @@ Details: Comprehensive test suite for validating device limit functionality with
 ```
 Suite Created Successfully!
 Suite ID: 12
-Name: Guest Pass Device Limitation Suite
-Details: <p>Comprehensive test suite for validating device limit functionality with MAC randomization support. Includes GUI testing, automation testing, and customer scenario replication.</p>
+Name: User Session Management Suite
+Details: <p>Comprehensive test suite for validating session management functionality with token rotation support. Includes GUI testing, automation testing, and customer scenario replication.</p>
 ```
 
 ## HTML Formatting for Details:
@@ -74,7 +74,7 @@ Details: <p>Comprehensive test suite for validating device limit functionality w
 ## HTML Formatting Examples:
 - Simple description: "<p>Test suite for user authentication validation</p>"
 - Complex description: "<p>Comprehensive test suite covering <strong>GUI</strong> and <strong>API</strong> testing</p><ul><li>User interface validation</li><li>Backend service testing</li><li>Integration testing</li></ul>"
-- Technical details: "<p>Test suite for &quot;Device Limit&quot; feature with MAC randomization support</p>"
+- Technical details: "<p>Test suite for &quot;Session Management&quot; feature with token rotation support</p>"
 
 ## Success Criteria:
 ✅ Project ID and suite name provided
