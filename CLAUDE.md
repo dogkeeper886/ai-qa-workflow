@@ -12,6 +12,26 @@ AI QA Workflow is a QA automation toolkit that connects AI coding agents with te
 - Never commit directly to main
 - Open PR for review before merging
 
+## Information Leak Check
+
+This is an open-source repository. Before committing, verify no private identifiers remain in `commands/` or `demo/`:
+
+```bash
+grep -ri "ACX-\|GPDL\|Guest Pass\|RuckusOne" commands/
+grep -ri "233078810\|168790395\|FR-9147" commands/
+grep -ri "MAC Randomization\|NAS_ID\|Grouped.Toast\|AP Group" commands/
+```
+
+All commands must return **no results**. Examples must use only generic placeholders:
+
+| Type | Allowed Pattern | Example |
+|------|----------------|---------|
+| Jira ticket | `PROJ-NNNNN` | `PROJ-12345` |
+| Feature request | `FR-NNNN` | `FR-1234` |
+| Confluence page ID | Generic digits | `123456789` |
+| Project name | `User Session Management` / `USM` | |
+| Product name | `Cloud management platform` | |
+
 ## Build and Installation
 
 ```bash
