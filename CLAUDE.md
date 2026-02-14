@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI QA Workflow is a QA automation toolkit that connects AI coding agents with test management systems through MCP (Model Context Protocol) integrations. It provides 46 slash commands for end-to-end test automation across Jira, Confluence, TestLink, and Playwright.
+AI QA Workflow is a QA automation toolkit that connects AI coding agents with test management systems through MCP (Model Context Protocol) integrations. It provides 53 slash commands for end-to-end test automation across Jira, Confluence, TestLink, and Playwright.
 
 ## Git Workflow
 
@@ -60,8 +60,8 @@ Commands are installed by copying markdown files directly to IDE command directo
 ```
 commands/
 ├── confluence/    # Confluence page operations (6 commands, cf-*)
-├── jira/          # Jira ticket tracing and conversion (3 commands, jr-*)
-├── project/       # Project management commands (4 commands, pm-*)
+├── jira/          # Jira ticket tracing and conversion (6 commands, jr-*)
+├── project/       # Project management commands (8 commands, pm-*)
 ├── testlink/      # TestLink CRUD and execution (18 commands, tl-*)
 ├── test-workflow/ # Test planning and case workflows (13 commands, tw-*)
 └── utility/       # Text rewriting, log analysis (2 commands)

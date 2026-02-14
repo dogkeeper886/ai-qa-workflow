@@ -62,7 +62,30 @@ See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the
 | **Intelligent Commands** | AI-powered test planning and case design checklists |
 | **Dual-Judge Framework** | Test execution with both deterministic and semantic (LLM) verification |
 | **Define Once, Deploy Twice** | Commands work in both Claude Code and Cursor IDEs |
+| **Orchestration Pattern** | Commands detect context and route to focused sub-commands |
 | **Complete Workflow** | Covers discovery, planning, design, management, automation, and reporting |
+
+## Orchestration Pattern
+
+Commands use a **detect-and-route** pattern: a short entry-point command reads the project context, classifies it, and routes to the right specialist command. Each command ends with a "Next step" hint so the agent always knows what to do next.
+
+### Orchestration Styles
+
+| Style | Entry Point | How It Works |
+|-------|-------------|--------------|
+| **Sequential Pipeline** | `/jr-trace` | Chains through fetch → structure → docs in a fixed order |
+| **Fan-out Router** | `/tw-plan-init` | Detects type (feature/enhance/bugfix) and routes to one specialist |
+| **Smart Diff** | `/tl-sync` | Compares local files against TestLink, applies only the changes |
+
+### End-to-End Flow
+
+```
+/jr-trace → /tw-plan-init → /tw-plan-review → /tw-case-init → /tw-case-review → /tl-sync
+  │              │                                   │
+  ├─ fetch       ├─ feature                          ├─ feature
+  ├─ structure   ├─ enhance                          ├─ enhance
+  └─ docs        └─ bugfix                           └─ bugfix
+```
 
 ## Quick Start
 
@@ -115,12 +138,19 @@ make install-cursor    # Cursor only
 | `/pm-bug-report` | Generate well-structured bug reports |
 | `/pm-scrum-task` | Generate Scrum task content for QA |
 | `/pm-meeting-invite` | Create meeting invite for reviews |
+| `/pm-demo-content` | Generate demo presentation content |
+| `/pm-demo-review` | Review demo content quality |
+| `/pm-demo-ppt` | Create PowerPoint slide outline |
+| `/pm-demo-email` | Draft demo announcement email |
 
 ### Jira Commands (jr-*)
 
 | Command | Purpose |
 |---------|---------|
 | `/jr-trace` | Trace tickets and gather all related information |
+| `/jr-trace-fetch` | Fetch Jira ticket and linked issues |
+| `/jr-trace-structure` | Structure traced data into project files |
+| `/jr-trace-docs` | Fetch related Confluence documents |
 | `/jr-issue-summary` | Generate AI-powered issue summary |
 | `/jr-to-markdown` | Convert Jira ticket to Markdown |
 
@@ -201,6 +231,9 @@ ai-qa-workflow/
 │   ├── testlink/       # TestLink commands (tl-*)
 │   ├── test-workflow/  # Test planning and case workflows (tw-*)
 │   └── utility/        # Utility commands
+├── demo/               # YouTube video script and example outputs
+│   ├── examples/       # Sample command outputs
+│   └── v1_commands/    # Original v1.0 monolithic commands
 ├── docs/
 │   ├── integrations/   # MCP integration guides
 │   ├── workflows/      # End-to-end workflows
