@@ -1,31 +1,22 @@
 # MCP TestLink Configuration
 
+Provides TestLink API access for test case CRUD, test plan management, and execution recording.
+
 ## Repository
+
 https://github.com/dogkeeper886/testlink-mcp
 
-## Configuration
+## Claude Code CLI
 
-### Docker Command (Claude Code)
 ```bash
 claude mcp add testlink -- docker run --rm -i \
-  -e TESTLINK_URL=http://192.168.x.x/testlink \
+  -e TESTLINK_URL=http://<TESTLINK_HOST>/testlink \
   -e TESTLINK_API_KEY=your_api_key_here \
   dogkeeper886/testlink-mcp:latest
 ```
 
-### Docker Command (Direct)
-```bash
-docker run --rm -i \
-  -e TESTLINK_URL=http://your-testlink-server.com/testlink \
-  -e TESTLINK_API_KEY=your_api_key_here \
-  dogkeeper886/testlink-mcp:latest
-```
+## JSON Configuration
 
-### Environment Variables
-- `TESTLINK_URL`: http://your-testlink-server.com/testlink
-- `TESTLINK_API_KEY`: your_api_key_here
-
-### MCP Server Configuration (Cursor IDE)
 ```json
 {
   "mcpServers": {
@@ -40,10 +31,17 @@ docker run --rm -i \
         "dogkeeper886/testlink-mcp:latest"
       ],
       "env": {
-        "TESTLINK_URL": "http://your-testlink-server.com/testlink",
+        "TESTLINK_URL": "http://<TESTLINK_HOST>/testlink",
         "TESTLINK_API_KEY": "your_api_key_here"
       }
     }
   }
 }
 ```
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `TESTLINK_URL` | TestLink instance URL (e.g., `http://<TESTLINK_HOST>/testlink`) |
+| `TESTLINK_API_KEY` | TestLink API key (generate from TestLink user settings) |

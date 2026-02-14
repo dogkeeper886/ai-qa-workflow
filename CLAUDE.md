@@ -77,6 +77,8 @@ Commands expect these MCP servers configured in the IDE:
 - **mcp-atlassian** (sooperset/mcp-atlassian) - Jira/Confluence API access
 - **testlink-mcp** (dogkeeper886/testlink-mcp) - TestLink API access
 - **playwright-mcp** (microsoft/playwright-mcp) - Browser automation
+- **wpa-mcp** (dogkeeper886/wpa-mcp) - WPA supplicant control
+- **radius-sql** (dogkeeper886/ldap) - RADIUS database queries
 
 ## Adding New Commands
 
