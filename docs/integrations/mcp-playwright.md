@@ -1,32 +1,30 @@
 # MCP Playwright Configuration
 
+Provides browser automation for end-to-end testing through Playwright.
+
 ## Repository
+
 https://github.com/microsoft/playwright-mcp
 
-## Configuration
+## Claude Code CLI
 
-### NPX Command (Claude Code)
+### Option 1: NPX (Recommended)
+
 ```bash
 claude mcp add playwright -- npx @playwright/mcp@latest
 ```
 
-### NPX Command (Direct)
-```bash
-npx @playwright/mcp@latest
-```
+### Option 2: Docker
 
-### Docker Command (Claude Code)
 ```bash
 claude mcp add playwright -- docker run -i --rm --init --pull=always \
   mcr.microsoft.com/playwright/mcp
 ```
 
-### Docker Command (Direct)
-```bash
-docker run -i --rm --init --pull=always mcr.microsoft.com/playwright/mcp
-```
+## JSON Configuration
 
-### MCP Server Configuration (Cursor IDE)
+### Option 1: NPX (Recommended)
+
 ```json
 {
   "mcpServers": {
@@ -38,7 +36,8 @@ docker run -i --rm --init --pull=always mcr.microsoft.com/playwright/mcp
 }
 ```
 
-### Docker Configuration (Cursor IDE)
+### Option 2: Docker
+
 ```json
 {
   "mcpServers": {
