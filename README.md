@@ -42,14 +42,16 @@ This eliminates duplication, maintains traceability, and accelerates the QA proc
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-| Phase | Action | Tool/Command |
-|-------|--------|--------------|
-| 1. Discover | Gather requirements | MCP Atlassian, `/jr-trace` |
-| 2. Plan | Create test strategy | `/tw-plan-init` |
-| 3. Design | Write test cases | `/tw-case-init` |
-| 4. Manage | Import to TestLink | MCP TestLink, `/tl-create-case` |
-| 5. Automate | Create YAML tests | [test-framework-template](https://github.com/dogkeeper886/test-framework-template) |
-| 6. Execute | Run and report | `npm test`, `/tl-create-execution` |
+| Phase | Action | Skill | Commands |
+|-------|--------|-------|----------|
+| 1. Discover | Gather requirements | `/receiving-tickets` | `/jr-trace` |
+| 2. Plan | Create test strategy | `/planning-tests` | `/tw-plan-init` |
+| 3. Design | Write test cases | `/designing-cases` | `/tw-case-init` |
+| 3b. Review | Notify stakeholders | `/drafting-review-email` | `/pm-demo-email` |
+| 4. Manage | Import to TestLink | `/syncing-testlink` | `/tl-sync` |
+| 4b. Execute | Run via browser | `/executing-tests` | `/tl-execute-case` |
+| 5. Automate | Create YAML tests | — | [test-framework-template](https://github.com/dogkeeper886/test-framework-template) |
+| 6. Report | Analyze failures | `/analyzing-logs` | `/robot-log-analyzer` |
 
 See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the complete workflow guide.
 
@@ -59,10 +61,11 @@ See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the
 |---------|-------------|
 | **Single Source of Truth** | Requirements flow from Jira/Confluence through test design to execution |
 | **MCP Integrations** | Direct access to Atlassian, TestLink, and Playwright via Model Context Protocol |
-| **Intelligent Commands** | AI-powered test planning and case design checklists |
+| **Agent Skills** | 8 high-level skills cover complete lifecycle phases with built-in checklists |
+| **53 Slash Commands** | Granular commands for targeted, atomic operations |
 | **Dual-Judge Framework** | Test execution with both deterministic and semantic (LLM) verification |
 | **Define Once, Deploy Twice** | Commands work in both Claude Code and Cursor IDEs |
-| **Orchestration Pattern** | Commands detect context and route to focused sub-commands |
+| **Orchestration Pattern** | Skills and commands detect context and route to focused sub-tasks |
 | **Complete Workflow** | Covers discovery, planning, design, management, automation, and reporting |
 
 ## Orchestration Pattern
@@ -79,6 +82,14 @@ Commands use a **detect-and-route** pattern: a short entry-point command reads t
 
 ### End-to-End Flow
 
+**Using skills (recommended):**
+```
+/receiving-tickets → /planning-tests → /designing-cases → /syncing-testlink → /executing-tests
+                                              │
+                                   /drafting-review-email
+```
+
+**Using commands (granular):**
 ```
 /jr-trace → /tw-plan-init → /tw-plan-review → /tw-case-init → /tw-case-review → /tl-sync
   │              │                                   │
@@ -107,8 +118,26 @@ make install-cursor    # Cursor only
 ### After Installation
 
 1. Restart your IDE
-2. Commands available as slash commands (e.g., `/jr-trace`)
-3. Configure MCP integrations (see [docs/integrations/](docs/integrations/))
+2. Skills available as slash commands (e.g., `/receiving-tickets`)
+3. All 53 commands also available (e.g., `/jr-trace`)
+4. Configure MCP integrations (see [docs/integrations/](docs/integrations/))
+
+## Agent Skills
+
+Skills are the recommended high-level interface. Each skill covers a complete lifecycle phase with a built-in progress checklist, validation steps, and references for detailed guidance.
+
+| Skill | Invoke as | Phase | Description |
+|---|---|---|---|
+| `receiving-tickets` | `/receiving-tickets` | 1 — Discover | Fetch Jira ticket + linked issues + Confluence pages, create project workspace |
+| `planning-tests` | `/planning-tests` | 2 — Plan | Detect ticket type, write test plan, publish to Confluence |
+| `designing-cases` | `/designing-cases` | 3 — Design | Write detailed test cases from plan, publish to Confluence |
+| `drafting-review-email` | `/drafting-review-email` | 3 — Review | Draft stakeholder review email and meeting invite |
+| `syncing-testlink` | `/syncing-testlink` | 4 — Manage | Sync test cases into TestLink, build test plan |
+| `executing-tests` | `/executing-tests` | 4/6 — Execute | Execute test plan via browser automation, record results |
+| `creating-demo` | `/creating-demo` | — | Create demo PPTX with browser-verified screenshots |
+| `analyzing-logs` | `/analyzing-logs` | 6 — Report | Analyze Robot Framework logs, group failures, suggest fixes |
+
+See [docs/workflows/skills.md](docs/workflows/skills.md) for invocation patterns, trigger phrases, and MCP requirements per skill.
 
 ## Available Commands
 
@@ -206,6 +235,7 @@ make install-cursor    # Cursor only
 
 ### Workflows
 
+- [Agent Skills](docs/workflows/skills.md) - Skills guide: invocation, trigger phrases, MCP requirements
 - [Test Lifecycle](docs/workflows/test-lifecycle.md) - Complete end-to-end workflow
 
 ### Design
@@ -231,18 +261,34 @@ ai-qa-workflow/
 │   ├── testlink/       # TestLink commands (tl-*)
 │   ├── test-workflow/  # Test planning and case workflows (tw-*)
 │   └── utility/        # Utility commands
+├── skills/
+│   ├── receiving-tickets/    # Phase 1: Fetch ticket, create workspace
+│   ├── planning-tests/       # Phase 2: Create test plan
+│   ├── designing-cases/      # Phase 3: Write test cases
+│   ├── drafting-review-email/ # Phase 3: Stakeholder review email
+│   ├── syncing-testlink/     # Phase 4: Import cases to TestLink
+│   ├── executing-tests/      # Phase 4/6: Browser test execution
+│   ├── creating-demo/        # Demo PPTX generation
+│   └── analyzing-logs/       # Phase 6: Robot Framework log analysis
 ├── demo/               # YouTube video script and example outputs
 │   ├── examples/       # Sample command outputs
 │   └── v1_commands/    # Original v1.0 monolithic commands
 ├── docs/
 │   ├── integrations/   # MCP integration guides
-│   ├── workflows/      # End-to-end workflows
+│   ├── workflows/      # End-to-end workflows (test-lifecycle.md, skills.md)
 │   └── design/         # Design principles
 ├── Makefile            # Installation automation
 └── README.md
 ```
 
 ## For Developers
+
+### Adding New Skills
+
+1. Create `skills/<gerund-name>/SKILL.md` with YAML frontmatter (`name`, `description`, `disable-model-invocation`, `tools`)
+2. Create `skills/<gerund-name>/references/*.md` for detailed content (API params, templates, rules)
+3. Run `make install-skills` to deploy
+4. Commit only source files under `skills/`
 
 ### Adding New Commands
 

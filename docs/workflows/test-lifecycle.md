@@ -17,14 +17,18 @@ This eliminates duplication, reduces human error, and maintains traceability fro
 
 ## Workflow Overview
 
-| Phase | Name | Tool | Output |
-|-------|------|------|--------|
-| 1 | Discover | MCP Atlassian, /jira-trace | Requirements folder |
-| 2 | Plan | /test-planning-checklist | TEST_PLAN.md |
-| 3 | Design | /test-case-design-checklist | TEST_CASES.md |
-| 4 | Manage | MCP TestLink | TestLink entries |
-| 5 | Automate | test-framework-template | YAML test files |
-| 6 | Execute | npm test, CI/CD | Test results |
+| Phase | Name | Skill (recommended) | Commands (granular) | Output |
+|-------|------|---------------------|---------------------|--------|
+| 1 | Discover | `/receiving-tickets` | `/jr-trace` | Project workspace folder |
+| 2 | Plan | `/planning-tests` | `/tw-plan-init` | `test_plan/README.md` |
+| 3 | Design | `/designing-cases` | `/tw-case-init` | `test_cases/TS-XX_*.md` |
+| 3b | Review | `/drafting-review-email` | `/pm-demo-email` | Review email + invite |
+| 4 | Manage | `/syncing-testlink` | `/tl-sync` | TestLink suites + plan |
+| 4b | Execute | `/executing-tests` | `/tl-execute-case` | Pass/fail results in TestLink |
+| 5 | Automate | — | test-framework-template | YAML test files |
+| 6 | Report | `/analyzing-logs` | `/robot-log-analyzer` | Failure analysis report |
+
+**Skills** (under `skills/`) orchestrate complete phases with built-in checklists and validation steps. **Commands** (under `commands/`) are the underlying atomic operations — use them directly for targeted tasks. See [docs/workflows/skills.md](skills.md) for the full skills guide.
 
 ## Prerequisites
 
@@ -269,50 +273,62 @@ Provide: Test case ID, Test plan ID, Build ID, Status (p/f/b), Notes
 
 **1. Discover (Phase 1)**
 
-    /jira-trace AUTH-100
-
-Creates folder with requirements, design docs, related tickets
+    /receiving-tickets
+    → Provide: PROJ-12345 (AUTH ticket)
+    → Creates: active/PROJ-12345_User_Auth/ workspace with all linked docs
 
 **2. Plan (Phase 2)**
 
-    /test-planning-checklist
-
-Creates TEST_PLAN.md with strategy for auth testing
+    /planning-tests
+    → Provide: path to project folder
+    → Creates: test_plan/README.md + publishes to Confluence
 
 **3. Design (Phase 3)**
 
-    /test-case-design-checklist
+    /designing-cases
+    → Provide: path to project folder
+    → Creates: test_cases/TS-01_*.md, TS-02_*.md, etc. + publishes to Confluence
 
-Creates TEST_CASES.md with detailed test cases
+**3b. Review (Phase 3)**
+
+    /drafting-review-email
+    → Provide: path to project folder
+    → Creates: stakeholder review email draft + meeting invite
 
 **4. Manage (Phase 4)**
 
-    /create-test-suite    -> Create "Authentication Tests" suite
-    /create-test-case     -> Create TC-AUTH-001, TC-AUTH-002, etc.
-    /create-test-plan     -> Create "Auth Release 1.0" plan
-    /add-test-case-to-test-plan -> Assign cases to plan
+    /syncing-testlink
+    → Provide: path to project folder
+    → Creates: TestLink suites, imports test cases, builds test plan
+
+**4b. Execute (Phase 4)**
+
+    /executing-tests
+    → Provide: TestLink test plan ID + application URL
+    → Executes each case via browser, records pass/fail in TestLink
 
 **5. Automate (Phase 5)**
 
-    # Create YAML test files
+    # Create YAML test files mapping from TestLink cases
     vim cicd/tests/testcases/integration/TC-AUTH-001.yml
-    vim cicd/tests/testcases/e2e/TC-AUTH-002.yml
 
-**6. Execute (Phase 6)**
+**6. Report (Phase 6)**
 
-    npm test -- --suite integration
-    npm test -- --suite e2e
-    /create-test-execution  -> Record results in TestLink
+    /analyzing-logs
+    → Provide: path to output.xml or log.html
+    → Produces: failure analysis report with grouped root causes and suggested fixes
 
 ## Summary
 
-| Phase | Action | Tool/Command |
-|-------|--------|--------------|
-| 1. Discover | Gather requirements | MCP Atlassian, /jira-trace |
-| 2. Plan | Create test strategy | /test-planning-checklist |
-| 3. Design | Write test cases | /test-case-design-checklist |
-| 4. Manage | Import to TestLink | MCP TestLink, /create-test-case |
-| 5. Automate | Create YAML tests | test-framework-template |
-| 6. Execute | Run and report | npm test, /create-test-execution |
+| Phase | Action | Skill | Commands |
+|-------|--------|-------|----------|
+| 1. Discover | Gather requirements | `/receiving-tickets` | `/jr-trace` |
+| 2. Plan | Create test strategy | `/planning-tests` | `/tw-plan-init` |
+| 3. Design | Write test cases | `/designing-cases` | `/tw-case-init` |
+| 3b. Review | Notify stakeholders | `/drafting-review-email` | `/pm-demo-email` |
+| 4. Manage | Import to TestLink | `/syncing-testlink` | `/tl-sync` |
+| 4b. Execute | Run via browser | `/executing-tests` | `/tl-execute-case` |
+| 5. Automate | Create YAML tests | — | test-framework-template |
+| 6. Report | Analyze failures | `/analyzing-logs` | `/robot-log-analyzer` |
 
 This workflow maintains **traceability** from requirement to execution, eliminates **duplication** through MCP integrations, and enables **automation** with the dual-judge test framework.

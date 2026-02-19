@@ -35,10 +35,12 @@ All commands must return **no results**. Examples must use only generic placehol
 ## Build and Installation
 
 ```bash
-make install           # Install commands to both Claude Code and Cursor
+make install           # Install commands + skills to Claude Code and Cursor
 make install-claude    # Claude Code only (~/.claude/commands/)
 make install-cursor    # Cursor only (~/.cursor/commands/)
+make install-skills    # Skills to Claude Code only (~/.claude/skills/)
 make uninstall         # Remove installed commands
+make uninstall-skills  # Remove installed skills
 ```
 
 After installation, restart the IDE to load commands.
@@ -65,6 +67,15 @@ commands/
 ├── testlink/      # TestLink CRUD and execution (18 commands, tl-*)
 ├── test-workflow/ # Test planning and case workflows (13 commands, tw-*)
 └── utility/       # Text rewriting, log analysis (2 commands)
+skills/
+├── receiving-tickets/    # Fetch Jira ticket + set up project workspace
+├── planning-tests/       # Create test plan from ticket, publish to Confluence
+├── designing-cases/      # Write test cases from plan, publish to Confluence
+├── drafting-review-email/ # Draft stakeholder review email + meeting invite
+├── syncing-testlink/     # Import test cases into TestLink, build test plan
+├── executing-tests/      # Execute TestLink plan via browser automation
+├── creating-demo/        # Create PPTX demo with browser-verified screenshots
+└── analyzing-logs/       # Analyze Robot Framework logs, report failures
 docs/
 ├── integrations/  # MCP server setup guides
 ├── workflows/     # End-to-end test lifecycle guide
