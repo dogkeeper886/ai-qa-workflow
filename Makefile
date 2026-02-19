@@ -115,7 +115,7 @@ install-workflow:
 	fi
 
 # Uninstall - remove installed commands
-uninstall:
+uninstall: uninstall-skills
 	@echo "Removing installed commands..."
 	@rm -f $(DESTDIR)$(CLAUDE_DIR)/*.md
 	@rmdir $(DESTDIR)$(CLAUDE_DIR) 2>/dev/null || true

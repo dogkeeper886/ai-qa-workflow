@@ -10,6 +10,7 @@ tools:
   - testlink-mcp:read_test_case
   - testlink-mcp:create_test_execution
   - playwright-mcp:browser_navigate
+  - playwright-mcp:browser_resize
   - playwright-mcp:browser_snapshot
   - playwright-mcp:browser_click
   - playwright-mcp:browser_type
