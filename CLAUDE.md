@@ -11,6 +11,8 @@ AI QA Workflow is a QA automation toolkit that connects AI coding agents with te
 - Create feature branches for all changes: `git checkout -b feature/description`
 - Never commit directly to main
 - Open PR for review before merging
+- PRs require review approval before merging
+- Delete the feature branch after merging
 
 ## Information Leak Check
 
