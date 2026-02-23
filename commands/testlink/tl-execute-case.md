@@ -313,9 +313,9 @@ After execution, you may want to:
 - Document test results for reporting
 
 Use related commands:
-- `create-test-execution.md` - Record execution in TestLink
-- `bug-report-generator.md` - Create bug reports for failures
-- `update-test-case.md` - Update test case with findings
+- `/tl-create-execution` - Record execution in TestLink
+- `/pm-bug-report` - Create bug reports for failures
+- `/tl-update-case` - Update test case with findings
 
 ## Advanced Techniques:
 
