@@ -169,13 +169,15 @@ Before pushing to TestLink, verify each test case:
 
 ### Script-Based Approach for 20+ Test Cases
 
-For large test case sets, use the sync workflow:
+For large test case sets, create project-specific sync scripts. Example workflow:
 
 ```bash
+# Example — adapt script names and paths to your project
+
 # 1. Generate comparison report
 python sync_testlink.py --compare
 
-# 2. Review SYNC_PLAN.md for discrepancies
+# 2. Review sync plan for discrepancies
 cat sync/reports/SYNC_PLAN.md
 
 # 3. Generate update payloads

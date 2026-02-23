@@ -47,14 +47,13 @@
 
 ## Reviewing Confluence Pages
 
-### Content Completeness Checklist
+### Quick Content Check
 
-- [ ] All section headers from source file present in Confluence
-- [ ] All test cases included (no truncation)
-- [ ] All test steps/actions present
-- [ ] All expected results match source file exactly
-- [ ] Prerequisites/preconditions complete
-- [ ] Summary tables present with correct row counts
+- [ ] Section header count matches source file
+- [ ] Test case count matches (no truncation)
+- [ ] Summary table row counts match
+
+For a detailed content completeness checklist, see the **Content Completeness Review** section below.
 
 ### Formatting Checklist
 
@@ -89,6 +88,10 @@ Parameters:
 - `convert_to_markdown`: false (important - see raw storage format)
 
 ---
+
+<!-- Shared sections below (Multi-Page Sync, Content Completeness, ASCII Diagrams)
+     are duplicated in planning-tests/references/confluence-page.md.
+     Keep both files in sync when editing. -->
 
 ## Multi-Page Sync Workflow
 

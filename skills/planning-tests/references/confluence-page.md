@@ -103,6 +103,10 @@ Parameters:
 
 ---
 
+<!-- Shared sections below (Multi-Page Sync, Content Completeness, ASCII Diagrams)
+     are duplicated in designing-cases/references/confluence-page.md.
+     Keep both files in sync when editing. -->
+
 ## Multi-Page Sync Workflow
 
 When syncing multiple related pages (e.g., test plan sections folder):
