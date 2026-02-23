@@ -16,6 +16,7 @@ Use `testlink-mcp:list_test_plans` to verify the test plan exists and is active.
 
 **MCP Tool:** `testlink-mcp:get_test_cases_for_test_plan`
 
+<!-- Status values also listed in syncing-testlink/references/plan-assignment.md -->
 ### Execution Status Values in Response
 - `n` = Not executed
 - `p` = Passed

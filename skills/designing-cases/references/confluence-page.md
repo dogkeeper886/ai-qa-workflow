@@ -47,14 +47,13 @@
 
 ## Reviewing Confluence Pages
 
-### Content Completeness Checklist
+### Quick Content Check
 
-- [ ] All section headers from source file present in Confluence
-- [ ] All test cases included (no truncation)
-- [ ] All test steps/actions present
-- [ ] All expected results match source file exactly
-- [ ] Prerequisites/preconditions complete
-- [ ] Summary tables present with correct row counts
+- [ ] Section header count matches source file
+- [ ] Test case count matches (no truncation)
+- [ ] Summary table row counts match
+
+For a detailed content completeness checklist, see `references/confluence-common.md`.
 
 ### Formatting Checklist
 
@@ -87,3 +86,5 @@ Parameters:
 - `page_id`: The page ID to review
 - `include_metadata`: true
 - `convert_to_markdown`: false (important - see raw storage format)
+
+For multi-page sync workflows, content completeness reviews, and ASCII diagram guidance, see `references/confluence-common.md`.

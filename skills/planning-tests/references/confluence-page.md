@@ -72,10 +72,11 @@
 - [ ] ASCII diagrams preserved correctly in code blocks
 
 #### 4. Content Completeness
-- [ ] All section headers from source file present in Confluence
-- [ ] All diagrams/ASCII art preserved in code blocks
-- [ ] All table rows present (count items in source vs Confluence)
-- [ ] All test steps/cases included (no truncation)
+- [ ] Section header count matches source file
+- [ ] Test case/step count matches (no truncation)
+- [ ] Summary table row counts match
+
+For a detailed content completeness checklist, see `references/confluence-common.md`.
 
 ### Common Issues
 
@@ -100,3 +101,5 @@ Parameters:
 - `page_id`: The page ID to review
 - `include_metadata`: true
 - `convert_to_markdown`: false (important - see raw storage format)
+
+For multi-page sync workflows, content completeness reviews, and ASCII diagram guidance, see `references/confluence-common.md`.

@@ -48,11 +48,7 @@ Fetch the Jira ticket using `mcp-atlassian:jira_get_issue` to identify:
 
 Create the email using the template in `references/email-template.md`.
 
-**Exclude:**
-- Feature flags (internal implementation detail)
-- Backend values (e.g., "-1 means unlimited")
-- Navigation steps (save for demo)
-- Customer names (unless approved)
+See the "What to Exclude" table in `references/email-template.md` for content exclusion rules.
 
 ### Step 4: Draft Meeting Invite
 
