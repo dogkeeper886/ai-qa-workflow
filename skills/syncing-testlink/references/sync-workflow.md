@@ -140,7 +140,7 @@ When creating many test cases (10+) in a single session, quality issues occur:
 ┌─────────────────────────────────────────────────────────────────┐
 │  PHASE 3: Execute via Script                                    │
 ├─────────────────────────────────────────────────────────────────┤
-│  Option A: Use sync_testlink.py to generate update payloads     │
+│  Option A: Use a project sync script to generate payloads       │
 │  Option B: Direct MCP calls from verified JSON files            │
 │  Option C: Ask Claude to execute one suite at a time            │
 └─────────────────────────────────────────────────────────────────┘
