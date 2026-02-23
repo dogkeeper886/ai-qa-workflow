@@ -1,0 +1,1 @@
+../../designing-cases/references/confluence-common.md

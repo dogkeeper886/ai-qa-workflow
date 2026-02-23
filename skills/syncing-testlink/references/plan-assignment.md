@@ -46,6 +46,7 @@ After creating all test cases in all suites:
 
 ### MCP Tool: `testlink-mcp:get_test_cases_for_test_plan`
 
+<!-- Status values also listed in executing-tests/references/read-results.md -->
 ### Execution Status Values in Response
 - `n` = Not executed
 - `p` = Passed
