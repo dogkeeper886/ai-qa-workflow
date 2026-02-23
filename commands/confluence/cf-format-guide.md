@@ -480,7 +480,68 @@ When converting markdown to Confluence storage format:
 
 ---
 
-## 13. Reference
+## 13. Multi-Page Sync Workflow
+
+When syncing multiple related pages to Confluence:
+
+1. **Create parent page first** with complete content
+2. **Create child pages** with FULL content from source files
+3. **Review ALL pages** — don't assume child pages are complete
+4. **Compare file sizes** — if Confluence content is much shorter than local file, content is missing
+
+### Common Multi-Page Issues
+
+| Scenario | Issue | Solution |
+|----------|-------|----------|
+| Batch page creation | Later pages have simplified content | Re-sync with full source content |
+| Child pages | Missing sections that parent has | Each page needs independent full sync |
+| README with children | Children don't match their source files | Review each child against its source |
+
+---
+
+## 14. Content Completeness Checklist
+
+When reviewing synced pages, verify:
+
+1. **Header Section**
+   - [ ] Title matches local file
+   - [ ] Objective/Summary present
+   - [ ] Focus/Category present
+   - [ ] Test case count matches
+
+2. **All Sections Present**
+   - [ ] Count section headers (##) in local file
+   - [ ] Verify same count in Confluence
+   - [ ] Check section order matches
+
+3. **Tables Complete**
+   - [ ] Preconditions table has all rows
+   - [ ] Test steps table has all steps
+   - [ ] Summary table at end present
+
+4. **Diagrams and Code Blocks**
+   - [ ] All ASCII diagrams present
+   - [ ] Diagram header boxes included
+   - [ ] Special characters preserved
+
+5. **Supplementary Content**
+   - [ ] Notes sections present
+   - [ ] Pass criteria included (if applicable)
+   - [ ] Troubleshooting guides included (if applicable)
+
+### Content Truncation Detection
+
+| Issue | Symptom | Prevention |
+|-------|---------|------------|
+| **Missing sections** | Page ends abruptly or lacks sections from source | Compare section headers between local file and Confluence page |
+| **Simplified content** | Tables have fewer rows, test steps are missing | Count items in local file vs Confluence |
+| **Missing diagrams** | ASCII diagrams not included in page | Check all code blocks are present |
+| **Missing header metadata** | Objective/Focus/Test Cases count missing | Verify header section matches source |
+| **Incomplete tables** | Preconditions or steps tables have fewer rows | Compare row counts |
+
+---
+
+## 15. Reference
 
 - **Confluence Storage Format Documentation:** [Confluence Storage Format](https://developer.atlassian.com/cloud/confluence/apis-for-confluence-content/)
 - **Confluence REST API:** [Confluence REST API Documentation](https://developer.atlassian.com/cloud/confluence/rest/)

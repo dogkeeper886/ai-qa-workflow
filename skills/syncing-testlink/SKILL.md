@@ -51,9 +51,7 @@ Use `testlink-mcp:list_projects` to show available projects. Ask user to confirm
 
 ### Step 3: Create Test Suites
 
-Create a parent test suite named after the project, then create child suites for each TS-XX scenario.
-
-See `references/suite-and-plan.md` for HTML formatting of suite details.
+Run `/tl-create-suite` to create a parent test suite named after the project, then create child suites for each TS-XX scenario.
 
 **MCP tool:** `testlink-mcp:create_test_suite`
 
@@ -63,15 +61,16 @@ List all created suite IDs and names. Confirm the hierarchy is correct.
 
 ### Step 4: Sync Test Cases
 
-For each TS-XX file, compare local test cases against TestLink:
+Run `/tl-create-case` for each TS-XX file. Use `/tl-format` for HTML formatting rules.
+
+Before creating, compare local test cases against TestLink using diff logic:
 - **MATCHING** (all fields same) → Skip
-- **DIFFERS** → Update only differing fields
-- **NEW** → Create with HTML formatting
+- **DIFFERS** (name matches but fields differ) → Update only differing fields
+- **NEW** (name not found in TestLink) → Create with HTML formatting
 
-Apply HTML formatting to all content before creating/updating.
+Comparison fields: `name`, `summary`, `preconditions`, `steps.actions`, `steps.expected_results`.
+
 After creation, verify preconditions were applied — update if empty.
-
-See `references/create-cases.md` for API fields and `references/html-formatting.md` for HTML rules.
 
 **MCP tools:** `testlink-mcp:create_test_case`, `testlink-mcp:update_test_case`, `testlink-mcp:list_test_cases_in_suite`
 
@@ -84,10 +83,9 @@ Report per suite:
 
 ### Step 5: Create Test Plan and Assign Cases
 
-Create a test plan using plain text (no HTML in notes field).
-Add all created/existing test cases to the plan.
+Run `/tl-create-plan` to create a test plan using plain text (no HTML in notes field).
 
-See `references/suite-and-plan.md` for plan creation and `references/plan-assignment.md` for assignment.
+Run `/tl-add-case-to-plan` to add all created/existing test cases to the plan.
 
 **MCP tools:** `testlink-mcp:create_test_plan`, `testlink-mcp:add_test_case_to_test_plan`
 

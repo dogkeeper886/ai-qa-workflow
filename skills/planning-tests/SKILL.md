@@ -21,7 +21,7 @@ Copy and track your progress:
 
 ```
 - [ ] Step 1: Validate prerequisites
-- [ ] Step 2: Detect ticket type (Feature/Bug/Enhancement)
+- [ ] Step 2: Detect ticket type and route
 - [ ] Step 3: Write test plan to test_plan/
 - [ ] Step 4: Review coverage (matrix + diagrams)
 - [ ] Validate: Scenario count + coverage assessment
@@ -38,32 +38,27 @@ Check that `00_Main_Task_*.md` exists in the current project folder.
 
 If missing: "Please run `/receiving-tickets [TICKET]` first to gather all documentation."
 
-### Step 2: Detect Ticket Type
+### Step 2: Detect Ticket Type and Route
 
-Read `00_Main_Task_*.md` and detect:
-- **Type A (Feature):** ticket type = Epic/Feature/Story → use `references/feature-plan.md`
-- **Type B (Bug Fix):** ticket type = Bug/Defect → use `references/bugfix-plan.md`
-- **Type C (Enhancement):** ticket type = Enhancement/Task → use `references/enhance-plan.md`
-
-See `references/type-detection.md` for detection logic and output format.
+Run `/tw-plan-init` to detect the ticket type and route to the appropriate planning command:
+- **Type A (Feature):** → `/tw-plan-feature`
+- **Type B (Bug Fix):** → `/tw-plan-bugfix`
+- **Type C (Enhancement):** → `/tw-plan-enhance`
 
 ### Step 3: Write Test Plan
 
-Write test plan sections to `test_plan/README.md` and `test_plan/sections/` based on the detected type:
+Execute the routed planning command from Step 2. It writes test plan sections to `test_plan/README.md` and `test_plan/sections/` based on the detected type:
 - Feature: 5-8 scenarios, comprehensive coverage
 - Bug Fix: 2-4 scenarios, focused on defect verification + regression
 - Enhancement: 4-6 scenarios, hybrid new + regression
 
-See the appropriate plan reference file for output format and decision trees.
-
 ### Step 4: Review Plan
 
-Analyze coverage and generate:
+Run `/tw-plan-review` to analyze coverage and generate:
 - Coverage matrix (ASCII table)
-- Diagrams for 5+ scenarios (configuration flow, data flow, modular design)
 - Gap and overlap analysis
 
-See `references/plan-review.md` and `references/diagrams.md`.
+Run `/tw-diagrams` to generate diagrams for 5+ scenarios (configuration flow, data flow, modular design).
 
 ### Validate
 
@@ -74,11 +69,21 @@ Report:
 
 ### Step 5: Create Confluence Pages
 
-Create the test plan hierarchy in Confluence:
-- Parent page: `[TICKET]: Test Plan - [Feature Name]`
-- Child pages for each section
+Run `/cf-create-page` to create the test plan hierarchy in Confluence.
 
-See `references/confluence-page.md` for naming conventions and MCP tool usage.
+#### Page Naming Convention
+
+| Source File | Page Title Format |
+|-------------|-------------------|
+| `README.md` | `[PROJECT_ID]: Test Plan - [Feature Name]` |
+| `01_Project_Business_Context.md` | `[PROJECT_ID]: 1. Project & Business Context` |
+| `02_Feature_Definition.md` | `[PROJECT_ID]: 2. Feature Definition` |
+| `03_Scope_Boundaries.md` | `[PROJECT_ID]: 3. Scope & Boundaries` |
+| `04_Test_Strategy.md` | `[PROJECT_ID]: 4. Test Strategy` |
+| `05_References_Resources.md` | `[PROJECT_ID]: 5. References & Resources` |
+| `06_Revision_History.md` | `[PROJECT_ID]: 6. Document Revision History` |
+
+Create parent page first, then child pages for each section. Parent page ID is provided by the user.
 
 **MCP tool:** `mcp-atlassian:confluence_create_page`
 
@@ -90,9 +95,7 @@ Report:
 
 ### Step 6: Review Confluence
 
-Fetch each created page and check for markdown conversion issues (lists rendering as plain text, missing tables, etc.).
-
-See `references/confluence-page.md` for the formatting checklist.
+Run `/cf-review-page` to fetch each created page and check for markdown conversion issues (lists rendering as plain text, missing tables, etc.).
 
 **MCP tool:** `mcp-atlassian:confluence_get_page` with `convert_to_markdown: false`
 

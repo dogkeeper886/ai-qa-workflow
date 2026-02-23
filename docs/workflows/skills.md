@@ -1,11 +1,12 @@
 # Agent Skills
 
-Agent skills are the high-level interface to the AI QA Workflow. Each skill orchestrates a complete phase of the test lifecycle — fetching tickets, planning, designing cases, syncing TestLink, executing, and reporting — so you invoke one command instead of a chain of sub-commands.
+Agent skills are thin routers that orchestrate complete lifecycle phases by delegating to slash commands. Each skill provides a progress checklist, validation steps, and step-by-step routing — so you invoke one command instead of manually chaining sub-commands.
 
 ## Skills vs Commands
 
 | | Agent Skills | Slash Commands |
 |---|---|---|
+| **Role** | Router — orchestrates a workflow phase | Operation — performs one atomic task |
 | **Invocation** | `/skill-name` or natural language trigger | Exact `/command-name` required |
 | **Scope** | One skill = one complete workflow phase | One command = one atomic operation |
 | **Guidance** | Built-in progress checklist, validation steps | None |
@@ -26,6 +27,21 @@ Skills do not replace commands — the underlying 53 commands remain available f
 | `executing-tests` | `/executing-tests` | 4 — Manage + 6 — Execute | "execute tests", "run tests", "execute a test plan", "run test cases" |
 | `creating-demo` | `/creating-demo` | — | "create a demo", "build demo slides", "make a demo presentation" |
 | `analyzing-logs` | `/analyzing-logs` | 6 — Execute | "analyze logs", "check test logs", "why did tests fail", "investigate output.xml" |
+
+## Skill-to-Command Routing Map
+
+Each skill routes to specific slash commands:
+
+| Skill | Routes To |
+|---|---|
+| `receiving-tickets` | `/jr-trace-fetch` → `/jr-trace-structure` → `/jr-trace-docs` → `/pm-init` (optional) |
+| `planning-tests` | `/tw-plan-init` → `/tw-plan-feature\|bugfix\|enhance` → `/tw-plan-review` → `/tw-diagrams` → `/cf-create-page` → `/cf-review-page` |
+| `designing-cases` | `/tw-case-init` → `/tw-case-feature\|bugfix\|enhance` → `/tw-case-review` → `/cf-create-page` → `/cf-review-page` |
+| `drafting-review-email` | `/pm-demo-email` + `/pm-meeting-invite` |
+| `syncing-testlink` | `/tl-create-suite` → `/tl-create-case` (with `/tl-format`) → `/tl-create-plan` → `/tl-add-case-to-plan` |
+| `executing-tests` | `/tl-read-execution` → `/tl-execute-case` → `/tl-create-execution` |
+| `creating-demo` | `/pm-demo-content` → `/pm-demo-review` → `/pm-demo-ppt` |
+| `analyzing-logs` | `/robot-log-analyzer` + `/rewrite-text` |
 
 ## Invoking Skills
 
@@ -61,19 +77,14 @@ Skills with trigger phrases in their description can be invoked by describing wh
 
 ## Skill Structure
 
-Each skill lives under `skills/<name>/`:
+Each skill lives under `skills/<name>/` as a single file:
 
 ```
 skills/receiving-tickets/
-├── SKILL.md              # Frontmatter + steps + progress checklist
-└── references/
-    ├── data-collection.md    # API call parameters for jira_get_issue, confluence_get_page
-    ├── folder-structure.md   # Folder naming rules and conventions
-    ├── doc-templates.md      # Full templates for 6 generated files
-    └── project-init.md       # Optional test_plan/ and test_cases/ scaffolding
+└── SKILL.md              # Frontmatter + steps + progress checklist
 ```
 
-`SKILL.md` stays under 500 lines and contains only the step sequence and progress checklist. Detailed content (API fields, full templates, formatting rules, error tables) goes in `references/*.md` leaf files.
+`SKILL.md` contains the step sequence and progress checklist. Each step routes to a slash command for implementation details — no duplicated logic.
 
 ### SKILL.md frontmatter
 

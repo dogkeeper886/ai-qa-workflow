@@ -7,7 +7,7 @@ Quick reference for configuring MCP servers used by AI QA Workflow commands.
 Each MCP server can be configured in two ways:
 
 - **Claude Code CLI** - `claude mcp add` commands for terminal-based setup
-- **JSON Configuration** - JSON blocks for any MCP-compatible IDE (Cursor, Windsurf, etc.)
+- **JSON Configuration** - JSON blocks for MCP-compatible IDEs
 
 ## MCP Servers
 

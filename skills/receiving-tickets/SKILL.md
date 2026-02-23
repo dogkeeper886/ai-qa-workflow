@@ -33,35 +33,25 @@ Copy and track your progress:
 
 ### Step 1: Collect Ticket Data
 
-Fetch the main Jira ticket with all fields, comments, and remote links. Then find and fetch:
-- Parent ticket (if exists)
-- Child tickets via JQL `parent = [TICKET]`
-- Linked issues from `issuelinks` field
-- Confluence pages linked in description, comments, changelog
-
-See `references/data-collection.md` for exact API parameters and Confluence URL patterns.
+Run `/jr-trace-fetch` to fetch the main Jira ticket with all fields, comments, remote links, parent/child tickets, linked issues, and Confluence pages.
 
 **MCP tools:** `mcp-atlassian:jira_get_issue`, `mcp-atlassian:jira_search`, `mcp-atlassian:confluence_get_page`
 
 ### Step 2: Create Folder Structure
 
-Create `active/[TICKET]_[Short_Description]/` with:
+Run `/jr-trace-structure` to create `active/[TICKET]_[Short_Description]/` with:
 - `confluence/` subfolder only if Confluence links were found
 - No empty folders
 
-See `references/folder-structure.md` for naming conventions and rules.
-
 ### Step 3: Generate Documentation Files
 
-Create these 5-6 files from collected data:
+Run `/jr-trace-docs` to create these files from collected data:
 1. `00_Main_Task_[TICKET].md` — main ticket details + comments
 2. `01_[Description]_[TICKET].md` — one file per related ticket
 3. `confluence/[Title].md` — one file per Confluence page
 4. `confluence/confluence_links.md` — index of all Confluence links
 5. `README.md` — project overview with key insights
 6. `Ticket_Relationship_Diagram.md` — visual ticket hierarchy
-
-See `references/doc-templates.md` for full file templates.
 
 ### Validate
 
@@ -72,9 +62,7 @@ List the created folder structure. Report:
 
 ### Step 4 (Optional): Initialize Test Scaffolding
 
-If user requests project initialization, scaffold `test_plan/` and `test_cases/` folders with README templates.
-
-See `references/project-init.md` for template content.
+If user requests project initialization, run `/pm-init` to scaffold `test_plan/` and `test_cases/` folders with README templates.
 
 ## Expected Input
 

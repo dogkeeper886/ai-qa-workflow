@@ -8,7 +8,7 @@
 
 > Welcome to the channel. Today I'm going to show you the major update about AI QA Workflow.
 
-> AI QA Workflow is an open-source toolkit that connects AI coding agents — like Cursor, Claude, Claude Code — with test management systems. It uses slash commands and MCP integrations to automate the full QA lifecycle: tracing requirements in Jira, planning tests, designing test cases, syncing them to TestLink, and even generating demo presentations — all driven by markdown files that AI agents can follow.
+> AI QA Workflow is an open-source toolkit that connects AI coding agents — like Claude Code — with test management systems. It uses slash commands and MCP integrations to automate the full QA lifecycle: tracing requirements in Jira, planning tests, designing test cases, syncing them to TestLink, and even generating demo presentations — all driven by markdown files that AI agents can follow.
 
 > In this video, I'll show you how to use it.
 
@@ -120,9 +120,9 @@
 
 > If you already have the commands, be careful. If you think the current commands still work for you, you don't have to update. I recommend everybody to have your own commands and make your own modifications.
 
-**[SHOW: Output of `make install` showing installation to `~/.claude/commands/` and `~/.cursor/commands/`.]**
+**[SHOW: Output of `make install` showing installation to `~/.claude/commands/` and `~/.claude/skills/`.]**
 
-> The commands are installed to the user folder — Claude commands, and also Cursor commands. Actually, Cursor reads the Claude command folder too.
+> The commands and skills are installed to the user folder under `~/.claude/`.
 
 ---
 
@@ -142,7 +142,7 @@
 
 > Let me show you the MCP setup. These are the MCP tools from GitHub. If you're using Claude Code, you need to run a setup command to connect your code agent to Jira or other services. The code agent initializes an MCP client, the client uses the MCP protocol to talk to the MCP server, and the server runs the API calls for you.
 
-> There's also a UVX option. If you're using Cursor, this one is for you. I've prepared a cheat sheet for everybody.
+> There's also a UVX option. I've prepared a cheat sheet for everybody.
 
 ### MCP Servers Available
 
@@ -152,7 +152,7 @@
 
 > **Playwright MCP** — This is a browser MCP server. It can control your browser. It can also run in Docker using headless mode. After you set it up, your AI agent can control a browser on its own. Very useful for GUI testing — verifying test steps or running test cases.
 
-> **RADIUS SQL MCP** — As you know, FreeRADIUS can read users from a SQL server. I run an MCP server on it. So the Claude Code client or Cursor client can use MCP to check authentication or accounting from the AI code agent.
+> **RADIUS SQL MCP** — As you know, FreeRADIUS can read users from a SQL server. I run an MCP server on it. So Claude Code can use MCP to check authentication or accounting from the AI code agent.
 
 > **TestLink MCP** — TestLink is a very old test case management system. Not many people use it now. But this is an example — if your company doesn't use TestLink, you need to find your own way. Even if your test case management system doesn't provide an MCP server, you can write your own. It's not that hard to write an MCP server — it calls the API or CLI. It's even easier today. This one is written by me. TestLink didn't have an MCP server, so this is also my repository.
 
