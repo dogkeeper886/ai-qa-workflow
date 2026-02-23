@@ -105,6 +105,29 @@ If user provides external ID (PROJ-1), convert to numeric:
 - Call create_test_execution with validated data
 - Handle any remaining errors gracefully
 
+## Execution Notes Format:
+
+Write clear, descriptive notes for each result:
+
+**PASS notes:**
+```
+All steps completed successfully. [Feature] behaves as expected.
+Step 3 observation: [specific detail].
+```
+
+**FAIL notes:**
+```
+Failed at Step [N]: Expected "[expected result]" but got "[actual result]".
+Screenshot captured for evidence.
+[Additional context about the failure]
+```
+
+**BLOCKED notes:**
+```
+Blocked by: [reason].
+Could not execute because [dependency/prerequisite issue].
+```
+
 ## Best Practices:
 ✅ Always use numeric test case IDs
 ✅ Validate all IDs exist before creating execution

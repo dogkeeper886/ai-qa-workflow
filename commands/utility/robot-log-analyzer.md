@@ -25,6 +25,18 @@ Key Tools:
 - Task: Delegate complex analysis to specialized agents when needed
 - LS: Verify directory structure and file availability
 
+Key XML Extraction Patterns (for output.xml):
+- <test name="..."> - Test case boundary
+- <status status="PASS"> - Test passed
+- <status status="FAIL"> - Test failed
+- <msg level="FAIL"> - Failure message
+- <testsuite> and </testsuite> - Suite boundaries
+
+Key HTML Extraction Patterns (for log.html):
+- Search for window.output in HTML (Robot Framework stores results as JS object)
+- Look for PASS/FAIL status markers in the JS data
+- Extract test names and failure messages from the JS data
+
 Focus on:
 - Test case names and PASS/FAIL results
 - Test capabilities demonstrated

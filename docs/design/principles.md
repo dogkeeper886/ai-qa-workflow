@@ -8,9 +8,9 @@
 - **Minimal tooling**: Simple scripts, not complex frameworks
 
 ### 2. Duplication Elimination
-- **Define once, generate twice**: Single source of truth for each command
-- **Platform-agnostic core**: Logic that works everywhere
-- **Platform-specific adapters**: Minimal code to bridge differences
+- **Define once, use everywhere**: Single source of truth for each command
+- **Skills route to commands**: No duplicated logic between layers
+- **Layered architecture**: Skills (routers) → Commands (operations) → MCP tools
 
 ### 3. Human-Centric Design
 - **Readable definitions**: Markdown files that tell a story
@@ -46,7 +46,4 @@ Clear, one-sentence description of what this does
 ## Output
 What gets created or modified
 
-## Platform Notes
-- Claude Code: /command-name
-- Cursor: commandName, ctrl+shift+x
 ```

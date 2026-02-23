@@ -41,7 +41,7 @@ Read these files for context:
 
 ### Step 2: Create 6-Slide Outline
 
-Create `demo/Demo_Showcase_Content.md` with 6 slides:
+Run `/pm-demo-content` to create `demo/Demo_Showcase_Content.md` with 6 slides:
 
 1. **Title** — ticket ID + feature name + one-line subtitle
 2. **What We Built** — 3-4 user-facing capabilities (bullets + script)
@@ -52,18 +52,14 @@ Create `demo/Demo_Showcase_Content.md` with 6 slides:
 
 Each slide has co-located `**Bullets:**` and `**Script:**` sections.
 
-See `references/demo-content.md` for full template and exclusion rules.
-
 ### Step 3: Browser Verification
 
-For each claim in Slides 4 and 5:
+Run `/pm-demo-review` to verify UI claims via browser:
 1. Navigate to the documented UI path
 2. Compare actual UI against documented claims (labels, menu names, field names)
 3. Capture screenshots: `demo/screenshots/NN_Description.png`
 4. Fix any mismatches in Slides 1-4
 5. Expand Slide 5 into per-step demo slides with actual screenshots
-
-See `references/demo-review.md` for the 6-phase process.
 
 **MCP tools:** `playwright-mcp:browser_navigate`, `playwright-mcp:browser_snapshot`, `playwright-mcp:browser_take_screenshot`
 
@@ -76,14 +72,12 @@ Report:
 
 ### Step 4: Generate PPTX
 
-Run the converter script:
+Run `/pm-demo-ppt` to generate the PPTX file from the verified content:
 
 ```bash
 python3 scripts/md_to_pptx.py [PROJECT_PATH]/demo/Demo_Showcase_Content.md \
   --template docs/templates/Demo_Template.pptx
 ```
-
-See `references/pptx-generation.md` for prerequisites and troubleshooting.
 
 ### Validate
 

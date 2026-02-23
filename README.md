@@ -61,10 +61,10 @@ See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the
 |---------|-------------|
 | **Single Source of Truth** | Requirements flow from Jira/Confluence through test design to execution |
 | **MCP Integrations** | Direct access to Atlassian, TestLink, and Playwright via Model Context Protocol |
-| **Agent Skills** | 8 high-level skills cover complete lifecycle phases with built-in checklists |
+| **Agent Skills** | 8 high-level skills route to slash commands, covering complete lifecycle phases |
 | **53 Slash Commands** | Granular commands for targeted, atomic operations |
 | **Dual-Judge Framework** | Test execution with both deterministic and semantic (LLM) verification |
-| **Define Once, Deploy Twice** | Commands work in both Claude Code and Cursor IDEs |
+| **Layered Architecture** | Skills (routers) → Commands (operations) → MCP tools |
 | **Orchestration Pattern** | Skills and commands detect context and route to focused sub-tasks |
 | **Complete Workflow** | Covers discovery, planning, design, management, automation, and reporting |
 
@@ -107,12 +107,12 @@ Commands use a **detect-and-route** pattern: a short entry-point command reads t
 git clone https://github.com/dogkeeper886/ai-qa-workflow
 cd ai-qa-workflow
 
-# Install commands to your IDE
+# Install commands and skills to Claude Code
 make install
 
-# Or install to specific IDE only
-make install-claude    # Claude Code only
-make install-cursor    # Cursor only
+# Or install individually
+make install-claude    # Commands only
+make install-skills    # Skills only
 ```
 
 ### After Installation
@@ -124,7 +124,7 @@ make install-cursor    # Cursor only
 
 ## Agent Skills
 
-Skills are the recommended high-level interface. Each skill covers a complete lifecycle phase with a built-in progress checklist, validation steps, and references for detailed guidance.
+Skills are the recommended high-level interface. Each skill is a thin router that covers a complete lifecycle phase with a built-in progress checklist, routing to slash commands for each step.
 
 | Skill | Invoke as | Phase | Description |
 |---|---|---|---|
@@ -286,9 +286,9 @@ ai-qa-workflow/
 ### Adding New Skills
 
 1. Create `skills/<gerund-name>/SKILL.md` with YAML frontmatter (`name`, `description`, `disable-model-invocation`, `tools`)
-2. Create `skills/<gerund-name>/references/*.md` for detailed content (API params, templates, rules)
+2. Route each step to an existing slash command — skills should not duplicate command logic
 3. Run `make install-skills` to deploy
-4. Commit only source files under `skills/`
+4. Commit only the source file under `skills/`
 
 ### Adding New Commands
 
@@ -320,7 +320,7 @@ What gets created
 
 ```bash
 git pull
-make install    # Updates all IDE commands
+make install    # Updates all commands and skills
 ```
 
 ## License

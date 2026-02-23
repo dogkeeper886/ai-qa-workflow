@@ -21,7 +21,7 @@ Receiving tickets -> Planning tests -> Designing cases -> Syncing to TestLink ->
 
 Plus skills for drafting review emails, creating demo presentations, and analyzing test logs.
 
-The key insight: markdown files are both the documentation AND the executable instructions. No code generation, no compilation. Define once, deploy to both Claude Code and Cursor.
+The key insight: markdown files are both the documentation AND the executable instructions. No code generation, no compilation. Define once, use everywhere.
 
 All powered by MCP (Model Context Protocol) integrations with Jira, Confluence, TestLink, and Playwright for browser automation.
 

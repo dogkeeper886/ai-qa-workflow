@@ -8,9 +8,8 @@ bindir      = $(exec_prefix)/bin
 datarootdir = $(prefix)/share
 datadir     = $(datarootdir)
 
-# Claude Code and Cursor specific directories
+# Claude Code specific directories
 CLAUDE_DIR  = $(prefix)/.claude/commands
-CURSOR_DIR  = $(prefix)/.cursor/commands
 
 # Project directory for CLAUDE.md installation (defaults to current directory)
 PROJECT_DIR = $(CURDIR)
@@ -37,15 +36,15 @@ CLAUDE_MD_TEMPLATE = $(TEMPLATEDIR)/CLAUDE.md
 MARKER_START = \#\# AI QA Workflow
 MARKER_END = <!-- End AI QA Workflow -->
 
-.PHONY: all install install-claude install-cursor install-workflow install-skills uninstall uninstall-workflow uninstall-skills clean help
+.PHONY: all install install-claude install-workflow install-skills uninstall uninstall-workflow uninstall-skills clean help
 
 # Default target
 all:
 	@echo "Run 'make install' to install commands"
 	@echo "Run 'make help' for more options"
 
-# Standard install target - installs to both IDEs and skills
-install: install-claude install-cursor install-skills
+# Standard install target - installs commands and skills
+install: install-claude install-skills
 	@echo ""
 	@echo "Installation complete."
 	@echo "Restart your IDE to load the commands."
@@ -62,15 +61,6 @@ install-claude:
 	done
 	@echo "Commands installed to $(DESTDIR)$(CLAUDE_DIR)"
 
-# Install to Cursor
-install-cursor:
-	@echo "Installing commands to Cursor..."
-	@mkdir -p $(DESTDIR)$(CURSOR_DIR)
-	@for file in $(COMMANDS); do \
-		$(INSTALL_DATA) $$file $(DESTDIR)$(CURSOR_DIR)/; \
-	done
-	@echo "Commands installed to $(DESTDIR)$(CURSOR_DIR)"
-
 # Install skills to Claude Code
 install-skills:
 	@echo "Installing skills to Claude Code..."
@@ -79,13 +69,6 @@ install-skills:
 		skill_name=$$(basename $$skill_dir); \
 		mkdir -p $(DESTDIR)$(CLAUDE_SKILLS_DIR)/$$skill_name; \
 		$(INSTALL_DATA) $$skill_dir/SKILL.md $(DESTDIR)$(CLAUDE_SKILLS_DIR)/$$skill_name/; \
-		if [ -d "$$skill_dir/references" ]; then \
-			mkdir -p $(DESTDIR)$(CLAUDE_SKILLS_DIR)/$$skill_name/references; \
-			for ref in $$skill_dir/references/*.md; do \
-				[ -f "$$ref" ] && $(INSTALL_DATA) $$ref \
-					$(DESTDIR)$(CLAUDE_SKILLS_DIR)/$$skill_name/references/; \
-			done; \
-		fi; \
 	done
 	@echo "Skills installed to $(DESTDIR)$(CLAUDE_SKILLS_DIR)"
 
@@ -119,8 +102,6 @@ uninstall: uninstall-skills
 	@echo "Removing installed commands..."
 	@rm -f $(DESTDIR)$(CLAUDE_DIR)/*.md
 	@rmdir $(DESTDIR)$(CLAUDE_DIR) 2>/dev/null || true
-	@rm -f $(DESTDIR)$(CURSOR_DIR)/*.md
-	@rmdir $(DESTDIR)$(CURSOR_DIR) 2>/dev/null || true
 	@echo "Commands uninstalled."
 
 # Uninstall skills from Claude Code
@@ -156,9 +137,8 @@ help:
 	@echo ""
 	@echo "Targets:"
 	@echo "  make                  - Show this help"
-	@echo "  make install          - Install commands + skills to Claude Code and Cursor"
+	@echo "  make install          - Install commands + skills to Claude Code"
 	@echo "  make install-claude   - Install commands to Claude Code only"
-	@echo "  make install-cursor   - Install commands to Cursor only"
 	@echo "  make install-skills   - Install skills to Claude Code only"
 	@echo "  make install-workflow - Add workflow guidance to project's CLAUDE.md"
 	@echo "  make uninstall        - Remove installed commands"
@@ -168,7 +148,6 @@ help:
 	@echo ""
 	@echo "Skills (8 total) installed to:"
 	@echo "  ~/.claude/skills/<name>/SKILL.md"
-	@echo "  ~/.claude/skills/<name>/references/*.md"
 	@echo ""
 	@echo "Variables (GNU standard):"
 	@echo "  prefix=DIR       - Installation prefix (default: HOME)"
@@ -176,7 +155,7 @@ help:
 	@echo "  PROJECT_DIR=DIR  - Target project for CLAUDE.md (default: current dir)"
 	@echo ""
 	@echo "Examples:"
-	@echo "  make install                              # Install to ~/.claude and ~/.cursor"
+	@echo "  make install                              # Install to ~/.claude"
 	@echo "  make install-workflow                     # Add workflow to ./CLAUDE.md"
 	@echo "  make install-workflow PROJECT_DIR=~/myapp # Add workflow to ~/myapp/CLAUDE.md"
 	@echo "  make uninstall-workflow PROJECT_DIR=~/myapp"

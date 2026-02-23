@@ -38,16 +38,13 @@ Copy and track your progress:
 
 ### Step 1: Get Test Cases for Plan
 
-Fetch all test cases assigned to the test plan.
-Display an execution status summary (not executed, passed, failed, blocked).
-
-See `references/read-results.md` for how to get test cases and interpret status values.
+Run `/tl-read-execution` to fetch all test cases assigned to the test plan and display an execution status summary (not executed, passed, failed, blocked).
 
 **MCP tool:** `testlink-mcp:get_test_cases_for_test_plan`
 
 ### Step 2: Execute Each Test Case
 
-For each test case in the plan:
+Run `/tl-execute-case` for each test case in the plan:
 
 1. **Read** the test case from TestLink to get steps, preconditions, and expected results
    - **MCP tool:** `testlink-mcp:read_test_case`
@@ -64,17 +61,13 @@ For each test case in the plan:
 4. **Capture screenshots** at key verification points
    - **MCP tool:** `playwright-mcp:browser_take_screenshot`
 
-See `references/browser-execution.md` for detailed patterns and common issues.
-
 ### Step 3: Record Results
 
-After executing each test case, record the result in TestLink:
+Run `/tl-create-execution` after executing each test case to record the result in TestLink:
 - Status: `p` (pass), `f` (fail), `b` (blocked)
 - Notes: specific observations, failure details, or "All steps completed successfully"
 
 **IMPORTANT:** Use NUMERIC test case ID, not external format (e.g., "5" not "PROJ-1")
-
-See `references/record-results.md` for required fields and error handling.
 
 **MCP tool:** `testlink-mcp:create_test_execution`
 

@@ -21,7 +21,7 @@ Copy and track your progress:
 
 ```
 - [ ] Step 1: Validate prerequisites
-- [ ] Step 2: Read plan, extract scenarios
+- [ ] Step 2: Detect plan type and route
 - [ ] Step 3: Write test cases per type
 - [ ] Step 4: Review quality
 - [ ] Validate: Scenario count + case count + quality assessment
@@ -37,34 +37,26 @@ Check that `test_plan/README.md` exists.
 
 If missing: "Please run `/planning-tests` first to create the test plan."
 
-### Step 2: Read Plan and Extract Scenarios
+### Step 2: Detect Plan Type and Route
 
-Read `test_plan/README.md`, identify:
-- Test Plan Type (New Feature / Bug Fix / Enhancement)
-- All TS-XX scenarios with estimated case counts
-
-See `references/case-init.md` for initialization logic and routing.
+Run `/tw-case-init` to read the test plan, detect the type, and route to the appropriate command:
+- **Type A (Feature):** → `/tw-case-feature` — expect 20-40 cases
+- **Type B (Bug Fix):** → `/tw-case-bugfix` — expect 8-15 cases
+- **Type C (Enhancement):** → `/tw-case-enhance` — expect 15-25 cases
 
 ### Step 3: Write Test Cases
 
-Create `test_cases/README.md` and one `TS-XX_[Name].md` file per scenario.
-
-Route to the appropriate reference based on plan type:
-- **Feature (Type A):** see `references/feature-cases.md` — expect 20-40 cases
-- **Bug Fix (Type B):** see `references/bugfix-cases.md` — expect 8-15 cases
-- **Enhancement (Type C):** see `references/enhance-cases.md` — expect 15-25 cases
+Execute the routed case command from Step 2. It creates `test_cases/README.md` and one `TS-XX_[Name].md` file per scenario.
 
 Each test case needs: Objective, Preconditions, Test Steps table, Execution Type.
 
 ### Step 4: Review Quality
 
-Check all test cases for:
+Run `/tw-case-review` to check all test cases for:
 - Specific (not vague) actions and expected results
 - Complete preconditions
 - 3-10 steps per test case
 - Test independence (can run standalone)
-
-See `references/case-review.md` for quality checklist and common issues.
 
 ### Validate
 
@@ -75,11 +67,19 @@ Report:
 
 ### Step 5: Create Confluence Pages
 
-Create test case pages in Confluence:
-- Parent page: `[TICKET]: Test Cases - [Feature Name]`
-- Child pages for each TS-XX scenario
+Run `/cf-create-page` to create test case pages in Confluence.
 
-See `references/confluence-page.md` for naming conventions and formatting review.
+#### Page Naming Convention
+
+| Source File | Page Title Format |
+|-------------|-------------------|
+| `README.md` | `[PROJECT_ID]: Test Cases - [Feature Name]` |
+| `TS-01_*.md` | `[PROJECT_ID]: TS-01 - [Scenario Name]` |
+| `TS-02_*.md` | `[PROJECT_ID]: TS-02 - [Scenario Name]` |
+
+Create parent page first, then child pages for each TS-XX scenario.
+
+Run `/cf-review-page` to verify formatting. Use `/cf-format-guide` for Confluence storage format reference.
 
 **MCP tool:** `mcp-atlassian:confluence_create_page`
 

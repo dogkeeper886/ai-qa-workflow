@@ -31,18 +31,18 @@ User should provide:
 7. **Final Assessment**: Determine if feature meets test objective
 
 ## Browser MCP Tools Available:
-- `mcp_cursor-ide-browser_browser_navigate` - Navigate to URL
-- `mcp_cursor-ide-browser_browser_snapshot` - Capture page state/structure
-- `mcp_cursor-ide-browser_browser_click` - Click buttons/elements
-- `mcp_cursor-ide-browser_browser_type` - Enter text in fields
-- `mcp_cursor-ide-browser_browser_select_option` - Select dropdown options
-- `mcp_cursor-ide-browser_browser_hover` - Hover over elements
-- `mcp_cursor-ide-browser_browser_press_key` - Press keyboard keys
-- `mcp_cursor-ide-browser_browser_wait_for` - Wait for text/elements/time
-- `mcp_cursor-ide-browser_browser_resize` - Resize browser window
-- `mcp_cursor-ide-browser_browser_take_screenshot` - Capture screenshots
-- `mcp_cursor-ide-browser_browser_console_messages` - Get console messages
-- `mcp_cursor-ide-browser_browser_network_requests` - Get network requests
+- `playwright-mcp:browser_navigate` - Navigate to URL
+- `playwright-mcp:browser_snapshot` - Capture page state/structure
+- `playwright-mcp:browser_click` - Click buttons/elements
+- `playwright-mcp:browser_type` - Enter text in fields
+- `playwright-mcp:browser_select_option` - Select dropdown options
+- `playwright-mcp:browser_hover` - Hover over elements
+- `playwright-mcp:browser_press_key` - Press keyboard keys
+- `playwright-mcp:browser_wait_for` - Wait for text/elements/time
+- `playwright-mcp:browser_resize` - Resize browser window
+- `playwright-mcp:browser_take_screenshot` - Capture screenshots
+- `playwright-mcp:browser_console_messages` - Get console messages
+- `playwright-mcp:browser_network_requests` - Get network requests
 
 ## Example Usage:
 **User Input:**
@@ -64,7 +64,7 @@ Credentials: user@example.com / your-password
 
 ### 1. Read Test Case from TestLink
 ```
-- Use mcp_testlink_read_test_case with test case ID
+- Use testlink-mcp:read_test_case with test case ID
 - Extract: name, summary, preconditions, steps
 - Understand test objective and expected behavior
 ```
@@ -313,9 +313,9 @@ After execution, you may want to:
 - Document test results for reporting
 
 Use related commands:
-- `create-test-execution.md` - Record execution in TestLink
-- `bug-report-generator.md` - Create bug reports for failures
-- `update-test-case.md` - Update test case with findings
+- `/tl-create-execution` - Record execution in TestLink
+- `/pm-bug-report` - Create bug reports for failures
+- `/tl-update-case` - Update test case with findings
 
 ## Advanced Techniques:
 

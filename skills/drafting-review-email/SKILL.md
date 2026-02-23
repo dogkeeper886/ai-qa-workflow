@@ -46,13 +46,11 @@ Fetch the Jira ticket using `mcp-atlassian:jira_get_issue` to identify:
 
 ### Step 3: Draft Review Email
 
-Create the email using the template in `references/email-template.md`.
-
-See the "What to Exclude" table in `references/email-template.md` for content exclusion rules.
+Run `/pm-demo-email` to create the review email from project context and reviewer list.
 
 ### Step 4: Draft Meeting Invite
 
-Create the meeting invite using the template in `references/meeting-invite.md`.
+Run `/pm-meeting-invite` to create the meeting invite for the review session.
 
 Use reference-style links (URLs at bottom) to keep the body scannable.
 

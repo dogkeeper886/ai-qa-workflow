@@ -32,9 +32,9 @@ Determine the input format:
 - `.html` file (e.g., `log.html`) → HTML log format
 - Directory → scan for `output.xml` or `log.html` files
 
-See `references/log-analysis.md` for format-specific extraction techniques.
-
 ### Step 2: Extract Test Results
+
+Run `/robot-log-analyzer` to extract test results from log files.
 
 From the log file(s), extract for each test case:
 - Test name
@@ -59,9 +59,7 @@ For each group, identify:
 
 ### Step 4: Rewrite Cryptic Messages (if needed)
 
-If failure messages contain stack traces, exception class names, or framework jargon, rewrite them in plain English.
-
-See `references/text-rewriting.md` for rewriting guidelines and examples.
+If failure messages contain stack traces, exception class names, or framework jargon, run `/rewrite-text` to rewrite them in plain English.
 
 ### Step 5: Output Structured Report
 

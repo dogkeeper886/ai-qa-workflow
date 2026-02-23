@@ -132,6 +132,34 @@ Read test executions for test plan 10
 3. Get detailed execution for that test case
 ```
 
+## Test Case Object Structure:
+
+Response from get_test_cases_for_test_plan returns test cases keyed by ID:
+```json
+{
+  "13": [{
+    "tcase_name": "Test Case Name",
+    "tcase_id": "13",
+    "tcversion_id": "14",
+    "version": "1",
+    "full_external_id": "PROJ-1",
+    "exec_status": "n",
+    "execution_type": "1",
+    "execution_order": "1"
+  }]
+}
+```
+
+## Execution Type Values:
+- **1** = Manual execution
+- **2** = Automated execution
+
+## Execution Status Values:
+- **n** = Not executed
+- **p** = Passed
+- **f** = Failed
+- **b** = Blocked
+
 ## Best Practices:
 ✅ Always explain API limitations upfront
 ✅ Provide alternative approaches when direct reading fails

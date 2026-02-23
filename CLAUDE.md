@@ -37,9 +37,8 @@ All commands must return **no results**. Examples must use only generic placehol
 ## Build and Installation
 
 ```bash
-make install           # Install commands + skills to Claude Code and Cursor
+make install           # Install commands + skills to Claude Code
 make install-claude    # Claude Code only (~/.claude/commands/)
-make install-cursor    # Cursor only (~/.cursor/commands/)
 make install-skills    # Skills to Claude Code only (~/.claude/skills/)
 make uninstall         # Remove installed commands
 make uninstall-skills  # Remove installed skills
@@ -57,7 +56,7 @@ Each command is a markdown file in `commands/` that serves as both documentation
 - HTML formatting rules (for TestLink)
 - API call details and best practices
 
-Commands are installed by copying markdown files directly to IDE command directories.
+Commands are installed by copying markdown files to `~/.claude/commands/`. Skills are thin routers that delegate to slash commands — each SKILL.md contains only the step sequence and progress checklist, routing to commands for implementation details.
 
 ### Directory Structure
 
