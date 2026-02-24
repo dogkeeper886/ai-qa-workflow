@@ -13,8 +13,8 @@ Analyze the test plan to:
 
 ## Prerequisites
 
-- `test_plan/README.md` exists (created by `/tw-plan-*` commands)
-- OR `TEST_PLAN.md` exists in project root
+- `test_plan/README.md` and `test_plan/sections/` exist (created by `/tw-plan-*` commands)
+- Fallback: If `test_plan/sections/` does not exist, read `test_plan/README.md` directly
 
 **If test plan is missing:**
 ```
@@ -33,21 +33,26 @@ STOP - Cannot proceed without test plan
 
 ### Step 1: Read Test Plan
 
-Read the test plan and extract key information:
+Read the test plan index and section files:
 
 ```
-1. Read test_plan/README.md (or TEST_PLAN.md)
+1. Read test_plan/README.md for type and quick reference
 2. Identify test plan type from header:
    - "New Feature Validation" → Comprehensive review
    - "Bug Fix Validation" → Focused review
    - "Enhancement Validation" → Hybrid review
-3. Extract all test scenarios (TS-XX)
-4. For each scenario, note:
+3. Read all files in test_plan/sections/
+4. Extract test scenarios from the Test Strategy section file:
+   - Feature/Enhancement: sections/04_Test_Strategy.md § 4.4 / § 4.2
+   - Bug Fix: sections/03_Test_Strategy.md § 3.2
+5. For each scenario, note:
    - Scenario ID and name
    - Focus area
    - Estimated test case count
    - Test activities listed
 ```
+
+> **Fallback:** If `test_plan/sections/` does not exist, read `test_plan/README.md` directly.
 
 ### Step 2: Analyze Coverage
 
@@ -293,7 +298,7 @@ Based on analysis, provide specific recommendations:
 User: /tw-plan-review
 
 Agent:
-1. Reads test_plan/README.md
+1. Reads test_plan/README.md + test_plan/sections/
 2. Extracts all test scenarios (TS-01, TS-02, etc.)
 3. Analyzes coverage of each scenario
 4. Generates coverage matrix
@@ -316,7 +321,7 @@ Agent:
     └── Creates project structure and gathers documentation
 
 /tw-plan-init → /tw-plan-[feature|bugfix|enhance]
-    └── Creates test_plan/README.md with test scenarios
+    └── Creates test_plan/README.md + test_plan/sections/*.md
                               ↓
               ┌───────────────────────────────┐
               │  /tw-plan-review  ◄── YOU     │

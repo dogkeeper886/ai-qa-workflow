@@ -4,7 +4,7 @@ Create a comprehensive test plan for new feature testing.
 
 ```
 Use this command for new features with full documentation (HLD, designs, etc.)
-This creates a strategic TEST_PLAN.md with 5-8 test scenarios.
+This creates test_plan/README.md + test_plan/sections/*.md with 5-8 test scenarios.
 
 {{input}}
 
@@ -120,6 +120,22 @@ IF feature scope is ambiguous:
 
 ## OUTPUT FORMAT
 
+### File Structure
+
+```
+test_plan/
+├── README.md                              # Index with metadata + linked TOC
+└── sections/
+    ├── 01_Project_Business_Context.md     # § 1.1-1.3
+    ├── 02_Feature_Definition.md           # § 2.1-2.3
+    ├── 03_Scope_Boundaries.md             # § 3.1-3.2
+    ├── 04_Test_Strategy.md                # § 4.1-4.5 (includes scenarios table)
+    ├── 05_References_Resources.md         # § 5
+    └── 06_Revision_History.md             # § 6
+```
+
+### test_plan/README.md
+
 ```markdown
 # Test Plan: [Feature Name] ([Epic ID])
 
@@ -133,20 +149,54 @@ IF feature scope is ambiguous:
 **Target Release:** [Date]
 **Feature Flag:** `[flag-name]` (if applicable)
 
+---
+
+## Test Plan Sections
+
+1. [Project & Business Context](sections/01_Project_Business_Context.md)
+2. [Feature Definition](sections/02_Feature_Definition.md)
+3. [Scope & Boundaries](sections/03_Scope_Boundaries.md)
+4. [Test Strategy](sections/04_Test_Strategy.md)
+5. [References & Resources](sections/05_References_Resources.md)
+6. [Revision History](sections/06_Revision_History.md)
+
+---
+
+## Quick Reference
+
+- **Total Test Scenarios:** [N]
+- **Estimated Test Cases:** [N]
+```
+
+### test_plan/sections/01_Project_Business_Context.md
+
+```markdown
 ## 1. Project & Business Context
 ### 1.1 Product Overview
 ### 1.2 Business Value
 ### 1.3 Stakeholders
+```
 
+### test_plan/sections/02_Feature_Definition.md
+
+```markdown
 ## 2. Feature Definition
 ### 2.1 Core Functionality
 ### 2.2 Feature Control
 ### 2.3 Non-Functional Requirements
+```
 
+### test_plan/sections/03_Scope_Boundaries.md
+
+```markdown
 ## 3. Scope & Boundaries
 ### 3.1 In-Scope Testing
 ### 3.2 Out of Scope
+```
 
+### test_plan/sections/04_Test_Strategy.md
+
+```markdown
 ## 4. Test Strategy
 ### 4.1 Test Levels
 ### 4.2 Test Types
@@ -163,10 +213,18 @@ IF feature scope is ambiguous:
 - **[N] Test Cases** (estimated)
 
 ### 4.5 Test Data Setup (if applicable)
+```
 
+### test_plan/sections/05_References_Resources.md
+
+```markdown
 ## 5. References & Resources
 ### 5.1 Design & Documentation
+```
 
+### test_plan/sections/06_Revision_History.md
+
+```markdown
 ## 6. Document Revision History
 
 | Version | Date | Author | Changes |
@@ -189,7 +247,7 @@ After creating the test plan, run `/tw-plan-review` to verify coverage before cr
     └── Detected Type A: New Feature
                               ↓
 /tw-plan-feature  ◄── YOU ARE HERE
-    └── Creates test_plan/README.md with test scenarios
+    └── Creates test_plan/README.md + test_plan/sections/*.md
                               ↓
 /tw-plan-review
     └── Reviews test plan for gaps, generates coverage matrix

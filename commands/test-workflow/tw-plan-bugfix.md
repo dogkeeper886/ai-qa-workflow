@@ -4,7 +4,7 @@ Create a focused test plan for bug fix validation.
 
 ```
 Use this command for bug fixes, customer issues, and defects.
-This creates a focused TEST_PLAN.md with 2-4 test scenarios.
+This creates test_plan/README.md + test_plan/sections/*.md with 2-4 test scenarios.
 
 {{input}}
 
@@ -188,6 +188,21 @@ IF no fix approach documented:
 
 ## OUTPUT FORMAT
 
+### File Structure
+
+```
+test_plan/
+├── README.md                          # Index with metadata + linked TOC
+└── sections/
+    ├── 01_Problem_Context.md          # § 1.1-1.3
+    ├── 02_Test_Scope.md               # § 2.1-2.3
+    ├── 03_Test_Strategy.md            # § 3.1-3.2 (includes scenarios table)
+    ├── 04_References_Resources.md     # § 4
+    └── 05_Revision_History.md         # § 5
+```
+
+### test_plan/README.md
+
 ```markdown
 # Test Plan: [Bug Description] ([Bug Ticket ID])
 
@@ -201,6 +216,27 @@ IF no fix approach documented:
 **Target Fix Version:** [Version]
 **Severity:** [Critical/High/Medium/Low]
 
+---
+
+## Test Plan Sections
+
+1. [Problem Context](sections/01_Problem_Context.md)
+2. [Test Scope](sections/02_Test_Scope.md)
+3. [Test Strategy](sections/03_Test_Strategy.md)
+4. [References & Resources](sections/04_References_Resources.md)
+5. [Revision History](sections/05_Revision_History.md)
+
+---
+
+## Quick Reference
+
+- **Total Test Scenarios:** [N]
+- **Estimated Test Cases:** [N]
+```
+
+### test_plan/sections/01_Problem_Context.md
+
+```markdown
 ## 1. Problem Context
 
 ### 1.1 Problem Overview
@@ -231,7 +267,11 @@ IF no fix approach documented:
 **Fix Approach:** [How it was fixed]
 **Code Changes:** [Link to PR/commit or "Not documented"]
 **Fix Version:** [When deployed/planned]
+```
 
+### test_plan/sections/02_Test_Scope.md
+
+```markdown
 ## 2. Test Scope
 
 ### 2.1 Defect Verification
@@ -242,7 +282,11 @@ IF no fix approach documented:
 
 ### 2.3 Edge Case Coverage
 [Tests to prevent similar issues]
+```
 
+### test_plan/sections/03_Test_Strategy.md
+
+```markdown
 ## 3. Test Strategy
 
 ### 3.1 Test Approach
@@ -258,7 +302,11 @@ IF no fix approach documented:
 | **TS-03** | Edge Cases | Prevention | 2-4 | • [Activities] |
 
 **Total:** [N] test scenarios, ~[N] test cases
+```
 
+### test_plan/sections/04_References_Resources.md
+
+```markdown
 ## 4. References & Resources
 
 | Resource | Link |
@@ -266,7 +314,11 @@ IF no fix approach documented:
 | **Bug Ticket** | [Link] |
 | **Related Bugs** | [Links] |
 | **Component Documentation** | [If available] |
+```
 
+### test_plan/sections/05_Revision_History.md
+
+```markdown
 ## 5. Document Revision History
 
 | Version | Date | Author | Changes |
@@ -289,7 +341,7 @@ After creating the test plan, run `/tw-plan-review` to verify coverage.
     └── Detected Type B: Bug Fix
                               ↓
 /tw-plan-bugfix  ◄── YOU ARE HERE
-    └── Creates focused test_plan/README.md
+    └── Creates test_plan/README.md + test_plan/sections/*.md
                               ↓
 /tw-plan-review
     └── Reviews test plan for completeness

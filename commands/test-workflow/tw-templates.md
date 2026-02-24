@@ -127,7 +127,7 @@ IF feature scope is ambiguous:
 **Objective:** [Copy from test plan]
 **Focus:** [Test type - Functional, UI/UX, etc.]
 **Test Cases:** [Count]
-**Test Plan Reference:** test_plan/README.md § X.X, TS-XX
+**Test Plan Reference:** test_plan/sections/[Section_File].md § X.X, TS-XX
 ```
 
 ### Test Case Template

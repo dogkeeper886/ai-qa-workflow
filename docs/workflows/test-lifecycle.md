@@ -20,7 +20,7 @@ This eliminates duplication, reduces human error, and maintains traceability fro
 | Phase | Name | Skill (recommended) | Commands (granular) | Output |
 |-------|------|---------------------|---------------------|--------|
 | 1 | Discover | `/receiving-tickets` | `/jr-trace` | Project workspace folder |
-| 2 | Plan | `/planning-tests` | `/tw-plan-init` | `test_plan/README.md` |
+| 2 | Plan | `/planning-tests` | `/tw-plan-init` | `test_plan/README.md` + `sections/` |
 | 3 | Design | `/designing-cases` | `/tw-case-init` | `test_cases/TS-XX_*.md` |
 | 3b | Review | `/drafting-review-email` | `/pm-demo-email` | Review email + invite |
 | 4 | Manage | `/syncing-testlink` | `/tl-sync` | TestLink suites + plan |
@@ -281,7 +281,7 @@ Provide: Test case ID, Test plan ID, Build ID, Status (p/f/b), Notes
 
     /planning-tests
     → Provide: path to project folder
-    → Creates: test_plan/README.md + publishes to Confluence
+    → Creates: test_plan/README.md + test_plan/sections/*.md + publishes to Confluence
 
 **3. Design (Phase 3)**
 

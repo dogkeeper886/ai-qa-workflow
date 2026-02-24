@@ -21,9 +21,14 @@ Analyze the test plan to:
 ### Pre-Check: Verify Prerequisites
 
 Before starting, verify these files exist:
-- [ ] `test_plan/README.md` or `TEST_PLAN.md` - Must exist (created by /tw-plan-* commands)
-- [ ] Test scenarios defined in test plan (§ 3.2 for bug fixes, § 4.4 for features)
+- [ ] `test_plan/README.md` must exist (index file created by /tw-plan-* commands)
+- [ ] `test_plan/sections/` should contain section files
+- [ ] Test scenarios in Test Strategy section file:
+  - Feature/Enhancement: `sections/04_Test_Strategy.md § 4.4 / § 4.2`
+  - Bug Fix: `sections/03_Test_Strategy.md § 3.2`
 - [ ] Optional: `/tw-plan-review` output with coverage matrix
+
+> **Fallback:** If `test_plan/sections/` does not exist, read `test_plan/README.md` directly.
 
 **If test plan is missing:**
 ```
@@ -38,7 +43,7 @@ STOP - Cannot proceed without test plan
 Read the test plan header and identify the type:
 
 ```
-READ test_plan/README.md (or TEST_PLAN.md) header
+READ test_plan/README.md header
 FIND "Test Plan Type:" field
 
 IF "New Feature Validation":
@@ -64,7 +69,9 @@ IF "Enhancement Validation":
 Count and list all test scenarios from the test plan:
 
 ```
-READ test plan § 4.4 (features/enhancements) or § 3.2 (bug fixes)
+READ test_plan/sections/04_Test_Strategy.md § 4.4 (features)
+  or test_plan/sections/04_Test_Strategy.md § 4.2 (enhancements)
+  or test_plan/sections/03_Test_Strategy.md § 3.2 (bug fixes)
 EXTRACT test scenario table
 
 FOR EACH scenario:
@@ -149,7 +156,7 @@ Run `/tw-case-[feature/bugfix/enhance]` to create detailed test cases.
 └─────────────────────────────────────────────────────────────────┘
 
 /tw-plan-*
-    └── Creates test_plan/README.md with test scenarios
+    └── Creates test_plan/README.md + test_plan/sections/*.md
                               ↓
 /tw-plan-review
     └── Reviews test plan, generates coverage matrix
