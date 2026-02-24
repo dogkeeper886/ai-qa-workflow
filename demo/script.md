@@ -56,9 +56,9 @@
 
 **[SHOW: Open `commands/jira/` directory listing.]**
 
-> The Jira trace pipeline. The old Jira trace markdown file did everything. Now I have a little entry point. It calls three sub-commands in sequence: fetch, structure, document.
+> The Jira trace pipeline. The old Jira trace markdown file did everything. Now I have a little entry point. It calls four sub-commands in sequence: fetch, structure, download, verify.
 
-> `jr-trace-fetch` pulls the ticket and all linked issues. `jr-trace-structure` organizes what it found into project files. `jr-trace-docs` fetches related Confluence pages. Each one does its job and passes the result to the next. That's a sequential pipeline.
+> `jr-trace-fetch` pulls the ticket and all linked issues. `jr-trace-structure` organizes what it found into project files. `jr-trace-docs` downloads the raw documentation faithfully. `jr-trace-verify` validates downloads against source and generates summary files. Each one does its job and passes the result to the next. That's a sequential pipeline.
 
 > Compared to the old file — same result, but now each piece is small enough that the AI doesn't lose track.
 
