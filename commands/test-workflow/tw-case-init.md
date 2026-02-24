@@ -22,11 +22,13 @@ Analyze the test plan to:
 
 Before starting, verify these files exist:
 - [ ] `test_plan/README.md` must exist (index file created by /tw-plan-* commands)
-- [ ] `test_plan/sections/` must contain section files
+- [ ] `test_plan/sections/` should contain section files
 - [ ] Test scenarios in Test Strategy section file:
   - Feature/Enhancement: `sections/04_Test_Strategy.md § 4.4 / § 4.2`
   - Bug Fix: `sections/03_Test_Strategy.md § 3.2`
 - [ ] Optional: `/tw-plan-review` output with coverage matrix
+
+> **Fallback:** If `test_plan/sections/` does not exist, read `test_plan/README.md` directly.
 
 **If test plan is missing:**
 ```

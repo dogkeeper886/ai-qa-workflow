@@ -14,7 +14,7 @@ Analyze the test plan to:
 ## Prerequisites
 
 - `test_plan/README.md` and `test_plan/sections/` exist (created by `/tw-plan-*` commands)
-- OR `TEST_PLAN.md` exists in project root (legacy fallback)
+- Fallback: If `test_plan/sections/` does not exist, read `test_plan/README.md` directly
 
 **If test plan is missing:**
 ```
