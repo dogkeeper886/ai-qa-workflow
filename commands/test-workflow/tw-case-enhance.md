@@ -24,9 +24,11 @@ AUDIENCE: QA Engineers, Test Execution Team, TestLink Users
 ## INFORMATION SOURCES
 
 **PRIMARY SOURCE (Required):**
-1. **TEST_PLAN.md § 4.2** - Test scenarios
-2. **TEST_PLAN.md § 2.1** - New/changed functionality
-3. **TEST_PLAN.md § 3.1-3.3** - Test scope
+1. **test_plan/sections/04_Test_Strategy.md § 4.2** - Test scenarios
+2. **test_plan/sections/02_Enhancement_Definition.md § 2.1** - New/changed functionality
+3. **test_plan/sections/03_Test_Scope.md § 3.1-3.3** - Test scope
+
+> **Fallback:** If `test_plan/sections/` does not exist, read `test_plan/README.md` directly.
 
 **SECONDARY SOURCES (Reference):**
 4. **Enhancement Ticket** (`00_Main_Task_*.md`)
@@ -63,13 +65,13 @@ Enhancements require BOTH:
 
 ## STEP-BY-STEP WORKFLOW
 
-### Step 1: Parse Enhancement Test Plan
+### Step 1: Parse Enhancement Test Plan Sections
 ```
-1. Read TEST_PLAN.md § 2.1 - New/Changed functionality
+1. Read test_plan/sections/02_Enhancement_Definition.md § 2.1 - New/Changed functionality
    - List what's new
    - List what's changed
 
-2. Read TEST_PLAN.md § 4.2 - Test scenarios
+2. Read test_plan/sections/04_Test_Strategy.md § 4.2 - Test scenarios
    - Usually 4-6 scenarios
 
 3. Split scenarios into groups:
@@ -85,7 +87,7 @@ Enhancements require BOTH:
 **Objective:** Verify new/changed functionality works as specified
 **Focus:** Enhancement
 **Test Cases:** 4-6
-**Test Plan Reference:** test_plan/README.md § 2.1
+**Test Plan Reference:** test_plan/sections/02_Enhancement_Definition.md § 2.1
 
 ---
 
@@ -133,7 +135,7 @@ Enhancements require BOTH:
 **Objective:** Verify new/changed configuration options work correctly
 **Focus:** Configuration
 **Test Cases:** 2-4
-**Test Plan Reference:** test_plan/README.md § 2.2
+**Test Plan Reference:** test_plan/sections/02_Enhancement_Definition.md § 2.2
 
 ---
 
@@ -165,7 +167,7 @@ Enhancements require BOTH:
 **Objective:** Verify enhancement doesn't break component interactions
 **Focus:** Integration
 **Test Cases:** 2-4
-**Test Plan Reference:** test_plan/README.md § 3.2
+**Test Plan Reference:** test_plan/sections/03_Test_Scope.md § 3.2
 
 ---
 
@@ -197,7 +199,7 @@ Enhancements require BOTH:
 **Objective:** Verify existing functionality still works unchanged
 **Focus:** Backward Compatibility
 **Test Cases:** 2-3
-**Test Plan Reference:** test_plan/README.md § 3.3
+**Test Plan Reference:** test_plan/sections/03_Test_Scope.md § 3.3
 
 ---
 

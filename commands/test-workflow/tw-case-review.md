@@ -14,7 +14,7 @@ Analyze test case files to:
 
 - `test_cases/README.md` exists (created by `/tw-case-*` commands)
 - `test_cases/TS-XX_*.md` files exist for each scenario
-- `test_plan/README.md` exists (for comparison)
+- `test_plan/README.md` and `test_plan/sections/` exist (for comparison)
 
 **If test cases are missing:**
 ```
@@ -36,14 +36,19 @@ STOP - Cannot proceed without test case files
 Read the test plan for comparison baseline:
 
 ```
-1. Read test_plan/README.md (or TEST_PLAN.md)
-2. Extract test scenarios and expected test case counts
+1. Read test_plan/README.md for type and quick reference counts
+2. Read the Test Strategy section file for scenario details:
+   - Feature: test_plan/sections/04_Test_Strategy.md § 4.4
+   - Bug Fix: test_plan/sections/03_Test_Strategy.md § 3.2
+   - Enhancement: test_plan/sections/04_Test_Strategy.md § 4.2
 3. Reference coverage matrix from /tw-plan-review (if available)
 4. Note the test plan type:
    - "New Feature Validation" → Expect 20-40 test cases
    - "Bug Fix Validation" → Expect 8-15 test cases
    - "Enhancement Validation" → Expect 15-25 test cases
 ```
+
+> **Fallback:** If `test_plan/sections/` does not exist, read `test_plan/README.md` directly.
 
 ### Step 2: Read All Test Case Files
 
@@ -254,7 +259,7 @@ If NEEDS REVISION:
 User: /test-case-review
 
 Agent:
-1. Reads test_plan/README.md for baseline
+1. Reads test_plan/README.md + test_plan/sections/ for baseline
 2. Reads test_cases/README.md for index
 3. Reads each TS-XX_*.md file
 4. Checks quality of each test case
@@ -276,7 +281,7 @@ Agent:
     └── Creates project structure and gathers documentation
 
 /tw-plan-init → /tw-plan-[feature|bugfix|enhance]
-    └── Creates test_plan/README.md with test scenarios
+    └── Creates test_plan/README.md + test_plan/sections/*.md
 
 /tw-plan-review
     └── Reviews test plan for gaps and overlaps

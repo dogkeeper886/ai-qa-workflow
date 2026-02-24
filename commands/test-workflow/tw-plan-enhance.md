@@ -4,7 +4,7 @@ Create a test plan for enhancement/improvement testing.
 
 ```
 Use this command for enhancements and improvements to existing features.
-This creates a hybrid TEST_PLAN.md with 4-6 test scenarios.
+This creates test_plan/README.md + test_plan/sections/*.md with 4-6 test scenarios.
 
 {{input}}
 
@@ -151,6 +151,22 @@ IF enhancement scope is ambiguous:
 
 ## OUTPUT FORMAT
 
+### File Structure
+
+```
+test_plan/
+├── README.md                              # Index with metadata + linked TOC
+└── sections/
+    ├── 01_Enhancement_Context.md          # § 1.1-1.2
+    ├── 02_Enhancement_Definition.md       # § 2.1-2.2
+    ├── 03_Test_Scope.md                   # § 3.1-3.3
+    ├── 04_Test_Strategy.md                # § 4.1-4.2 (includes scenarios table)
+    ├── 05_References_Resources.md         # § 5
+    └── 06_Revision_History.md             # § 6
+```
+
+### test_plan/README.md
+
 ```markdown
 # Test Plan: [Enhancement Name] ([Ticket ID])
 
@@ -163,6 +179,28 @@ IF enhancement scope is ambiguous:
 **Target Release:** [Date]
 **Feature Flag:** `[flag-name]` (if applicable)
 
+---
+
+## Test Plan Sections
+
+1. [Enhancement Context](sections/01_Enhancement_Context.md)
+2. [Enhancement Definition](sections/02_Enhancement_Definition.md)
+3. [Test Scope](sections/03_Test_Scope.md)
+4. [Test Strategy](sections/04_Test_Strategy.md)
+5. [References & Resources](sections/05_References_Resources.md)
+6. [Revision History](sections/06_Revision_History.md)
+
+---
+
+## Quick Reference
+
+- **Total Test Scenarios:** [N]
+- **Estimated Test Cases:** [N]
+```
+
+### test_plan/sections/01_Enhancement_Context.md
+
+```markdown
 ## 1. Enhancement Context
 
 ### 1.1 Enhancement Overview
@@ -172,7 +210,11 @@ IF enhancement scope is ambiguous:
 
 ### 1.2 Stakeholders
 [Key people - may be limited compared to new features]
+```
 
+### test_plan/sections/02_Enhancement_Definition.md
+
+```markdown
 ## 2. Enhancement Definition
 
 ### 2.1 New/Changed Functionality
@@ -192,7 +234,11 @@ IF enhancement scope is ambiguous:
 **API Changes:**
 - [Change 1]
 - [Change 2]
+```
 
+### test_plan/sections/03_Test_Scope.md
+
+```markdown
 ## 3. Test Scope
 
 ### 3.1 Enhancement Validation
@@ -203,7 +249,11 @@ IF enhancement scope is ambiguous:
 
 ### 3.3 Backward Compatibility
 [Tests for existing functionality]
+```
 
+### test_plan/sections/04_Test_Strategy.md
+
+```markdown
 ## 4. Test Strategy
 
 ### 4.1 Test Approach
@@ -219,7 +269,11 @@ IF enhancement scope is ambiguous:
 | **TS-04** | Backward Compatibility | Existing behavior | 2-3 | • [Activities] |
 
 **Total:** [N] test scenarios, ~[N] test cases
+```
 
+### test_plan/sections/05_References_Resources.md
+
+```markdown
 ## 5. References & Resources
 
 | Resource | Link |
@@ -227,7 +281,11 @@ IF enhancement scope is ambiguous:
 | **Enhancement Ticket** | [Link] |
 | **Original Feature Documentation** | [Link if available] |
 | **Related Tickets** | [Links] |
+```
 
+### test_plan/sections/06_Revision_History.md
+
+```markdown
 ## 6. Document Revision History
 
 | Version | Date | Author | Changes |
@@ -250,7 +308,7 @@ After creating the test plan, run `/tw-plan-review` to verify coverage.
     └── Detected Type C: Enhancement
                               ↓
 /tw-plan-enhance  ◄── YOU ARE HERE
-    └── Creates hybrid test_plan/README.md
+    └── Creates test_plan/README.md + test_plan/sections/*.md
                               ↓
 /tw-plan-review
     └── Reviews test plan for gaps

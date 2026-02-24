@@ -41,15 +41,40 @@ Source folder: $ARGUMENTS
 
 ## Page Naming Convention
 
+### Feature (Type A)
+
 | Source File | Page Title Format |
 |-------------|-------------------|
 | `README.md` | `[PROJECT_ID]: Test Plan - [Feature Name]` |
-| `01_Project_Business_Context.md` | `[PROJECT_ID]: 1. Project & Business Context` |
-| `02_Feature_Definition.md` | `[PROJECT_ID]: 2. Feature Definition` |
-| `03_Scope_Boundaries.md` | `[PROJECT_ID]: 3. Scope & Boundaries` |
-| `04_Test_Strategy.md` | `[PROJECT_ID]: 4. Test Strategy` |
-| `05_References_Resources.md` | `[PROJECT_ID]: 5. References & Resources` |
-| `06_Revision_History.md` | `[PROJECT_ID]: 6. Document Revision History` |
+| `sections/01_Project_Business_Context.md` | `[PROJECT_ID]: 1. Project & Business Context` |
+| `sections/02_Feature_Definition.md` | `[PROJECT_ID]: 2. Feature Definition` |
+| `sections/03_Scope_Boundaries.md` | `[PROJECT_ID]: 3. Scope & Boundaries` |
+| `sections/04_Test_Strategy.md` | `[PROJECT_ID]: 4. Test Strategy` |
+| `sections/05_References_Resources.md` | `[PROJECT_ID]: 5. References & Resources` |
+| `sections/06_Revision_History.md` | `[PROJECT_ID]: 6. Document Revision History` |
+
+### Bug Fix (Type B)
+
+| Source File | Page Title Format |
+|-------------|-------------------|
+| `README.md` | `[PROJECT_ID]: Test Plan - [Bug Description]` |
+| `sections/01_Problem_Context.md` | `[PROJECT_ID]: 1. Problem Context` |
+| `sections/02_Test_Scope.md` | `[PROJECT_ID]: 2. Test Scope` |
+| `sections/03_Test_Strategy.md` | `[PROJECT_ID]: 3. Test Strategy` |
+| `sections/04_References_Resources.md` | `[PROJECT_ID]: 4. References & Resources` |
+| `sections/05_Revision_History.md` | `[PROJECT_ID]: 5. Document Revision History` |
+
+### Enhancement (Type C)
+
+| Source File | Page Title Format |
+|-------------|-------------------|
+| `README.md` | `[PROJECT_ID]: Test Plan - [Enhancement Name]` |
+| `sections/01_Enhancement_Context.md` | `[PROJECT_ID]: 1. Enhancement Context` |
+| `sections/02_Enhancement_Definition.md` | `[PROJECT_ID]: 2. Enhancement Definition` |
+| `sections/03_Test_Scope.md` | `[PROJECT_ID]: 3. Test Scope` |
+| `sections/04_Test_Strategy.md` | `[PROJECT_ID]: 4. Test Strategy` |
+| `sections/05_References_Resources.md` | `[PROJECT_ID]: 5. References & Resources` |
+| `sections/06_Revision_History.md` | `[PROJECT_ID]: 6. Document Revision History` |
 
 ## Example Usage
 

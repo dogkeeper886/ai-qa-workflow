@@ -23,9 +23,11 @@ AUDIENCE: QA Engineers, Test Execution Team, TestLink Users
 ## INFORMATION SOURCES
 
 **PRIMARY SOURCE (Required):**
-1. **TEST_PLAN.md § 3.2** - Test scenarios (bug fix plans use section 3)
-2. **TEST_PLAN.md § 1.2** - Reproduction steps (critical for defect verification)
-3. **TEST_PLAN.md § 2.1-2.3** - Test scope
+1. **test_plan/sections/03_Test_Strategy.md § 3.2** - Test scenarios (bug fix plans use section 3)
+2. **test_plan/sections/01_Problem_Context.md § 1.2** - Reproduction steps (critical for defect verification)
+3. **test_plan/sections/02_Test_Scope.md § 2.1-2.3** - Test scope
+
+> **Fallback:** If `test_plan/sections/` does not exist, read `test_plan/README.md` directly.
 
 **SECONDARY SOURCES (Reference):**
 4. **Bug Ticket** (`00_Main_Task_*.md`) - Original reproduction steps
@@ -47,25 +49,25 @@ test_cases/
 
 ## STEP-BY-STEP WORKFLOW
 
-### Step 1: Parse Bug Fix Test Plan
+### Step 1: Parse Bug Fix Test Plan Sections
 ```
-1. Read TEST_PLAN.md § 1.2 - Extract reproduction steps
+1. Read test_plan/sections/01_Problem_Context.md § 1.2 - Extract reproduction steps
    - These become the basis for TS-01 (Defect Verification)
 
-2. Read TEST_PLAN.md § 3.2 - Test scenarios
+2. Read test_plan/sections/03_Test_Strategy.md § 3.2 - Test scenarios
    - Typically 2-4 scenarios:
      • TS-01: Defect Verification
      • TS-02: Regression Testing
      • TS-03: Edge Cases
 
-3. Read TEST_PLAN.md § 1.3 - Fix summary
+3. Read test_plan/sections/01_Problem_Context.md § 1.3 - Fix summary
    - Identify component/area affected
    - Use to determine regression scope
 ```
 
 ### Step 2: Create Defect Verification Test Cases (TS-01)
 
-**FROM TEST_PLAN.md § 1.2 reproduction steps:**
+**FROM test_plan/sections/01_Problem_Context.md § 1.2 reproduction steps:**
 
 ```markdown
 # TS-01: Defect Verification
@@ -73,7 +75,7 @@ test_cases/
 **Objective:** Verify the original bug no longer occurs
 **Focus:** Defect verification
 **Test Cases:** 2-3
-**Test Plan Reference:** test_plan/README.md § 1.2
+**Test Plan Reference:** test_plan/sections/01_Problem_Context.md § 1.2
 
 ---
 
@@ -82,7 +84,7 @@ test_cases/
 **Objective:** Verify original bug no longer occurs using exact reproduction steps
 
 **Preconditions:**
-- [Copy from TEST_PLAN.md § 1.2]
+- [Copy from test_plan/sections/01_Problem_Context.md § 1.2]
 
 **Test Steps:**
 
@@ -125,7 +127,7 @@ test_cases/
 
 ### Step 3: Create Regression Test Cases (TS-02)
 
-**BASED ON component from TEST_PLAN.md § 1.3:**
+**BASED ON component from test_plan/sections/01_Problem_Context.md § 1.3:**
 
 ```markdown
 # TS-02: Regression Testing
@@ -133,7 +135,7 @@ test_cases/
 **Objective:** Verify fix didn't break related functionality
 **Focus:** Regression
 **Test Cases:** 2-3
-**Test Plan Reference:** test_plan/README.md § 2.2
+**Test Plan Reference:** test_plan/sections/02_Test_Scope.md § 2.2
 
 ---
 
@@ -176,7 +178,7 @@ test_cases/
 **Objective:** Prevent similar bugs through edge case coverage
 **Focus:** Edge Cases
 **Test Cases:** 2-4
-**Test Plan Reference:** test_plan/README.md § 2.3
+**Test Plan Reference:** test_plan/sections/02_Test_Scope.md § 2.3
 
 ---
 
@@ -220,7 +222,7 @@ Bug fix test cases should be FOCUSED:
 
 ### No Reproduction Steps
 ```
-IF TEST_PLAN.md § 1.2 has no clear reproduction steps:
+IF test_plan/sections/01_Problem_Context.md § 1.2 has no clear reproduction steps:
   1. Check original bug ticket comments
   2. Check README.md problem description
   3. If still unclear:

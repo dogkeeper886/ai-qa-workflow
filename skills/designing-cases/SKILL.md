@@ -33,7 +33,7 @@ Copy and track your progress:
 
 ### Step 1: Validate Prerequisites
 
-Check that `test_plan/README.md` exists.
+Check that `test_plan/README.md` exists and `test_plan/sections/` contains section files.
 
 If missing: "Please run `/planning-tests` first to create the test plan."
 
@@ -91,7 +91,7 @@ Report:
 
 ## Expected Input
 
-Path to project folder containing `test_plan/README.md`.
+Path to project folder containing `test_plan/README.md` and `test_plan/sections/`.
 
 ## Next Step
 

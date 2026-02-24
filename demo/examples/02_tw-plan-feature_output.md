@@ -1,3 +1,23 @@
+_This demo shows the output structure of `/tw-plan-feature`. The command creates `test_plan/README.md` as an index plus individual section files in `test_plan/sections/`._
+
+## File Structure Created
+
+```
+test_plan/
+├── README.md
+└── sections/
+    ├── 01_Project_Business_Context.md
+    ├── 02_Feature_Definition.md
+    ├── 03_Scope_Boundaries.md
+    ├── 04_Test_Strategy.md
+    ├── 05_References_Resources.md
+    └── 06_Revision_History.md
+```
+
+---
+
+## test_plan/README.md
+
 # Test Plan: Dark Mode Toggle (DEMO-123)
 
 **Test Plan Type:** New Feature Validation
@@ -8,6 +28,28 @@
 **Epic:** DEMO-100 — User Preferences Redesign
 **Feature Request:** DEMO-089
 **Target Release:** Sprint 14
+
+---
+
+## Test Plan Sections
+
+1. [Project & Business Context](sections/01_Project_Business_Context.md)
+2. [Feature Definition](sections/02_Feature_Definition.md)
+3. [Scope & Boundaries](sections/03_Scope_Boundaries.md)
+4. [Test Strategy](sections/04_Test_Strategy.md)
+5. [References & Resources](sections/05_References_Resources.md)
+6. [Revision History](sections/06_Revision_History.md)
+
+---
+
+## Quick Reference
+
+- **Total Test Scenarios:** 6
+- **Estimated Test Cases:** 28
+
+---
+
+## test_plan/sections/01_Project_Business_Context.md
 
 ## 1. Project & Business Context
 
@@ -27,6 +69,10 @@ QualityQuest is adding a dark mode toggle to the user settings page, allowing us
 | Frontend Dev | Alex Chen | Implementation |
 | QA Engineer | QA Team | Test planning and execution |
 
+---
+
+## test_plan/sections/02_Feature_Definition.md
+
 ## 2. Feature Definition
 
 ### 2.1 Core Functionality
@@ -44,6 +90,10 @@ QualityQuest is adding a dark mode toggle to the user settings page, allowing us
 - WCAG 2.1 AA contrast compliance
 - Cross-browser: Chrome, Firefox, Safari, Edge (latest 2 versions)
 
+---
+
+## test_plan/sections/03_Scope_Boundaries.md
+
 ## 3. Scope & Boundaries
 
 ### 3.1 In-Scope Testing
@@ -58,6 +108,10 @@ QualityQuest is adding a dark mode toggle to the user settings page, allowing us
 - Custom color themes (future phase)
 - Scheduled theme switching
 - Per-page theme overrides
+
+---
+
+## test_plan/sections/04_Test_Strategy.md
 
 ## 4. Test Strategy
 
@@ -87,6 +141,10 @@ Default test assumptions: user is logged in, browser is Chrome latest, starting 
 - **6 Test Suites**
 - **28 Test Cases** (estimated)
 
+---
+
+## test_plan/sections/05_References_Resources.md
+
 ## 5. References & Resources
 
 ### 5.1 Design & Documentation
@@ -96,6 +154,10 @@ Default test assumptions: user is logged in, browser is Chrome latest, starting 
 | Jira Epic | DEMO-100 |
 | Feature Request | DEMO-089 |
 | UX Color Palette | DEMO-124 (Figma link) |
+
+---
+
+## test_plan/sections/06_Revision_History.md
 
 ## 6. Document Revision History
 

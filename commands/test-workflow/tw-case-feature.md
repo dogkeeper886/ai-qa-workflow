@@ -23,9 +23,11 @@ AUDIENCE: QA Engineers, Test Execution Team, TestLink Users
 ## INFORMATION SOURCES
 
 **PRIMARY SOURCE (Required):**
-1. **TEST_PLAN.md § 4.4** - Test scenarios to expand into test cases
-2. **TEST_PLAN.md § 4.3** - Priority operations (example test operations)
-3. **TEST_PLAN.md § 3.1** - In-scope testing categories
+1. **test_plan/sections/04_Test_Strategy.md § 4.4** - Test scenarios to expand into test cases
+2. **test_plan/sections/04_Test_Strategy.md § 4.3** - Priority operations (example test operations)
+3. **test_plan/sections/03_Scope_Boundaries.md § 3.1** - In-scope testing categories
+
+> **Fallback:** If `test_plan/sections/` does not exist, read `test_plan/README.md` directly.
 
 **SECONDARY SOURCES (Reference):**
 4. **Confluence HLD** (`confluence/HLD_*.md`) - For detailed acceptance criteria
@@ -48,9 +50,9 @@ test_cases/
 
 ## STEP-BY-STEP WORKFLOW
 
-### Step 1: Parse TEST_PLAN.md
+### Step 1: Parse Test Plan Sections
 ```
-1. Read TEST_PLAN.md § 4.4 (Test Scenarios table)
+1. Read test_plan/sections/04_Test_Strategy.md § 4.4 (Test Scenarios table)
 2. Count test scenarios (TS-01, TS-02, etc.)
 3. For each scenario, extract:
    - Scenario ID (TS-XX)
@@ -73,7 +75,7 @@ test_cases/
    **QA Engineer:** [Name]
 
    ## Default Test Assumptions
-   [Copy from test plan § 4.3]
+   [Copy from test_plan/sections/04_Test_Strategy.md § 4.3]
 
    ## Test Scenarios Index
    | File | Scenario | Test Cases |
@@ -83,7 +85,7 @@ test_cases/
 
 ### Step 3: Create Separate File for Each Test Scenario
 
-**FOR EACH test scenario in test plan § 4.4:**
+**FOR EACH test scenario in test_plan/sections/04_Test_Strategy.md § 4.4:**
 
 1. **Create new file:** `test_cases/TS-XX_[Scenario_Name].md`
    - Replace spaces with underscores in filename
@@ -96,7 +98,7 @@ test_cases/
    **Objective:** [Copy from test plan]
    **Focus:** [From "Focus" column]
    **Test Cases:** [Count]
-   **Test Plan Reference:** test_plan/README.md § 4.4, TS-XX
+   **Test Plan Reference:** test_plan/sections/04_Test_Strategy.md § 4.4, TS-XX
    ```
 
 3. **FOR EACH test activity, create test case variations:**

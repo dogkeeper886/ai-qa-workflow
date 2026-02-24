@@ -9,7 +9,7 @@ _Showing 2 of 6 test scenarios for demonstration purposes._
 **Objective:** Verify the dark mode toggle switch works correctly in Settings > Appearance
 **Focus:** Core UI
 **Test Cases:** 5
-**Test Plan Reference:** test_plan/README.md § 4.4, TS-01
+**Test Plan Reference:** test_plan/sections/04_Test_Strategy.md § 4.4, TS-01
 
 ---
 
@@ -138,7 +138,7 @@ Verify that quickly toggling dark mode on and off multiple times does not cause 
 **Objective:** Verify that theme preference persists across sessions and syncs correctly between localStorage and API
 **Focus:** Data
 **Test Cases:** 5
-**Test Plan Reference:** test_plan/README.md § 4.4, TS-03
+**Test Plan Reference:** test_plan/sections/04_Test_Strategy.md § 4.4, TS-03
 
 ---
 
