@@ -138,5 +138,6 @@ active/PROJ-12345_Feature_Integration/
 ## NEXT STEP
 
 After creating folder structure, proceed to:
-- `/jr-trace-docs` - Generate documentation files
+- `/jr-trace-docs` - Download documentation files
+- `/jr-trace-verify` - Validate downloads and generate summaries
 ```

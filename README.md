@@ -95,7 +95,8 @@ Commands use a **detect-and-route** pattern: a short entry-point command reads t
   │              │                                   │
   ├─ fetch       ├─ feature                          ├─ feature
   ├─ structure   ├─ enhance                          ├─ enhance
-  └─ docs        └─ bugfix                           └─ bugfix
+  ├─ docs        └─ bugfix                           └─ bugfix
+  └─ verify
 ```
 
 ## Quick Start
@@ -179,7 +180,8 @@ See [docs/workflows/skills.md](docs/workflows/skills.md) for invocation patterns
 | `/jr-trace` | Trace tickets and gather all related information |
 | `/jr-trace-fetch` | Fetch Jira ticket and linked issues |
 | `/jr-trace-structure` | Structure traced data into project files |
-| `/jr-trace-docs` | Fetch related Confluence documents |
+| `/jr-trace-docs` | Download documentation files faithfully |
+| `/jr-trace-verify` | Validate downloads and generate summaries |
 | `/jr-issue-summary` | Generate AI-powered issue summary |
 | `/jr-to-markdown` | Convert Jira ticket to Markdown |
 

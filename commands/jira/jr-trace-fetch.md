@@ -139,5 +139,6 @@ After data collection, you should have:
 
 After collecting all data, proceed to:
 - `/jr-trace-structure` - Create folder structure
-- `/jr-trace-docs` - Generate documentation files
+- `/jr-trace-docs` - Download documentation files
+- `/jr-trace-verify` - Validate downloads and generate summaries
 ```

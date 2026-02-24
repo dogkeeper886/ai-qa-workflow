@@ -34,7 +34,7 @@ Each skill routes to specific slash commands:
 
 | Skill | Routes To |
 |---|---|
-| `receiving-tickets` | `/jr-trace-fetch` → `/jr-trace-structure` → `/jr-trace-docs` → `/pm-init` (optional) |
+| `receiving-tickets` | `/jr-trace-fetch` → `/jr-trace-structure` → `/jr-trace-docs` → `/jr-trace-verify` → `/pm-init` (optional) |
 | `planning-tests` | `/tw-plan-init` → `/tw-plan-feature\|bugfix\|enhance` → `/tw-plan-review` → `/tw-diagrams` → `/cf-create-page` → `/cf-review-page` |
 | `designing-cases` | `/tw-case-init` → `/tw-case-feature\|bugfix\|enhance` → `/tw-case-review` → `/cf-create-page` → `/cf-review-page` |
 | `drafting-review-email` | `/pm-demo-email` + `/pm-meeting-invite` |
