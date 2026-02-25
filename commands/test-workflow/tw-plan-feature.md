@@ -37,6 +37,22 @@ AUDIENCE: Stakeholders, management, project team, Confluence reviewers
 8. **Feature Flag Tickets** (`01_*Feature_Flag*.md`) - Control mechanism
 9. **Comments sections** - Additional context, team discussions
 
+**SOURCE ROLES — Content vs Structure:**
+
+Different sources inform different aspects of the test plan. No single
+document should determine both the content AND the structure of test
+scenarios.
+
+| Source | Informs Test... | Does NOT Determine... |
+|--------|----------------|----------------------|
+| **HLD** | **Content** — values to test, constraints, validation rules | Scenario grouping, naming, sequencing |
+| **UX/Figma** | **Structure** — scenario grouping, sequencing, naming | Specific field validation rules, API constraints |
+| **Live product** | **Baseline** — what actually exists today | Future behavior (that's in the HLD/UX) |
+| **Jira tickets** | **Context** — why the feature exists, acceptance criteria | Technical implementation details |
+
+When UX mockups exist (Tier 2-3), use them to organize scenarios even
+though HLD (Tier 1) remains the primary source for test content.
+
 ---
 
 ## STEP-BY-STEP WORKFLOW
@@ -72,10 +88,193 @@ Determine how to test the feature:
 - What volumes should be tested? (small, medium, large)
 
 ### Step 5: Create Test Scenarios
-Define high-level test scenarios (5-8 typical):
-- Group related test activities together
-- Each scenario becomes a Test Suite (TS-XX)
-- Focus on WHAT to test, not HOW to test
+
+Define high-level test scenarios (5-8 typical). Each scenario becomes a
+Test Suite (TS-XX). Focus on WHAT to test, not HOW to test.
+
+**IMPORTANT:** Follow Steps 5a-5f below to derive scenarios from user
+journeys rather than mirroring the HLD's technical architecture.
+
+#### Step 5a: Extract the State Model
+
+Before grouping test activities, discover what states the feature has
+and what user actions are available in each state.
+
+**Sources (check in order):**
+1. Figma/UX mockups — often annotate states and available actions
+2. HLD — state diagrams, workflow sections, status field definitions
+3. Main ticket — acceptance criteria often imply state transitions
+
+**Output a state table:**
+
+| State | How user gets here | Available user actions |
+|-------|-------------------|----------------------|
+| [Initial state] | Default / entry point | [Action 1], [Action 2] |
+| [State B] | After [Action] from [State A] | [Action 3], [Action 4] |
+| [State C] | System auto-triggers from [State B] | [Action 5] |
+
+This table is the foundation for scenario organization.
+
+#### Step 5b: Map User Journeys
+
+From the state table, identify distinct user journeys — sequences of
+decisions and actions a user takes to accomplish a goal.
+
+**Format:**
+```
+Journey 1: "[User goal, e.g., Set up feature for the first time]"
+  State A -> user chooses [Action] -> picks sub-options -> State B
+
+Journey 2: "[User goal, e.g., Check current status]"
+  State B -> user views display -> reads information
+
+Journey 3: "[User goal, e.g., Modify existing settings]"
+  State B -> user edits config -> settings updated
+```
+
+**Key question:** What decisions does the user make? Where does the user
+choose between options? Each decision point with sub-options belongs in
+the same journey (same scenario), not split across scenarios.
+
+#### Step 5c: Trace Data Flow for Each Journey
+
+For each journey, trace where data goes after the user acts. Separate
+user-observable verification points from technical-only ones.
+
+**Format:**
+```
+Journey N data flow:
+  User action -> API call -> backend persists -> outcome
+
+  User-observable verification:
+  - UI shows confirmation
+  - Status display reflects new state
+
+  Technical-only verification (separate scenario):
+  - API response contains correct fields
+  - Backend job registered correctly
+```
+
+**Rule:** User-observable verification points go into the user journey
+scenario. Technical-only verification points go into dedicated technical
+scenarios (backward compat, API contract, etc.).
+
+**Anti-pattern:** Do NOT create a scenario called "Data Flow Verification"
+that traces the full backend pipeline. Each user journey scenario includes
+its own verification steps at the user-observable points.
+
+#### Step 5d: Build User Decision Tree
+
+For journeys with many options, map the user's decision tree:
+
+```
+User enters feature
+  +-- [Mode A]
+  |   +-- [Option X] -> configure -> done
+  |   +-- [Option Y] -> configure -> done
+  |   +-- Set expiry? -> yes/no -> done
+  +-- [Mode B]
+  |   +-- Configure -> done
+  |   +-- Repeat? -> yes/no -> done
+  +-- [Default] -> always on -> done
+```
+
+**Rule:** One scenario per top-level branch of the decision tree.
+Sub-decisions within a branch stay in the same scenario as test cases,
+not as separate scenarios.
+
+**Anti-pattern:** Do NOT split one branch into multiple scenarios based on
+how many enum values it has. That is data-model-driven splitting, not
+user-journey-driven.
+
+#### Step 5e: Classify Journeys
+
+Separate user-initiated from system-initiated behavior:
+
+| Category | Covers | Scenario naming |
+|----------|--------|-----------------|
+| **User-initiated** | User takes action, sees result | "First-Time Setup", "Modifying Settings" |
+| **System-initiated** | System acts automatically (timers, triggers) | "Auto-Behavior", "Scheduled Triggers" |
+| **Error/validation** | User makes mistakes, system prevents bad input | "Input Validation & Error Handling" |
+| **Technical** | Not user-visible (backward compat, feature flags, API contract) | "Backward Compatibility", "Feature Flag" |
+
+**Rule:** Never mix user-initiated and system-initiated actions in the same
+scenario. If an early draft has a "Lifecycle" scenario with both "user
+reschedules" and "system auto-deactivates", split them.
+
+#### Step 5f: Sequence by Execution Order
+
+Organize scenarios in the order a user would naturally encounter them:
+
+```
+Phase 1: Creation journeys (user sets up feature for the first time)
+Phase 2: Observation journeys (user monitors status)
+Phase 3: Modification journeys (user changes existing settings)
+Phase 4: System auto-behavior (what happens without user action)
+Phase 5: Edge cases & validation (user hits boundaries)
+Phase 6: Technical verification (backward compat, feature flags)
+```
+
+This makes the test plan read like a user story.
+
+#### Multi-Source Cross-Reference
+
+Before finalizing scenario organization, cross-reference at least 2
+sources. No single document should determine both structure and content.
+
+```
+IF only HLD available (no UX mockups):
+  -> Extract user states and journeys FROM the HLD, but consciously
+     separate them from the HLD's technical architecture
+  -> Ask: "If I remove all API/backend details, what user workflows remain?"
+  -> Ask: "What states can the user observe? What actions are available?"
+  -> Flag in the test plan: "Scenario structure derived from HLD —
+     review with UX team for user journey accuracy"
+
+IF HLD + UX mockups both available:
+  -> Use UX for scenario STRUCTURE (states, journeys, decision points)
+  -> Use HLD for scenario CONTENT (values, constraints, validation rules)
+  -> When they conflict, UX wins for structure (it represents what users see)
+
+IF live product environment available:
+  -> Check current baseline BEFORE reading HLD
+  -> Note what exists today vs what's new
+  -> Ground the test plan in reality, not just documents
+```
+
+#### Document Conflict Resolution
+
+When sources disagree:
+
+| Conflict | Resolution |
+|----------|-----------|
+| HLD says N modes, UX shows fewer | UX wins for structure; note discrepancy |
+| HLD describes field, UX has no UI control | Field goes into technical verification scenario |
+| Live product differs from HLD and UX | Document as baseline; test plan covers target behavior |
+| Acceptance criteria mentions workflow not in HLD/UX | Add as scenario; flag for UX verification |
+
+#### Persona/Role Check
+
+```
+IF feature has multiple user roles (e.g., admin vs operator):
+  -> Each role may have different available states and actions
+  -> Consider role-specific journeys as separate scenarios
+  -> At minimum, note which role each scenario applies to
+
+IF single-role:
+  -> Note the assumed role in test plan preconditions
+```
+
+#### Anti-Patterns Checklist
+
+Before finalizing scenarios, verify NONE of these apply:
+- Scenarios split by enum values or data model groupings instead of user intent
+- User-initiated and system-initiated actions mixed in one scenario
+- Scenarios named after HLD components or architecture layers
+- API payload validation promoted to a top-level user journey scenario
+- A "Lifecycle" catch-all mixing user actions with system triggers
+- Internal system behavior mixed with user actions in a single scenario
+- Missing state-based coverage when UX defines distinct states
 
 ---
 

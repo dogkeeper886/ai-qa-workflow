@@ -122,6 +122,11 @@ For enhancements, typically create 4-6 scenarios:
 | **TS-04** | Backward Compatibility | Existing behavior | 2-3 | • Old workflows<br>• Data migration |
 ```
 
+**Scenario organization note:** When the enhancement is substantial
+(adding new user workflows), apply the user-journey methodology from
+`/tw-plan-feature` Step 5 to organize scenarios around user journeys
+rather than technical components.
+
 ---
 
 ## DECISION TREES: HANDLING MISSING INFORMATION
