@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI QA Workflow is a QA automation toolkit that connects AI coding agents with test management systems through MCP (Model Context Protocol) integrations. It provides 54 slash commands for end-to-end test automation across Jira, Confluence, TestLink, and Playwright.
+AI QA Workflow is a QA automation toolkit that connects AI coding agents with test management systems through MCP (Model Context Protocol) integrations. It provides 58 slash commands for end-to-end test automation across Jira, Confluence, TestLink, Playwright, and GitHub.
 
 ## Git Workflow
 
@@ -63,7 +63,8 @@ Commands are installed by copying markdown files to `~/.claude/commands/`. Skill
 ```
 commands/
 ├── confluence/    # Confluence page operations (6 commands, cf-*)
-├── jira/          # Jira ticket tracing and conversion (6 commands, jr-*)
+├── github/        # GitHub tracking and traceability (4 commands, gh-*)
+├── jira/          # Jira ticket tracing and conversion (7 commands, jr-*)
 ├── project/       # Project management commands (8 commands, pm-*)
 ├── testlink/      # TestLink CRUD and execution (18 commands, tl-*)
 ├── test-workflow/ # Test planning and case workflows (13 commands, tw-*)
@@ -76,7 +77,8 @@ skills/
 ├── syncing-testlink/     # Import test cases into TestLink, build test plan
 ├── executing-tests/      # Execute TestLink plan via browser automation
 ├── creating-demo/        # Create PPTX demo with browser-verified screenshots
-└── analyzing-logs/       # Analyze Robot Framework logs, report failures
+├── analyzing-logs/       # Analyze Robot Framework logs, report failures
+└── tracking-changes/     # Track QA artifact changes in GitHub
 docs/
 ├── integrations/  # MCP server setup guides
 ├── workflows/     # End-to-end test lifecycle guide
@@ -116,6 +118,24 @@ Commands expect these MCP servers configured in the IDE:
    ```
 3. Run `make install` to deploy
 4. Commit only the source file in `commands/`
+
+## Skills
+
+Skills are loaded on demand. The agent reads this table to decide which skill to invoke.
+
+| Skill | Trigger Condition |
+|-------|-------------------|
+| `receiving-tickets` | When given a Jira ticket ID to investigate or start a new QA project |
+| `planning-tests` | When requirements are gathered and a test plan is needed |
+| `designing-cases` | When a test plan exists and detailed test cases need to be written |
+| `drafting-review-email` | When test artifacts are ready for stakeholder review |
+| `syncing-testlink` | When test cases need to be imported into TestLink |
+| `executing-tests` | When a TestLink test plan is ready for browser-based execution |
+| `creating-demo` | When a demo presentation needs to be created from test results |
+| `analyzing-logs` | When Robot Framework logs need failure analysis |
+| `tracking-changes` | When QA artifacts are created, modified, or reviewed — track in GitHub |
+
+Skills are thin routers — each SKILL.md contains the step sequence and progress checklist, delegating to commands for implementation details. Do not load all skills at once; load only when the trigger condition matches.
 
 ## Key Workflows
 
