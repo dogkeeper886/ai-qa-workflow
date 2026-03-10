@@ -18,12 +18,6 @@ AI QA Workflow is a QA automation toolkit that connects AI coding agents with te
 
 This is an open-source repository. Before committing, verify no private identifiers remain in `commands/` or `demo/`:
 
-```bash
-grep -ri "ACX-\|GPDL\|Guest Pass\|RuckusOne" commands/
-grep -ri "233078810\|168790395\|FR-9147" commands/
-grep -ri "MAC Randomization\|NAS_ID\|Grouped.Toast\|AP Group" commands/
-```
-
 All commands must return **no results**. Examples must use only generic placeholders:
 
 | Type | Allowed Pattern | Example |
