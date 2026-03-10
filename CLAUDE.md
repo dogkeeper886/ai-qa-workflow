@@ -64,7 +64,7 @@ Commands are installed by copying markdown files to `~/.claude/commands/`. Skill
 commands/
 ├── confluence/    # Confluence page operations (6 commands, cf-*)
 ├── github/        # GitHub tracking and traceability (4 commands, gh-*)
-├── jira/          # Jira ticket tracing and conversion (6 commands, jr-*)
+├── jira/          # Jira ticket tracing and conversion (7 commands, jr-*)
 ├── project/       # Project management commands (8 commands, pm-*)
 ├── testlink/      # TestLink CRUD and execution (18 commands, tl-*)
 ├── test-workflow/ # Test planning and case workflows (13 commands, tw-*)

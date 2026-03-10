@@ -51,7 +51,7 @@ These MCP servers must be configured:
 
 **GitHub (gh-*):** `/gh-init`, `/gh-track`, `/gh-status`, `/gh-close`
 
-**Jira (jr-*):** `/jr-trace`, `/jr-trace-fetch`, `/jr-trace-structure`, `/jr-trace-docs`, `/jr-trace-verify`, `/jr-issue-summary`
+**Jira (jr-*):** `/jr-trace`, `/jr-trace-fetch`, `/jr-trace-structure`, `/jr-trace-docs`, `/jr-trace-verify`, `/jr-issue-summary`, `/jr-to-markdown`
 
 **Confluence (cf-*):** `/cf-create-page`, `/cf-update-page`, `/cf-review-page`, `/cf-page-summary`, `/cf-to-markdown`, `/cf-format-guide`
 
