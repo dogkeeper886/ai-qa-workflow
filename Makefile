@@ -146,7 +146,7 @@ help:
 	@echo "  make uninstall-workflow - Remove workflow section from CLAUDE.md"
 	@echo "  make help             - Show this help message"
 	@echo ""
-	@echo "Skills (8 total) installed to:"
+	@echo "Skills (9 total) installed to:"
 	@echo "  ~/.claude/skills/<name>/SKILL.md"
 	@echo ""
 	@echo "Variables (GNU standard):"
