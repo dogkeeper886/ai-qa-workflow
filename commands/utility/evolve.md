@@ -58,6 +58,12 @@ Run: git log --oneline --since="<range>" --format="%h %s" | head -200
 For the 50 most recent commits, identify which files each touched:
 Run: git log --since="<range>" --name-only --format="%h %s" | head -500
 
+### Session Summaries
+If `docs/session_summaries/patterns.md` exists, read it for:
+- Recurring friction points (3+ occurrences → promote to High-confidence insight)
+- Improvement candidates (feed directly into Phase 5 proposals)
+- Workflow distribution (identify underserved workflow phases)
+
 ### Current State
 - Read CLAUDE.md for current instructions
 - List existing commands: ls -R .claude/commands/
