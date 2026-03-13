@@ -226,6 +226,7 @@ See [docs/workflows/skills.md](docs/workflows/skills.md) for invocation patterns
 | `/rewrite-text` | Simplify text while keeping meaning |
 | `/robot-log-analyzer` | Analyze Robot Framework logs |
 | `/evolve` | Analyze project history and suggest improvements |
+| `/session-summary` | Record privacy-safe session summary for pattern detection |
 
 ## Documentation
 
