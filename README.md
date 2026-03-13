@@ -61,8 +61,8 @@ See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the
 |---------|-------------|
 | **Single Source of Truth** | Requirements flow from Jira/Confluence through test design to execution |
 | **MCP Integrations** | Direct access to Atlassian, TestLink, and Playwright via Model Context Protocol |
-| **Agent Skills** | 8 high-level skills route to slash commands, covering complete lifecycle phases |
-| **60 Slash Commands** | Granular commands for targeted, atomic operations |
+| **Agent Skills** | High-level skills route to slash commands, covering complete lifecycle phases |
+| **Slash Commands** | Granular commands for targeted, atomic operations |
 | **Dual-Judge Framework** | Test execution with both deterministic and semantic (LLM) verification |
 | **Layered Architecture** | Skills (routers) → Commands (operations) → MCP tools |
 | **Orchestration Pattern** | Skills and commands detect context and route to focused sub-tasks |
@@ -161,7 +161,7 @@ make install-skills    # Skills only
 
 1. Restart your IDE
 2. Skills available as slash commands (e.g., `/receiving-tickets`)
-3. All 60 commands also available (e.g., `/jr-trace`)
+3. All commands also available (e.g., `/jr-trace`)
 4. Configure MCP integrations (see [docs/integrations/](docs/integrations/))
 
 ## Agent Skills
