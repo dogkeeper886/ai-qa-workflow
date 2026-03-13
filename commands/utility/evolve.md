@@ -3,11 +3,13 @@
 ```
 Analyze project history to detect patterns and suggest improvements to CLAUDE.md, skills, and commands.
 
-Arguments: $ARGUMENTS
+Arguments: {{input}}
   - (empty)         Full analysis (issues + commits, last 90 days)
   - issues          Analyze GitHub issues only
   - commits         Analyze git commits only
   - --since 30d     Override time range (default: 90 days)
+
+Note: Translate shorthand to git format (e.g., "30d" → "30 days ago", "90d" → "90 days ago").
 
 Examples:
   /evolve
@@ -29,22 +31,24 @@ Examples:
 Before collecting new data, check for prior evolve reports to establish baseline:
 
 1. **Find prior reports:**
-   ```
-   ls docs/evolve/*_evolve_report.md 2>/dev/null
-   ```
+
+        ls docs/evolve/*_evolve_report.md 2>/dev/null
+
 2. **If prior reports exist, read the most recent one** and extract:
    - Date and time range of previous analysis
    - Actions that were applied (from "Actions Applied" table)
    - Patterns flagged for monitoring (from "Patterns to Monitor" section)
    - Total insight counts for trend comparison
 
-3. **Build a "prior actions" checklist** — each applied action becomes an evaluation target in Phase 3.5.
+3. **Build a "prior actions" checklist** — each applied action becomes an evaluation target in Phase 4.
 
 4. **If no prior reports exist**, skip to Phase 1 (first run).
 
 ## Phase 1: Data Collection
 
-Collect the following data (respect --since argument if provided, default 90 days):
+Collect the following data (respect --since argument if provided, default 90 days).
+
+Note: Translate shorthand to git format (e.g., "30d" → "30 days ago", "90d" → "90 days ago").
 
 ### GitHub Issues
 Run: gh issue list --state all --limit 100 --json number,title,body,labels,state,createdAt,closedAt,comments
@@ -60,6 +64,10 @@ Run: git log --since="<range>" --name-only --format="%h %s" | head -500
 - Read CLAUDE.md for current instructions
 - List existing commands: ls -R .claude/commands/
 - List existing skills: ls .claude/skills/
+
+### Fallback
+- If `gh` CLI is not authenticated or the repo has no GitHub issues, skip issue analysis and proceed with git commits only.
+- If git history is empty or too short, report "insufficient data" and exit gracefully.
 
 ## Phase 2: Pattern Detection
 
@@ -101,7 +109,7 @@ For each detected pattern, create an insight entry:
 | Category | Workflow Gap / Friction Point / Usage Pattern / Knowledge Decay |
 | Suggestion | Concrete, actionable improvement proposal |
 
-## Phase 3.5: Evaluate Prior Actions (skip if no prior report)
+## Phase 4: Evaluate Prior Actions (skip if no prior report)
 
 For each action applied in the most recent prior evolve report, evaluate whether it worked:
 
@@ -118,13 +126,11 @@ For each prior action, search for evidence **since the prior report date**:
 
 ### Evaluation Output
 
-```
-## Prior Action Effectiveness (since [prior report date])
+    ## Prior Action Effectiveness (since [prior report date])
 
-| # | Prior Action | Verdict | Evidence |
-|---|-------------|---------|----------|
-| 1 | [action description] | Effective / Partial / Ineffective / Too early | [specific commits or file counts] |
-```
+    | # | Prior Action | Verdict | Evidence |
+    |---|-------------|---------|----------|
+    | 1 | [action description] | Effective / Partial / Ineffective / Too early | [specific commits or file counts] |
 
 **Verdicts:**
 - **Effective** — Zero or near-zero violations/recurrences since the action
@@ -132,9 +138,9 @@ For each prior action, search for evidence **since the prior report date**:
 - **Ineffective** — Same rate of violations; consider strengthening the rule
 - **Too early** — Not enough data yet (< 2 weeks since action); flag for next run
 
-If an action was **Ineffective**, promote a follow-up fix to High priority in Phase 4.
+If an action was **Ineffective**, promote a follow-up fix to High priority in Phase 5.
 
-## Phase 4: Propose Actions
+## Phase 5: Propose Actions
 
 Group all suggestions into these action categories:
 
@@ -149,48 +155,47 @@ For each action, note:
 - Effort: Small (minutes) / Medium (under an hour) / Large (multi-step)
 - Risk: None / Low / Medium
 
-## Phase 5: Output Report
+## Phase 6: Output Report
 
 Present findings as a structured report:
 
 ### Report Structure
-```
-## Evolve Report — [DATE]
 
-### Summary
-- Time range analyzed: [range]
-- Issues analyzed: [count]
-- Commits analyzed: [count]
-- Insights found: [count] (High: N, Medium: N, Low: N)
-- Prior report: [date] or "First run"
+    ## Evolve Report — [DATE]
 
-### Prior Action Effectiveness
-(Include only if a prior report exists)
+    ### Summary
+    - Time range analyzed: [range]
+    - Issues analyzed: [count]
+    - Commits analyzed: [count]
+    - Insights found: [count] (High: N, Medium: N, Low: N)
+    - Prior report: [date] or "First run"
 
-| # | Prior Action | Verdict | Evidence |
-|---|-------------|---------|----------|
-| 1 | ... | Effective / Partial / Ineffective / Too early | ... |
+    ### Prior Action Effectiveness
+    (Include only if a prior report exists)
 
-**Scorecard:** N effective, N partial, N ineffective, N too early out of N total
+    | # | Prior Action | Verdict | Evidence |
+    |---|-------------|---------|----------|
+    | 1 | ... | Effective / Partial / Ineffective / Too early | ... |
 
-### High-Confidence Insights
-[Insights with 3+ evidence points, sorted by category]
+    **Scorecard:** N effective, N partial, N ineffective, N too early out of N total
 
-### Medium-Confidence Insights
-[Insights with 2 evidence points]
+    ### High-Confidence Insights
+    [Insights with 3+ evidence points, sorted by category]
 
-### Proposed Actions
-[Numbered list grouped by category, with priority and effort]
+    ### Medium-Confidence Insights
+    [Insights with 2 evidence points]
 
-### Low-Confidence Observations
-[Insights with 1 evidence point — for awareness only]
+    ### Proposed Actions
+    [Numbered list grouped by category, with priority and effort]
 
-### Patterns to Monitor
-[Carry forward unresolved patterns + add new ones from this run.
- Each entry: pattern name, what to check, success criteria.]
-```
+    ### Low-Confidence Observations
+    [Insights with 1 evidence point — for awareness only]
 
-## Phase 6: Apply (with confirmation)
+    ### Patterns to Monitor
+    [Carry forward unresolved patterns + add new ones from this run.
+     Each entry: pattern name, what to check, success criteria.]
+
+## Phase 7: Apply (with confirmation)
 
 After presenting the report, ask the user which actions to apply:
 
