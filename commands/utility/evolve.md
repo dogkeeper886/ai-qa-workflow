@@ -9,8 +9,6 @@ Arguments: {{input}}
   - commits         Analyze git commits only
   - --since 30d     Override time range (default: 90 days)
 
-Note: Translate shorthand to git format (e.g., "30d" → "30 days ago", "90d" → "90 days ago").
-
 Examples:
   /evolve
   /evolve issues
