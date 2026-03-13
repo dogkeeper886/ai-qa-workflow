@@ -61,8 +61,8 @@ See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the
 |---------|-------------|
 | **Single Source of Truth** | Requirements flow from Jira/Confluence through test design to execution |
 | **MCP Integrations** | Direct access to Atlassian, TestLink, and Playwright via Model Context Protocol |
-| **Agent Skills** | 8 high-level skills route to slash commands, covering complete lifecycle phases |
-| **59 Slash Commands** | Granular commands for targeted, atomic operations |
+| **Agent Skills** | High-level skills route to slash commands, covering complete lifecycle phases |
+| **Slash Commands** | Granular commands for targeted, atomic operations |
 | **Dual-Judge Framework** | Test execution with both deterministic and semantic (LLM) verification |
 | **Layered Architecture** | Skills (routers) → Commands (operations) → MCP tools |
 | **Orchestration Pattern** | Skills and commands detect context and route to focused sub-tasks |
@@ -99,6 +99,47 @@ Commands use a **detect-and-route** pattern: a short entry-point command reads t
   └─ verify
 ```
 
+## Self-Improvement with `/evolve`
+
+The `/evolve` command is an evidence-based self-improvement loop that analyzes project history and proposes actionable improvements to CLAUDE.md, commands, and skills.
+
+### Usage
+
+```
+/evolve                     # Full analysis (issues + commits, last 90 days)
+/evolve issues              # Analyze GitHub issues only
+/evolve commits             # Analyze git commits only
+/evolve --since 30d         # Override time range
+/evolve commits --since 30d # Combine arguments
+```
+
+### 7-Phase Workflow
+
+| Phase | Name | What It Does |
+|-------|------|--------------|
+| 0 | Read Prior Reports | Load previous evolve report to establish baseline |
+| 1 | Data Collection | Gather GitHub issues, git commits, file changes, and session summaries |
+| 2 | Pattern Detection | Detect workflow gaps, friction points, usage patterns, and knowledge decay |
+| 3 | Generate Insights | Score each pattern by confidence (Low / Medium / High) with cited evidence |
+| 4 | Evaluate Prior Actions | Check if previously applied actions were effective |
+| 5 | Propose Actions | Group suggestions into CLAUDE.md updates, new/updated commands, skill improvements |
+| 6–7 | Report & Apply | Output structured report, then apply selected actions with confirmation |
+
+### Detection Categories
+
+- **Workflow Gaps** — missing commands, manual steps that could be automated
+- **Friction Points** — recurring fixes, reverts, long issue threads
+- **Usage Patterns** — files always modified together, high-churn directories, unused commands
+- **Knowledge Decay** — CLAUDE.md contradicted by recent commits, stale references
+
+### Integration with `/session-summary`
+
+When session summaries exist at `docs/session_summaries/patterns.md`, `/evolve` incorporates recurring friction points (3+ occurrences become high-confidence insights) and improvement candidates into its analysis.
+
+### Reports
+
+Reports are saved to `docs/evolve/[YYYY-MM-DD]_evolve_report.md` and include an effectiveness scorecard tracking whether prior actions achieved their goals.
+
 ## Quick Start
 
 ### Installation
@@ -120,7 +161,7 @@ make install-skills    # Skills only
 
 1. Restart your IDE
 2. Skills available as slash commands (e.g., `/receiving-tickets`)
-3. All 59 commands also available (e.g., `/jr-trace`)
+3. All commands also available (e.g., `/jr-trace`)
 4. Configure MCP integrations (see [docs/integrations/](docs/integrations/))
 
 ## Agent Skills
@@ -225,7 +266,7 @@ See [docs/workflows/skills.md](docs/workflows/skills.md) for invocation patterns
 |---------|---------|
 | `/rewrite-text` | Simplify text while keeping meaning |
 | `/robot-log-analyzer` | Analyze Robot Framework logs |
-| `/evolve` | Analyze project history and suggest improvements |
+| `/evolve` | Evidence-based self-improvement loop — analyzes issues, commits, and session summaries to propose improvements |
 | `/session-summary` | Record privacy-safe session summary for pattern detection |
 
 ## Documentation
@@ -241,6 +282,7 @@ See [docs/workflows/skills.md](docs/workflows/skills.md) for invocation patterns
 
 - [Agent Skills](docs/workflows/skills.md) - Skills guide: invocation, trigger phrases, MCP requirements
 - [Test Lifecycle](docs/workflows/test-lifecycle.md) - Complete end-to-end workflow
+- [Trace and Evolve](docs/workflows/trace-and-evolve.md) - GitHub tracking, session summaries, and continuous improvement loop
 
 ### Design
 
