@@ -8,11 +8,30 @@ AI QA Workflow is a QA automation toolkit that connects AI coding agents with te
 
 ## Git Workflow
 
-- Create feature branches for all changes: `git checkout -b feature/description`
 - Never commit directly to main
 - Open PR for review before merging
 - PRs require review approval before merging
 - Delete the feature branch after merging
+
+### Branch Naming
+
+- General work: `feature/<description>` (e.g. `feature/add-sync-commands`)
+- Issue-based work: `issue-<N>-<slug>` (e.g. `issue-27-release-notes`)
+
+### PR Conventions
+
+- Title: short, imperative, under 70 characters
+- Body: include `Fixes #N` or `Closes #N` to auto-close the linked issue
+- Body: include `## Summary` (1-3 bullet points) and `## Test plan` sections
+
+### Dev Workflow Commands
+
+For structured issue-driven development, use the `dw-*` commands:
+1. `/dw-plan` — Break request into GitHub issues with labels
+2. `/dw-implement` — Pick up issue, create branch, implement
+3. `/dw-create-pr` — Push and open PR with issue linkage
+4. `/dw-review-pr` — Review PR against checklist
+5. `/dw-merge` — Merge PR and clean up
 
 ## Information Leak Check
 
@@ -57,12 +76,13 @@ Commands are installed by copying markdown files to `~/.claude/commands/`. Skill
 ```
 commands/
 ├── confluence/    # Confluence page operations (6 commands, cf-*)
+├── dev-workflow/  # Dev lifecycle: plan, implement, PR, review, merge (5 commands, dw-*)
 ├── github/        # GitHub tracking and traceability (4 commands, gh-*)
 ├── jira/          # Jira ticket tracing and conversion (7 commands, jr-*)
 ├── project/       # Project management commands (8 commands, pm-*)
 ├── testlink/      # TestLink CRUD and execution (18 commands, tl-*)
 ├── test-workflow/ # Test planning and case workflows (13 commands, tw-*)
-└── utility/       # Text rewriting, log analysis, self-improvement (4 commands)
+└── utility/       # Text rewriting, log analysis, self-improvement, cross-repo sync (6 commands)
 skills/
 ├── receiving-tickets/    # Fetch Jira ticket + set up project workspace
 ├── planning-tests/       # Create test plan from ticket, publish to Confluence
@@ -75,6 +95,7 @@ skills/
 └── tracking-changes/     # Track QA artifact changes in GitHub
 docs/
 ├── integrations/  # MCP server setup guides
+├── references/    # Claude Code command and skill format specs
 ├── workflows/     # End-to-end test lifecycle guide
 └── design/        # Design principles
 ```
