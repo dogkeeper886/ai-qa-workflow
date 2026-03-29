@@ -71,7 +71,7 @@ Run `/tw-case-review` to check all test cases for:
 - Complete preconditions
 - 3-10 steps per test case
 - Test independence (can run standalone)
-- Navigation step strategy (see CLAUDE.md § Navigation Step Strategy) — setup navigation in preconditions, not repeated steps
+- Navigation step strategy — setup navigation in preconditions, not repeated steps
 
 ### Validate
 

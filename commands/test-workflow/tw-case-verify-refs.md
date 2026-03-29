@@ -2,9 +2,10 @@
 
 Scan test case files and cross-reference documents for TC count mismatches.
 
-```
-$ARGUMENTS
-```
+**Usage:** `/tw-case-verify-refs {{input}}`
+
+**Arguments:**
+- `{{input}}` - Path to project folder
 
 ## Purpose
 
@@ -24,7 +25,7 @@ Detect TC count drift across all documents that reference test case counts. This
 
 ## Input
 
-The `$ARGUMENTS` should be the project path (e.g., `active/PROJ-12345_User_Session_Management`).
+The `{{input}}` should be the project path (e.g., `active/PROJ-12345_User_Session_Management`).
 
 If no argument is provided, auto-detect the active project:
 1. Check if CWD is inside an `active/` project directory

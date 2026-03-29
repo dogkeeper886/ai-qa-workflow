@@ -21,10 +21,10 @@ User should provide:
 1. **Version Backup**: Before updating, prompt the user: "Please create a new version for {Test Case ID} in TestLink before I update it." Wait for confirmation before proceeding.
 2. **Validate Input**: Check for required fields (ID, name, summary)
 3. **Format Summary**: Wrap in <p> tags, apply <strong> for emphasis
-3. **Format Preconditions**: Convert to <ul><li> list format
-4. **Format Steps**: Apply HTML formatting to actions and expected results
-5. **Apply HTML Entities**: Convert >, <, ", &, ' to proper entities
-6. **Call API**: Use update_test_case tool with formatted data
+4. **Format Preconditions**: Convert to <ul><li> list format
+5. **Format Steps**: Apply HTML formatting to actions and expected results
+6. **Apply HTML Entities**: Convert >, <, ", &, ' to proper entities
+7. **Call API**: Use update_test_case tool with formatted data
 
 ## Example Usage:
 **User Input:**

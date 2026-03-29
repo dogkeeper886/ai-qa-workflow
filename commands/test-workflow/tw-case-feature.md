@@ -205,7 +205,7 @@ Each test case MUST run standalone:
 
 ### Navigation Step Strategy
 
-Apply CLAUDE.md § Navigation Step Strategy:
+Apply these navigation step rules:
 - [ ] Setup navigation moved to preconditions when 3+ TCs share the same path
 - [ ] Navigation condensed to 1-2 steps max (no intermediate page verifications)
 - [ ] No URLs/routes in test steps — use page names instead

@@ -1,9 +1,11 @@
 # Publish Test Cases
 
-```
 Publish test case changes to all destinations: verify references, review quality, sync to TestLink, and update Confluence.
 
-Project Path: $ARGUMENTS
+**Usage:** `/tw-case-publish {{input}}`
+
+**Arguments:**
+- `{{input}}` - Path to project folder
 
 ## PURPOSE
 
@@ -57,7 +59,7 @@ After rewriting or adding test cases, multiple sync steps are needed. This comma
 
 ## INPUT
 
-The `$ARGUMENTS` should be the project path (e.g., `active/PROJ-12345_User_Session_Management`).
+The `{{input}}` should be the project path (e.g., `active/PROJ-12345_User_Session_Management`).
 
 If no argument is provided, auto-detect the active project:
 1. Check if CWD is inside an `active/` project directory
@@ -241,4 +243,3 @@ Step 6: ✅ All destinations synchronized
 - If any step fails, subsequent steps are skipped and the failure is reported
 - This command can be re-run safely — matched cases are skipped automatically
 - To skip the review step (e.g., already reviewed), user can say "skip review" when prompted
-```

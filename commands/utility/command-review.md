@@ -158,7 +158,7 @@ Commands must follow the project's established patterns.
 **Checklist:**
 - [ ] File naming follows the `prefix-name.md` convention
 - [ ] References to other commands use the correct `/prefix-name` format
-- [ ] Ticket ID formats match project conventions (ACX-XXXXX, FR-XXXX, ER-XXXXX)
+- [ ] Ticket ID formats match project conventions (PROJ-NNNNN, FR-NNNN)
 - [ ] File path references match the repository structure documented in CLAUDE.md
 - [ ] HTML formatting rules followed for TestLink content (no `\n`, use `<p>`, entities)
 - [ ] Terminology is consistent with CLAUDE.md and other commands in the same domain

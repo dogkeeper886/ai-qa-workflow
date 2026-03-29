@@ -144,7 +144,7 @@ For each test case, verify the following quality criteria:
 
 #### 3.9 Sanitization [All Profiles]
 
-> See also: CLAUDE.md § Test Case Design Rules > Sanitization Checklist
+Verify test cases are free of environment-specific identifiers:
 
 - [ ] No hardcoded tenant names — use generic placeholders (e.g., "TestTenant-A")
 - [ ] No real credentials or passwords — use placeholders like `<password>`
