@@ -71,9 +71,22 @@ Each command is a markdown file in `commands/` that serves as both documentation
 
 Commands are installed by copying markdown files to `~/.claude/commands/`. Skills are thin routers that delegate to slash commands — each SKILL.md contains only the step sequence and progress checklist, routing to commands for implementation details.
 
+### Two-Tier Command Model
+
+| Directory | Scope | Loaded | Purpose |
+|-----------|-------|--------|---------|
+| `commands/` | Global | After `make install` copies to `~/.claude/commands/` | QA workflow commands used across any project |
+| `.claude/commands/` | Repo-local | Automatically when working in this repo | Repo maintenance commands (compare, sync, review) |
+
+**When to use which:**
+- **`commands/`** — Commands that users install and run in other repos (test planning, TestLink sync, Jira tracing, etc.)
+- **`.claude/commands/`** — Commands that only make sense inside this repo (cross-repo drift detection, component sync, command quality auditing)
+
 ### Directory Structure
 
 ```
+.claude/
+└── commands/      # Repo-local commands (loaded automatically, no install needed)
 commands/
 ├── confluence/    # Confluence page operations (6 commands, cf-*)
 ├── dev-workflow/  # Dev lifecycle: plan, implement, PR, review, merge (5 commands, dw-*)
@@ -112,7 +125,14 @@ Commands expect these MCP servers configured in the IDE:
 
 ## Adding New Commands
 
-1. Create markdown file in appropriate `commands/` subfolder
+### Choose the right directory
+
+- **QA workflow command** (used across projects) → `commands/<category>/`
+- **Repo maintenance command** (only for this repo) → `.claude/commands/`
+
+### Steps
+
+1. Create markdown file in the chosen directory
 2. Follow this template structure:
    ```markdown
    # Command Name
@@ -122,18 +142,19 @@ Commands expect these MCP servers configured in the IDE:
 
    ## Agent Instructions:
    1. Step-by-step processing guidance
-   
+
    ## Expected User Input Format:
    What parameters the user should provide
-   
+
    ## Example Usage:
    Concrete examples with agent processing steps
-   
+
    ## API Notes:
    MCP tool calls and quirks
    ```
-3. Run `make install` to deploy
-4. Commit only the source file in `commands/`
+3. For `commands/` files: run `make install` to deploy
+4. For `.claude/commands/` files: available immediately, no install needed
+5. Commit the source file
 
 ## Skills
 
