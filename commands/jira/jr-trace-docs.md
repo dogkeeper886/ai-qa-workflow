@@ -1,9 +1,17 @@
 # Jira Trace - Documentation Download
 
-```
 Download documentation files for a traced Jira ticket project.
 
-Jira Issue Key: {{input}}
+**Usage:** `/jr-trace-docs {{input}}`
+
+**Arguments:**
+- `{{input}}` - Jira issue key (e.g., PROJ-12345)
+
+## When to Use
+
+- After `/jr-trace-fetch` has identified related tickets and Confluence pages
+- When setting up a new project and need to download all documentation locally
+- As part of the `/jr-trace` pipeline (Step 3)
 
 ## PURPOSE
 
@@ -193,4 +201,3 @@ This file serves as the **visual baseline** for test planning and test case desi
 ## NEXT STEP
 
 After downloading files, run `/jr-trace-verify` to validate downloads and generate summaries.
-```

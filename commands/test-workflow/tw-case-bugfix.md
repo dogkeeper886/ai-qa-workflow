@@ -292,7 +292,7 @@ Do not embed test plan mapping labels (e.g., `D1`, `D2`, `S2`) in test case phas
 ## NEXT STEP
 
 After creating test cases:
-1. **Regenerate `test_cases/README.md`** — scan all `sections/*.md` files for TC counts (never hand-edit counts)
+1. **Regenerate `test_cases/README.md`** — scan all `test_cases/TS-*.md` or `test_cases/sections/*.md` files for TC counts (never hand-edit counts)
 2. **Verify test_plan counts match** — update `test_plan/sections/03_Test_Strategy.md` scenario/TC counts if they changed
 3. Run `/tw-case-review` to verify quality.
 

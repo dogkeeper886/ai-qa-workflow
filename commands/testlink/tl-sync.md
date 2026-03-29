@@ -2,6 +2,12 @@
 
 Synchronize TestLink test cases with local test case files. This command automates the process of comparing, updating, and creating test cases in TestLink based on local markdown files.
 
+## When to Use
+
+- After creating or updating local test case files that need syncing to TestLink
+- Before test execution when TestLink must reflect the latest test cases
+- As part of `/tw-case-publish` pipeline (Step 4)
+
 ## Usage
 
 When user provides:
@@ -19,12 +25,12 @@ When user provides:
 - Use the suite ID to get all test cases in the test suite
 - Display summary: total count and test case IDs
 
-### Step 2.5: Verify Mapping File IDs
+### Step 3: Verify Mapping File IDs
 - If a `testlink_mapping.md` file exists in the project, verify that the TestLink IDs listed match the actual test case external IDs returned from Step 2
 - Flag any mismatches (wrong IDs, missing IDs) before proceeding
 - If mismatches are found, ask the user to confirm before continuing
 
-### Step 3: Compare with Local File
+### Step 4: Compare with Local File
 - Read the local test case markdown file
 - Compare each test case from local file with TestLink:
   - Check if test case exists in TestLink
@@ -35,7 +41,7 @@ When user provides:
     - Add to "Test Cases Already Matching" list
     - Do NOT call update API for matching test cases
 
-### Step 4: Update or Create Test Cases
+### Step 5: Update or Create Test Cases
 - **For existing test cases that match completely:**
   - Skip update - preserve existing test case as-is
   - Report as "already matching" in summary
@@ -54,7 +60,7 @@ When user provides:
   - Set status to 1 (final/ready)
   - Report new test case IDs created
 
-### Step 5: Review Preconditions
+### Step 6: Review Preconditions
 - After updates/creation, retrieve all test cases again
 - Check each test case for:
   - Missing preconditions (empty string)
@@ -62,7 +68,7 @@ When user provides:
 - Fix any missing or incorrect preconditions
 - Report final status of all preconditions
 
-### Step 6: Final Verification (Optional)
+### Step 7: Final Verification (Optional)
 - Optionally review entire test case content:
   - Summary formatting
   - Step formatting
