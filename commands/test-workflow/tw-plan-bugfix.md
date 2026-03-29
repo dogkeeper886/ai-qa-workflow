@@ -99,6 +99,22 @@ AUDIENCE: QA Engineers, Developers, Product Team
 **Current Workaround:** [If any - check comments]
 ```
 
+### Step 2.5: Reproduce Visually (if UI bug)
+
+If the bug has UI symptoms, verify the current state before and after the fix.
+
+**Ask the user:** "Is this a UI-visible bug? Can I open the browser to see the current behavior?"
+
+```
+IF UI bug AND live environment available:
+  → Open browser and reproduce the bug (or verify it's fixed)
+  → Capture screenshot of the buggy state (if still reproducible) or fixed state
+  → This grounds test cases in reality, not just ticket descriptions
+
+IF not a UI bug:
+  → Skip this step — proceed to Step 3
+```
+
 ### Step 3: Understand the Fix
 
 **Questions to ask:**
@@ -183,6 +199,43 @@ IF no fix approach documented:
   6. Note in test plan: "Fix details not documented - created comprehensive test coverage"
   7. Continue without blocking
 ```
+
+---
+
+## BEST PRACTICE SECTIONS (Focused Profile)
+
+Bug fix test plans use the Focused review profile, which requires fewer
+best-practice sections. After finalizing test scenarios (Step 5), add:
+
+### Step 6: Coverage Matrix
+
+For each test scenario, identify which coverage aspects it addresses.
+Bug fixes typically cover only a few aspects:
+
+| Coverage Aspect | Typical for Bug Fixes |
+|-----------------|----------------------|
+| Error Handling | Almost always relevant |
+| Edge Cases | Often relevant |
+| Backward Compatibility | If fix changes existing behavior |
+| UI Configuration | If bug is UI-related |
+
+Output an ASCII coverage matrix in `03_Test_Strategy.md` after the
+scenarios table:
+
+```
+┌────────────────────────┬───────┬───────┬───────┐
+│ Test Aspect            │ TS-01 │ TS-02 │ TS-03 │
+├────────────────────────┼───────┼───────┼───────┤
+│ Error Handling         │   ✓   │       │   ✓   │
+│ Edge Cases             │       │       │   ✓   │
+│ Backward Compatibility │       │   ✓   │       │
+└────────────────────────┴───────┴───────┴───────┘
+```
+
+> **Note:** Entry/exit criteria, risk assessment, requirements traceability,
+> and diagrams are **skipped** for bug fix plans (Focused profile). Bug fix
+> testing has implicit criteria — the defect is verified fixed and regression
+> passes.
 
 ---
 
@@ -302,6 +355,15 @@ test_plan/
 | **TS-03** | Edge Cases | Prevention | 2-4 | • [Activities] |
 
 **Total:** [N] test scenarios, ~[N] test cases
+
+### 3.3 Coverage Matrix
+
+┌────────────────────────┬───────┬───────┬───────┐
+│ Test Aspect            │ TS-01 │ TS-02 │ TS-03 │
+├────────────────────────┼───────┼───────┼───────┤
+│ [Relevant aspect 1]   │   ✓   │       │   ✓   │
+│ [Relevant aspect 2]   │       │   ✓   │       │
+└────────────────────────┴───────┴───────┴───────┘
 ```
 
 ### test_plan/sections/04_References_Resources.md

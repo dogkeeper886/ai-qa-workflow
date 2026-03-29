@@ -81,8 +81,8 @@ commands/
 ├── jira/          # Jira ticket tracing and conversion (7 commands, jr-*)
 ├── project/       # Project management commands (8 commands, pm-*)
 ├── testlink/      # TestLink CRUD and execution (18 commands, tl-*)
-├── test-workflow/ # Test planning and case workflows (13 commands, tw-*)
-└── utility/       # Text rewriting, log analysis, self-improvement, cross-repo sync (6 commands)
+├── test-workflow/ # Test planning and case workflows (15 commands, tw-*)
+└── utility/       # Text rewriting, log analysis, self-improvement, cross-repo sync (7 commands)
 skills/
 ├── receiving-tickets/    # Fetch Jira ticket + set up project workspace
 ├── planning-tests/       # Create test plan from ticket, publish to Confluence
@@ -92,7 +92,8 @@ skills/
 ├── executing-tests/      # Execute TestLink plan via browser automation
 ├── creating-demo/        # Create PPTX demo with browser-verified screenshots
 ├── analyzing-logs/       # Analyze Robot Framework logs, report failures
-└── tracking-changes/     # Track QA artifact changes in GitHub
+├── tracking-changes/     # Track QA artifact changes in GitHub
+└── reviewing-commands/   # Audit command quality against best practices
 docs/
 ├── integrations/  # MCP server setup guides
 ├── references/    # Claude Code command and skill format specs
@@ -149,6 +150,7 @@ Skills are loaded on demand. The agent reads this table to decide which skill to
 | `creating-demo` | When a demo presentation needs to be created from test results |
 | `analyzing-logs` | When Robot Framework logs need failure analysis |
 | `tracking-changes` | When QA artifacts are created, modified, or reviewed — track in GitHub |
+| `reviewing-commands` | When command files need quality auditing against best practices |
 
 Skills are thin routers — each SKILL.md contains the step sequence and progress checklist, delegating to commands for implementation details. Do not load all skills at once; load only when the trigger condition matches.
 

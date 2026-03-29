@@ -19,6 +19,11 @@ When user provides:
 - Use the suite ID to get all test cases in the test suite
 - Display summary: total count and test case IDs
 
+### Step 2.5: Verify Mapping File IDs
+- If a `testlink_mapping.md` file exists in the project, verify that the TestLink IDs listed match the actual test case external IDs returned from Step 2
+- Flag any mismatches (wrong IDs, missing IDs) before proceeding
+- If mismatches are found, ask the user to confirm before continuing
+
 ### Step 3: Compare with Local File
 - Read the local test case markdown file
 - Compare each test case from local file with TestLink:
@@ -36,6 +41,7 @@ When user provides:
   - Report as "already matching" in summary
 
 - **For existing test cases with differences:**
+  - **Version Backup**: Before updating, prompt the user: "Please create a new version for {Test Case ID} in TestLink before I update it." Wait for confirmation before proceeding.
   - Update only the fields that differ
   - Preserve test case IDs and version history
   - Report what was updated

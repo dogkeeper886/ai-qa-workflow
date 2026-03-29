@@ -127,6 +127,8 @@ test_cases/
    | 1 | [Specific action] | [Measurable result] |
    | 2 | [Next action] | [Expected outcome] |
 
+   **Postconditions:** [If test creates data: cleanup steps. Omit if not applicable.]
+
    **Execution Type:** Manual
    ```
 
@@ -148,10 +150,11 @@ test_cases/
 ### Step 4: Finalize README.md
 
 After all scenario files are created:
-1. Complete Test Scenario Index table
+1. Complete Test Scenario Index table (scan all `test_cases/TS-*.md` files to derive TC counts — never hand-edit)
 2. Add Test Type Summary section
 3. Add Priority Summary section
 4. Add Execution Summary with totals
+5. **Verify test_plan counts match** — update `test_plan/sections/04_Test_Strategy.md` scenario/TC counts if they changed
 
 ---
 
@@ -167,10 +170,76 @@ After all scenario files are created:
 - Complex scenario: 8-12 test cases
 - If creating 20+: Split into 2 scenarios
 
-### Priority Assignment
-- **P0 (Critical):** Core functionality, happy path
-- **P1 (High):** Important variations, common scenarios
-- **P2 (Medium):** Edge cases, rare scenarios
+### No Internal Labels in Test Cases
+Do not embed test plan mapping labels (e.g., `D1`, `D2`, `S2`) in test case phase headers or step tables. These labels belong in the test plan or study documents, not in the test case itself. Phase names should be self-descriptive (e.g., "Before Start Date", "After Deactivation") without requiring the reader to look up a label key.
+
+### Priority Decision Tree
+
+For each test case, assign priority using this decision tree:
+
+```
+IF test case is the first/only TC for a scenario's primary flow → P0
+ELSE IF test case tests a variation, alternate input, or integration point → P1
+ELSE IF test case tests edge case, boundary, or rare configuration → P2
+ELSE IF test case tests error handling for uncommon scenarios → P2
+```
+
+**Target distribution:** P0: 20-30%, P1: 40-50%, P2: 20-30%
+Flag if distribution is skewed (e.g., >50% P0 suggests inflation).
+
+### Sanitization Checklist
+
+Before completing each test case, verify:
+- [ ] No hardcoded tenant names — use `TestTenant-A`, `TestTenant-B`
+- [ ] No real credentials — use `<password>` placeholder
+- [ ] No real IP addresses — use `10.x.x.x` or `192.168.x.x`
+- [ ] No real email addresses — use `testuser@example.com`
+- [ ] No RBAC scope lines unless the scenario specifically tests RBAC
+
+### Test Independence
+
+Each test case MUST run standalone:
+- All required setup is in preconditions (not "state from previous test")
+- No reliance on execution order
+- No shared mutable state between test cases
+
+### Navigation Step Strategy
+
+Apply CLAUDE.md § Navigation Step Strategy:
+- [ ] Setup navigation moved to preconditions when 3+ TCs share the same path
+- [ ] Navigation condensed to 1-2 steps max (no intermediate page verifications)
+- [ ] No URLs/routes in test steps — use page names instead
+
+### Test Data Adequacy
+
+- Use realistic values, not arbitrary placeholders
+- Different test cases should use distinct data to avoid masking bugs
+- Cover representative data types (strings, numbers, special characters)
+- Include boundary values at actual system limits (not round numbers)
+- Include negative test data (empty, null, overflow)
+
+### Boundary Value Analysis
+
+For features with numeric limits or field constraints, include test cases at:
+- **min** — the minimum allowed value
+- **min+1** — just above minimum
+- **max-1** — just below maximum
+- **max** — the maximum allowed value
+- **Empty/zero** state
+- **Overflow** — beyond maximum
+
+### Cleanup/Postconditions
+
+For test cases that create, modify, or delete data:
+- Document whether cleanup is needed after execution
+- Note postconditions if the test modifies shared state
+- Ensure no test leaves the system in a state that blocks other tests
+
+Add a `**Postconditions:**` section to test cases that create data:
+```markdown
+**Postconditions:**
+- Delete created [entity] after test execution
+```
 
 ### Test Variations
 Create variations based on:

@@ -21,6 +21,7 @@ Copy and track your progress:
 
 ```
 - [ ] Step 1: Validate prerequisites
+- [ ] Step 1.5: Verify visual baseline (screenshots, live UI, or flag as unverified)
 - [ ] Step 2: Detect plan type and route
 - [ ] Step 3: Write test cases per type
 - [ ] Step 4: Review quality
@@ -36,6 +37,19 @@ Copy and track your progress:
 Check that `test_plan/README.md` exists and `test_plan/sections/` contains section files.
 
 If missing: "Please run `/planning-tests` first to create the test plan."
+
+### Step 1.5: Verify Visual Baseline
+
+Before writing test cases, confirm the UI has been visually verified:
+
+1. Check if `test_plan/visual_baseline/` exists with screenshots from planning phase
+   - If yes: use these as reference for field labels, element names, and UI states
+2. If no visual baseline exists, ask the user: "Can I open the browser to verify the UI before writing test cases?"
+   - If yes: open browser, navigate to the feature, capture key states
+   - Compare against HLD wireframes — note any discrepancies
+3. If neither available: flag in test case output: "Field labels not verified against live UI"
+
+**Why:** Test cases with wrong field labels or UI element names cause execution failures and rework. Verifying once before writing prevents errors across all test cases.
 
 ### Step 2: Detect Plan Type and Route
 
@@ -57,6 +71,7 @@ Run `/tw-case-review` to check all test cases for:
 - Complete preconditions
 - 3-10 steps per test case
 - Test independence (can run standalone)
+- Navigation step strategy (see CLAUDE.md § Navigation Step Strategy) — setup navigation in preconditions, not repeated steps
 
 ### Validate
 
@@ -95,4 +110,6 @@ Path to project folder containing `test_plan/README.md` and `test_plan/sections/
 
 ## Next Step
 
-After designing cases, run `/syncing-testlink` to import test cases to TestLink.
+After designing cases:
+- Run `/tw-case-publish` to verify, review, and sync to all destinations (TestLink + Confluence) in one step
+- Or run `/syncing-testlink` directly to import test cases to TestLink only

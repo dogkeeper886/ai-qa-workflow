@@ -85,6 +85,27 @@ Enhancements require testing BOTH:
 - [Existing behavior 2]
 ```
 
+### Step 2.5: Visual Baseline Check
+
+Before assessing impact, verify the current UI for the area being enhanced.
+
+**Ask the user:** "Can I open the browser to see the current state of the feature being enhanced?"
+
+```
+IF live environment available:
+  → Open browser and navigate to the affected UI area
+  → Capture screenshots of the CURRENT state (before enhancement)
+  → This becomes the baseline for "what changed" verification
+  → Save to test_plan/visual_baseline/
+
+IF wireframes/mockups exist in HLD:
+  → Review embedded images to understand the target state
+  → Compare current vs target to identify visual changes
+
+IF neither available:
+  → Flag: "No visual baseline captured — verify UI changes manually during test case design"
+```
+
 ### Step 3: Assess Integration Impact
 
 **Questions to ask:**
@@ -154,6 +175,107 @@ IF enhancement scope is ambiguous:
 
 ---
 
+## BEST PRACTICE SECTIONS (Standard Profile)
+
+After finalizing test scenarios (Step 5), add the following sections. These
+align with what `/tw-plan-review` checks at the Standard profile level.
+
+### Step 6: Coverage Matrix
+
+For each test scenario, identify which coverage aspects it addresses.
+Include only aspects relevant to the enhancement — omit aspects that do
+not apply.
+
+| Coverage Aspect | Description |
+|-----------------|-------------|
+| UI Configuration | Tests that configure via user interface |
+| API Configuration | Tests that configure via API |
+| Data Flow | How data moves through the system |
+| Error Handling | Invalid inputs, edge cases, failures |
+| Backward Compatibility | Existing functionality still works |
+| Client/End-user Validation | End-to-end user scenarios |
+| Edge Cases | Boundary conditions, empty/max states |
+
+Output an ASCII coverage matrix in `04_Test_Strategy.md` after the
+scenarios table.
+
+### Step 7: Hybrid Depth Strategy
+
+If the enhancement has variants:
+
+1. **Identify the representative case** — the scenario covering the most
+   coverage aspects. This gets deep testing.
+2. **Identify variants** — scenarios differing by only 1-2 parameters.
+   These get lightweight validation only.
+3. Document which scenarios are "deep" vs "wide" in `04_Test_Strategy.md`.
+
+### Step 8: Requirements Traceability
+
+Map each requirement/acceptance criterion to test scenarios:
+
+```
+1. List requirements from:
+   - Enhancement Definition (§ 2.1-2.2)
+   - Test Scope (§ 3.1-3.3)
+   - Enhancement ticket acceptance criteria
+2. For each requirement, note which scenario(s) cover it
+3. Flag uncovered requirements
+```
+
+Add a traceability table to `04_Test_Strategy.md`:
+
+```markdown
+### Requirements Traceability
+
+| Requirement | Source | Covered By |
+|-------------|--------|------------|
+| [Requirement 1] | Enhancement ticket AC #1 | TS-01 |
+| [Requirement 2] | § 2.1 New Functionality | TS-01, TS-02 |
+| [Requirement 3] | § 3.3 Backward Compat | TS-04 |
+```
+
+### Step 9: Entry/Exit Criteria
+
+Add to `04_Test_Strategy.md`:
+
+```markdown
+### Entry/Exit Criteria
+
+**Entry Criteria:**
+- [ ] Enhancement deployed to test environment
+- [ ] Existing feature baseline verified
+- [ ] Test data provisioned
+
+**Exit Criteria:**
+- [ ] 100% P0 test cases pass
+- [ ] ≥90% P1 test cases pass
+- [ ] No regression in existing functionality
+```
+
+### Step 10: Risk Assessment (Lite)
+
+Flag only high-risk scenarios. For enhancements, pay special attention to:
+- Backward compatibility risks
+- Integration breakage risks
+- Data migration risks
+
+Add a brief risk note to `04_Test_Strategy.md`:
+
+```markdown
+### Risk Assessment
+
+| Scenario | Risk Level | Notes |
+|----------|-----------|-------|
+| TS-XX | High | [Why this is high risk] |
+```
+
+### Step 11: Diagrams (5+ Scenarios)
+
+If the test plan has 5 or more scenarios, run `/tw-diagrams` to generate
+Configuration Flow, Data Flow, and Modular Test Design diagrams.
+
+---
+
 ## OUTPUT FORMAT
 
 ### File Structure
@@ -165,7 +287,7 @@ test_plan/
     ├── 01_Enhancement_Context.md          # § 1.1-1.2
     ├── 02_Enhancement_Definition.md       # § 2.1-2.2
     ├── 03_Test_Scope.md                   # § 3.1-3.3
-    ├── 04_Test_Strategy.md                # § 4.1-4.2 (includes scenarios table)
+    ├── 04_Test_Strategy.md                # § 4.1-4.6 (includes scenarios, coverage matrix, traceability, entry/exit, risk)
     ├── 05_References_Resources.md         # § 5
     └── 06_Revision_History.md             # § 6
 ```
@@ -274,6 +396,44 @@ test_plan/
 | **TS-04** | Backward Compatibility | Existing behavior | 2-3 | • [Activities] |
 
 **Total:** [N] test scenarios, ~[N] test cases
+
+### 4.3 Coverage Matrix
+
+┌────────────────────────┬───────┬───────┬───────┬───────┐
+│ Test Aspect            │ TS-01 │ TS-02 │ TS-03 │ TS-04 │
+├────────────────────────┼───────┼───────┼───────┼───────┤
+│ [Relevant aspect 1]   │   ✓   │       │       │   ✓   │
+│ [Relevant aspect 2]   │       │   ✓   │   ✓   │       │
+└────────────────────────┴───────┴───────┴───────┴───────┘
+
+### 4.3.1 Hybrid Depth Strategy
+
+| Scenario | Depth | Rationale |
+|----------|-------|-----------|
+| TS-XX | Deep | Representative case — covers most aspects |
+| TS-XX | Wide | Variant — differs by 1-2 parameters |
+
+### 4.4 Requirements Traceability
+
+| Requirement | Source | Covered By |
+|-------------|--------|------------|
+| [Req 1] | [Source] | TS-XX |
+
+### 4.5 Entry/Exit Criteria
+
+**Entry Criteria:**
+- [ ] Enhancement deployed to test environment
+- [ ] Existing feature baseline verified
+
+**Exit Criteria:**
+- [ ] 100% P0 pass, ≥90% P1 pass
+- [ ] No regression in existing functionality
+
+### 4.6 Risk Assessment
+
+| Scenario | Risk Level | Notes |
+|----------|-----------|-------|
+| TS-XX | [High/Medium/Low] | [Details] |
 ```
 
 ### test_plan/sections/05_References_Resources.md

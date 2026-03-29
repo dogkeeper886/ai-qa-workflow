@@ -8,7 +8,8 @@ Analyze test case files to:
 1. Verify test case quality (clear steps, measurable results)
 2. Check completeness (all scenarios covered, no gaps)
 3. Identify issues early before TestLink sync
-4. Ensure test cases are ready for execution
+4. Recommend priorities for TestLink sync
+5. Ensure test cases are ready for execution
 
 ## Prerequisites
 
@@ -29,11 +30,27 @@ STOP - Cannot proceed without test case files
 - When updating existing test cases
 - Before test execution begins
 
+## Review Profiles
+
+The review depth is **auto-detected** from the test plan type. The user can override by specifying a profile explicitly.
+
+| Check | Feature (Full) | Enhancement (Standard) | Bug Fix (Focused) |
+|-------|:-:|:-:|:-:|
+| Core Quality (3.1-3.7) | Yes | Yes | Yes |
+| Sanitization (3.9) | Yes | Yes | Yes |
+| Completeness (Step 4) | Yes | Yes | Yes |
+| Consistency (Step 5) | Yes | Yes | Yes |
+| Priority Recommendation (Step 7) | Yes | Yes | Yes |
+| Requirements Traceability (Step 6) | Yes | Yes | Skip |
+| Test Data Adequacy (3.10) | Full | Lite | Skip |
+| Cleanup/Postconditions (3.11) | Yes | Skip | Skip |
+| Boundary Value Analysis (3.12) | Yes | Skip | Skip |
+
 ## Agent Instructions
 
-### Step 1: Read Test Plan
+### Step 1: Read Test Plan and Detect Profile
 
-Read the test plan for comparison baseline:
+Read the test plan for comparison baseline and determine review profile:
 
 ```
 1. Read test_plan/README.md for type and quick reference counts
@@ -42,10 +59,11 @@ Read the test plan for comparison baseline:
    - Bug Fix: test_plan/sections/03_Test_Strategy.md § 3.2
    - Enhancement: test_plan/sections/04_Test_Strategy.md § 4.2
 3. Reference coverage matrix from /tw-plan-review (if available)
-4. Note the test plan type:
-   - "New Feature Validation" → Expect 20-40 test cases
-   - "Bug Fix Validation" → Expect 8-15 test cases
-   - "Enhancement Validation" → Expect 15-25 test cases
+4. Detect review profile from test plan type:
+   - "New Feature Validation" → Full profile (expect 20-40 test cases)
+   - "Bug Fix Validation" → Focused profile (expect 8-15 test cases)
+   - "Enhancement Validation" → Standard profile (expect 15-25 test cases)
+5. Announce detected profile: "Review profile: [Full/Standard/Focused]"
 ```
 
 > **Fallback:** If `test_plan/sections/` does not exist, read `test_plan/README.md` directly.
@@ -58,13 +76,13 @@ Read the test plan for comparison baseline:
    - Note total test case count
    - Check default assumptions section
 
-2. Read each TS-XX_*.md file
+2. Read each `test_cases/TS-XX_*.md` file
    - Count test cases per scenario
    - Extract test case names and objectives
    - Note preconditions, steps, and expected results
 ```
 
-### Step 3: Quality Checks
+### Step 3: Quality Checks [All Profiles]
 
 For each test case, verify the following quality criteria:
 
@@ -111,7 +129,48 @@ For each test case, verify the following quality criteria:
 - [ ] All setup is in preconditions
 - [ ] No reliance on state from other test cases
 
-### Step 4: Completeness Check
+#### 3.7 Navigation Step Strategy
+- [ ] Setup navigation is in preconditions when 3+ TCs share the same path
+- [ ] Navigation condensed to 1-2 steps (no intermediate page verifications)
+- [ ] No URLs/routes in test steps — page names only
+
+#### 3.8 No Internal Labels
+- [ ] Phase headers do not contain test plan mapping labels (e.g., `D1`, `D2`, `S2`)
+- [ ] Step tables do not embed study/plan reference codes
+- [ ] Phase names are self-descriptive (e.g., "Before Start Date", "After Deactivation") without requiring a label key lookup
+
+**Good:** `## Phase: Before Start Date`
+**Bad:** `## D1: Before Start Date`
+
+#### 3.9 Sanitization [All Profiles]
+
+> See also: CLAUDE.md § Test Case Design Rules > Sanitization Checklist
+
+- [ ] No hardcoded tenant names — use generic placeholders (e.g., "TestTenant-A")
+- [ ] No real credentials or passwords — use placeholders like `<password>`
+- [ ] No real IP addresses — use example ranges like `10.x.x.x` or `192.168.x.x`
+- [ ] No real user email addresses — use generic addresses like `testuser@example.com`
+- [ ] No RBAC scope lines unless the scenario specifically tests RBAC
+
+#### 3.10 Test Data Adequacy [Full / Standard-Lite]
+- [ ] Test data values are realistic, not arbitrary placeholders
+- [ ] Different test cases use distinct data to avoid masking bugs
+- [ ] Data covers representative types (strings, numbers, special characters where relevant)
+- **Full only:**
+  - [ ] Boundary values use actual system limits (not round numbers)
+  - [ ] Negative test data is included (empty, null, overflow)
+
+#### 3.11 Cleanup/Postconditions [Full only]
+- [ ] Tests that create data document whether cleanup is needed
+- [ ] Tests that modify shared state note postconditions
+- [ ] No test leaves the system in a state that blocks other tests
+
+#### 3.12 Boundary Value Analysis [Full only]
+- [ ] Boundary conditions tested at exact limits (min, min+1, max-1, max)
+- [ ] Off-by-one scenarios are covered
+- [ ] Empty and maximum states are tested where applicable
+
+### Step 4: Completeness Check [All Profiles]
 
 Compare test cases against test plan:
 
@@ -125,7 +184,7 @@ Compare test cases against test plan:
    - Boundary condition tests
 ```
 
-### Step 5: Consistency Check
+### Step 5: Consistency Check [All Profiles]
 
 Verify consistency across test cases:
 
@@ -144,7 +203,66 @@ Verify consistency across test cases:
    - Scenario references are correct
 ```
 
-### Step 6: Generate Review Report
+### Step 6: Requirements Traceability [Full / Standard]
+
+Verify test case to requirement mapping:
+
+```
+1. List all requirements/acceptance criteria from:
+   - test_plan/sections/ (scope and strategy sections)
+   - confluence/HLD_*.md files in the project folder (if they exist)
+   - If no HLD files exist, skip HLD and use test plan sections only
+
+2. For each requirement, verify at least one test case covers it
+
+3. Flag requirements with no test case coverage
+
+4. Flag test cases that don't trace to any requirement
+   (orphaned tests may indicate scope creep or missing requirements)
+```
+
+> **Skip for Focused (Bug Fix):** Bug fix test cases trace to the defect, not to requirements.
+
+### Step 7: Priority Recommendation [All Profiles]
+
+Analyze each test case and recommend a priority for TestLink sync. Priority and execution type are **not stored in markdown files** — they are managed in TestLink. This step produces recommendations to guide `/tl-sync`.
+
+**Priority criteria:**
+
+| Priority | Criteria |
+|----------|----------|
+| **P0 (Critical)** | Core happy path, primary defect verification (bug fix), feature must-work scenarios |
+| **P1 (High)** | Important variations, common user paths, integration points, regression of related features |
+| **P2 (Medium)** | Edge cases, boundary conditions, uncommon configurations, nice-to-have coverage |
+
+**Decision tree:**
+
+```
+For each test case:
+1. Read the objective and steps
+2. Apply priority decision tree:
+
+   IF test case is the first/only TC for a scenario's primary flow
+     → P0 (Critical)
+   ELSE IF test case verifies the primary defect (bug fix projects)
+     → P0 (Critical)
+   ELSE IF test case tests a variation, alternate input, or integration point
+     → P1 (High)
+   ELSE IF test case tests regression of a related feature
+     → P1 (High)
+   ELSE IF test case tests edge case, boundary, or rare configuration
+     → P2 (Medium)
+   ELSE IF test case tests error handling for uncommon scenarios
+     → P2 (Medium)
+
+3. Check distribution — a healthy project has roughly:
+   - P0: 20-30% (must-pass for release)
+   - P1: 40-50% (should-pass)
+   - P2: 20-30% (nice-to-pass)
+4. Flag if distribution is skewed (e.g., >50% P0 suggests inflation)
+```
+
+### Step 8: Generate Review Report
 
 Create the review report with findings.
 
@@ -159,6 +277,7 @@ Create the review report with findings.
 
 | Metric | Value |
 |--------|-------|
+| Review Profile | Full / Standard / Focused |
 | Test Scenarios | X (Expected: Y) |
 | Test Cases | Z |
 | Quality Score | Good / Fair / Needs Work |
@@ -201,6 +320,13 @@ Create the review report with findings.
 | "Group A" vs "Original-Group" | TS-01 TC-02, TS-03 TC-01 | Standardize to "Original-Group" |
 | "Save button" vs "Save Changes" | TS-02 TC-03, TS-02 TC-04 | Use exact UI label |
 
+### Sanitization Issues
+
+| File | TC | Issue | Fix |
+|------|-----|-------|-----|
+| TS-01 | TC-01 | Hardcoded tenant "Acme Corp" | Replace with "TestTenant-A" |
+| TS-03 | TC-02 | Real IP 172.16.0.1 | Replace with 10.x.x.x range |
+
 ## Completeness Check
 
 | Scenario | Expected TCs | Actual TCs | Status | Notes |
@@ -216,6 +342,35 @@ Create the review report with findings.
 |----------|------------------|----------------|
 | TS-02 | Error handling for invalid input | Add TC for invalid email format |
 | TS-04 | Boundary: maximum name length | Add TC for 64-character name |
+
+## Requirements Traceability [Full / Standard only]
+
+| Requirement | Source | Covered By | Status |
+|-------------|--------|------------|--------|
+| Users can create networks | confluence/HLD_*.md § 3.1 | TS-01 TC-01, TC-02 | Covered |
+| Invalid input shows error | confluence/HLD_*.md § 3.4 | — | **Not covered** |
+| Backward compat with v2 API | test_plan/sections/03_Scope_Boundaries.md § 3.1 | TS-04 TC-01 | Covered |
+
+## Priority Recommendation
+
+Recommended priorities for `/tl-sync` (these values are managed in TestLink, not in markdown files):
+
+| File | TC | Name | Recommended Priority | Reason |
+|------|-----|------|---------------------|--------|
+| TS-01 | TC-01 | Basic network creation | P0 | Core happy path |
+| TS-01 | TC-02 | Create with all options | P1 | Important variation |
+| TS-02 | TC-01 | Invalid name validation | P1 | Common error path |
+| TS-03 | TC-03 | Max length boundary | P2 | Edge case |
+
+### Priority Distribution
+
+| Priority | Count | Percentage | Healthy Range |
+|----------|-------|------------|---------------|
+| P0 | X | XX% | 20-30% |
+| P1 | Y | YY% | 40-50% |
+| P2 | Z | ZZ% | 20-30% |
+
+[Flag if distribution is skewed]
 
 ## Recommendations
 
@@ -242,13 +397,14 @@ Create the review report with findings.
 ## Next Steps
 
 If READY FOR TESTLINK:
-1. Run `/tl-sync` to sync test cases to TestLink
-2. Verify synced test cases in TestLink UI
+1. Run `/tw-case-publish` to sync to all destinations (TestLink + Confluence) in one step
+2. Or run `/tl-sync` directly to sync to TestLink only
+3. Verify synced test cases in TestLink UI
 
 If NEEDS REVISION:
 1. Address "Must Fix" items
 2. Re-run `/tw-case-review` to verify fixes
-3. Then proceed to `/tl-sync`
+3. Then proceed to `/tw-case-publish` or `/tl-sync`
 ```
 
 ---
@@ -256,16 +412,47 @@ If NEEDS REVISION:
 ## Example Usage
 
 ```
-User: /test-case-review
+User: /tw-case-review
+(project: active/PROJ-12345_User_Session_Management/)
 
 Agent:
-1. Reads test_plan/README.md + test_plan/sections/ for baseline
-2. Reads test_cases/README.md for index
-3. Reads each TS-XX_*.md file
-4. Checks quality of each test case
-5. Compares actual vs expected counts
-6. Generates review report with findings
-7. Provides recommendations and next steps
+1. Reads test_plan/README.md → "New Feature Validation"
+2. Announces: "Review profile: Full"
+3. Reads test_cases/README.md → 8 scenarios, 32 test cases
+4. Reads TS-01 through TS-08
+5. Runs all quality checks (Full profile)
+6. Produces report:
+
+   ## Summary
+   | Metric | Value |
+   |--------|-------|
+   | Review Profile | Full |
+   | Test Scenarios | 8 (Expected: 5-8) |
+   | Test Cases | 32 |
+   | Quality Score | Good |
+   | TestLink Readiness | Ready |
+
+   ## Quality Issues
+   ### Vague Expected Results
+   | File | TC | Step | Issue | Suggested Fix |
+   |------|-----|------|-------|---------------|
+   | TS-03 | TC-02 | 5 | "Network activates correctly" | "SSID 'Test-5GHz' visible in Wi-Fi scan within 60 seconds" |
+
+   ## Priority Recommendation
+   | File | TC | Name | Recommended Priority | Reason |
+   |------|-----|------|---------------------|--------|
+   | TS-01 | TC-01 | Basic scheduled activation | P0 | Core happy path |
+   | TS-01 | TC-02 | Immediate activation | P1 | Important variation |
+   | TS-05 | TC-03 | Overlapping schedules | P2 | Edge case |
+
+   ### Priority Distribution
+   | Priority | Count | Percentage | Healthy Range |
+   |----------|-------|------------|---------------|
+   | P0 | 8 | 25% | 20-30% |
+   | P1 | 15 | 47% | 40-50% |
+   | P2 | 9 | 28% | 20-30% |
+
+   **Status:** READY FOR TESTLINK
 ```
 
 ---
@@ -292,10 +479,11 @@ Agent:
               ┌───────────────────────────────┐
               │  /tw-case-review  ◄── YOU     │
               │  Reviews test case quality    │
+              │  Recommends priorities        │
               └───────────────────────────────┘
                               ↓
-/tl-sync
-    └── Syncs reviewed test cases to TestLink
+/tw-case-publish (verify refs → review → sync → Confluence)
+    └── Or /tl-sync directly (TestLink only)
 ```
 
 ---

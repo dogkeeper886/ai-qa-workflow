@@ -29,23 +29,39 @@ STOP - Cannot proceed without test plan
 - When updating an existing test plan
 - When test suite feels incomplete or bloated
 
+## Review Profiles
+
+The review depth is **auto-detected** from the test plan type. The user can override by specifying a profile explicitly.
+
+| Check | Feature (Full) | Enhancement (Standard) | Bug Fix (Focused) |
+|-------|:-:|:-:|:-:|
+| Coverage Matrix (Step 3) | Yes | Yes | Yes |
+| Gap & Overlap Analysis (Step 5) | Yes | Yes | Yes |
+| Hybrid Depth Strategy (Step 6) | Yes | Yes | Yes |
+| Diagrams (Step 4) | 5+ scenarios | 5+ scenarios | Skip |
+| Requirements Traceability (Step 7) | Yes | Yes | Skip |
+| Entry/Exit Criteria (Step 8) | Yes | Yes | Skip |
+| Risk Assessment (Step 9) | Full | Lite | Skip |
+| Recommendations (Step 10) | Yes | Yes | Yes |
+
 ## Agent Instructions
 
-### Step 1: Read Test Plan
+### Step 1: Read Test Plan and Detect Profile
 
 Read the test plan index and section files:
 
 ```
 1. Read test_plan/README.md for type and quick reference
-2. Identify test plan type from header:
-   - "New Feature Validation" → Comprehensive review
-   - "Bug Fix Validation" → Focused review
-   - "Enhancement Validation" → Hybrid review
-3. Read all files in test_plan/sections/
-4. Extract test scenarios from the Test Strategy section file:
+2. Identify test plan type and review profile:
+   - "New Feature Validation" → Full profile (comprehensive review)
+   - "Bug Fix Validation" → Focused profile (targeted review)
+   - "Enhancement Validation" → Standard profile (hybrid review)
+3. Announce detected profile: "Review profile: [Full/Standard/Focused]"
+4. Read all files in test_plan/sections/
+5. Extract test scenarios from the Test Strategy section file:
    - Feature/Enhancement: sections/04_Test_Strategy.md § 4.4 / § 4.2
    - Bug Fix: sections/03_Test_Strategy.md § 3.2
-5. For each scenario, note:
+6. For each scenario, note:
    - Scenario ID and name
    - Focus area
    - Estimated test case count
@@ -54,24 +70,24 @@ Read the test plan index and section files:
 
 > **Fallback:** If `test_plan/sections/` does not exist, read `test_plan/README.md` directly.
 
-### Step 2: Analyze Coverage
+### Step 2: Analyze Coverage [All Profiles]
 
-For each test scenario, identify which aspects it covers:
+For each test scenario, identify which aspects it covers. Select only the aspects relevant to the feature under test — omit aspects that do not apply. If fewer than 5 aspects apply, note this in the summary.
 
-| Coverage Aspect | Description |
-|-----------------|-------------|
-| UI Configuration | Tests that configure via user interface |
-| API Configuration | Tests that configure via API |
-| Data Flow | How data moves through the system |
-| Error Handling | Invalid inputs, edge cases, failures |
-| Backward Compatibility | Existing functionality still works |
-| Client/End-user Validation | End-to-end user scenarios |
-| Feature Flags | ON/OFF state behavior |
-| Edge Cases | Boundary conditions, empty/max states |
-| Performance | Response time, throughput |
-| Accessibility | WCAG compliance, keyboard navigation |
+| Coverage Aspect | Description | Typical Applicability |
+|-----------------|-------------|----------------------|
+| UI Configuration | Tests that configure via user interface | Most features |
+| API Configuration | Tests that configure via API | API-facing features |
+| Data Flow | How data moves through the system | Data pipeline features |
+| Error Handling | Invalid inputs, edge cases, failures | Most features |
+| Backward Compatibility | Existing functionality still works | Enhancements, migrations |
+| Client/End-user Validation | End-to-end user scenarios | User-facing features |
+| Feature Flags | ON/OFF state behavior | Gated rollouts only |
+| Edge Cases | Boundary conditions, empty/max states | Most features |
+| Performance | Response time, throughput | Scale-sensitive features |
+| Accessibility | WCAG compliance, keyboard navigation | UI features only |
 
-### Step 3: Generate Coverage Matrix
+### Step 3: Generate Coverage Matrix [All Profiles]
 
 Create an ASCII coverage matrix showing what each scenario covers:
 
@@ -89,83 +105,18 @@ Create an ASCII coverage matrix showing what each scenario covers:
 
 **Note:** This coverage matrix is the SINGLE source of truth. It should NOT be recreated in test case design.
 
-### Step 4: Generate Diagrams (For 5+ Scenarios)
+### Step 4: Generate Diagrams (For 5+ Scenarios) [Full / Standard]
 
-**IMPORTANT:** For features with 5 or more test scenarios, automatically generate the following diagrams:
-
-#### 4.1 Configuration Flow Diagram
-
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         FEATURE CONFIGURATION FLOW                          │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-                              ┌─────────────────┐
-                              │  Entry Point    │
-                              └────────┬────────┘
-                                       │
-                                       ▼
-                    ┌──────────────────────────────────────┐
-                    │         Decision Point               │
-                    └──────────────────┬───────────────────┘
-                                       │
-         ┌─────────────────────────────┼─────────────────────────────┐
-         ▼                             ▼                             ▼
-    ┌─────────┐                  ┌─────────┐                  ┌─────────┐
-    │Option A │                  │Option B │                  │Option C │
-    └────┬────┘                  └────┬────┘                  └────┬────┘
-```
-
-#### 4.2 Data Flow Diagram
-
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           DATA FLOW PATHS                                   │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-    ┌──────────┐                                           ┌──────────────┐
-    │  Source  │                                           │   Target     │
-    └────┬─────┘                                           └──────▲───────┘
-         │                                                        │
-         │ Protocol/Format                                        │
-         ▼                                                        │
-    ┌──────────┐         ┌─────────────────────────────────┐     │
-    │ Process  │────────►│     Data Transformation         │─────┘
-    └──────────┘         └─────────────────────────────────┘
-```
-
-#### 4.3 Modular Test Design Diagram
-
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                    MODULAR TEST SCENARIO DESIGN                             │
-│              (Each module tests one variable/aspect)                        │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-                              ┌───────────────────┐
-                              │   CORE FEATURE    │
-                              │     TS-01         │
-                              └─────────┬─────────┘
-                                        │
-        ┌───────────────────────────────┼───────────────────────────────┐
-        │                               │                               │
-        ▼                               ▼                               ▼
-┌───────────────────┐         ┌───────────────────┐         ┌───────────────────┐
-│   INTEGRATION     │         │   COMPATIBILITY   │         │   CONTROL         │
-├───────────────────┤         ├───────────────────┤         ├───────────────────┤
-│  TS-02, TS-03     │         │  TS-04, TS-05     │         │  TS-06            │
-└───────────────────┘         └───────────────────┘         └───────────────────┘
-```
+Generate diagrams following the templates defined in `/tw-diagrams`. Include Configuration Flow, Data Flow, and Modular Test Design diagrams as appropriate.
 
 **Diagram Selection Guide:**
 
 | Scenario Count | Diagrams to Generate |
 |----------------|---------------------|
 | 1-3 scenarios | Coverage Matrix only |
-| 4 scenarios | Coverage Matrix + one flow diagram |
-| 5+ scenarios | All diagram types (configuration, data flow, modular design) |
+| 5+ scenarios | Run `/tw-diagrams` for all diagram types |
 
-### Step 5: Identify Issues
+### Step 5: Identify Issues [All Profiles]
 
 Report any issues found:
 
@@ -185,19 +136,82 @@ Report any issues found:
 - New scenarios to add
 - Test activities to move or remove
 
-### Step 6: Apply Hybrid Depth Strategy
+### Step 6: Apply Hybrid Depth Strategy [All Profiles]
 
 Check if the feature has variants (multiple types, modes, configurations):
 
 1. Identify the **representative case** for full verification
+   - The representative case is the scenario that covers the most coverage aspects in the matrix (Step 3)
+   - If tied, choose the scenario with the most complex or highest-risk user path
    - This scenario gets deep, comprehensive testing
 
 2. Identify **variants** for lightweight validation
-   - These get configuration + basic functionality tests
+   - Variants are scenarios that differ by only 1-2 configuration parameters from the representative case
+   - These get configuration + basic functionality tests only
 
 3. Recommend which scenarios should be "deep" vs "wide"
 
-### Step 7: Provide Recommendations
+### Step 7: Requirements Traceability [Full / Standard]
+
+Verify that test scenarios trace back to requirements:
+
+```
+1. List all requirements/acceptance criteria from:
+   - test_plan/sections/ (scope and feature definition sections)
+   - confluence/HLD_*.md files in the project folder (if they exist)
+   - Jira ticket acceptance criteria (use Atlassian MCP tools if needed)
+
+2. For each requirement, verify at least one scenario covers it
+
+3. Flag requirements with no scenario coverage
+
+4. Flag scenarios that don't trace to any requirement
+   (may indicate scope creep or undocumented requirements)
+```
+
+> **Skip for Focused (Bug Fix):** Bug fix scenarios trace to the defect description, not requirements.
+
+### Step 8: Entry/Exit Criteria [Full / Standard]
+
+Check that the test plan defines clear start and done conditions:
+
+```
+Entry Criteria (when can testing start?):
+- [ ] Build/deployment prerequisites defined
+- [ ] Test environment requirements specified
+- [ ] Test data requirements identified
+- [ ] Dependencies on other teams/features noted
+
+Exit Criteria (when is testing done?):
+- [ ] Pass/fail thresholds defined (e.g., "100% P0 pass, 90% P1 pass")
+- [ ] Defect resolution criteria stated
+- [ ] Sign-off process described
+```
+
+> **Skip for Focused (Bug Fix):** Bug fix testing has implicit criteria — the defect is verified fixed and regression passes.
+
+### Step 9: Risk Assessment [Full / Standard-Lite]
+
+Assess testing risks at the scenario level:
+
+```
+For each scenario, evaluate:
+- Likelihood of failure (based on complexity, novelty, dependencies)
+- Impact if defect escapes (user-facing? data loss? security?)
+
+Full profile: Create risk matrix table
+Standard profile (Lite): Flag only high-risk scenarios
+```
+
+**Risk levels:**
+
+| Risk | Criteria |
+|------|----------|
+| **High** | New technology, complex integration, user-facing with no rollback |
+| **Medium** | Modified existing flow, has partial rollback, affects subset of users |
+| **Low** | Well-understood path, easy rollback, internal-only impact |
+
+### Step 10: Provide Recommendations [All Profiles]
 
 Based on analysis, provide specific recommendations:
 
@@ -214,6 +228,7 @@ Based on analysis, provide specific recommendations:
 # Test Plan Review: [Feature Name]
 
 ## Summary
+- **Review Profile:** Full / Standard / Focused
 - **Test Plan Type:** [New Feature / Bug Fix / Enhancement]
 - **Total Scenarios:** X
 - **Total Estimated Test Cases:** Y
@@ -221,7 +236,6 @@ Based on analysis, provide specific recommendations:
 
 ## Coverage Matrix
 
-```
 ┌────────────────────────┬───────┬───────┬───────┐
 │ Test Aspect            │ TS-01 │ TS-02 │ TS-03 │
 ├────────────────────────┼───────┼───────┼───────┤
@@ -229,9 +243,8 @@ Based on analysis, provide specific recommendations:
 │ [Aspect 2]             │       │   ✓   │       │
 │ [Aspect 3]             │   ✓   │   ✓   │       │
 └────────────────────────┴───────┴───────┴───────┘
-```
 
-## Diagrams (For 5+ Scenarios)
+## Diagrams (For 5+ Scenarios) [Full / Standard only]
 
 [Include Configuration Flow, Data Flow, and Modular Design diagrams]
 
@@ -257,6 +270,39 @@ Based on analysis, provide specific recommendations:
 | **Compatibility** | TS-XX | Backward compatibility |
 | **Edge Cases** | TS-XX | Boundary conditions |
 
+## Requirements Traceability [Full / Standard only]
+
+| Requirement | Source | Covered By | Status |
+|-------------|--------|------------|--------|
+| [Requirement 1] | HLD § X.X | TS-01, TS-02 | Covered |
+| [Requirement 2] | Jira AC #3 | — | **Not covered** |
+| [Requirement 3] | Scope § X.X | TS-03 | Covered |
+
+## Entry/Exit Criteria Assessment [Full / Standard only]
+
+| Criteria Type | Defined? | Notes |
+|---------------|----------|-------|
+| Build prerequisites | Yes / No | [Details] |
+| Test environment | Yes / No | [Details] |
+| Pass/fail thresholds | Yes / No | [Details] |
+| Sign-off process | Yes / No | [Details] |
+
+## Risk Assessment [Full / Standard-Lite]
+
+| Scenario | Risk Level | Likelihood | Impact | Mitigation |
+|----------|-----------|------------|--------|------------|
+| TS-01 | High | Complex integration | User-facing | Deep testing, extra review |
+| TS-02 | Medium | Modified flow | Subset of users | Standard coverage |
+| TS-03 | Low | Well-understood | Internal only | Lightweight validation |
+
+## Hybrid Depth Strategy
+
+| Scenario | Depth | Rationale |
+|----------|-------|-----------|
+| TS-01 | Deep | Representative case - full verification |
+| TS-02 | Wide | Variant - lightweight validation |
+| TS-03 | Deep | Critical path - comprehensive |
+
 ## Recommendations
 
 ### Immediate Actions (Before Test Case Creation)
@@ -266,14 +312,6 @@ Based on analysis, provide specific recommendations:
 ### Optional Improvements
 1. [Nice-to-have improvement]
 2. [Nice-to-have improvement]
-
-## Hybrid Depth Strategy
-
-| Scenario | Depth | Rationale |
-|----------|-------|-----------|
-| TS-01 | Deep | Representative case - full verification |
-| TS-02 | Wide | Variant - lightweight validation |
-| TS-03 | Deep | Critical path - comprehensive |
 
 ## Overall Assessment
 
@@ -296,16 +334,41 @@ Based on analysis, provide specific recommendations:
 
 ```
 User: /tw-plan-review
+(project: active/PROJ-12345_User_Session_Management/)
 
 Agent:
-1. Reads test_plan/README.md + test_plan/sections/
-2. Extracts all test scenarios (TS-01, TS-02, etc.)
-3. Analyzes coverage of each scenario
-4. Generates coverage matrix
-5. For 5+ scenarios: Generates configuration, data flow, and modular design diagrams
-6. Identifies gaps and overlaps
-7. Provides specific recommendations
-8. Assesses readiness for test case creation
+1. Reads test_plan/README.md → "New Feature Validation", 8 scenarios
+2. Announces: "Review profile: Full"
+3. Produces report:
+
+   ## Summary
+   - **Review Profile:** Full
+   - **Test Plan Type:** New Feature Validation
+   - **Total Scenarios:** 8
+   - **Total Estimated Test Cases:** 32
+   - **Coverage Score:** Good
+
+   ## Coverage Matrix
+   ┌────────────────────┬───────┬───────┬───────┬─────┐
+   │ Test Aspect        │ TS-01 │ TS-02 │ TS-03 │ ... │
+   ├────────────────────┼───────┼───────┼───────┼─────┤
+   │ UI Configuration   │   ✓   │   ✓   │       │     │
+   │ Error Handling     │       │       │   ✓   │     │
+   │ Edge Cases         │       │       │       │  ✓  │
+   └────────────────────┴───────┴───────┴───────┴─────┘
+
+   ## Gaps Identified
+   | Gap | Impact | Recommendation |
+   |-----|--------|----------------|
+   | No API config scenario | Medium | Add TS-09 for API-based scheduling |
+
+   ## Hybrid Depth Strategy
+   | Scenario | Depth | Rationale |
+   |----------|-------|-----------|
+   | TS-01 | Deep | Covers 5/6 aspects — representative case |
+   | TS-08 | Wide | Differs from TS-01 only by dual network type |
+
+   **Status:** READY FOR TEST CASES
 ```
 
 ---
@@ -326,14 +389,14 @@ Agent:
               ┌───────────────────────────────┐
               │  /tw-plan-review  ◄── YOU     │
               │  Reviews test plan quality    │
-              │  Generates diagrams for 5+    │
+              │  Profile-scaled depth         │
               └───────────────────────────────┘
                               ↓
 /tw-case-init → /tw-case-[feature|bugfix|enhance]
     └── Creates test_cases/README.md + TS-XX_*.md files
 
 /tw-case-review
-    └── Reviews test case quality before sync
+    └── Reviews test case quality + recommends priorities
 
 /tl-sync
     └── Syncs test cases to TestLink
