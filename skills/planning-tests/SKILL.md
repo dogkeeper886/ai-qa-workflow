@@ -21,6 +21,7 @@ Copy and track your progress:
 
 ```
 - [ ] Step 1: Validate prerequisites
+- [ ] Step 1.5: Visual baseline check (wireframes, live UI, or flag as unverified)
 - [ ] Step 2: Detect ticket type and route
 - [ ] Step 3: Write test plan to test_plan/
 - [ ] Step 4: Review coverage (matrix + diagrams)
@@ -37,6 +38,19 @@ Copy and track your progress:
 Check that `00_Main_Task_*.md` exists in the current project folder.
 
 If missing: "Please run `/receiving-tickets [TICKET]` first to gather all documentation."
+
+### Step 1.5: Visual Baseline Check
+
+Before planning, establish visual understanding of the feature's UI:
+
+1. Check if `confluence/visual_references.md` exists (created by `/jr-trace-docs`)
+   - If yes: read it for wireframe summaries and UI element inventory
+2. Ask the user: "Is the feature available in a dev/stage environment? Can I open the browser?"
+   - If yes: open the browser, navigate to the feature, capture key states
+   - Save screenshots to `test_plan/visual_baseline/`
+3. If neither: review embedded wireframe images in HLD Confluence pages
+
+This step prevents writing test plans from text descriptions alone — industry best practice (ISTQB, ISO/IEC 29119) requires examining visual design artifacts during test analysis.
 
 ### Step 2: Detect Ticket Type and Route
 

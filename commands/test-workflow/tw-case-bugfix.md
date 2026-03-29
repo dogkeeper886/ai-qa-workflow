@@ -243,22 +243,58 @@ IF component not clearly identified:
 
 ## QUALITY GUIDELINES
 
-### Bug Fix Priority
-- **P0:** Defect verification (must pass)
-- **P0:** Critical regression
-- **P1:** Standard regression, edge cases
-- **P2:** Nice-to-have edge cases
+### Priority Decision Tree
+
+For each test case, assign priority using this decision tree:
+
+```
+IF test case verifies the primary defect (exact reproduction steps) → P0
+ELSE IF test case is a critical regression test → P0
+ELSE IF test case tests a defect variation or standard regression → P1
+ELSE IF test case tests edge case or boundary condition → P1
+ELSE IF test case tests nice-to-have edge case → P2
+```
+
+**Target distribution:** P0: 20-30%, P1: 40-50%, P2: 20-30%
+
+### Sanitization Checklist
+
+Before completing each test case, verify:
+- [ ] No hardcoded tenant names — use `TestTenant-A`, `TestTenant-B`
+- [ ] No real credentials — use `<password>` placeholder
+- [ ] No real IP addresses — use `10.x.x.x` or `192.168.x.x`
+- [ ] No real email addresses — use `testuser@example.com`
+- [ ] No RBAC scope lines unless the scenario specifically tests RBAC
 
 ### Test Independence
-- Each test runs standalone
-- Include all setup in preconditions
-- Don't rely on other test states
+
+Each test case MUST run standalone:
+- All required setup is in preconditions (not "state from previous test")
+- No reliance on execution order
+- No shared mutable state between test cases
+
+### Navigation Step Strategy
+
+Apply these navigation step rules:
+- [ ] Setup navigation moved to preconditions when 3+ TCs share the same path
+- [ ] Navigation condensed to 1-2 steps max (no intermediate page verifications)
+- [ ] No URLs/routes in test steps — use page names instead
+
+> **Note:** Test data adequacy, boundary value analysis, and
+> cleanup/postconditions are **skipped** for Bug Fix (Focused profile).
+> These are checked at Standard and Full profile levels.
+
+### No Internal Labels in Test Cases
+Do not embed test plan mapping labels (e.g., `D1`, `D2`, `S2`) in test case phase headers or step tables. These labels belong in the test plan or study documents, not in the test case itself. Phase names should be self-descriptive (e.g., "Before Start Date", "After Deactivation") without requiring the reader to look up a label key.
 
 ---
 
 ## NEXT STEP
 
-After creating test cases, run `/tw-case-review` to verify quality.
+After creating test cases:
+1. **Regenerate `test_cases/README.md`** — scan all `test_cases/TS-*.md` or `test_cases/sections/*.md` files for TC counts (never hand-edit counts)
+2. **Verify test_plan counts match** — update `test_plan/sections/03_Test_Strategy.md` scenario/TC counts if they changed
+3. Run `/tw-case-review` to verify quality.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐

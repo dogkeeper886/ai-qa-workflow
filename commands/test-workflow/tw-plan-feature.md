@@ -28,12 +28,12 @@ AUDIENCE: Stakeholders, management, project team, Confluence reviewers
 3. **README.md** - Problem summary, solution overview
 
 **TIER 2 (Important - Should Have):**
-4. **UX/UI Design Tickets** (`01_*UX*.md`, `01_*UI*.md`) - User interface specs
-5. **Feature Request Ticket** (`01_*Feature_Request*.md`) - Original customer need
-6. **API/Backend Tickets** (`01_*API*.md`, `01_*Backend*.md`) - Integration details
+4. **Visual Design References** (`confluence/visual_references.md`) - Wireframe summaries, UI element inventory, Figma links
+5. **UX/UI Design Tickets** (`01_*UX*.md`, `01_*UI*.md`) - User interface specs
+6. **Feature Request Ticket** (`01_*Feature_Request*.md`) - Original customer need
+7. **API/Backend Tickets** (`01_*API*.md`, `01_*Backend*.md`) - Integration details
 
 **TIER 3 (Optional - Nice to Have):**
-7. **Figma/Design Links** - Visual mockups (if in Confluence docs)
 8. **Feature Flag Tickets** (`01_*Feature_Flag*.md`) - Control mechanism
 9. **Comments sections** - Additional context, team discussions
 
@@ -75,6 +75,35 @@ Determine who is involved:
 - Who implemented it? (Developers)
 - Who requested it? (Product Owner, Customer)
 - Who will test it? (QA Engineer)
+
+### Step 2.5: Visual Baseline Check
+
+Before defining scope or writing scenarios, establish a visual understanding of the feature's UI.
+
+**Always ask the user:** "Is the feature available in a dev/stage environment? Can I open the browser to check?"
+
+```
+IF visual_references.md exists (from /jr-trace-docs):
+  → Read it. Review the wireframe summary and UI element inventory.
+  → Use this as the design baseline for scenario planning.
+
+IF live environment is available AND feature flag is known:
+  → Ask user to confirm the feature flag is enabled.
+  → Open browser (Playwright) and navigate to the feature's UI location.
+  → Take screenshots of key states (default, enabled, configured).
+  → Compare actual UI against wireframe summary — note any discrepancies.
+  → Save screenshots to test_plan/visual_baseline/
+
+IF neither mockups nor live environment available:
+  → Review embedded wireframe images in the HLD Confluence page (use Read tool on images).
+  → Document what you observe in the test plan's scope section.
+  → Flag: "Visual baseline not verified — review with UX team before test case design."
+```
+
+**Why this matters (industry consensus):**
+- ISTQB: Test analysis must examine the test basis including wireframes — early testing catches defects cheapest
+- ISO/IEC 29119-3: Expected results must allow "objective pass/fail" — text descriptions alone are insufficient for UI features
+- Microsoft: "Do not write detailed test cases until the UI has been verified against the design"
 
 ### Step 3: Define Scope
 Clarify what will and won't be tested:
@@ -317,6 +346,130 @@ IF feature scope is ambiguous:
 
 ---
 
+## BEST PRACTICE SECTIONS
+
+After finalizing test scenarios (Step 5), add the following sections to the
+test plan. These align with what `/tw-plan-review` checks — producing them
+during creation prevents systematic review findings.
+
+### Step 6: Coverage Matrix
+
+For each test scenario, identify which coverage aspects it addresses.
+Include only aspects relevant to the feature — omit aspects that do not apply.
+
+| Coverage Aspect | Description |
+|-----------------|-------------|
+| UI Configuration | Tests that configure via user interface |
+| API Configuration | Tests that configure via API |
+| Data Flow | How data moves through the system |
+| Error Handling | Invalid inputs, edge cases, failures |
+| Backward Compatibility | Existing functionality still works |
+| Client/End-user Validation | End-to-end user scenarios |
+| Feature Flags | ON/OFF state behavior |
+| Edge Cases | Boundary conditions, empty/max states |
+| Performance | Response time, throughput |
+| Accessibility | WCAG compliance, keyboard navigation |
+
+Output an ASCII coverage matrix in `04_Test_Strategy.md` after the scenarios
+table:
+
+```
+┌────────────────────────┬───────┬───────┬───────┐
+│ Test Aspect            │ TS-01 │ TS-02 │ TS-03 │
+├────────────────────────┼───────┼───────┼───────┤
+│ UI Configuration       │   ✓   │       │   ✓   │
+│ Error Handling         │       │   ✓   │       │
+│ Edge Cases             │       │       │   ✓   │
+└────────────────────────┴───────┴───────┴───────┘
+```
+
+### Step 7: Hybrid Depth Strategy
+
+If the feature has variants (multiple types, modes, configurations):
+
+1. **Identify the representative case** — the scenario covering the most
+   coverage aspects. This gets deep, comprehensive testing.
+2. **Identify variants** — scenarios that differ by only 1-2 parameters.
+   These get configuration + basic functionality tests only.
+3. Document which scenarios are "deep" vs "wide" in `04_Test_Strategy.md`.
+
+### Step 8: Requirements Traceability
+
+Map each requirement/acceptance criterion to test scenarios:
+
+```
+1. List requirements from:
+   - Scope & Boundaries section (§ 3.1)
+   - Feature Definition section (§ 2.1-2.3)
+   - confluence/HLD_*.md (if available)
+2. For each requirement, note which scenario(s) cover it
+3. Flag uncovered requirements — add scenarios or note as out of scope
+```
+
+Add a traceability table to `04_Test_Strategy.md`:
+
+```markdown
+### 4.6 Requirements Traceability
+
+| Requirement | Source | Covered By |
+|-------------|--------|------------|
+| [Requirement 1] | HLD § X.X | TS-01, TS-02 |
+| [Requirement 2] | Jira AC #3 | TS-03 |
+```
+
+### Step 9: Entry/Exit Criteria
+
+Add to `04_Test_Strategy.md`:
+
+```markdown
+### 4.7 Entry/Exit Criteria
+
+**Entry Criteria (when can testing start?):**
+- [ ] Build deployed to test environment
+- [ ] Test data provisioned
+- [ ] Dependencies available (list specific dependencies)
+- [ ] Feature flag enabled (if applicable)
+
+**Exit Criteria (when is testing done?):**
+- [ ] 100% P0 test cases pass
+- [ ] ≥90% P1 test cases pass
+- [ ] All P0/P1 defects resolved or deferred with approval
+- [ ] Sign-off from QA lead
+```
+
+### Step 10: Risk Assessment
+
+For each scenario, evaluate risk:
+
+| Risk Level | Criteria |
+|------------|----------|
+| **High** | New technology, complex integration, user-facing with no rollback |
+| **Medium** | Modified existing flow, partial rollback, affects subset of users |
+| **Low** | Well-understood path, easy rollback, internal-only impact |
+
+Add a risk table to `04_Test_Strategy.md`:
+
+```markdown
+### 4.8 Risk Assessment
+
+| Scenario | Risk Level | Likelihood | Impact | Mitigation |
+|----------|-----------|------------|--------|------------|
+| TS-01 | Medium | Moderate | User-facing | Deep testing |
+| TS-02 | Low | Low | Internal | Standard coverage |
+```
+
+### Step 11: Diagrams (5+ Scenarios)
+
+If the test plan has 5 or more scenarios, run `/tw-diagrams` to generate:
+- Configuration Flow diagram
+- Data Flow diagram
+- Modular Test Design diagram
+
+Place diagrams in `test_plan/diagrams/` or reference them from
+`04_Test_Strategy.md`.
+
+---
+
 ## OUTPUT FORMAT
 
 ### File Structure
@@ -328,7 +481,7 @@ test_plan/
     ├── 01_Project_Business_Context.md     # § 1.1-1.3
     ├── 02_Feature_Definition.md           # § 2.1-2.3
     ├── 03_Scope_Boundaries.md             # § 3.1-3.2
-    ├── 04_Test_Strategy.md                # § 4.1-4.5 (includes scenarios table)
+    ├── 04_Test_Strategy.md                # § 4.1-4.9 (includes scenarios, coverage matrix, traceability, entry/exit, risk)
     ├── 05_References_Resources.md         # § 5
     └── 06_Revision_History.md             # § 6
 ```
@@ -412,6 +565,36 @@ test_plan/
 - **[N] Test Cases** (estimated)
 
 ### 4.5 Test Data Setup (if applicable)
+
+### 4.6 Coverage Matrix
+
+┌────────────────────────┬───────┬───────┬───────┐
+│ Test Aspect            │ TS-01 │ TS-02 │ TS-03 │
+├────────────────────────┼───────┼───────┼───────┤
+│ [Relevant aspect 1]   │   ✓   │       │   ✓   │
+│ [Relevant aspect 2]   │       │   ✓   │       │
+└────────────────────────┴───────┴───────┴───────┘
+
+### 4.7 Requirements Traceability
+
+| Requirement | Source | Covered By |
+|-------------|--------|------------|
+| [Req 1] | [Source] | TS-XX |
+
+### 4.8 Entry/Exit Criteria
+
+**Entry Criteria:**
+- [ ] [Prerequisites]
+
+**Exit Criteria:**
+- [ ] 100% P0 pass, ≥90% P1 pass
+- [ ] All P0/P1 defects resolved or deferred
+
+### 4.9 Risk Assessment
+
+| Scenario | Risk Level | Likelihood | Impact | Mitigation |
+|----------|-----------|------------|--------|------------|
+| TS-XX | [High/Medium/Low] | [Details] | [Details] | [Strategy] |
 ```
 
 ### test_plan/sections/05_References_Resources.md

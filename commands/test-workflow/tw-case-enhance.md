@@ -227,10 +227,51 @@ Enhancements require BOTH:
 
 ## QUALITY GUIDELINES
 
-### Enhancement Priority
-- **P0:** Core new functionality, critical changed behavior
-- **P1:** Variations, integration, backward compatibility
-- **P2:** Edge cases, nice-to-have scenarios
+### Priority Decision Tree
+
+For each test case, assign priority using this decision tree:
+
+```
+IF test case is the first/only TC for a scenario's primary flow → P0
+ELSE IF test case verifies critical changed behavior → P0
+ELSE IF test case tests a variation, integration, or backward compatibility → P1
+ELSE IF test case tests edge case or rare configuration → P2
+```
+
+**Target distribution:** P0: 20-30%, P1: 40-50%, P2: 20-30%
+
+### Sanitization Checklist
+
+Before completing each test case, verify:
+- [ ] No hardcoded tenant names — use `TestTenant-A`, `TestTenant-B`
+- [ ] No real credentials — use `<password>` placeholder
+- [ ] No real IP addresses — use `10.x.x.x` or `192.168.x.x`
+- [ ] No real email addresses — use `testuser@example.com`
+- [ ] No RBAC scope lines unless the scenario specifically tests RBAC
+
+### Test Independence
+
+Each test case MUST run standalone:
+- All required setup is in preconditions (not "state from previous test")
+- No reliance on execution order
+- No shared mutable state between test cases
+
+### Navigation Step Strategy
+
+Apply these navigation step rules:
+- [ ] Setup navigation moved to preconditions when 3+ TCs share the same path
+- [ ] Navigation condensed to 1-2 steps max (no intermediate page verifications)
+- [ ] No URLs/routes in test steps — use page names instead
+
+### Test Data Adequacy (Lite)
+
+- Use realistic values, not arbitrary placeholders
+- Different test cases should use distinct data to avoid masking bugs
+- Cover representative data types (strings, numbers, special characters)
+
+> **Note:** Full boundary value analysis and cleanup/postconditions are
+> not required for Enhancement (Standard profile) — these are checked
+> only at the Full profile level (new features).
 
 ### Test Counts
 - Enhancement verification: 4-6 test cases
@@ -238,6 +279,9 @@ Enhancements require BOTH:
 - Integration impact: 2-4 test cases
 - Backward compatibility: 2-3 test cases
 - **Total:** 15-25 test cases
+
+### No Internal Labels in Test Cases
+Do not embed test plan mapping labels (e.g., `D1`, `D2`, `S2`) in test case phase headers or step tables. These labels belong in the test plan or study documents, not in the test case itself. Phase names should be self-descriptive (e.g., "Before Start Date", "After Deactivation") without requiring the reader to look up a label key.
 
 ### Balance
 - Don't over-test new functionality at expense of regression
@@ -248,7 +292,10 @@ Enhancements require BOTH:
 
 ## NEXT STEP
 
-After creating test cases, run `/tw-case-review` to verify quality.
+After creating test cases:
+1. **Regenerate `test_cases/README.md`** — scan all `test_cases/TS-*.md` files for TC counts (never hand-edit counts)
+2. **Verify test_plan counts match** — update `test_plan/sections/04_Test_Strategy.md` scenario/TC counts if they changed
+3. Run `/tw-case-review` to verify quality.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐

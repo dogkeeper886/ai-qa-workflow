@@ -1,7 +1,12 @@
 # Update TestLink Test Case
 
-```
 Update test case in TestLink with proper HTML formatting and TestLink compliance.
+
+## When to Use
+
+- After modifying local test case files that are already synced to TestLink
+- When test case summary, preconditions, or steps need updating in TestLink
+- After `/tw-case-review` identifies content that needs correction in TestLink
 
 ## Agent Instructions:
 1. Extract test case data from user input
@@ -18,12 +23,13 @@ User should provide:
 - Test Steps with Actions and Expected Results
 
 ## Agent Processing Steps:
-1. **Validate Input**: Check for required fields (ID, name, summary)
-2. **Format Summary**: Wrap in <p> tags, apply <strong> for emphasis
-3. **Format Preconditions**: Convert to <ul><li> list format
-4. **Format Steps**: Apply HTML formatting to actions and expected results
-5. **Apply HTML Entities**: Convert >, <, ", &, ' to proper entities
-6. **Call API**: Use update_test_case tool with formatted data
+1. **Version Backup**: Before updating, prompt the user: "Please create a new version for {Test Case ID} in TestLink before I update it." Wait for confirmation before proceeding.
+2. **Validate Input**: Check for required fields (ID, name, summary)
+3. **Format Summary**: Wrap in <p> tags, apply <strong> for emphasis
+4. **Format Preconditions**: Convert to <ul><li> list format
+5. **Format Steps**: Apply HTML formatting to actions and expected results
+6. **Apply HTML Entities**: Convert >, <, ", &, ' to proper entities
+7. **Call API**: Use update_test_case tool with formatted data
 
 ## Example Usage:
 **User Input:**
@@ -101,4 +107,3 @@ Common Issues & Solutions:
 ❌ "Invalid XML-RPC message" → Use external ID format instead of numeric ID
 ❌ Missing preconditions after creation → Use updateTestCase to add preconditions
 ❌ HTML not rendering → Check HTML entity usage (&gt;, &lt;, &quot;, &apos;)
-```
