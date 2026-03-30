@@ -50,7 +50,7 @@ This eliminates duplication, reduces human error, and maintains traceability fro
 ### Setup
 
 1. Install MCP integrations (see [docs/integrations/](../integrations/))
-2. Install AI QA Workflow commands: make install
+2. Install AI QA Workflow commands: tell your AI agent to read `CLAUDE.md` and install the commands you need
 3. Install test framework to your project (see Phase 5)
 
 ## Phase 1: Discover Requirements

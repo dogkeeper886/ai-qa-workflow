@@ -121,15 +121,13 @@ Optionally, after executing tests:
 
 ## Installation
 
-Skills are installed alongside commands:
+Skills are installed alongside commands via agent-driven installation:
 
-```bash
-make install            # Install both commands and skills
-make install-skills     # Skills only → ~/.claude/skills/
-make uninstall-skills   # Remove skills
+```
+Tell your AI agent: "Read CLAUDE.md and install the commands and skills I need"
 ```
 
-After installation, restart Claude Code to load the skills.
+The agent will detect your project context, recommend relevant modules, and sync skills to `.claude/skills/`. After installation, restart Claude Code to load the skills.
 
 ## MCP Requirements per Skill
 
