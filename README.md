@@ -18,40 +18,38 @@ This eliminates duplication, maintains traceability, and accelerates the QA proc
 ## Complete Test Lifecycle
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         COMPLETE TEST LIFECYCLE                              │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                              │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐                   │
-│  │   PHASE 1    │    │   PHASE 2    │    │   PHASE 3    │                   │
-│  │   DISCOVER   │───▶│    PLAN      │───▶│   DESIGN     │                   │
-│  │              │    │              │    │              │                   │
-│  │ Jira/Conflu- │    │ Test Plan    │    │ Test Cases   │                   │
-│  │ ence via MCP │    │ Checklist    │    │ Checklist    │                   │
-│  └──────────────┘    └──────────────┘    └──────────────┘                   │
-│         │                   │                   │                            │
-│         ▼                   ▼                   ▼                            │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐                   │
-│  │   PHASE 4    │    │   PHASE 5    │    │   PHASE 6    │                   │
-│  │   MANAGE     │───▶│   AUTOMATE   │───▶│   EXECUTE    │                   │
-│  │              │    │              │    │              │                   │
-│  │ TestLink     │    │ Test         │    │ CI/CD        │                   │
-│  │ via MCP      │    │ Framework    │    │ Pipeline     │                   │
-│  └──────────────┘    └──────────────┘    └──────────────┘                   │
-│                                                                              │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         COMPLETE TEST LIFECYCLE                         │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐              │
+│  │   PHASE 1    │    │   PHASE 2    │    │   PHASE 3    │              │
+│  │   DISCOVER   │───▶│    PLAN      │───▶│   DESIGN     │              │
+│  │              │    │              │    │              │              │
+│  │ Jira/Conflu- │    │ Test Plan    │    │ Test Cases   │              │
+│  │ ence via MCP │    │ Checklist    │    │ Checklist    │              │
+│  └──────────────┘    └──────────────┘    └──────────────┘              │
+│         │                   │                   │                      │
+│         ▼                   ▼                   ▼                      │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐              │
+│  │   PHASE 4    │    │   PHASE 5    │    │   PHASE 6    │              │
+│  │   MANAGE     │───▶│   AUTOMATE   │───▶│   EXECUTE    │              │
+│  │              │    │              │    │              │              │
+│  │ TestLink     │    │ Test         │    │ Run & Report │              │
+│  │ via MCP      │    │ Framework    │    │ Results      │              │
+│  └──────────────┘    └──────────────┘    └──────────────┘              │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
-| Phase | Action | Skill | Commands |
-|-------|--------|-------|----------|
+| Phase | Action | Skill | Key Command |
+|-------|--------|-------|-------------|
 | 1. Discover | Gather requirements | `/receiving-tickets` | `/jr-trace` |
 | 2. Plan | Create test strategy | `/planning-tests` | `/tw-plan-init` |
 | 3. Design | Write test cases | `/designing-cases` | `/tw-case-init` |
-| 3b. Review | Notify stakeholders | `/drafting-review-email` | `/pm-demo-email` |
 | 4. Manage | Import to TestLink | `/syncing-testlink` | `/tl-sync` |
-| 4b. Execute | Run via browser | `/executing-tests` | `/tl-execute-case` |
 | 5. Automate | Create YAML tests | — | [test-framework-template](https://github.com/dogkeeper886/test-framework-template) |
-| 6. Report | Analyze failures | `/analyzing-logs` | `/robot-log-analyzer` |
+| 6. Execute | Run & record results | `/executing-tests` | `/tl-execute-case` |
 
 See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the complete workflow guide.
 
@@ -66,7 +64,6 @@ See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the
 | **Dual-Judge Framework** | Test execution with both deterministic and semantic (LLM) verification |
 | **Layered Architecture** | Skills (routers) → Commands (operations) → MCP tools |
 | **Orchestration Pattern** | Skills and commands detect context and route to focused sub-tasks |
-| **Complete Workflow** | Covers discovery, planning, design, management, automation, and reporting |
 
 ## Orchestration Pattern
 
@@ -98,6 +95,37 @@ Commands use a **detect-and-route** pattern: a short entry-point command reads t
   ├─ docs        └─ bugfix                           └─ bugfix
   └─ verify
 ```
+
+## Issue-Driven Development with `dw-*`
+
+The dev workflow commands provide a structured development lifecycle where every change is driven by a GitHub issue.
+
+### Usage
+
+```
+/dw-plan Add cross-repo sync commands     # Break request into GitHub issues
+/dw-implement 27                           # Pick up issue, create branch, implement
+/dw-create-pr 27                           # Push branch, open PR linked to issue
+/dw-review-pr 30                           # Review PR against checklist
+/dw-merge 30                               # Merge PR, clean up branch and labels
+```
+
+### Flow
+
+```
+/dw-plan → /dw-implement → /dw-create-pr → /dw-review-pr → /dw-merge
+    │            │               │                │              │
+ Create      Branch &        Push & open       Approve or    Merge PR,
+ issues      implement       PR (Fixes #N)     request       auto-close
+ with        on feature      with summary       changes       issue,
+ labels      branch          & test plan                      clean up
+```
+
+Each step uses the GitHub issue as the single source of truth. Issues get status labels (`status:in-progress`, `status:needs-review`) and progress comments automatically. The PR's `Fixes #N` auto-closes the issue on merge.
+
+### Branch Naming
+
+Branches follow `issue-<N>-<short-slug>` convention (e.g., `issue-27-release-notes`), keeping the issue linkage visible in git history.
 
 ## Self-Improvement with `/evolve`
 
@@ -170,104 +198,60 @@ Skills are the recommended high-level interface. Each skill is a thin router tha
 
 | Skill | Invoke as | Phase | Description |
 |---|---|---|---|
-| `receiving-tickets` | `/receiving-tickets` | 1 — Discover | Fetch Jira ticket + linked issues + Confluence pages, create project workspace |
-| `planning-tests` | `/planning-tests` | 2 — Plan | Detect ticket type, write test plan, publish to Confluence |
-| `designing-cases` | `/designing-cases` | 3 — Design | Write detailed test cases from plan, publish to Confluence |
-| `drafting-review-email` | `/drafting-review-email` | 3 — Review | Draft stakeholder review email and meeting invite |
-| `syncing-testlink` | `/syncing-testlink` | 4 — Manage | Sync test cases into TestLink, build test plan |
-| `executing-tests` | `/executing-tests` | 4/6 — Execute | Execute test plan via browser automation, record results |
-| `creating-demo` | `/creating-demo` | — | Create demo PPTX with browser-verified screenshots |
-| `analyzing-logs` | `/analyzing-logs` | 6 — Report | Analyze Robot Framework logs, group failures, suggest fixes |
+| `receiving-tickets` | `/receiving-tickets` | Discover | Fetch Jira ticket, linked issues, and Confluence pages; create project workspace |
+| `planning-tests` | `/planning-tests` | Plan | Detect ticket type, write test plan, publish to Confluence |
+| `designing-cases` | `/designing-cases` | Design | Write detailed test cases from plan, publish to Confluence |
+| `drafting-review-email` | `/drafting-review-email` | Review | Draft stakeholder review email and meeting invite |
+| `syncing-testlink` | `/syncing-testlink` | Manage | Sync test cases into TestLink with suites, cases, and test plan |
+| `executing-tests` | `/executing-tests` | Execute | Execute test plan via browser automation, record pass/fail results |
+| `creating-demo` | `/creating-demo` | — | Create demo PPTX with content outline and browser-verified screenshots |
+| `analyzing-logs` | `/analyzing-logs` | Report | Analyze Robot Framework logs, group failures, suggest fixes |
+| `tracking-changes` | `/tracking-changes` | Track | Track QA artifact changes in GitHub with full provenance |
+| `reviewing-commands` | `/reviewing-commands` | — | Audit slash commands against quality dimensions and best practices |
 
 See [docs/workflows/skills.md](docs/workflows/skills.md) for invocation patterns, trigger phrases, and MCP requirements per skill.
 
 ## Available Commands
 
-### Test Workflow Commands (tw-*)
+### [Jira Commands (jr-*)](commands/jira/)
+Trace tickets, fetch linked issues, and convert Jira content to Markdown.
 
-| Command | Purpose |
-|---------|---------|
-| `/tw-plan-init` | Initialize test planning (routes to feature/enhance/bugfix) |
-| `/tw-plan-feature` | Create test plan for new features |
-| `/tw-plan-enhance` | Create test plan for enhancements |
-| `/tw-plan-bugfix` | Create test plan for bug fixes |
-| `/tw-plan-review` | Review test plan quality |
-| `/tw-case-init` | Initialize test case creation (routes by plan type) |
-| `/tw-case-feature` | Create test cases for new features |
-| `/tw-case-enhance` | Create test cases for enhancements |
-| `/tw-case-bugfix` | Create test cases for bug fixes |
-| `/tw-case-review` | Review test case quality |
-| `/tw-diagrams` | Generate test diagrams |
-| `/tw-script-review` | Review test scripts against documentation |
-| `/tw-templates` | Test workflow templates reference |
+`jr-trace` · `jr-trace-fetch` · `jr-trace-structure` · `jr-trace-docs` · `jr-trace-verify` · `jr-issue-summary` · `jr-to-markdown`
 
-### Project Commands (pm-*)
+### [Confluence Commands (cf-*)](commands/confluence/)
+Summarize, convert, create, update, and review Confluence pages.
 
-| Command | Purpose |
-|---------|---------|
-| `/pm-init` | Initialize test project structure |
-| `/pm-bug-report` | Generate well-structured bug reports |
-| `/pm-scrum-task` | Generate Scrum task content for QA |
-| `/pm-meeting-invite` | Create meeting invite for reviews |
-| `/pm-demo-content` | Generate demo presentation content |
-| `/pm-demo-review` | Review demo content quality |
-| `/pm-demo-ppt` | Create PowerPoint slide outline |
-| `/pm-demo-email` | Draft demo announcement email |
+`cf-page-summary` · `cf-to-markdown` · `cf-create-page` · `cf-update-page` · `cf-review-page` · `cf-format-guide`
 
-### Jira Commands (jr-*)
+### [Test Workflow Commands (tw-*)](commands/test-workflow/)
+Plan test strategies and design test cases, with fan-out routing by ticket type (feature/enhance/bugfix).
 
-| Command | Purpose |
-|---------|---------|
-| `/jr-trace` | Trace tickets and gather all related information |
-| `/jr-trace-fetch` | Fetch Jira ticket and linked issues |
-| `/jr-trace-structure` | Structure traced data into project files |
-| `/jr-trace-docs` | Download documentation files faithfully |
-| `/jr-trace-verify` | Validate downloads and generate summaries |
-| `/jr-issue-summary` | Generate AI-powered issue summary |
-| `/jr-to-markdown` | Convert Jira ticket to Markdown |
+`tw-plan-init` · `tw-plan-feature` · `tw-plan-enhance` · `tw-plan-bugfix` · `tw-plan-review` · `tw-case-init` · `tw-case-feature` · `tw-case-enhance` · `tw-case-bugfix` · `tw-case-review` · `tw-case-publish` · `tw-case-verify-refs` · `tw-diagrams` · `tw-script-review` · `tw-templates`
 
-### Confluence Commands (cf-*)
+### [TestLink Commands (tl-*)](commands/testlink/)
+Manage test suites, cases, plans, and execution results in TestLink via MCP.
 
-| Command | Purpose |
-|---------|---------|
-| `/cf-page-summary` | Generate page summary |
-| `/cf-to-markdown` | Convert page to Markdown |
-| `/cf-create-page` | Create page from markdown content |
-| `/cf-update-page` | Update existing Confluence page |
-| `/cf-review-page` | Review Confluence page quality |
-| `/cf-format-guide` | Confluence formatting guidelines |
+`tl-list-projects` · `tl-list-suites` · `tl-list-cases` · `tl-list-requirements` · `tl-create-suite` · `tl-create-case` · `tl-get-case` · `tl-get-cases-for-plan` · `tl-update-case` · `tl-update-suite` · `tl-create-plan` · `tl-add-case-to-plan` · `tl-create-execution` · `tl-read-execution` · `tl-execute-case` · `tl-sync` · `tl-identify-type` · `tl-format`
 
-### TestLink Commands (tl-*)
+### [GitHub Commands (gh-*)](commands/github/)
+Set up milestone/label tracking for QA artifacts and monitor progress through GitHub issues.
 
-| Command | Purpose |
-|---------|---------|
-| `/tl-list-projects` | List all TestLink projects |
-| `/tl-list-suites` | List test suites in project |
-| `/tl-list-cases` | List test cases in suite |
-| `/tl-list-requirements` | List requirements |
-| `/tl-create-suite` | Create new test suite |
-| `/tl-create-case` | Create test case with HTML formatting |
-| `/tl-get-case` | Retrieve test case details |
-| `/tl-get-cases-for-plan` | Get test cases for a plan |
-| `/tl-update-case` | Update existing test case |
-| `/tl-update-suite` | Update existing test suite |
-| `/tl-create-plan` | Create new test plan |
-| `/tl-add-case-to-plan` | Assign test case to plan |
-| `/tl-create-execution` | Record test execution result |
-| `/tl-read-execution` | Read test execution details |
-| `/tl-execute-case` | Execute test via browser automation |
-| `/tl-sync` | Sync test cases with local files |
-| `/tl-identify-type` | Categorize test as GUI/API/Other |
-| `/tl-format` | TestLink HTML formatting reference |
+`gh-init` · `gh-track` · `gh-status` · `gh-close`
 
-### Utility Commands
+### [Dev Workflow Commands (dw-*)](commands/dev-workflow/)
+Issue-driven development lifecycle: plan issues, implement on branches, open PRs, review, and merge.
 
-| Command | Purpose |
-|---------|---------|
-| `/rewrite-text` | Simplify text while keeping meaning |
-| `/robot-log-analyzer` | Analyze Robot Framework logs |
-| `/evolve` | Evidence-based self-improvement loop — analyzes issues, commits, and session summaries to propose improvements |
-| `/session-summary` | Record privacy-safe session summary for pattern detection |
+`dw-plan` · `dw-implement` · `dw-create-pr` · `dw-review-pr` · `dw-merge`
+
+### [Project Commands (pm-*)](commands/project/)
+Cross-cutting project management: bug reports, scrum tasks, meeting invites, and demo materials.
+
+`pm-init` · `pm-bug-report` · `pm-scrum-task` · `pm-meeting-invite` · `pm-demo-content` · `pm-demo-review` · `pm-demo-ppt` · `pm-demo-email`
+
+### [Utility Commands](commands/utility/)
+Text rewriting, log analysis, self-improvement, cross-repo sync, and command quality auditing.
+
+`rewrite-text` · `robot-log-analyzer` · `evolve` · `session-summary` · `command-review` · `compare` · `sync`
 
 ## Documentation
 
@@ -302,27 +286,30 @@ See [docs/workflows/skills.md](docs/workflows/skills.md) for invocation patterns
 ai-qa-workflow/
 ├── commands/
 │   ├── confluence/     # Confluence commands (cf-*)
+│   ├── dev-workflow/   # Dev lifecycle commands (dw-*)
+│   ├── github/         # GitHub tracking commands (gh-*)
 │   ├── jira/           # Jira commands (jr-*)
 │   ├── project/        # Project management commands (pm-*)
 │   ├── testlink/       # TestLink commands (tl-*)
 │   ├── test-workflow/  # Test planning and case workflows (tw-*)
 │   └── utility/        # Utility commands
 ├── skills/
-│   ├── receiving-tickets/    # Phase 1: Fetch ticket, create workspace
-│   ├── planning-tests/       # Phase 2: Create test plan
-│   ├── designing-cases/      # Phase 3: Write test cases
+│   ├── analyzing-logs/        # Phase 6: Robot Framework log analysis
+│   ├── creating-demo/         # Demo PPTX generation
+│   ├── designing-cases/       # Phase 3: Write test cases
 │   ├── drafting-review-email/ # Phase 3: Stakeholder review email
-│   ├── syncing-testlink/     # Phase 4: Import cases to TestLink
-│   ├── executing-tests/      # Phase 4/6: Browser test execution
-│   ├── creating-demo/        # Demo PPTX generation
-│   └── analyzing-logs/       # Phase 6: Robot Framework log analysis
+│   ├── executing-tests/       # Phase 4/6: Browser test execution
+│   ├── planning-tests/        # Phase 2: Create test plan
+│   ├── receiving-tickets/     # Phase 1: Fetch ticket, create workspace
+│   ├── reviewing-commands/    # Command quality auditing
+│   ├── syncing-testlink/      # Phase 4: Import cases to TestLink
+│   └── tracking-changes/     # GitHub artifact tracking
+├── templates/          # Project templates
 ├── demo/               # YouTube video script and example outputs
-│   ├── examples/       # Sample command outputs
-│   └── v1_commands/    # Original v1.0 monolithic commands
 ├── docs/
+│   ├── design/         # Design principles
 │   ├── integrations/   # MCP integration guides
-│   ├── workflows/      # End-to-end workflows (test-lifecycle.md, skills.md)
-│   └── design/         # Design principles
+│   └── workflows/      # End-to-end workflows
 ├── Makefile            # Installation automation
 └── README.md
 ```
