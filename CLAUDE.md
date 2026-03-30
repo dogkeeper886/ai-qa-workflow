@@ -56,8 +56,9 @@ Installation is agent-driven. When an AI agent reads this file, it should guide 
 1. **Orient** — Read this CLAUDE.md to understand available modules (see Directory Structure and Skills sections)
 2. **Detect context** — Examine the user's current working directory:
    - Read its CLAUDE.md (if it exists) to understand the project
-   - Check what MCP servers are configured (determines relevant modules)
+   - Check what MCP servers are configured: look in `.claude/settings.local.json`, `mcp.json`, or ask the user
    - Check what's already installed in `.claude/commands/` and `.claude/skills/` (project and home)
+   - If no project context is detected (e.g., empty directory), ask the user what they're working on
 3. **Ask the user**:
    - Where to install: project folder (`.claude/commands/`) or home folder (`~/.claude/commands/`), or per-module
    - What modules to install: recommend based on context, let user override

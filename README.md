@@ -176,13 +176,9 @@ Installation is agent-driven — your AI agent reads `CLAUDE.md` and guides you 
 
 **From a local clone:**
 ```
-Tell your AI agent: "Read /path/to/ai-qa-workflow/CLAUDE.md and install the commands I need"
+git clone https://github.com/dogkeeper886/ai-qa-workflow
 ```
-
-**From GitHub:**
-```
-Tell your AI agent: "Read https://github.com/dogkeeper886/ai-qa-workflow/blob/main/CLAUDE.md and install the commands I need"
-```
+Then tell your AI agent: "Read /path/to/ai-qa-workflow/CLAUDE.md and install the commands I need"
 
 The agent will:
 1. Detect your project context and what MCP servers you have
