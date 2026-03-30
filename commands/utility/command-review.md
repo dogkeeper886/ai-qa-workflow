@@ -22,7 +22,7 @@ Audit slash command files for quality, consistency, and alignment with official 
 
 ## Official Reference
 
-Per [Claude Code docs](https://code.claude.com/docs/en/slash-commands):
+Per [Claude Code docs](https://code.claude.com/docs/en/skills):
 - **Minimal commands are valid** — single sentence, no frontmatter, no sections required
 - **No prescribed section headings** — body is free-form markdown
 - **Two content types** — "reference content" (conventions/knowledge) and "task content" (step-by-step actions)
@@ -74,6 +74,7 @@ Check official limits and internal consistency.
 **Checklist:**
 - [ ] Under 500 lines (official limit — move reference material to supporting files if over)
 - [ ] If frontmatter exists, description is under 250 characters (truncated otherwise)
+- [ ] If frontmatter exists, name is lowercase letters/numbers/hyphens only, max 64 characters
 - [ ] Content type is clear — either reference (conventions/knowledge) or task (step-by-step)
 - [ ] For task commands: steps are numbered, not buried in prose
 - [ ] No orphan content outside logical groupings
