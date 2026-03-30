@@ -27,11 +27,12 @@ AI QA Workflow is a QA automation toolkit that connects AI coding agents with te
 ### Dev Workflow Commands
 
 For structured issue-driven development, use the `dw-*` commands:
-1. `/dw-plan` — Break request into GitHub issues with labels
-2. `/dw-implement` — Pick up issue, create branch, implement
-3. `/dw-create-pr` — Push and open PR with issue linkage
-4. `/dw-review-pr` — Review PR against checklist
-5. `/dw-merge` — Merge PR and clean up
+1. `/dw-story` — Create structured user story from requirements
+2. `/dw-plan` — Break request into GitHub issues with labels
+3. `/dw-implement` — Pick up issue, create branch, implement
+4. `/dw-create-pr` — Push and open PR with issue linkage
+5. `/dw-review-pr` — Review PR against checklist
+6. `/dw-merge` — Merge PR and clean up
 
 ## Information Leak Check
 

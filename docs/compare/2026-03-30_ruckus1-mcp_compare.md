@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-30
 **Local repo:** ai-qa-workflow
-**Remote repo:** ruckus1-mcp (/home/jack/src/ruckus1-mcp)
+**Remote repo:** ruckus1-mcp
 
 ## Summary
 
