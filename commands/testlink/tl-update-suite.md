@@ -44,11 +44,8 @@ Name: Updated User Session Management Suite
 Details: <p>Comprehensive test suite for validating session management functionality with token rotation support. Includes GUI testing, automation testing, and customer scenario replication.</p>
 ```
 
-## HTML Formatting for Details:
-- Wrap descriptions in <p> tags
-- Use <strong> for important terms and features
-- Use <ul><li> for lists of test types or features
-- Apply HTML entities: &gt;, &lt;, &quot;, &amp;, &apos;
+## HTML Formatting:
+- Apply formatting per `/tl-format` rules (details field uses summary formatting conventions)
 
 ## MCP Tool Parameters:
 ```json
@@ -67,11 +64,6 @@ Details: <p>Comprehensive test suite for validating session management functiona
 ## Optional Fields:
 - name: String (new test suite name)
 - details: String (new test suite description, HTML formatted)
-
-## HTML Formatting Examples:
-- Simple description: "<p>Test suite for user authentication validation</p>"
-- Complex description: "<p>Comprehensive test suite covering <strong>GUI</strong> and <strong>API</strong> testing</p><ul><li>User interface validation</li><li>Backend service testing</li><li>Integration testing</li></ul>"
-- Technical details: "<p>Test suite for &quot;Session Management&quot; feature with token rotation support</p>"
 
 ## Success Criteria:
 ✅ Suite ID provided and valid
