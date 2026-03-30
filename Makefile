@@ -1,4 +1,8 @@
 # AI QA Workflow - Command Installation Makefile
+# DEPRECATED: Use agent-driven installation via CLAUDE.md instead.
+# Tell your AI agent: "Read CLAUDE.md and install the commands I need"
+# This Makefile is kept for backward compatibility only.
+#
 # Follows GNU Coding Standards conventions
 
 # Installation directories
