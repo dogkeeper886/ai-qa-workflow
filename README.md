@@ -310,9 +310,9 @@ ai-qa-workflow/
 │   ├── syncing-testlink/      # Phase 4: Import cases to TestLink
 │   └── tracking-changes/     # GitHub artifact tracking
 ├── templates/          # Project templates
-├── demo/               # YouTube video script and example outputs
 ├── docs/
 │   ├── design/         # Design principles
+│   ├── examples/       # Sample command outputs
 │   ├── integrations/   # MCP integration guides
 │   └── workflows/      # End-to-end workflows
 ├── Makefile            # Legacy installation (deprecated — use agent-driven install via CLAUDE.md)
