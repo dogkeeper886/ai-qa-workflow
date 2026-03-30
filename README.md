@@ -246,7 +246,7 @@ Set up milestone/label tracking for QA artifacts and monitor progress through Gi
 ### [Dev Workflow Commands (dw-*)](commands/dev-workflow/)
 Issue-driven development lifecycle: plan issues, implement on branches, open PRs, review, and merge.
 
-`dw-plan` · `dw-implement` · `dw-create-pr` · `dw-review-pr` · `dw-merge`
+`dw-story` · `dw-plan` · `dw-implement` · `dw-create-pr` · `dw-review-pr` · `dw-merge`
 
 ### [Project Commands (pm-*)](commands/project/)
 Cross-cutting project management: bug reports, scrum tasks, meeting invites, and demo materials.
