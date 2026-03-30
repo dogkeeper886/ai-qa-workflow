@@ -172,25 +172,30 @@ Reports are saved to `docs/evolve/[YYYY-MM-DD]_evolve_report.md` and include an 
 
 ### Installation
 
-```bash
-# Clone the repository
-git clone https://github.com/dogkeeper886/ai-qa-workflow
-cd ai-qa-workflow
+Installation is agent-driven — your AI agent reads `CLAUDE.md` and guides you through it.
 
-# Install commands and skills to Claude Code
-make install
-
-# Or install individually
-make install-claude    # Commands only
-make install-skills    # Skills only
+**From a local clone:**
 ```
+git clone https://github.com/dogkeeper886/ai-qa-workflow
+```
+Then tell your AI agent: "Read /path/to/ai-qa-workflow/CLAUDE.md and install the commands I need"
+
+The agent will:
+1. Detect your project context and what MCP servers you have
+2. Recommend relevant modules (e.g., Jira commands if you use mcp-atlassian)
+3. Ask where to install — project folder or home folder
+4. Compare with any existing commands and sync intelligently
 
 ### After Installation
 
-1. Restart your IDE
+1. Restart your IDE to load new commands
 2. Skills available as slash commands (e.g., `/receiving-tickets`)
 3. All commands also available (e.g., `/jr-trace`)
 4. Configure MCP integrations (see [docs/integrations/](docs/integrations/))
+
+### Updating
+
+Same flow — tell your agent to re-read `CLAUDE.md` and it will compare, detect changes, and sync updates.
 
 ## Agent Skills
 
@@ -310,7 +315,7 @@ ai-qa-workflow/
 │   ├── design/         # Design principles
 │   ├── integrations/   # MCP integration guides
 │   └── workflows/      # End-to-end workflows
-├── Makefile            # Installation automation
+├── Makefile            # Legacy installation (deprecated — use agent-driven install via CLAUDE.md)
 └── README.md
 ```
 
@@ -320,14 +325,14 @@ ai-qa-workflow/
 
 1. Create `skills/<gerund-name>/SKILL.md` with YAML frontmatter (`name`, `description`, `disable-model-invocation`, `tools`)
 2. Route each step to an existing slash command — skills should not duplicate command logic
-3. Run `make install-skills` to deploy
+3. Tell your AI agent to re-read `CLAUDE.md` and sync the new skill
 4. Commit only the source file under `skills/`
 
 ### Adding New Commands
 
 1. Create markdown file in appropriate `commands/` subfolder
 2. Follow the standard template (see existing commands)
-3. Test with `make install`
+3. Tell your AI agent to re-read `CLAUDE.md` and sync the new command
 4. Commit only the source file
 
 ### Command Template
@@ -351,10 +356,7 @@ What gets created
 
 ### Updating Commands
 
-```bash
-git pull
-make install    # Updates all commands and skills
-```
+Pull the latest changes, then tell your AI agent to re-read `CLAUDE.md` — it will compare and sync updates automatically.
 
 ## License
 

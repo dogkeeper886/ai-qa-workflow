@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI QA Workflow is a QA automation toolkit that connects AI coding agents with test management systems through MCP (Model Context Protocol) integrations. It provides 60 slash commands for end-to-end test automation across Jira, Confluence, TestLink, Playwright, and GitHub.
+AI QA Workflow is a QA automation toolkit that connects AI coding agents with test management systems through MCP (Model Context Protocol) integrations. It provides slash commands and skills for end-to-end test automation across Jira, Confluence, TestLink, Playwright, and GitHub.
 
 ## Git Workflow
 
@@ -47,17 +47,46 @@ All commands must return **no results**. Examples must use only generic placehol
 | Project name | `User Session Management` / `USM` | |
 | Product name | `Cloud management platform` | |
 
-## Build and Installation
+## Installation
 
-```bash
-make install           # Install commands + skills to Claude Code
-make install-claude    # Claude Code only (~/.claude/commands/)
-make install-skills    # Skills to Claude Code only (~/.claude/skills/)
-make uninstall         # Remove installed commands
-make uninstall-skills  # Remove installed skills
-```
+Installation is agent-driven. When an AI agent reads this file, it should guide the user through installing commands and skills using the compare/sync protocol.
 
-After installation, restart the IDE to load commands.
+### Agent Installation Flow
+
+1. **Orient** — Read this CLAUDE.md to understand available modules (see Directory Structure and Skills sections)
+2. **Detect context** — Examine the user's current working directory:
+   - Read its CLAUDE.md (if it exists) to understand the project
+   - Check what MCP servers are configured: look in `.claude/settings.local.json`, `mcp.json`, or ask the user
+   - Check what's already installed in `.claude/commands/` and `.claude/skills/` (project and home)
+   - If no project context is detected (e.g., empty directory), ask the user what they're working on
+3. **Ask the user**:
+   - Where to install: project folder (`.claude/commands/`) or home folder (`~/.claude/commands/`), or per-module
+   - What modules to install: recommend based on context, let user override
+4. **Compare & sync** — Read `commands/utility/compare.md` and `commands/utility/sync.md` for the protocol, then:
+   - Compare source (`commands/`) with target for each selected module
+   - Classify each file: new / identical / diverged / target-only
+   - For key changes: prompt user with explanation before applying
+   - Adapt project-specific values when installing into a different repo
+5. **Report** — Save a summary of what was installed, updated, or skipped
+
+### Module Groups
+
+| Module | Default Target | Reason |
+|--------|---------------|--------|
+| Utility (rewrite-text, evolve, session-summary) | `~/.claude/commands/` | Universal, useful in any project |
+| Compare, sync, command-review | `~/.claude/commands/` | Cross-repo tools, used everywhere |
+| Dev Workflow (dw-*) | `~/.claude/commands/` | Generic dev lifecycle |
+| Jira (jr-*) | `.claude/commands/` | Project-specific, needs mcp-atlassian |
+| Confluence (cf-*) | `.claude/commands/` | Project-specific, needs mcp-atlassian |
+| TestLink (tl-*) | `.claude/commands/` | Project-specific, needs testlink-mcp |
+| Test Workflow (tw-*) | `.claude/commands/` | Project-specific |
+| GitHub (gh-*) | `.claude/commands/` | Project-specific |
+| Project (pm-*) | `.claude/commands/` | Project-specific |
+| Skills | `.claude/skills/` | Project-specific, lifecycle phases |
+
+### Updates
+
+Updates follow the same flow as installation. The agent re-reads this CLAUDE.md (from the latest repo — local or GitHub), compares with what's installed, and syncs changes. Key or breaking changes should prompt the user and save a report.
 
 ## Architecture
 
@@ -132,7 +161,7 @@ Commands expect these MCP servers configured in the IDE:
    ## API Notes:
    MCP tool calls and quirks
    ```
-3. Run `make install` to deploy
+3. Tell your AI agent to re-read `CLAUDE.md` and sync the new command
 4. Commit only the source file in `commands/`
 
 ## Skills

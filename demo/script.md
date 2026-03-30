@@ -114,15 +114,15 @@
 
 **[SHOW: Terminal.]**
 
-> If you don't have these commands yet, you can git pull from the repository and run `make install`. It will install to your user folder.
+> If you don't have these commands yet, clone the repository and tell your AI agent to read `CLAUDE.md`. The agent will guide you through installation — it detects your project, recommends relevant modules, and asks where to install.
 
-**[SHOW: Run `make install` in terminal.]**
+**[SHOW: Agent reading CLAUDE.md and presenting module selection.]**
 
-> If you already have the commands, be careful. If you think the current commands still work for you, you don't have to update. I recommend everybody to have your own commands and make your own modifications.
+> If you already have the commands, the same flow handles updates. The agent compares what you have with the latest version and syncs the changes. I recommend everybody to have your own commands and make your own modifications.
 
-**[SHOW: Output of `make install` showing installation to `~/.claude/commands/` and `~/.claude/skills/`.]**
+**[SHOW: Agent comparing and syncing commands to `~/.claude/commands/` and `.claude/skills/`.]**
 
-> The commands and skills are installed to the user folder under `~/.claude/`.
+> The agent installs universal utilities to your home folder and project-specific commands to your project folder.
 
 ---
 
@@ -186,7 +186,7 @@
 7. v2.0 files: `tw-plan-init.md`, `tw-plan-feature.md`, `tw-plan-review.md`, `tw-case-init.md`, `tw-case-feature.md`, `tw-case-review.md`
 8. `commands/testlink/tl-sync.md`
 9. `commands/project/` directory listing
-10. Terminal: `make install`
+10. Agent-driven installation via `CLAUDE.md`
 11. Claude Code: slash command demo
 12. MCP integration docs / cheat sheet
 13. MCP server repos: Playwright, RADIUS SQL, TestLink, WPA
