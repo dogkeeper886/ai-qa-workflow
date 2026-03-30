@@ -124,10 +124,11 @@ skills/
 ├── tracking-changes/     # Track QA artifact changes in GitHub
 └── reviewing-commands/   # Audit command quality against best practices
 docs/
+├── design/        # Design principles
+├── examples/      # Sample command outputs
 ├── integrations/  # MCP server setup guides
 ├── references/    # Claude Code command and skill format specs
-├── workflows/     # End-to-end test lifecycle guide
-└── design/        # Design principles
+└── workflows/     # End-to-end test lifecycle guide
 ```
 
 ### MCP Dependencies
