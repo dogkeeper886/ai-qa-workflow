@@ -12,7 +12,7 @@ Arguments: {{input}}
 Examples:
   /review-install
   /review-install all
-  /review-install /home/jack/src/ollama37
+  /review-install /home/user/src/my-project
   /review-install --fix
 
 ## Tier Design
