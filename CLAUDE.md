@@ -100,6 +100,24 @@ Commands and skills are organized in two tiers to reduce maintenance across mult
 
 **Audit:** Run `/review-install` to detect duplicates, misplacements, and drift between home, project, and this source repo.
 
+### First-Time Home Setup
+
+When adopting ai-qa-workflow across multiple projects for the first time:
+
+1. **Create `~/.claude/CLAUDE.md`** — Define your identity (roles, project types), universal git workflow rules, information leak prevention rules, and the command hierarchy (what's at home vs project level)
+2. **Install home-level commands** — Copy universal commands from this repo to `~/.claude/commands/`:
+   - `commands/utility/` → evolve, session-summary, compare, sync, command-review, review-install, rewrite-text, robot-log-analyzer
+   - `commands/dev-workflow/` → dw-story, dw-plan, dw-implement, dw-create-pr, dw-review-pr, dw-merge
+3. **Audit all projects** — Run `/review-install all` to scan every project for duplicates, misplacements, and drift
+4. **Clean up duplicates** — Run `/review-install --fix` per project to remove commands shadowed by home level
+5. **Update project CLAUDE.md files** — Remove references to deleted commands, update counts and listings
+
+### Ongoing Maintenance
+
+- **After updating a command in ai-qa-workflow:** copy it to `~/.claude/commands/` and run `/review-install all` to check for drift
+- **After adding a new project:** run `/review-install` in that project to verify no duplicates
+- **Periodic audit:** run `/review-install all` quarterly to catch drift and info leaks
+
 ### Updates
 
 Updates follow the same flow as installation. The agent re-reads this CLAUDE.md (from the latest repo — local or GitHub), compares with what's installed, and syncs changes. Key or breaking changes should prompt the user and save a report.
