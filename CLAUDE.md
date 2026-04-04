@@ -75,7 +75,7 @@ Installation is agent-driven. When an AI agent reads this file, it should guide 
 | Module | Default Target | Reason |
 |--------|---------------|--------|
 | Utility (rewrite-text, evolve, session-summary) | `~/.claude/commands/` | Universal, useful in any project |
-| Compare, sync, command-review | `~/.claude/commands/` | Cross-repo tools, used everywhere |
+| Compare, sync, command-review, review-install | `~/.claude/commands/` | Cross-repo tools, used everywhere |
 | Dev Workflow (dw-*) | `~/.claude/commands/` | Generic dev lifecycle |
 | Jira (jr-*) | `.claude/commands/` | Project-specific, needs mcp-atlassian |
 | Confluence (cf-*) | `.claude/commands/` | Project-specific, needs mcp-atlassian |
@@ -84,6 +84,21 @@ Installation is agent-driven. When an AI agent reads this file, it should guide 
 | GitHub (gh-*) | `.claude/commands/` | Project-specific |
 | Project (pm-*) | `.claude/commands/` | Project-specific |
 | Skills | `.claude/skills/` | Project-specific, lifecycle phases |
+
+### Tier Design
+
+Commands and skills are organized in two tiers to reduce maintenance across multiple projects:
+
+| Tier | Location | Scope | What belongs here |
+|------|----------|-------|-------------------|
+| **Home** | `~/.claude/commands/` | Every project | Universal commands that work without modification in any project |
+| **Project** | `.claude/commands/`, `.claude/skills/` | One project | Commands with project-specific paths, tools, or workflow patterns |
+
+**Decision rule:** If a command references no project-specific paths, tools, or patterns → home level. Otherwise → project level.
+
+**Same-name conflict:** Home level wins. A project-level command with the same name as a home command is shadowed (unreachable) and should be removed.
+
+**Audit:** Run `/review-install` to detect duplicates, misplacements, and drift between home, project, and this source repo.
 
 ### Updates
 
