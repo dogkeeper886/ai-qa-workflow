@@ -28,6 +28,19 @@ Demo content should be **concise and user-focused**, with bullets for slides and
 | 5 | Demo | Screenshot placeholder | Observational language phrases |
 | 6 | Questions | Q&A slide | Brief closing statement |
 
+### Slide 4 Script Scope
+
+When the demo expands beyond a single slide (more than 6 slides total), Slide 4's script must be a **brief transition only** — not a walkthrough. The detail belongs on each individual demo slide, not pre-narrated on Slide 4.
+
+- **Wrong:** Slide 4 walks through creation steps, locked fields, auto-proxy, and filtering — then each demo slide narrates the same thing again.
+- **Right:** Slide 4 says *"Let me walk through each of these in the product."* Each demo slide carries its own narration.
+
+### Paired Slide Rule
+
+When two adjacent slides cover the same concept from two angles (e.g., IP-locked vs FQDN-locked, Auth override vs Acct override), the **second slide should reference the first** rather than repeat the full explanation:
+- *"Same guardrail on the FQDN side — ..."*
+- *"The same filtering applies to the Accounting dropdown — ..."*
+
 ### What to Exclude
 
 | Exclude | Reason |
@@ -261,9 +274,15 @@ Based on PROJ-54321:
    - Use quoted speech throughout
    - Use observational language for live demo
    - Keep sections flowing naturally
-   - Include navigation steps in Slide 4
+   - Include navigation steps in Slide 4 only when the demo has a single slide; otherwise use a brief transition sentence
 
-6. **Output to file**:
+6. **Review scripts for overlap** before saving:
+   - Read all slide scripts in sequence
+   - If a script pre-narrates content covered verbatim or near-verbatim on a later slide, trim the earlier occurrence to a transition phrase
+   - Slide 4 is the most common offender: if individual demo slides each narrate their own UI element, Slide 4's script should only bridge into the demo — not retell it
+   - Paired slides (same concept, two angles) must differentiate: the second slide references the first rather than repeating the full explanation
+
+7. **Output to file**:
    - Create `demo/` folder in project root if it doesn't exist
    - Save as `demo/Demo_Showcase_Content.md`
    - If `Demo_Showcase_Content.md` exists at project root (legacy location), suggest moving it to `demo/`
