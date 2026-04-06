@@ -8,10 +8,18 @@ AI QA Workflow is a QA automation toolkit that connects AI coding agents with te
 
 ## Git Workflow
 
-- Never commit directly to main
-- Open PR for review before merging
+- Default: open PR for review before merging
 - PRs require review approval before merging
 - Delete the feature branch after merging
+
+### Direct Push to Main
+
+Trivial, low-risk changes may be committed and pushed directly to main without a PR:
+- Docs-only changes (adding/editing markdown, no code)
+- Typo or formatting fixes
+- CLAUDE.md or config-only updates
+
+Everything else (code changes, new commands/skills, refactors) requires a feature branch and PR.
 
 ### Branch Naming
 
