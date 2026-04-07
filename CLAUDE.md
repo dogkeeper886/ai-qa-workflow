@@ -146,14 +146,14 @@ Commands are installed by copying markdown files to `~/.claude/commands/`. Skill
 
 ```
 commands/
-├── confluence/    # Confluence page operations (6 commands, cf-*)
-├── dev-workflow/  # Dev lifecycle: story, plan, implement, PR, review, merge (6 commands, dw-*)
-├── github/        # GitHub tracking and traceability (4 commands, gh-*)
-├── jira/          # Jira ticket tracing and conversion (7 commands, jr-*)
-├── project/       # Project management commands (8 commands, pm-*)
-├── testlink/      # TestLink CRUD and execution (18 commands, tl-*)
-├── test-workflow/ # Test planning and case workflows (15 commands, tw-*)
-└── utility/       # Text rewriting, log analysis, self-improvement, cross-repo sync (8 commands)
+├── confluence/    # Confluence page operations (cf-*)
+├── dev-workflow/  # Dev lifecycle: story, plan, implement, PR, review, merge (dw-*)
+├── github/        # GitHub tracking and traceability (gh-*)
+├── jira/          # Jira ticket tracing and conversion (jr-*)
+├── project/       # Project management commands (pm-*)
+├── testlink/      # TestLink CRUD and execution (tl-*)
+├── test-workflow/ # Test planning and case workflows (tw-*)
+└── utility/       # Text rewriting, log analysis, self-improvement, cross-repo sync
 skills/
 ├── receiving-tickets/    # Fetch Jira ticket + set up project workspace
 ├── planning-tests/       # Create test plan from ticket, publish to Confluence

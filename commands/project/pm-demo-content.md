@@ -276,7 +276,7 @@ Based on PROJ-54321:
    - Keep sections flowing naturally
    - Include navigation steps in Slide 4 only when the demo has a single slide; otherwise use a brief transition sentence
 
-6. **Review scripts for overlap** before saving:
+6. **Review scripts for overlap** before saving (for a full narration and flow audit, run `/pm-script-review` after saving):
    - Read all slide scripts in sequence
    - If a script pre-narrates content covered verbatim or near-verbatim on a later slide, trim the earlier occurrence to a transition phrase
    - Slide 4 is the most common offender: if individual demo slides each narrate their own UI element, Slide 4's script should only bridge into the demo — not retell it
