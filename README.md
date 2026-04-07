@@ -293,7 +293,7 @@ ai-qa-workflow/
 ### Adding New Commands
 
 1. Create markdown file in the appropriate `commands/` subfolder
-2. Follow the standard template (see existing commands for examples)
+2. Follow the [command format spec](docs/references/command-format.md) (or use existing commands as examples)
 3. Tell your AI agent to re-read `CLAUDE.md` and sync the new command
 4. Commit only the source file
 
