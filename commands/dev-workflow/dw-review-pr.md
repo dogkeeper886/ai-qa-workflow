@@ -34,9 +34,18 @@ code quality, test coverage, and documentation. Approves or requests changes.
         │   - [ ] No security vulnerabilities (injection, hardcoded secrets)
         │   - [ ] No debug/temporary code left in
         │
-        │   Test Coverage:
-        │   - [ ] Relevant tests added or updated (if applicable)
-        │   - [ ] CI checks pass (if applicable)
+        │   Test Coverage (adaptive — detect what the project uses):
+        │   - Detect CI: .github/workflows/, .gitlab-ci.yml, Jenkinsfile, .circleci/
+        │   - Detect test infra: cicd/tests/, tests/, __tests__/, *_test.go, *.robot
+        │
+        │   IF CI exists:
+        │   - [ ] CI pipeline passed (run: gh pr checks <PR>)
+        │   - [ ] New or updated test files match the scope of changes
+        │   - [ ] No test regressions in CI output
+        │   IF no CI:
+        │   - [ ] Manual test plan present in PR body or docs/test-plans/
+        │   - [ ] Test steps are specific and verifiable
+        │   - (Informational) Note: project has no CI — see /dw-test-design
         │
         │   Documentation:
         │   - [ ] Comments added where logic isn't self-evident
