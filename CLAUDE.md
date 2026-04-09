@@ -38,9 +38,10 @@ For structured issue-driven development, use the `dw-*` commands:
 1. `/dw-story` — Create structured user story from requirements
 2. `/dw-plan` — Break request into GitHub issues with labels
 3. `/dw-implement` — Pick up issue, create branch, implement
-4. `/dw-create-pr` — Push and open PR with issue linkage
-5. `/dw-review-pr` — Review PR against checklist
-6. `/dw-merge` — Merge PR and clean up
+4. `/dw-test-design` — Design tests for the implementation (detects project test infra)
+5. `/dw-create-pr` — Push and open PR with issue linkage
+6. `/dw-review-pr` — Review PR against checklist (adapts to CI presence)
+7. `/dw-merge` — Merge PR and clean up
 
 ## Information Leak Check
 
