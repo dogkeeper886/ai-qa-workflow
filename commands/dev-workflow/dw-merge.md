@@ -22,9 +22,10 @@ and issue labels. The linked issue auto-closes via "Fixes #N" in the PR body.
         │   - Run: gh pr checks <PR>
         │   - CI checks must pass (if applicable)
         │
-        ├─► Step 2: Identify Linked Issue
+        ├─► Step 2: Identify Linked Issue and Story
         │   - Read PR body for "Fixes #N" or "Closes #N"
         │   - Note the issue number for label cleanup
+        │   - Check if PR body or issue title contains [STORY-XXX] or "Part of STORY-XXX"
         │
         ├─► Step 3: Merge
         │   - Run: gh pr merge <PR> --merge --delete-branch
@@ -35,13 +36,21 @@ and issue labels. The linked issue auto-closes via "Fixes #N" in the PR body.
         │   - Run: gh issue edit <N> --remove-label "status:needs-review"
         │   - Issue auto-closes via "Fixes #N" — no manual close needed
         │
-        ├─► Step 5: Clean Up Local Branch
+        ├─► Step 5: Update Story File (if linked)
+        │   - If linked to STORY-XXX and docs/stories/STORY-XXX.md exists:
+        │     • Check off completed acceptance criteria for this task
+        │     • If all story tasks are closed, mark story status as Completed
+        │   - Skip silently if no story link or docs/stories/ doesn't exist
+        │
+        ├─► Step 6: Clean Up Local Branch
         │   - Run: git checkout main && git pull
         │   - Run: git branch -d <branch-name>
         │
-        └─► Step 6: Report
+        └─► Step 7: Report
             - Confirm merge to the user
             - Show the merged PR URL
+            - If story has remaining open tasks, suggest: /dw-implement <next-issue>
+            - If story is complete, mention it
             - Mention any follow-up issues if applicable
 
 ---

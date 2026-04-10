@@ -21,6 +21,7 @@ via "Fixes #N" for auto-closure. Updates issue labels to reflect PR status.
         │   - Run: git status — check for uncommitted changes
         │   - Run: git log --oneline main..HEAD — review commits
         │   - If no argument given, infer issue number from branch name
+        │   - Run: gh issue view <N> — check if title contains [STORY-XXX]
         │
         ├─► Step 2: Push Branch
         │   - Run: git push -u origin $(git branch --show-current)
@@ -35,6 +36,7 @@ via "Fixes #N" for auto-closure. Updates issue labels to reflect PR status.
         │       <1-3 bullet points>
         │
         │       Fixes #<issue-number>
+        │       (if linked to story: "Part of STORY-XXX")
         │
         │       ## Test plan
         │       - [ ] ...
@@ -49,7 +51,12 @@ via "Fixes #N" for auto-closure. Updates issue labels to reflect PR status.
         │   - Comment on issue:
         │     gh issue comment <N> --body "PR #<PR> created. Summary: <what changed>"
         │
-        └─► Step 5: Report
+        ├─► Step 5: Update Story File (if linked)
+        │   - If the issue title contains [STORY-XXX]:
+        │     update docs/stories/STORY-XXX.md status to reflect PR is open
+        │   - Skip silently if no story link or docs/stories/ doesn't exist
+        │
+        └─► Step 6: Report
             - Show the PR URL to the user
             - Suggest next step: /dw-review-pr <PR>
 
