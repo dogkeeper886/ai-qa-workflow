@@ -70,7 +70,6 @@ Fits between `/dw-story` (creates story) and `/dw-implement` (works on an issue)
         │     - Created: [original date]
         │     - Tasks: #1, #2, #3
         │     - Tests: none
-        │   - Commit the story file update
         │
         └─► Step 7: Report
             - Show table of created issues:

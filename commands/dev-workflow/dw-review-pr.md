@@ -52,6 +52,12 @@ code quality, test coverage, and documentation. Approves or requests changes.
         │   IF Containerized:
         │   - [ ] Dockerfile follows best practices (multi-stage, non-root)
         │   - [ ] No secrets in image layers
+        │   IF Python:
+        │   - [ ] Type hints on public functions
+        │   - [ ] No bare except clauses
+        │   IF Go:
+        │   - [ ] Errors are checked, not discarded
+        │   - [ ] No goroutine leaks (context cancellation handled)
         │   (Skip this section silently if no project type detected)
         │
         │   Test Coverage (adaptive — detect what the project uses):
