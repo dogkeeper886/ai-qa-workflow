@@ -34,6 +34,32 @@ code quality, test coverage, and documentation. Approves or requests changes.
         │   - [ ] No security vulnerabilities (injection, hardcoded secrets)
         │   - [ ] No debug/temporary code left in
         │
+        │   Project-Type Checks (detect and apply relevant items):
+        │   - Detect project type by scanning for markers:
+        │     • src/mcpServer.ts or @modelcontextprotocol/sdk → MCP server
+        │     • package.json with react/next → Frontend
+        │     • Dockerfile or docker-compose.yml → Containerized
+        │     • pyproject.toml or setup.py → Python
+        │     • go.mod → Go
+        │
+        │   IF MCP server:
+        │   - [ ] Service function follows existing patterns in services/
+        │   - [ ] Tool registered with clear description (REQUIRED/PREREQUISITE refs)
+        │   - [ ] Async operations use standard retry/polling pattern
+        │   IF Frontend:
+        │   - [ ] No console.log left in production code
+        │   - [ ] Components follow existing patterns
+        │   IF Containerized:
+        │   - [ ] Dockerfile follows best practices (multi-stage, non-root)
+        │   - [ ] No secrets in image layers
+        │   IF Python:
+        │   - [ ] Type hints on public functions
+        │   - [ ] No bare except clauses
+        │   IF Go:
+        │   - [ ] Errors are checked, not discarded
+        │   - [ ] No goroutine leaks (context cancellation handled)
+        │   (Skip this section silently if no project type detected)
+        │
         │   Test Coverage (adaptive — detect what the project uses):
         │   - Detect CI: .github/workflows/, .gitlab-ci.yml, Jenkinsfile, .circleci/
         │   - Detect test infra: cicd/tests/, tests/, __tests__/, *_test.go, *.robot
