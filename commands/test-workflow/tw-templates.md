@@ -121,16 +121,25 @@ IF feature scope is ambiguous:
 
 ### Test Case File Header Template
 
+Each metadata label must be its own paragraph (blank line between). Stacking consecutive `**Label:**` lines without a blank line causes the markdown converter to render the whole block as a single `<p>` with `<br/>` separators, fusing the metadata visually with whatever follows. See `skills/reviewing-typography/references/typography-principles.md` anti-pattern A1.
+
 ```markdown
 # TS-XX: [Scenario Name]
 
-**Objective:** [Copy from test plan]
 **Focus:** [Test type - Functional, UI/UX, etc.]
+
 **Test Cases:** [Count]
+
 **Test Plan Reference:** test_plan/sections/[Section_File].md § X.X, TS-XX
+
+---
+
+**Objective:** [Copy from test plan — keep as its own paragraph after the divider; maps to TestLink Suite Details on sync]
 ```
 
 ### Test Case Template
+
+**Do NOT add `**Priority:**` or `**Test Type:**` to the markdown.** Priority and Test Type are managed in TestLink (per `/tw-case-review` Step 7 — Priority Recommendation runs against the markdown files and feeds TestLink; the values themselves don't live in markdown). Only `**Execution Type:**` belongs in the file (it's the markdown-to-TestLink mapping per the table below).
 
 ```markdown
 ## TC-XX: [Descriptive Name]
@@ -259,7 +268,7 @@ Create variations based on:
          └────────────────────┼────────────────────┘
                               ↓
 /tw-plan-review
-    └── Reviews test plan, generates coverage matrix
+    └── Reviews test plan, runs overlap sweep, generates coverage on demand
                               ↓
 /tw-case-init
     └── Detects type, routes to case workflow

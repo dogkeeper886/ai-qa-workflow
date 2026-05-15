@@ -2,11 +2,81 @@
 
 ## Overview
 
-This document provides guidelines for creating properly formatted Confluence pages programmatically. These guidelines ensure consistent formatting and proper rendering of lists, tables, and other elements when using Confluence APIs.
+This document provides guidelines for creating properly formatted Confluence pages programmatically.
 
-## Key Principle
+## Path A — `mcp-atlassian:confluence_create_page` with `content_format: "markdown"` (RECOMMENDED for simple pages, verified 2026-05-15)
 
-**Use Confluence `storage` format (HTML-based) instead of `markdown` format** when creating pages programmatically. Markdown format often fails to convert lists and tables properly, resulting in plain text with markdown syntax instead of proper HTML elements.
+**Use markdown for flat, blank-line-separated content.** The Atlassian MCP server's markdown converter produces clean Confluence storage format for the majority of authoring needs. Verified across multiple multi-page test plan publishes.
+
+What round-trips cleanly:
+
+| Markdown input | Confluence output |
+|---|---|
+| `\| col \| col \|` table | `<table data-layout="default"><tbody>…<th><p>…` (proper Confluence table) |
+| `- item` bullet (top-level, preceded by blank line) | `<ul><li><p>…</p></li></ul>` |
+| `1. item` numbered (top-level, preceded by blank line) | `<ol start="1"><li><p>…</p></li></ol>` |
+| ` ```mermaid ` fenced | `<ac:structured-macro ac:name="code"><ac:parameter ac:name="language">mermaid</ac:parameter>` (renders as a diagram if Mermaid Cloud app is installed; otherwise as readable source) |
+| ` ```json ` etc. | `<ac:structured-macro ac:name="code">` with language parameter |
+| `[text](url)` | `<a href="url">text</a>` |
+| `**bold**` / `*italic*` | `<strong>…</strong>` / `<em>…</em>` |
+| ``` `code` ``` | `<code>…</code>` |
+| `---` | `<hr />` |
+| `&` | auto-escaped to `&amp;` |
+| `→` `↔` `↑` `↓` | preserved as Unicode (Confluence renders correctly) |
+
+**Schema gotcha:** the tool's parameter description lists `markdown`, `wiki`, and `storage` as the supported values. `html` and `adf` are rejected by the validator despite some older notes claiming otherwise. Use `markdown` for simple pages and `storage` for pages with the gotcha patterns below (see Path C).
+
+### Path A gotchas — patterns the markdown converter silently mangles
+
+Four common patterns DO NOT round-trip cleanly. Each failure mode is silent — the page returns 200 OK from create/update — so you only catch it by re-fetching with `convert_to_markdown: false` and inspecting the storage HTML.
+
+| Source pattern | What the converter produces | Fix |
+|---|---|---|
+| **Bold paragraph + immediately-following list with no blank line:**<br/>`**Heading:**`<br/>`- item A`<br/>`- item B` | Whole block collapses to one `<p>` paragraph with the hyphens preserved as plain text. **The list never renders.** | Insert a blank line between the bold paragraph and the first `-`. |
+| **Nested list (2-space-indented sub-bullets):**<br/>`- Parent`<br/>`  - Sub-item 1`<br/>`  - Sub-item 2` | Sub-bullets are **flattened** to the same level as the parent — "Parent" sits next to "Sub-item 1" instead of containing it. | Either restructure as sibling lists separated by a paragraph, or switch the page to `content_format: "storage"` and write `<ul><li><p>Parent</p><ul><li><p>Sub-item 1</p></li></ul></li></ul>` directly (see § 1.3). |
+| **Metadata block (multiple bold-prefixed lines, single newlines between):**<br/>`**Focus:** A`<br/>`**Estimated cases:** 3`<br/>`**Test plan reference:** ...` | All lines **merge** into one `<p>` paragraph with bold labels run together as one wall of inline text. | Insert blank lines (each line becomes its own `<p>`), or switch to storage format with `<p>...<br/>...<br/>...</p>` (the cleanest visual result). |
+| **Task list checkboxes (`- [ ]`)** in a paragraph context | Render as **bullet items with literal `[ ]` text**, not as native `<ac:task-list>` macros — even with a blank line before. The native task-list conversion is unreliable across contexts. | Use `content_format: "storage"` with explicit `<ac:task-list>` + `<ac:task>` macros (see § 1.4 below). |
+
+**Decision rule (apply before every publish):** scan the source markdown for the four patterns above.
+
+- **All four absent** → markdown is fine, use Path A as-is.
+- **Patterns 1 or 3 present** → either pre-process the markdown to insert blank lines / `<br/>`, or write the page in storage format.
+- **Patterns 2 or 4 present** → markdown cannot express the intent; write that page in storage format. Mixing is OK: most pages in a publish can be markdown while just the ones with nested lists or task lists are storage.
+
+**Pre-flight check (mandatory for batch publishes):** after creating pages, immediately re-fetch each with `convert_to_markdown: false` and grep the storage HTML for these red flags before declaring the publish complete:
+
+- `<p>…<strong>…:</strong>\s*-\s` (collapsed bold-then-list)
+- `<li><p>\[ \]` or `<li>\[ \]` (un-converted task-list markers)
+- `<p>…<strong>Focus:</strong>…<strong>Estimated test cases:</strong>` (collapsed metadata block)
+- `<li>…</li>\s*<li>` followed at the same depth by items that should have been nested (harder to detect mechanically — eyeball the `Checkpoints:` / `tenant already has:` style patterns)
+
+Run `/cf-review-page` against each page; it automates this scan.
+
+## Path C — Mixed markdown + storage (RECOMMENDED for multi-page publishes with mixed content)
+
+In practice, a typical test-plan publish has both simple pages (sections, README) and complex pages (TS-XX scenarios with nested Checkpoints, Test Strategy with task lists). Rather than picking one format for the whole publish, pick per page based on the patterns each page contains:
+
+| Page shape | Recommended format |
+|---|---|
+| Flat bullets + tables + code blocks + Mermaid | `markdown` |
+| Bold-paragraph-headed sub-lists (e.g. Scope `**Admin configuration:** + bullets`) | `markdown` with blank line before each list (works) |
+| Nested lists (e.g. TS-XX `Checkpoints:` with sub-bullets) | `storage` |
+| Task-list checkboxes (Entry/Exit Criteria) | `storage` with `<ac:task-list>` |
+| Metadata header block (`**Focus:** … **Estimated cases:** …`) | `storage` with `<br/>`, OR markdown with blank lines between each label line |
+
+Both `mcp-atlassian:confluence_create_page` and `mcp-atlassian:confluence_update_page` accept `content_format: "markdown"` or `"storage"`. Pages can be mixed within a single publish — no special handling needed at the API level.
+
+**Recovery pattern:** if a page was created in markdown and the review reveals one of the Path A gotchas, update the same page ID with `content_format: "storage"` rather than delete-and-recreate. This preserves the page URL (and any inbound links from Jira/Slack/demo decks).
+
+## Path B — Direct Confluence REST API call (legacy, manual conversion required)
+
+When NOT going through the MCP tool (direct `POST /wiki/rest/api/content` calls), the older guidance below applies: write Confluence storage format (HTML-based) by hand because the REST API's markdown intake was unreliable for tables and lists.
+
+This path is retained for completeness but should not be the default. The MCP tool covers all current authoring needs.
+
+### Legacy Key Principle
+
+**Use Confluence `storage` format (HTML-based) instead of `markdown` format** when creating pages programmatically through the legacy REST API. Markdown format often fails to convert lists and tables properly, resulting in plain text with markdown syntax instead of proper HTML elements.
 
 ---
 
@@ -89,6 +159,34 @@ This document provides guidelines for creating properly formatted Confluence pag
 **Key Points:**
 - Nested list goes inside the parent `<li>` element, after the `<p>` tag
 - Can mix `<ul>` and `<ol>` for nested lists
+- **Markdown cannot express nesting reliably** — the MCP converter flattens 2-space-indented sub-bullets (see Path A gotchas above). For any page with nested lists, use `content_format: "storage"` with the structure above.
+
+### 1.4 Task Lists (Native Confluence Checkboxes)
+
+When the page needs **interactive checkboxes** (Entry/Exit criteria, sign-off checklists, definition-of-done lists), use Confluence's native task-list macro. The markdown `- [ ]` shortcut converts unreliably (see Path A gotchas) — write storage format directly.
+
+**Correct Format (Storage):**
+```html
+<ac:task-list>
+  <ac:task>
+    <ac:task-id>1</ac:task-id>
+    <ac:task-status>incomplete</ac:task-status>
+    <ac:task-body>First criterion to verify</ac:task-body>
+  </ac:task>
+  <ac:task>
+    <ac:task-id>2</ac:task-id>
+    <ac:task-status>incomplete</ac:task-status>
+    <ac:task-body>Second criterion — inline <code>code</code> and <strong>bold</strong> are fine inside <code>ac:task-body</code></ac:task-body>
+  </ac:task>
+</ac:task-list>
+```
+
+**Key Points:**
+- Each task needs a unique `<ac:task-id>` (any integer; just keep them unique within the page).
+- `<ac:task-status>` is `incomplete` or `complete`.
+- `<ac:task-body>` accepts inline HTML (`<code>`, `<strong>`, `<a>`, etc.) but not block-level elements.
+- The rendered output is a checkbox the reader can tick directly in Confluence — much better than a bullet list with `[ ]` placeholder text.
+- Reference example: a Test Strategy page § 4.5 with 16 task-list items split across Entry Criteria (9) and Exit Criteria (7).
 
 ---
 

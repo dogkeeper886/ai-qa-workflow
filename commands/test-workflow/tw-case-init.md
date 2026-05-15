@@ -23,9 +23,9 @@ Analyze the test plan to:
 Before starting, verify these files exist:
 - [ ] `test_plan/README.md` must exist (index file created by /tw-plan-* commands)
 - [ ] `test_plan/sections/` should contain section files
-- [ ] Test scenarios in Test Strategy section file:
-  - Feature/Enhancement: `sections/04_Test_Strategy.md § 4.4 / § 4.2`
-  - Bug Fix: `sections/03_Test_Strategy.md § 3.2`
+- [ ] Test scenarios — layout-aware:
+  - **New layout** (`test_plan/test_design/scenarios/` exists): list all `TS-XX_*.md` files in that directory
+  - **Legacy layout**: scenario table inline in `sections/04_Test_Strategy.md § 4.4 / § 4.2` (Feature/Enhancement) or `sections/03_Test_Strategy.md § 3.2` (Bug Fix)
 - [ ] Optional: `/tw-plan-review` output with coverage matrix
 
 > **Fallback:** If `test_plan/sections/` does not exist, read `test_plan/README.md` directly.
@@ -66,20 +66,26 @@ IF "Enhancement Validation":
 
 ### Step 2: Extract Test Scenarios
 
-Count and list all test scenarios from the test plan:
+Count and list all test scenarios from the test plan, layout-aware:
 
 ```
-READ test_plan/sections/04_Test_Strategy.md § 4.4 (features)
-  or test_plan/sections/04_Test_Strategy.md § 4.2 (enhancements)
-  or test_plan/sections/03_Test_Strategy.md § 3.2 (bug fixes)
-EXTRACT test scenario table
+IF test_plan/test_design/scenarios/ exists (NEW LAYOUT):
+  LIST every TS-XX_*.md file under that directory (numeric order)
+  FOR EACH scenario file, READ:
+    - Scenario ID (from filename / H1)
+    - Scenario name (from H1)
+    - Focus (from **Focus:** field)
+    - Estimated test case count (from **Estimated test cases:** field)
+    - Scenario preconditions (from optional ## Scenario Preconditions block)
+    - Per-case Objective + Checkpoints (+ case-level Preconditions / Notes if present),
+      one ### Case N: block per case. Steps are NOT in the scenario — derive
+      them later in the test case body from Objective + Checkpoints + Notes
 
-FOR EACH scenario:
-  - Scenario ID (TS-XX)
-  - Scenario name
-  - Focus area
-  - Estimated test case count
-  - Test activities listed
+ELSE (LEGACY LAYOUT):
+  READ test_plan/sections/04_Test_Strategy.md § 4.4 (features)
+    or test_plan/sections/04_Test_Strategy.md § 4.2 (enhancements)
+    or test_plan/sections/03_Test_Strategy.md § 3.2 (bug fixes)
+  EXTRACT test scenario table (one row per TS-XX)
 ```
 
 ---

@@ -22,12 +22,24 @@ AUDIENCE: QA Engineers, Test Execution Team, TestLink Users
 
 ## INFORMATION SOURCES
 
-**PRIMARY SOURCE (Required):**
-1. **test_plan/sections/03_Test_Strategy.md § 3.2** - Test scenarios (bug fix plans use section 3)
-2. **test_plan/sections/01_Problem_Context.md § 1.2** - Reproduction steps (critical for defect verification)
-3. **test_plan/sections/02_Test_Scope.md § 2.1-2.3** - Test scope
+**PRIMARY SOURCE (Required) — detect layout first:**
 
-> **Fallback:** If `test_plan/sections/` does not exist, read `test_plan/README.md` directly.
+Check whether the project uses the **new layout** (`test_plan/test_design/scenarios/`) or the **legacy layout** (scenarios inlined in `sections/03_Test_Strategy.md § 3.2`).
+
+```
+IF test_plan/test_design/scenarios/ exists (new layout):
+  - Scenarios: read each test_plan/test_design/scenarios/TS-XX_*.md directly
+  - Each file's `**Estimated test cases:** N` header gives the case count
+  - Body is the source of truth for activities (no § 3.2 table to consult)
+IF only test_plan/sections/ exists (legacy layout):
+  - Scenarios: test_plan/sections/03_Test_Strategy.md § 3.2 (inline table)
+```
+
+Other required sources (independent of layout):
+1. **test_plan/sections/01_Problem_Context.md § 1.2** — Reproduction steps (critical for defect verification)
+2. **test_plan/sections/02_Test_Scope.md § 2.1-2.3** — Test scope
+
+> **Fallback:** If `test_plan/sections/` does not exist at all, read `test_plan/README.md` directly.
 
 **SECONDARY SOURCES (Reference):**
 4. **Bug Ticket** (`00_Main_Task_*.md`) - Original reproduction steps
@@ -54,8 +66,19 @@ test_cases/
 1. Read test_plan/sections/01_Problem_Context.md § 1.2 - Extract reproduction steps
    - These become the basis for TS-01 (Defect Verification)
 
-2. Read test_plan/sections/03_Test_Strategy.md § 3.2 - Test scenarios
-   - Typically 2-4 scenarios:
+2. Read scenarios — layout-aware:
+   IF test_plan/test_design/scenarios/ exists:
+     - Read each TS-XX_*.md file under that directory
+     - Use the metadata header (Focus / Est. test cases), the optional
+       `## Scenario Preconditions` block, and each `### Case N:` block
+       (Objective + Checkpoints + optional Preconditions + optional Notes)
+       verbatim
+     - Steps are NOT in the scenario file — derive them in the test case
+       from each case's Objective + Checkpoints + Notes
+   ELSE (legacy layout):
+     - Read test_plan/sections/03_Test_Strategy.md § 3.2 inline table
+
+   Typical bug-fix scenarios:
      • TS-01: Defect Verification
      • TS-02: Regression Testing
      • TS-03: Edge Cases
@@ -72,12 +95,15 @@ test_cases/
 ```markdown
 # TS-01: Defect Verification
 
-**Objective:** Verify the original bug no longer occurs
 **Focus:** Defect verification
+
 **Test Cases:** 2-3
+
 **Test Plan Reference:** test_plan/sections/01_Problem_Context.md § 1.2
 
 ---
+
+**Objective:** Verify the original bug no longer occurs
 
 ## TC-01: Reproduce Original Bug
 
@@ -132,12 +158,15 @@ test_cases/
 ```markdown
 # TS-02: Regression Testing
 
-**Objective:** Verify fix didn't break related functionality
 **Focus:** Regression
+
 **Test Cases:** 2-3
+
 **Test Plan Reference:** test_plan/sections/02_Test_Scope.md § 2.2
 
 ---
+
+**Objective:** Verify fix didn't break related functionality
 
 ## TC-01: Related Operation 1
 
@@ -175,12 +204,15 @@ test_cases/
 ```markdown
 # TS-03: Edge Cases & Prevention
 
-**Objective:** Prevent similar bugs through edge case coverage
 **Focus:** Edge Cases
+
 **Test Cases:** 2-4
+
 **Test Plan Reference:** test_plan/sections/02_Test_Scope.md § 2.3
 
 ---
+
+**Objective:** Prevent similar bugs through edge case coverage
 
 ## TC-01: Boundary Condition
 
@@ -269,16 +301,30 @@ Before completing each test case, verify:
 ### Test Independence
 
 Each test case MUST run standalone:
-- All required setup is in preconditions (not "state from previous test")
+- All required data state and capabilities are in preconditions (not "state from previous test")
 - No reliance on execution order
 - No shared mutable state between test cases
+- Preconditions are system state, not UI state — see the split rule below
 
-### Navigation Step Strategy
+### Preconditions vs. Test Steps — the split rule
 
-Apply these navigation step rules:
-- [ ] Setup navigation moved to preconditions when 3+ TCs share the same path
-- [ ] Navigation condensed to 1-2 steps max (no intermediate page verifications)
-- [ ] No URLs/routes in test steps — use page names instead
+**Preconditions describe system state, not UI state.** Never write a precondition like "Admin on X page" or "X panel open" — navigation belongs in the first test step.
+
+| Belongs in **Preconditions** | Belongs in **Test Steps** (typically Step 1) |
+|---|---|
+| Data state (existing entities, defect-reproducing config) | UI state (open a page, click Edit, open a panel) |
+| Permission / role | Page navigation (menu paths) |
+| Build / version that has the fix applied | Opening dialogs, panels, sub-modals |
+| Device / tooling availability | Anything the executor does in the UI during this TC |
+
+Step pattern: combine the navigation and the initial action — "Go to **X → Y**, click **Z**" → expected: "form opens" or equivalent.
+
+### Navigation Step Rules (within Test Steps)
+
+- [ ] Combine navigation + the initial action into one step where natural
+- [ ] No intermediate page verifications
+- [ ] Use page names, not URLs or routes
+- [ ] Repeat the navigation step at the top of each TC when paths overlap — independence over DRY
 
 > **Note:** Test data adequacy, boundary value analysis, and
 > cleanup/postconditions are **skipped** for Bug Fix (Focused profile).

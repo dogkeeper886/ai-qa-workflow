@@ -160,6 +160,7 @@ skills/
 ├── receiving-tickets/    # Fetch Jira ticket + set up project workspace
 ├── planning-tests/       # Create test plan from ticket, publish to Confluence
 ├── designing-cases/      # Write test cases from plan, publish to Confluence
+├── reviewing-typography/ # Audit just-published Confluence pages for proximity / hierarchy issues
 ├── drafting-review-email/ # Draft stakeholder review email + meeting invite
 ├── syncing-testlink/     # Import test cases into TestLink, build test plan
 ├── executing-tests/      # Execute TestLink plan via browser automation
@@ -218,6 +219,7 @@ Skills are loaded on demand. The agent reads this table to decide which skill to
 | `receiving-tickets` | When given a Jira ticket ID to investigate or start a new QA project |
 | `planning-tests` | When requirements are gathered and a test plan is needed |
 | `designing-cases` | When a test plan exists and detailed test cases need to be written |
+| `reviewing-typography` | After `planning-tests` / `designing-cases` publish — audit the just-published Confluence pages for proximity + hierarchy problems on actual rendered content |
 | `drafting-review-email` | When test artifacts are ready for stakeholder review |
 | `syncing-testlink` | When test cases need to be imported into TestLink |
 | `executing-tests` | When a TestLink test plan is ready for browser-based execution |
@@ -232,11 +234,12 @@ Skills are thin routers — each SKILL.md contains the step sequence and progres
 
 The test lifecycle flows through 6 phases:
 1. **Discover** - Gather requirements via `/jr-trace`
-2. **Plan** - Create test strategy via `/tw-plan-init` (routes to feature/enhance/bugfix)
-3. **Design** - Write test cases via `/tw-case-init` (routes to feature/enhance/bugfix)
-4. **Manage** - Import to TestLink via `/tl-create-case`
-5. **Automate** - Create YAML tests with test-framework-template
-6. **Execute** - Run tests and record via `/tl-create-execution`
+2. **Baseline** - Capture live UI state via `/tw-baseline-trace` (recommended before planning)
+3. **Plan** - Create test strategy via `/tw-plan-init` (routes to feature/enhance/bugfix). Plans follow the ISO/IEC/IEEE 29119-3 layout: `test_plan/sections/` (lean strategy) + `test_plan/test_design/{scenarios/, traceability_matrix.md, risk_register.md}`. The Confluence publish runs `reviewing-typography` as its final gate.
+4. **Design** - Write test cases via `/tw-case-init` (routes to feature/enhance/bugfix); same typography gate after publish
+5. **Manage** - Import to TestLink via `/tl-create-case`
+6. **Automate** - Create YAML tests with test-framework-template
+7. **Execute** - Run tests and record via `/tl-create-execution`
 
 ## TestLink HTML Formatting
 
