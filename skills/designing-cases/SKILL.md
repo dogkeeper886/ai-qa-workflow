@@ -28,6 +28,7 @@ Copy and track your progress:
 - [ ] Validate: Scenario count + case count + quality assessment
 - [ ] Step 5: Create Confluence test case pages
 - [ ] Validate: Confluence URL + page count
+- [ ] Step 6: Review typography (run reviewing-typography skill on every published page)
 ```
 
 ## Steps
@@ -103,6 +104,17 @@ Run `/cf-review-page` to verify formatting. Use `/cf-format-guide` for Confluenc
 Report:
 - Confluence parent page URL
 - Number of pages created
+
+### Step 6: Review Typography (MANDATORY — gates publish completion)
+
+After Step 5 content-rendering is clean, run the `reviewing-typography` skill against every page just published. The skill applies Gestalt proximity and visual hierarchy principles to the **actual rendered content** — catching wall-of-text test cases, bold-label inflation across many cases on one page, and proximity collisions between case sections that no template could predict because they depend on the test cases' length and density.
+
+See `skills/reviewing-typography/SKILL.md` for the walk-and-fix procedure. Pass it the list of page IDs created in Step 5.
+
+### Validate
+
+Report:
+- Typography review verdict: N pages CLEAN, N pages had findings + fixes applied
 
 ## Expected Input
 

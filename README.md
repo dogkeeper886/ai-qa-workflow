@@ -113,8 +113,9 @@ Skills are the recommended high-level interface. Each skill is a thin router tha
 | Skill | Phase | Description |
 |---|---|---|
 | `/receiving-tickets` | Discover | Fetch Jira ticket, linked issues, Confluence pages; create project workspace |
-| `/planning-tests` | Plan | Detect ticket type, write test plan, publish to Confluence |
+| `/planning-tests` | Plan | Detect ticket type, write test plan, publish to Confluence (ISO 29119-3 layout) |
 | `/designing-cases` | Design | Write test cases from plan, publish to Confluence |
+| `/reviewing-typography` | Design | Audit just-published Confluence pages for typography (Gestalt proximity + visual hierarchy) — runs after `planning-tests` / `designing-cases` publish |
 | `/drafting-review-email` | Review | Draft stakeholder review email and meeting invite |
 | `/syncing-testlink` | Manage | Sync test cases into TestLink with suites, plans, and assignments |
 | `/executing-tests` | Execute | Execute test plan via browser automation, record pass/fail |
@@ -176,9 +177,9 @@ Summarize, convert, create, update, and review Confluence pages.
 `cf-page-summary` · `cf-to-markdown` · `cf-create-page` · `cf-update-page` · `cf-review-page` · `cf-format-guide`
 
 ### [Test Workflow Commands (tw-*)](commands/test-workflow/)
-Plan test strategies and design test cases, with fan-out routing by ticket type (feature/enhance/bugfix).
+Plan test strategies and design test cases, with fan-out routing by ticket type (feature/enhance/bugfix). Includes `tw-baseline-trace` to capture the live UI state via Playwright before scenarios are drafted (anchors the plan in observable reality, prevents over-specified test plans — see `skills/planning-tests/references/scenario-conventions.md`).
 
-`tw-plan-init` · `tw-plan-feature` · `tw-plan-enhance` · `tw-plan-bugfix` · `tw-plan-review` · `tw-case-init` · `tw-case-feature` · `tw-case-enhance` · `tw-case-bugfix` · `tw-case-review` · `tw-case-publish` · `tw-case-verify-refs` · `tw-diagrams` · `tw-script-review` · `tw-templates`
+`tw-baseline-trace` · `tw-plan-init` · `tw-plan-feature` · `tw-plan-enhance` · `tw-plan-bugfix` · `tw-plan-review` · `tw-case-init` · `tw-case-feature` · `tw-case-enhance` · `tw-case-bugfix` · `tw-case-review` · `tw-case-publish` · `tw-case-verify-refs` · `tw-diagrams` · `tw-script-review` · `tw-templates`
 
 ### [TestLink Commands (tl-*)](commands/testlink/)
 Manage test suites, cases, plans, and execution results in TestLink via MCP.
@@ -272,9 +273,10 @@ ai-qa-workflow/
 │   ├── designing-cases/       # Write test cases
 │   ├── drafting-review-email/ # Stakeholder review email
 │   ├── executing-tests/       # Browser test execution
-│   ├── planning-tests/        # Create test plan
+│   ├── planning-tests/        # Create test plan (ISO 29119-3 layout)
 │   ├── receiving-tickets/     # Fetch ticket, create workspace
 │   ├── reviewing-commands/    # Command quality auditing
+│   ├── reviewing-typography/  # Audit just-published Confluence pages
 │   ├── syncing-testlink/      # Import cases to TestLink
 │   └── tracking-changes/      # GitHub artifact tracking
 ├── templates/          # Project templates
