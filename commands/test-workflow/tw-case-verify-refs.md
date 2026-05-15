@@ -74,9 +74,14 @@ Look for:
 - **Total coverage line** like `**Total Test Coverage:** 7 Test Suites, 49 Test Cases`
 - Any per-scenario counts
 
-#### 2c. `test_plan/sections/04_Test_Strategy.md`
+#### 2c. Test plan scenario counts — layout-aware
 
-Look for:
+**New layout** (`test_plan/test_design/scenarios/` exists):
+- Per-scenario count: read each `TS-XX_*.md` file's `**Estimated test cases:** N` header
+- Total: `test_plan/test_design/scenarios/README.md` `**Total:** N estimated test cases.`
+- Cross-check: `test_plan/sections/04_Test_Strategy.md` § 4.7 Companion Artifacts trailer line `**Total Test Coverage:** ... N estimated test cases ...`
+
+**Legacy layout** (only `sections/` exists):
 - **§ 4.4 Test Scenarios table** — has `Test Cases` column with per-scenario counts
 - **Total summary** like `**49 Test Cases**`
 

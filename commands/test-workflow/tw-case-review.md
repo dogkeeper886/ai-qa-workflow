@@ -54,10 +54,14 @@ Read the test plan for comparison baseline and determine review profile:
 
 ```
 1. Read test_plan/README.md for type and quick reference counts
-2. Read the Test Strategy section file for scenario details:
-   - Feature: test_plan/sections/04_Test_Strategy.md § 4.4
-   - Bug Fix: test_plan/sections/03_Test_Strategy.md § 3.2
-   - Enhancement: test_plan/sections/04_Test_Strategy.md § 4.2
+2. Read scenarios — layout-aware:
+   IF test_plan/test_design/scenarios/ exists (NEW LAYOUT):
+     - Read each test_plan/test_design/scenarios/TS-XX_*.md file
+     - Each file's `**Estimated test cases:** N`, optional `## Scenario Preconditions` block, and `### Case N:` blocks (Objective + Checkpoints + optional Preconditions + optional Notes) are the source of truth
+   ELSE (LEGACY LAYOUT):
+     - Feature: test_plan/sections/04_Test_Strategy.md § 4.4
+     - Bug Fix: test_plan/sections/03_Test_Strategy.md § 3.2
+     - Enhancement: test_plan/sections/04_Test_Strategy.md § 4.2
 3. Reference coverage matrix from /tw-plan-review (if available)
 4. Detect review profile from test plan type:
    - "New Feature Validation" → Full profile (expect 20-40 test cases)
@@ -126,13 +130,26 @@ For each test case, verify the following quality criteria:
 
 #### 3.6 Test Independence
 - [ ] Test can run standalone without prior tests
-- [ ] All setup is in preconditions
+- [ ] All required data state and capabilities are in preconditions
 - [ ] No reliance on state from other test cases
 
-#### 3.7 Navigation Step Strategy
-- [ ] Setup navigation is in preconditions when 3+ TCs share the same path
-- [ ] Navigation condensed to 1-2 steps (no intermediate page verifications)
-- [ ] No URLs/routes in test steps — page names only
+#### 3.7 Preconditions vs. Test Steps — split rule
+
+Preconditions describe **system state**; test steps describe **UI state** and actions. Flag any precondition that asserts UI state.
+
+- [ ] No precondition mentions a specific page, dialog, panel, or wizard step the executor must already be in (e.g., "Admin on X page", "Sub-section panel open")
+- [ ] Page navigation appears as Step 1 (or wherever it logically lands in the flow), not in preconditions
+- [ ] Combine navigation + the initial action into one step where natural ("Go to X, click Y")
+- [ ] No intermediate page verifications (no "Step 2: Verify the portal list loaded" — the expected-result column of the navigation step covers that)
+- [ ] Use page names in steps, not URLs or routes
+- [ ] When multiple TCs share the same navigation path, the navigation is repeated at the top of each — independence over DRY
+
+Common violations to flag during review:
+- ❌ "Admin on Settings → Resources → Profiles page" (precondition)
+- ❌ "Admin in the Edit view of the portal with the Sub-section panel open" (precondition)
+- ❌ "On the submission form, ready to submit" (precondition)
+- ✅ "There is an existing portal `tc-fixture-A` with the X matrix configured" (precondition — system state)
+- ✅ "Step 1: Navigate to Settings → Resources → Profiles. Click `tc-fixture-A` and click Configure. Open the Sub-section panel." (step — UI state + action)
 
 #### 3.8 No Internal Labels
 - [ ] Phase headers do not contain test plan mapping labels (e.g., `D1`, `D2`, `S2`)
@@ -436,7 +453,7 @@ Agent:
    ### Vague Expected Results
    | File | TC | Step | Issue | Suggested Fix |
    |------|-----|------|-------|---------------|
-   | TS-03 | TC-02 | 5 | "Network activates correctly" | "SSID 'Test-5GHz' visible in Wi-Fi scan within 60 seconds" |
+   | TS-03 | TC-02 | 5 | "Resource activates correctly" | "Resource 'Test-Resource-A' visible in the listing API response within 60 seconds" |
 
    ## Priority Recommendation
    | File | TC | Name | Recommended Priority | Reason |

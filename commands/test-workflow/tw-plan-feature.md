@@ -119,7 +119,19 @@ Determine how to test the feature:
 ### Step 5: Create Test Scenarios
 
 Define high-level test scenarios (5-8 typical). Each scenario becomes a
-Test Suite (TS-XX). Focus on WHAT to test, not HOW to test.
+Test Suite (TS-XX) in its own file under `test_design/scenarios/`. Focus
+on WHAT to test, not HOW to test.
+
+**Output location:**
+- One file per scenario: `test_design/scenarios/TS-XX_<Slug>.md`
+- Index file: `test_design/scenarios/README.md` (lists all TS-XX, includes Mermaid flow diagrams from Step 10)
+
+Every TS-XX file follows the uniform metadata header, an optional Scenario
+Preconditions block, and a `### Case N:` block per case (Objective +
+Checkpoints mandatory; Preconditions + Notes optional). Click-by-click
+steps belong in test cases, not scenarios. See
+`skills/planning-tests/references/scenario-conventions.md` for the
+header template, body-shape decision rule, and cross-link conventions.
 
 **IMPORTANT:** Follow Steps 5a-5f below to derive scenarios from user
 journeys rather than mirroring the HLD's technical architecture.
@@ -348,54 +360,30 @@ IF feature scope is ambiguous:
 
 ## BEST PRACTICE SECTIONS
 
-After finalizing test scenarios (Step 5), add the following sections to the
-test plan. These align with what `/tw-plan-review` checks — producing them
+After finalizing test scenarios (Step 5), produce the following companion
+artifacts. These align with what `/tw-plan-review` checks — producing them
 during creation prevents systematic review findings.
 
-### Step 6: Coverage Matrix
+The legacy "Coverage Matrix" section is **dropped** — it's a derivative of
+the traceability matrix and adds no information beyond it. Generate one
+on-demand from `traceability_matrix.md` only if a reviewer specifically
+asks. See `skills/planning-tests/references/file-layout.md`.
 
-For each test scenario, identify which coverage aspects it addresses.
-Include only aspects relevant to the feature — omit aspects that do not apply.
-
-| Coverage Aspect | Description |
-|-----------------|-------------|
-| UI Configuration | Tests that configure via user interface |
-| API Configuration | Tests that configure via API |
-| Data Flow | How data moves through the system |
-| Error Handling | Invalid inputs, edge cases, failures |
-| Backward Compatibility | Existing functionality still works |
-| Client/End-user Validation | End-to-end user scenarios |
-| Feature Flags | ON/OFF state behavior |
-| Edge Cases | Boundary conditions, empty/max states |
-| Performance | Response time, throughput |
-| Accessibility | WCAG compliance, keyboard navigation |
-
-Output an ASCII coverage matrix in `04_Test_Strategy.md` after the scenarios
-table:
-
-```
-┌────────────────────────┬───────┬───────┬───────┐
-│ Test Aspect            │ TS-01 │ TS-02 │ TS-03 │
-├────────────────────────┼───────┼───────┼───────┤
-│ UI Configuration       │   ✓   │       │   ✓   │
-│ Error Handling         │       │   ✓   │       │
-│ Edge Cases             │       │       │   ✓   │
-└────────────────────────┴───────┴───────┴───────┘
-```
-
-### Step 7: Hybrid Depth Strategy
+### Step 6: Hybrid Depth Strategy
 
 If the feature has variants (multiple types, modes, configurations):
 
-1. **Identify the representative case** — the scenario covering the most
-   coverage aspects. This gets deep, comprehensive testing.
+1. **Identify the representative case** — the scenario covering the broadest
+   set of behaviors. This gets deep, comprehensive testing.
 2. **Identify variants** — scenarios that differ by only 1-2 parameters.
    These get configuration + basic functionality tests only.
-3. Document which scenarios are "deep" vs "wide" in `04_Test_Strategy.md`.
+3. Document which scenarios are "deep" vs "wide" in `04_Test_Strategy.md` § 4.5.
 
-### Step 8: Requirements Traceability
+### Step 7: Requirements Traceability
 
-Map each requirement/acceptance criterion to test scenarios:
+Map each requirement/acceptance criterion to test scenarios. Output as a
+**standalone artifact** at `test_design/traceability_matrix.md` — not
+inlined in the strategy file.
 
 ```
 1. List requirements from:
@@ -404,25 +392,41 @@ Map each requirement/acceptance criterion to test scenarios:
    - confluence/HLD_*.md (if available)
 2. For each requirement, note which scenario(s) cover it
 3. Flag uncovered requirements — add scenarios or note as out of scope
+4. Add a "Coverage Gaps" subsection for items the HLD doesn't specify
+   but QA observed in the live build
 ```
 
-Add a traceability table to `04_Test_Strategy.md`:
+`test_design/traceability_matrix.md` template:
 
 ```markdown
-### 4.6 Requirements Traceability
+# Requirements Traceability Matrix — [PROJECT_ID]
+
+Maps each requirement to the scenario(s) that cover it. Source documents:
+[list source HLDs, FRs, review transcripts].
+
+## Coverage
 
 | Requirement | Source | Covered By |
 |-------------|--------|------------|
-| [Requirement 1] | HLD § X.X | TS-01, TS-02 |
-| [Requirement 2] | Jira AC #3 | TS-03 |
+| [Req 1] | HLD § X.X | [TS-01](scenarios/TS-01_<Slug>.md), [TS-02](scenarios/TS-02_<Slug>.md) |
+| [Req 2] | Jira AC #3 | [TS-03](scenarios/TS-03_<Slug>.md) |
+
+## Coverage Gaps
+
+- **[Gap description]** — the HLD does not specify [X]. Tested as observed
+  (TS-XX); the actual behavior will be captured live for the test plan review.
 ```
 
-### Step 9: Entry/Exit Criteria
+Cross-link from scenario → matrix uses `../traceability_matrix.md` if you
+want to add reverse references; matrix → scenario uses
+`scenarios/TS-XX_<Slug>.md` (relative within `test_design/`).
 
-Add to `04_Test_Strategy.md`:
+### Step 8: Entry/Exit Criteria
+
+Add to `04_Test_Strategy.md` § 4.6:
 
 ```markdown
-### 4.7 Entry/Exit Criteria
+### 4.6 Entry/Exit Criteria
 
 **Entry Criteria (when can testing start?):**
 - [ ] Build deployed to test environment
@@ -437,9 +441,10 @@ Add to `04_Test_Strategy.md`:
 - [ ] Sign-off from QA lead
 ```
 
-### Step 10: Risk Assessment
+### Step 9: Risk Assessment
 
-For each scenario, evaluate risk:
+For each scenario, evaluate risk. Output as a **standalone artifact** at
+`test_design/risk_register.md` — not inlined in the strategy file.
 
 | Risk Level | Criteria |
 |------------|----------|
@@ -447,26 +452,66 @@ For each scenario, evaluate risk:
 | **Medium** | Modified existing flow, partial rollback, affects subset of users |
 | **Low** | Well-understood path, easy rollback, internal-only impact |
 
-Add a risk table to `04_Test_Strategy.md`:
+`test_design/risk_register.md` template:
 
 ```markdown
-### 4.8 Risk Assessment
+# Risk Register — [PROJECT_ID]
+
+Per-scenario risk assessment. Risk level reflects the joint judgment of
+likelihood × impact; mitigation describes the action QA takes during
+execution.
 
 | Scenario | Risk Level | Likelihood | Impact | Mitigation |
 |----------|-----------|------------|--------|------------|
-| TS-01 | Medium | Moderate | User-facing | Deep testing |
-| TS-02 | Low | Low | Internal | Standard coverage |
+| [TS-01](scenarios/TS-01_<Slug>.md) | Medium | Moderate | User-facing | Deep testing |
+| [TS-02](scenarios/TS-02_<Slug>.md) | Low | Low | Internal | Standard coverage |
 ```
 
-### Step 11: Diagrams (5+ Scenarios)
+Cross-link to scenarios uses `scenarios/TS-XX_<Slug>.md` (relative within
+`test_design/`).
 
-If the test plan has 5 or more scenarios, run `/tw-diagrams` to generate:
-- Configuration Flow diagram
-- Data Flow diagram
-- Modular Test Design diagram
+### Step 10: Diagrams (5+ Scenarios)
 
-Place diagrams in `test_plan/diagrams/` or reference them from
-`04_Test_Strategy.md`.
+If the test plan has 5 or more scenarios, run `/tw-diagrams` to generate
+Mermaid flow diagrams. Place them at the top of
+`test_design/scenarios/README.md` (the scenario index), labeled with the
+TS-XX each node belongs to.
+
+Typical diagrams:
+- Admin flow (configuration journey)
+- End-user flow (visitor / consumer journey)
+- API flow (when there's a non-UI client path)
+
+Each Mermaid node should reference at least one TS-XX so reviewers can
+spot uncovered nodes (gaps) and shared edges (overlaps).
+
+### Step 11: Overlap Sweep
+
+After scenarios + traceability + risk register are written, run an
+overlap review against every scenario. The prompt:
+
+> *List any case in this scenario whose object-under-test or assertion
+> overlaps another scenario's case. Note as: layered (justified) or
+> duplicate (fix).*
+
+Apply per case, compare against every case in every other scenario.
+Resolutions either get applied immediately or batched for a final sweep
+before merge. See
+`skills/planning-tests/references/overlap-review.md` for the
+layered-vs-duplicate decision rule and examples.
+
+### Step 12: Environment Rules Check
+
+Before declaring the plan ready for review, confirm `04_Test_Strategy.md`
+§ 4.3 (Test Approach) and § 4.4 (Test Data Setup) describe environment
+**capability**, not specific instances:
+
+- ✅ *"Test Tenant: any tenant where the feature flag is operational; current selection in `config/`."*
+- ❌ *"Test Tenant: \<tenant-id\> (per HLD-review handoff from \<reviewer\>)."*
+
+Specific tenant names, credentials, hardware serials, and network names
+belong in `config/` files. See
+`skills/planning-tests/references/environment-rules.md`.
 
 ---
 
@@ -477,14 +522,26 @@ Place diagrams in `test_plan/diagrams/` or reference them from
 ```
 test_plan/
 ├── README.md                              # Index with metadata + linked TOC
-└── sections/
-    ├── 01_Project_Business_Context.md     # § 1.1-1.3
-    ├── 02_Feature_Definition.md           # § 2.1-2.3
-    ├── 03_Scope_Boundaries.md             # § 3.1-3.2
-    ├── 04_Test_Strategy.md                # § 4.1-4.9 (includes scenarios, coverage matrix, traceability, entry/exit, risk)
-    ├── 05_References_Resources.md         # § 5
-    └── 06_Revision_History.md             # § 6
+├── sections/
+│   ├── 01_Project_Business_Context.md     # § 1.1-1.3
+│   ├── 02_Feature_Definition.md           # § 2.1-2.3
+│   ├── 03_Scope_Boundaries.md             # § 3.1-3.2
+│   ├── 04_Test_Strategy.md                # § 4.1-4.7 (lean: levels, types, approach, data, depth, entry/exit, companion-artifacts pointer)
+│   ├── 05_References_Resources.md         # § 5
+│   └── 06_Revision_History.md             # § 6
+└── test_design/
+    ├── scenarios/
+    │   ├── README.md                      # Scenario index + Mermaid flow diagrams
+    │   ├── TS-01_<Slug>.md                # One file per scenario
+    │   ├── TS-02_<Slug>.md
+    │   └── ...
+    ├── traceability_matrix.md             # Requirements → scenarios mapping (was § 4.7)
+    └── risk_register.md                   # Per-scenario risk (was § 4.9)
 ```
+
+`test_design/` is a sibling of `sections/` under `test_plan/`. Do not nest one inside the other.
+
+See `skills/planning-tests/references/file-layout.md` for the rationale and migration policy (new projects use this layout; completed projects keep their original).
 
 ### test_plan/README.md
 
@@ -546,42 +603,45 @@ test_plan/
 ### 3.2 Out of Scope
 ```
 
-### test_plan/sections/04_Test_Strategy.md
+### test_plan/sections/04_Test_Strategy.md (lean)
 
 ```markdown
 ## 4. Test Strategy
+
 ### 4.1 Test Levels
+| Level | Approach |
+|-------|----------|
+| Functional | ... |
+| Integration | ... |
+| Regression | ... |
+
 ### 4.2 Test Types
+| Type | Coverage |
+|------|----------|
+| GUI Testing | ... |
+| API Testing | ... |
+| End-to-End | ... |
+
 ### 4.3 Test Approach
-### 4.4 Test Scenarios
+- **Verification Perspective:** Hybrid (Web GUI + API + ...)
+- **Test Environment:** [environment requirement; specific tenant in `config/`]
+- **Feature Flag:** `<flag-name>` (if applicable)
+- **Visual Baseline:** [path to wireframes / live captures]
 
-| ID | Test Scenario | Focus | Est. Cases | Test Activities |
-|----|---------------|-------|------------|-----------------|
-| **TS-01** | [Name] | [Focus] | [N] | • [Activity 1]<br>• [Activity 2] |
-| **TS-02** | [Name] | [Focus] | [N] | • [Activity 1]<br>• [Activity 2] |
+### 4.4 Test Data Setup
+| Item | Value |
+|------|-------|
+| Tenant | [capability requirement; specifics in `config/`] |
+| Networks | ... |
+| ... | ... |
 
-**Total Test Coverage:**
-- **[N] Test Suites**
-- **[N] Test Cases** (estimated)
+### 4.5 Hybrid Depth Strategy
 
-### 4.5 Test Data Setup (if applicable)
+**Deep (representative case):** TS-XX — [reason it's the deep test]
 
-### 4.6 Coverage Matrix
+**Wide (variant scenarios):** TS-YY — [what makes them variants]
 
-┌────────────────────────┬───────┬───────┬───────┐
-│ Test Aspect            │ TS-01 │ TS-02 │ TS-03 │
-├────────────────────────┼───────┼───────┼───────┤
-│ [Relevant aspect 1]   │   ✓   │       │   ✓   │
-│ [Relevant aspect 2]   │       │   ✓   │       │
-└────────────────────────┴───────┴───────┴───────┘
-
-### 4.7 Requirements Traceability
-
-| Requirement | Source | Covered By |
-|-------------|--------|------------|
-| [Req 1] | [Source] | TS-XX |
-
-### 4.8 Entry/Exit Criteria
+### 4.6 Entry/Exit Criteria
 
 **Entry Criteria:**
 - [ ] [Prerequisites]
@@ -590,11 +650,89 @@ test_plan/
 - [ ] 100% P0 pass, ≥90% P1 pass
 - [ ] All P0/P1 defects resolved or deferred
 
-### 4.9 Risk Assessment
+### 4.7 Companion Artifacts
 
-| Scenario | Risk Level | Likelihood | Impact | Mitigation |
-|----------|-----------|------------|--------|------------|
-| TS-XX | [High/Medium/Low] | [Details] | [Details] | [Strategy] |
+Per ISO/IEC/IEEE 29119-3, the following live as separate artifacts in `test_design/`:
+
+| Artifact | Location | Contents |
+|---|---|---|
+| Scenario specifications | [`test_design/scenarios/`](../test_design/scenarios/) | One file per TS-XX with focus, est. cases, activities |
+| Requirements Traceability Matrix | [`test_design/traceability_matrix.md`](../test_design/traceability_matrix.md) | Requirement → scenario mapping; coverage gaps |
+| Risk Register | [`test_design/risk_register.md`](../test_design/risk_register.md) | Per-scenario risk level, likelihood/impact, mitigation |
+
+**Total Test Coverage:** [N] Test Scenarios — [N] estimated test cases (see scenario index).
+```
+
+### test_design/scenarios/README.md
+
+```markdown
+# Scenario Specifications — [PROJECT_ID]
+
+Per ISO/IEC/IEEE 29119-3, scenarios live separate from the test plan. The plan in `test_plan/sections/04_Test_Strategy.md` describes the strategy, scope, and gates; this directory holds the detailed scenarios.
+
+[One-paragraph note about journey order or organizing principle.]
+
+## Admin Flow
+
+\`\`\`mermaid
+flowchart LR
+    A[step] --> B[step]
+\`\`\`
+
+## End-User Flow
+
+\`\`\`mermaid
+flowchart LR
+    A[step] --> B[step]
+\`\`\`
+
+## Scenario Index
+
+| ID | Scenario | Focus | Est. Cases |
+|---|---|---|---|
+| [TS-01](TS-01_<Slug>.md) | [Name] | [GUI / API / E2E] | [N] |
+| [TS-02](TS-02_<Slug>.md) | [Name] | [Focus] | [N] |
+
+**Total:** [N] estimated test cases.
+```
+
+### test_design/scenarios/TS-XX_<Slug>.md
+
+Each scenario file follows the uniform metadata header, an optional `## Scenario Preconditions` block, and a `### Case N:` block per case (Objective + Checkpoints mandatory; Preconditions + Notes optional). Click-by-click steps belong in the test cases, not the scenarios. See `skills/planning-tests/references/scenario-conventions.md` for the full template.
+
+```markdown
+# TS-XX: <name>
+
+**Focus:** <GUI / API / E2E / Config / hybrid>
+
+**Estimated test cases:** N
+
+**Test plan reference:** [`test_plan/sections/04_Test_Strategy.md`](../../sections/04_Test_Strategy.md)
+
+---
+
+<intro paragraph — what this scenario owns, what it doesn't, key cross-references. Split into 2-3 short paragraphs at conceptual seams when it crosses 3+ ideas — see `skills/reviewing-typography/references/typography-principles.md` anti-pattern A2.>
+
+## Scenario Preconditions
+
+- <setup that applies to every case>
+
+## Test Cases
+
+### Case 1: <Short imperative title>
+
+- **Objective:** <one sentence — what the case proves>
+- **Checkpoints:**
+  - <Observable 1>
+  - <Observable 2>
+
+### Case 2: <Short imperative title>
+
+- **Objective:** ...
+- **Preconditions:** <case-specific, optional>
+- **Checkpoints:**
+  - ...
+- **Notes:** <HLD-silent flags, TKT cross-refs, sequencing hints — optional>
 ```
 
 ### test_plan/sections/05_References_Resources.md
@@ -629,10 +767,11 @@ After creating the test plan, run `/tw-plan-review` to verify coverage before cr
     └── Detected Type A: New Feature
                               ↓
 /tw-plan-feature  ◄── YOU ARE HERE
-    └── Creates test_plan/README.md + test_plan/sections/*.md
+    └── Creates test_plan/{README, sections/*}
+        + test_plan/test_design/{scenarios/, traceability_matrix, risk_register}
                               ↓
 /tw-plan-review
-    └── Reviews test plan for gaps, generates coverage matrix
+    └── Reviews test plan for gaps + runs the overlap sweep
                               ↓
 /tw-case-init
     └── Routes to appropriate test case workflow

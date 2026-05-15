@@ -58,14 +58,20 @@ Read the test plan index and section files:
    - "Enhancement Validation" → Standard profile (hybrid review)
 3. Announce detected profile: "Review profile: [Full/Standard/Focused]"
 4. Read all files in test_plan/sections/
-5. Extract test scenarios from the Test Strategy section file:
-   - Feature/Enhancement: sections/04_Test_Strategy.md § 4.4 / § 4.2
-   - Bug Fix: sections/03_Test_Strategy.md § 3.2
+5. Extract test scenarios — layout-aware:
+   IF test_plan/test_design/scenarios/ exists (new layout):
+     - Read each test_plan/test_design/scenarios/TS-XX_*.md file
+     - Each file's metadata header gives the Focus and Estimated test cases
+     - The intro paragraph + optional `## Scenario Preconditions` block establish the shared context
+     - Each `### Case N:` block (Objective + Checkpoints mandatory; Preconditions + Notes optional) is the source of truth for that case
+   ELSE (legacy layout):
+     - Feature/Enhancement: sections/04_Test_Strategy.md § 4.4 / § 4.2
+     - Bug Fix: sections/03_Test_Strategy.md § 3.2
 6. For each scenario, note:
    - Scenario ID and name
    - Focus area
    - Estimated test case count
-   - Test activities listed
+   - Per-case Objective + Checkpoints (use these for the coverage matrix; ignore Steps if any — those belong in the test cases)
 ```
 
 > **Fallback:** If `test_plan/sections/` does not exist, read `test_plan/README.md` directly.
@@ -87,9 +93,11 @@ For each test scenario, identify which aspects it covers. Select only the aspect
 | Performance | Response time, throughput | Scale-sensitive features |
 | Accessibility | WCAG compliance, keyboard navigation | UI features only |
 
-### Step 3: Generate Coverage Matrix [All Profiles]
+### Step 3: Generate Coverage Matrix (on demand) [All Profiles]
 
-Create an ASCII coverage matrix showing what each scenario covers:
+The coverage matrix is **no longer authored as a separate artifact** — it's a derivative of the requirements traceability matrix (`test_design/traceability_matrix.md` in the new layout). See `skills/planning-tests/references/file-layout.md`.
+
+For review purposes, generate one **on demand** if a reviewer specifically asks. Format:
 
 ```
 ┌────────────────────────┬───────┬───────┬───────┬───────┬───────┐
@@ -103,7 +111,7 @@ Create an ASCII coverage matrix showing what each scenario covers:
 └────────────────────────┴───────┴───────┴───────┴───────┴───────┘
 ```
 
-**Note:** This coverage matrix is the SINGLE source of truth. It should NOT be recreated in test case design.
+Output as part of the review report. Do NOT save it back into `04_Test_Strategy.md` or anywhere else under `test_plan/`.
 
 ### Step 4: Generate Diagrams (For 5+ Scenarios) [Full / Standard]
 
@@ -126,10 +134,24 @@ Report any issues found:
 - Missing edge case coverage
 - Missing integration tests
 
-**Overlaps:**
+**Overlaps (mandatory overlap sweep):**
+
+For each scenario, apply the prompt:
+
+> *List any case in this scenario whose object-under-test or assertion overlaps another scenario's case. Note as: layered (justified) or duplicate (fix).*
+
+For every flagged pair, record:
+- TS-X case N ⟷ TS-Y case M
+- object-under-test
+- layered (justified) vs duplicate (fix)
+- recommended resolution (keep both | merge | move to TS-X | delete from TS-Y)
+
+See `skills/planning-tests/references/overlap-review.md` for the layered-vs-duplicate decision rule and examples from past reviews.
+
+Common overlap shapes:
 - Multiple scenarios testing the same aspect
 - Redundant test activities
-- Duplicated coverage
+- Duplicated coverage between a "deep representative" scenario and a "wide variants" scenario when the latter re-runs the full case-set per variant instead of just placement + happy path
 
 **Recommendations:**
 - Scenarios to consolidate

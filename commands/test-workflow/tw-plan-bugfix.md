@@ -152,15 +152,23 @@ For bug fixes, focus on THREE areas:
 
 ### Step 5: Create Test Scenarios (Bug Fix)
 
-For bug fixes, typically create 2-4 focused scenarios:
+For bug fixes, typically create 2-4 focused scenarios. Each scenario gets its own file under `test_design/scenarios/`.
 
-```markdown
-| ID | Test Scenario | Focus | Est. Cases | Test Activities |
-|----|---------------|-------|------------|-----------------|
-| **TS-01** | Defect Verification | Verify fix | 2-3 | • Exact reproduction steps<br>• Variations of reported scenario<br>• Confirm expected behavior |
-| **TS-02** | Regression Testing | Prevent breaks | 2-3 | • Related functionality<br>• Adjacent features |
-| **TS-03** | Edge Cases & Prevention | Prevent recurrence | 2-4 | • Boundary values<br>• Large/small volumes<br>• Error conditions |
+**Output location:**
+- One file per scenario: `test_design/scenarios/TS-XX_<Slug>.md`
+- Index file: `test_design/scenarios/README.md`
+
+Typical scenario shape for a bug fix:
+
 ```
+| ID | Scenario | Focus | Est. Cases |
+|---|---|---|---|
+| TS-01 | Defect Verification | Verify fix | 2-3 |
+| TS-02 | Regression Testing | Prevent breaks | 2-3 |
+| TS-03 | Edge Cases & Prevention | Prevent recurrence | 2-4 |
+```
+
+Every TS-XX file follows the uniform metadata header, an optional Scenario Preconditions block, and a `### Case N:` block per case (Objective + Checkpoints mandatory; Preconditions + Notes optional). Click-by-click steps belong in test cases, not scenarios. See `skills/planning-tests/references/scenario-conventions.md`.
 
 **Note:** Bug fix test plans are typically SHORTER than feature test plans. Focus on quality over quantity.
 
@@ -204,38 +212,49 @@ IF no fix approach documented:
 
 ## BEST PRACTICE SECTIONS (Focused Profile)
 
-Bug fix test plans use the Focused review profile, which requires fewer
-best-practice sections. After finalizing test scenarios (Step 5), add:
+Bug fix test plans use the Focused review profile, which requires fewer best-practice sections. The legacy "Coverage Matrix" subsection is **dropped** — derive on-demand from the traceability matrix only if a reviewer asks. See `skills/planning-tests/references/file-layout.md`.
 
-### Step 6: Coverage Matrix
+After finalizing test scenarios (Step 5), produce:
 
-For each test scenario, identify which coverage aspects it addresses.
-Bug fixes typically cover only a few aspects:
+### Step 6: Requirements Traceability (lite)
 
-| Coverage Aspect | Typical for Bug Fixes |
-|-----------------|----------------------|
-| Error Handling | Almost always relevant |
-| Edge Cases | Often relevant |
-| Backward Compatibility | If fix changes existing behavior |
-| UI Configuration | If bug is UI-related |
+Even for bug fixes, write a minimal `test_design/traceability_matrix.md` mapping the bug's reproduction steps and any AC items to the scenarios that cover them. Keep it short — a few rows is fine.
 
-Output an ASCII coverage matrix in `03_Test_Strategy.md` after the
-scenarios table:
+```markdown
+# Requirements Traceability — [PROJECT_ID]
 
-```
-┌────────────────────────┬───────┬───────┬───────┐
-│ Test Aspect            │ TS-01 │ TS-02 │ TS-03 │
-├────────────────────────┼───────┼───────┼───────┤
-│ Error Handling         │   ✓   │       │   ✓   │
-│ Edge Cases             │       │       │   ✓   │
-│ Backward Compatibility │       │   ✓   │       │
-└────────────────────────┴───────┴───────┴───────┘
+| Requirement | Source | Covered By |
+|-------------|--------|------------|
+| Reproduction step 1 (defect repro) | Bug ticket § Steps to Reproduce | [TS-01](scenarios/TS-01_<Slug>.md) |
+| Adjacent area X (regression) | Bug ticket § Comments | [TS-02](scenarios/TS-02_<Slug>.md) |
 ```
 
-> **Note:** Entry/exit criteria, risk assessment, requirements traceability,
-> and diagrams are **skipped** for bug fix plans (Focused profile). Bug fix
-> testing has implicit criteria — the defect is verified fixed and regression
-> passes.
+### Step 7: Risk Register (lite)
+
+Optional but recommended for bug fixes that touch shared code paths or have customer-visible impact. Output as `test_design/risk_register.md`:
+
+```markdown
+# Risk Register — [PROJECT_ID]
+
+| Scenario | Risk Level | Notes |
+|----------|-----------|-------|
+| [TS-XX](scenarios/TS-XX_<Slug>.md) | High/Medium/Low | [Why] |
+```
+
+If the bug is purely cosmetic or contained to a small surface, omit the risk register entirely — note that in `03_Test_Strategy.md` § 3.5 Companion Artifacts.
+
+### Step 8: Overlap Sweep
+
+Even for 2-4 scenarios, run the overlap-review prompt — bugs often re-test paths that adjacent scenarios already cover. See `skills/planning-tests/references/overlap-review.md`.
+
+### Step 9: Environment Rules Check
+
+Confirm `03_Test_Strategy.md` describes environment **capability**, not specific instances. Specifics belong in `config/`. See `skills/planning-tests/references/environment-rules.md`.
+
+> **Skipped for bug fix plans (Focused profile):**
+> - Entry/exit criteria — implicit (defect verified + regression passes)
+> - Diagrams — bug fixes rarely need them; add only if the fix touches a multi-step flow
+> - Hybrid depth strategy — bug fixes don't have variants in the feature sense
 
 ---
 
@@ -246,13 +265,22 @@ scenarios table:
 ```
 test_plan/
 ├── README.md                          # Index with metadata + linked TOC
-└── sections/
-    ├── 01_Problem_Context.md          # § 1.1-1.3
-    ├── 02_Test_Scope.md               # § 2.1-2.3
-    ├── 03_Test_Strategy.md            # § 3.1-3.2 (includes scenarios table)
-    ├── 04_References_Resources.md     # § 4
-    └── 05_Revision_History.md         # § 5
+├── sections/
+│   ├── 01_Problem_Context.md          # § 1.1-1.3
+│   ├── 02_Test_Scope.md               # § 2.1-2.3
+│   ├── 03_Test_Strategy.md            # § 3.1-3.5 (lean: approach, data, depth (rare), entry/exit (implicit), companion-artifacts pointer)
+│   ├── 04_References_Resources.md     # § 4
+│   └── 05_Revision_History.md         # § 5
+└── test_design/
+    ├── scenarios/
+    │   ├── README.md                  # Scenario index (Mermaid optional for bugfix)
+    │   ├── TS-01_<Slug>.md            # One file per scenario
+    │   └── ...
+    ├── traceability_matrix.md         # Lite — see Step 6
+    └── risk_register.md               # Optional — see Step 7
 ```
+
+`test_design/` is a sibling of `sections/` under `test_plan/`. See `skills/planning-tests/references/file-layout.md`.
 
 ### test_plan/README.md
 
@@ -337,34 +365,40 @@ test_plan/
 [Tests to prevent similar issues]
 ```
 
-### test_plan/sections/03_Test_Strategy.md
+### test_plan/sections/03_Test_Strategy.md (lean)
 
 ```markdown
 ## 3. Test Strategy
 
 ### 3.1 Test Approach
-**Test Environment:** [QA/Staging environment details]
-**Test Focus:** Defect verification, regression, edge cases
+- **Test Environment:** [environment requirement; specific tenant in `config/`]
+- **Test Focus:** Defect verification, regression, edge cases
 
-### 3.2 Test Scenarios
+### 3.2 Test Data Setup (if non-trivial; otherwise omit)
+| Item | Value |
+|------|-------|
+| Tenant | [capability requirement; specifics in `config/`] |
 
-| ID | Test Scenario | Focus | Est. Cases | Test Activities |
-|----|---------------|-------|------------|-----------------|
-| **TS-01** | Defect Verification | Verify fix | 2-3 | • [Activities] |
-| **TS-02** | Regression Testing | Prevent breaks | 2-3 | • [Activities] |
-| **TS-03** | Edge Cases | Prevention | 2-4 | • [Activities] |
+### 3.3 Hybrid Depth Strategy (rare for bugfixes — omit unless variants exist)
 
-**Total:** [N] test scenarios, ~[N] test cases
+### 3.4 Entry/Exit Criteria (implicit — defect verified + regression passes)
 
-### 3.3 Coverage Matrix
+### 3.5 Companion Artifacts
 
-┌────────────────────────┬───────┬───────┬───────┐
-│ Test Aspect            │ TS-01 │ TS-02 │ TS-03 │
-├────────────────────────┼───────┼───────┼───────┤
-│ [Relevant aspect 1]   │   ✓   │       │   ✓   │
-│ [Relevant aspect 2]   │       │   ✓   │       │
-└────────────────────────┴───────┴───────┴───────┘
+Per ISO/IEC/IEEE 29119-3, the following live as separate artifacts in `test_design/`:
+
+| Artifact | Location | Contents |
+|---|---|---|
+| Scenario specifications | [`test_design/scenarios/`](../test_design/scenarios/) | One file per TS-XX |
+| Requirements Traceability Matrix (lite) | [`test_design/traceability_matrix.md`](../test_design/traceability_matrix.md) | Repro steps + AC items → scenarios |
+| Risk Register (optional) | [`test_design/risk_register.md`](../test_design/risk_register.md) | Only if the bug has customer-visible impact or shared-code-path risk |
+
+**Total Test Coverage:** [N] Test Scenarios — [N] estimated test cases.
 ```
+
+### test_design/scenarios/README.md, TS-XX_<Slug>.md, traceability_matrix.md, risk_register.md
+
+These files follow the same templates as Type A (Feature). See `/tw-plan-feature` Steps 6-9 and the `skills/planning-tests/references/` directory for full templates and conventions. Bug-fix scenarios usually have a Reproduction Steps preamble; embed it as the optional preamble line per the scenario header convention.
 
 ### test_plan/sections/04_References_Resources.md
 

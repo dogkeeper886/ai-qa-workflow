@@ -23,12 +23,27 @@ AUDIENCE: QA Engineers, Test Execution Team, TestLink Users
 
 ## INFORMATION SOURCES
 
-**PRIMARY SOURCE (Required):**
-1. **test_plan/sections/04_Test_Strategy.md § 4.2** - Test scenarios
-2. **test_plan/sections/02_Enhancement_Definition.md § 2.1** - New/changed functionality
-3. **test_plan/sections/03_Test_Scope.md § 3.1-3.3** - Test scope
+**PRIMARY SOURCE (Required) — detect layout first:**
 
-> **Fallback:** If `test_plan/sections/` does not exist, read `test_plan/README.md` directly.
+Check whether the project uses the **new layout** (`test_plan/test_design/scenarios/`) or the **legacy layout** (scenarios inlined in `sections/04_Test_Strategy.md § 4.2`).
+
+```
+IF test_plan/test_design/scenarios/ exists (new layout):
+  - Scenarios: read each test_plan/test_design/scenarios/TS-XX_*.md directly
+  - Each file's metadata header (Focus / Estimated test cases), optional
+    `## Scenario Preconditions` block, and `### Case N:` blocks (Objective +
+    Checkpoints + optional Preconditions + optional Notes) are the source of truth
+  - Steps are NOT in the scenario file — derive them in the test case from
+    each case's Objective + Checkpoints + Notes (this command's job)
+IF only test_plan/sections/ exists (legacy layout):
+  - Scenarios: test_plan/sections/04_Test_Strategy.md § 4.2 (inline table)
+```
+
+Other required sources (independent of layout):
+1. **test_plan/sections/02_Enhancement_Definition.md § 2.1** — New/changed functionality
+2. **test_plan/sections/03_Test_Scope.md § 3.1-3.3** — Test scope
+
+> **Fallback:** If `test_plan/sections/` does not exist at all, read `test_plan/README.md` directly.
 
 **SECONDARY SOURCES (Reference):**
 4. **Enhancement Ticket** (`00_Main_Task_*.md`)
@@ -71,8 +86,13 @@ Enhancements require BOTH:
    - List what's new
    - List what's changed
 
-2. Read test_plan/sections/04_Test_Strategy.md § 4.2 - Test scenarios
-   - Usually 4-6 scenarios
+2. Read scenarios — layout-aware:
+   IF test_plan/test_design/scenarios/ exists:
+     - List all TS-XX_*.md files; read each file's header + body
+   ELSE (legacy):
+     - Read test_plan/sections/04_Test_Strategy.md § 4.2 inline table
+
+   Usually 4-6 scenarios.
 
 3. Split scenarios into groups:
    - Enhancement scenarios → Type A approach
@@ -84,12 +104,15 @@ Enhancements require BOTH:
 ```markdown
 # TS-01: Enhancement Verification
 
-**Objective:** Verify new/changed functionality works as specified
 **Focus:** Enhancement
+
 **Test Cases:** 4-6
+
 **Test Plan Reference:** test_plan/sections/02_Enhancement_Definition.md § 2.1
 
 ---
+
+**Objective:** Verify new/changed functionality works as specified
 
 ## TC-01: New Behavior - Basic
 
@@ -132,12 +155,15 @@ Enhancements require BOTH:
 ```markdown
 # TS-02: Configuration Changes
 
-**Objective:** Verify new/changed configuration options work correctly
 **Focus:** Configuration
+
 **Test Cases:** 2-4
+
 **Test Plan Reference:** test_plan/sections/02_Enhancement_Definition.md § 2.2
 
 ---
+
+**Objective:** Verify new/changed configuration options work correctly
 
 ## TC-01: New Configuration Option
 
@@ -164,12 +190,15 @@ Enhancements require BOTH:
 ```markdown
 # TS-03: Integration Impact
 
-**Objective:** Verify enhancement doesn't break component interactions
 **Focus:** Integration
+
 **Test Cases:** 2-4
+
 **Test Plan Reference:** test_plan/sections/03_Test_Scope.md § 3.2
 
 ---
+
+**Objective:** Verify enhancement doesn't break component interactions
 
 ## TC-01: Component A Integration
 
@@ -196,12 +225,15 @@ Enhancements require BOTH:
 ```markdown
 # TS-04: Backward Compatibility
 
-**Objective:** Verify existing functionality still works unchanged
 **Focus:** Backward Compatibility
+
 **Test Cases:** 2-3
+
 **Test Plan Reference:** test_plan/sections/03_Test_Scope.md § 3.3
 
 ---
+
+**Objective:** Verify existing functionality still works unchanged
 
 ## TC-01: Existing Workflow - Unchanged
 
@@ -252,16 +284,31 @@ Before completing each test case, verify:
 ### Test Independence
 
 Each test case MUST run standalone:
-- All required setup is in preconditions (not "state from previous test")
+- All required data state and capabilities are in preconditions (not "state from previous test")
 - No reliance on execution order
 - No shared mutable state between test cases
+- Preconditions are system state, not UI state — see the split rule below
 
-### Navigation Step Strategy
+### Preconditions vs. Test Steps — the split rule
 
-Apply these navigation step rules:
-- [ ] Setup navigation moved to preconditions when 3+ TCs share the same path
-- [ ] Navigation condensed to 1-2 steps max (no intermediate page verifications)
-- [ ] No URLs/routes in test steps — use page names instead
+**Preconditions describe system state, not UI state.** Never write a precondition like "Admin on X page" or "X panel open" — navigation belongs in the first test step.
+
+| Belongs in **Preconditions** | Belongs in **Test Steps** (typically Step 1) |
+|---|---|
+| Data state (existing entities, configured matrix, populated records) | UI state (open a page, click Edit, open a panel) |
+| Permission / role (admin with permission to manage X) | Page navigation (menu paths) |
+| Feature flag state | Opening dialogs, panels, sub-modals |
+| Device / tooling availability | Wizard advancement, button clicks, form input |
+| External gates (tickets resolved, build deployed) | Anything the executor does in the UI during this TC |
+
+Step pattern: combine the navigation and the initial action — "Go to **X → Y**, click **Z**" → expected: "form opens" or equivalent.
+
+### Navigation Step Rules (within Test Steps)
+
+- [ ] Combine navigation + the initial action into one step where natural ("Go to X, click Y")
+- [ ] No intermediate page verifications (no "Step 2: Verify the portal list loaded" — the expected-result column of the navigation step covers that)
+- [ ] Use page names, not URLs or routes
+- [ ] When multiple TCs share the same navigation path, repeat the navigation step at the top of each — independence over DRY
 
 ### Test Data Adequacy (Lite)
 
