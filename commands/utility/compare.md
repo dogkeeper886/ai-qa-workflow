@@ -8,8 +8,8 @@ Arguments: {{input}}
   - <remote-repo-path> --issue        Also create GitHub issues in the remote repo for backport items
 
 Examples:
-  /compare /home/jack/src/ollama37
-  /compare /home/jack/src/test-framework-template --issue
+  /compare /home/user/src/ollama37
+  /compare /home/user/src/test-framework-template --issue
 
 ## Important Rules
 

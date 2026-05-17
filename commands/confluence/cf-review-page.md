@@ -142,6 +142,6 @@ mcp__mcp-atlassian__confluence_get_page
 - convert_to_markdown: false (important - see raw storage format)
 
 ## Related Commands
-- /confluence-format-guidelines - Full formatting reference
-- /update-confluence-page - Update page with fixes
+- /cf-format-guide - Full formatting reference
+- /cf-update-page - Update page with fixes
 ```

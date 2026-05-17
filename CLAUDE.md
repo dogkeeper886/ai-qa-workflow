@@ -182,31 +182,15 @@ Commands expect these MCP servers configured in the IDE:
 - **mcp-atlassian** (sooperset/mcp-atlassian) - Jira/Confluence API access
 - **testlink-mcp** (dogkeeper886/testlink-mcp) - TestLink API access
 - **playwright-mcp** (microsoft/playwright-mcp) - Browser automation
-- **wpa-mcp** (dogkeeper886/wpa-mcp) - WPA supplicant control
-- **radius-sql** (dogkeeper886/ldap) - RADIUS database queries
+
+Additional integrations documented in `docs/integrations/` but not currently used by any command: `wpa-mcp` (WPA supplicant control), `radius-sql` (RADIUS database queries).
 
 ## Adding New Commands
 
 1. Create markdown file in appropriate `commands/` subfolder
-2. Follow this template structure:
-   ```markdown
-   # Command Name
-
-   ## Purpose
-   One-sentence description
-
-   ## Agent Instructions:
-   1. Step-by-step processing guidance
-   
-   ## Expected User Input Format:
-   What parameters the user should provide
-   
-   ## Example Usage:
-   Concrete examples with agent processing steps
-   
-   ## API Notes:
-   MCP tool calls and quirks
-   ```
+2. Follow the conventions of sibling commands in the same subfolder. Two reference exemplars:
+   - **Task commands** (multi-step workflows with `gh`/MCP calls): `commands/dev-workflow/dw-implement.md` — `## PURPOSE`, `## WORKFLOW` (ASCII tree), `## EXAMPLE`, `## API Notes`
+   - **Reference commands** (rules/conventions): `commands/utility/rewrite-text.md` — minimal task statement + guidelines table
 3. Tell your AI agent to re-read `CLAUDE.md` and sync the new command
 4. Commit only the source file in `commands/`
 
@@ -232,7 +216,7 @@ Skills are thin routers — each SKILL.md contains the step sequence and progres
 
 ## Key Workflows
 
-The test lifecycle flows through 6 phases:
+The test lifecycle flows through 7 phases:
 1. **Discover** - Gather requirements via `/jr-trace`
 2. **Baseline** - Capture live UI state via `/tw-baseline-trace` (recommended before planning)
 3. **Plan** - Create test strategy via `/tw-plan-init` (routes to feature/enhance/bugfix). Plans follow the ISO/IEC/IEEE 29119-3 layout: `test_plan/sections/` (lean strategy) + `test_plan/test_design/{scenarios/, traceability_matrix.md, risk_register.md}`. The Confluence publish runs `reviewing-typography` as its final gate.

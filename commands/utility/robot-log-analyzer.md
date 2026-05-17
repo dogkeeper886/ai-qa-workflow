@@ -19,11 +19,11 @@ Process:
 11. Present results with clear headings and bullet points
 
 Key Tools:
-- TodoWrite: Track progress through complex multi-step analysis
+- TaskCreate / TaskUpdate: Track progress through complex multi-step analysis
 - Grep: Search for specific patterns in large files
 - Read: Examine file contents with offset/limit for large files
-- Task: Delegate complex analysis to specialized agents when needed
-- LS: Verify directory structure and file availability
+- Agent: Delegate complex analysis to specialized agents when needed
+- Glob: Verify directory structure and file availability
 
 Key XML Extraction Patterns (for output.xml):
 - <test name="..."> - Test case boundary

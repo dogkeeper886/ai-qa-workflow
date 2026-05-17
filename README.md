@@ -167,14 +167,14 @@ The `/evolve` command analyzes project history and proposes improvements to CLAU
 ## Available Commands
 
 ### [Jira Commands (jr-*)](commands/jira/)
-Trace tickets, fetch linked issues, and convert Jira content to Markdown.
+Trace tickets and fetch linked issues.
 
-`jr-trace` · `jr-trace-fetch` · `jr-trace-structure` · `jr-trace-docs` · `jr-trace-verify` · `jr-issue-summary` · `jr-to-markdown`
+`jr-trace` · `jr-trace-fetch` · `jr-trace-structure` · `jr-trace-docs` · `jr-trace-verify`
 
 ### [Confluence Commands (cf-*)](commands/confluence/)
-Summarize, convert, create, update, and review Confluence pages.
+Create, update, and review Confluence pages.
 
-`cf-page-summary` · `cf-to-markdown` · `cf-create-page` · `cf-update-page` · `cf-review-page` · `cf-format-guide`
+`cf-create-page` · `cf-update-page` · `cf-review-page` · `cf-format-guide`
 
 ### [Test Workflow Commands (tw-*)](commands/test-workflow/)
 Plan test strategies and design test cases, with fan-out routing by ticket type (feature/enhance/bugfix). Includes `tw-baseline-trace` to capture the live UI state via Playwright before scenarios are drafted (anchors the plan in observable reality, prevents over-specified test plans — see `skills/planning-tests/references/scenario-conventions.md`).
@@ -199,7 +199,7 @@ Issue-driven development lifecycle: plan issues, implement on branches, open PRs
 ### [Project Commands (pm-*)](commands/project/)
 Cross-cutting project management: bug reports, scrum tasks, meeting invites, demo materials, and script review.
 
-`pm-init` · `pm-bug-report` · `pm-scrum-task` · `pm-meeting-invite` · `pm-demo-content` · `pm-demo-review` · `pm-demo-ppt` · `pm-demo-email` · `pm-script-review`
+`pm-init` · `pm-bug-report` · `pm-meeting-invite` · `pm-demo-content` · `pm-demo-review` · `pm-demo-ppt` · `pm-demo-email` · `pm-script-review`
 
 ### [Utility Commands](commands/utility/)
 Text rewriting, log analysis, self-improvement, cross-repo sync, installation auditing, and command quality review.

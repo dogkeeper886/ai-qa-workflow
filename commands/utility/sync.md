@@ -8,8 +8,8 @@ Arguments: {{input}}
   - <remote-repo-path> --dry-run        Show what would be synced without applying
 
 Examples:
-  /sync /home/jack/src/ollama37
-  /sync /home/jack/src/test-framework-template --dry-run
+  /sync /home/user/src/ollama37
+  /sync /home/user/src/test-framework-template --dry-run
 
 ## Important Rules
 
