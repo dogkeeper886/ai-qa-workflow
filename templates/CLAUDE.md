@@ -51,14 +51,14 @@ These MCP servers must be configured:
 
 **GitHub (gh-*):** `/gh-init`, `/gh-track`, `/gh-status`, `/gh-close`
 
-**Jira (jr-*):** `/jr-trace`, `/jr-trace-fetch`, `/jr-trace-structure`, `/jr-trace-docs`, `/jr-trace-verify`, `/jr-issue-summary`, `/jr-to-markdown`
+**Jira (jr-*):** `/jr-trace`, `/jr-trace-fetch`, `/jr-trace-structure`, `/jr-trace-docs`, `/jr-trace-verify`
 
-**Confluence (cf-*):** `/cf-create-page`, `/cf-update-page`, `/cf-review-page`, `/cf-page-summary`, `/cf-to-markdown`, `/cf-format-guide`
+**Confluence (cf-*):** `/cf-create-page`, `/cf-update-page`, `/cf-review-page`, `/cf-format-guide`
 
 **Test Workflow (tw-*):** `/tw-plan-init`, `/tw-plan-feature`, `/tw-plan-enhance`, `/tw-plan-bugfix`, `/tw-plan-review`, `/tw-diagrams`, `/tw-case-init`, `/tw-case-feature`, `/tw-case-enhance`, `/tw-case-bugfix`, `/tw-case-review`, `/tw-templates`, `/tw-script-review`
 
 **TestLink (tl-*):** `/tl-list-projects`, `/tl-create-suite`, `/tl-list-suites`, `/tl-update-suite`, `/tl-create-case`, `/tl-get-case`, `/tl-list-cases`, `/tl-update-case`, `/tl-identify-type`, `/tl-create-plan`, `/tl-get-cases-for-plan`, `/tl-add-case-to-plan`, `/tl-execute-case`, `/tl-read-execution`, `/tl-create-execution`, `/tl-format`, `/tl-sync`, `/tl-list-requirements`
 
-**Project (pm-*):** `/pm-init`, `/pm-demo-content`, `/pm-demo-review`, `/pm-demo-ppt`, `/pm-demo-email`, `/pm-meeting-invite`, `/pm-bug-report`, `/pm-scrum-task`
+**Project (pm-*):** `/pm-init`, `/pm-demo-content`, `/pm-demo-review`, `/pm-demo-ppt`, `/pm-demo-email`, `/pm-meeting-invite`, `/pm-bug-report`
 
 **Utility:** `/rewrite-text`, `/robot-log-analyzer`

@@ -209,5 +209,5 @@ Output summary:
 | README | ✅/❌ | Generated with synthesis |
 | Relationship diagram | ✅/❌ | Generated |
 
-Suggested next step: `/planning-tests`
+Suggested next step: `/tw-plan-init`
 ```

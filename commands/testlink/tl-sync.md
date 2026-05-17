@@ -123,30 +123,9 @@ Provide structured summary:
 - Author login should be your TestLink username for new test cases
 - Project ID should match your TestLink project (use list_projects to find it)
 
-## TestLink Format Guidelines
+## TestLink Format
 
-### Preconditions:
-```html
-<ul>
-	<li>First precondition item</li>
-	<li>Second precondition item</li>
-</ul>
-```
-
-### Step Actions:
-```html
-<p>Main action with <strong>Button Name</strong> and <code>code values</code></p>
-```
-
-### Expected Results:
-```html
-<p>Expected result description</p>
-```
-
-### Summary:
-```html
-<p>Validate that feature <strong>performs action</strong> successfully.</p>
-```
+See `/tl-format` for HTML formatting rules (preconditions, step actions, expected results, summaries, and entity encoding).
 
 ## Error Handling
 

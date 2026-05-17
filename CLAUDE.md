@@ -117,7 +117,7 @@ When adopting ai-qa-workflow across multiple projects for the first time:
 1. **Create `~/.claude/CLAUDE.md`** — Define your identity (roles, project types), universal git workflow rules, information leak prevention rules, and the command hierarchy (what's at home vs project level)
 2. **Install home-level commands** — Copy universal commands from this repo to `~/.claude/commands/`:
    - `commands/utility/` → evolve, session-summary, compare, sync, command-review, review-install, rewrite-text, robot-log-analyzer
-   - `commands/dev-workflow/` → dw-story, dw-plan, dw-implement, dw-create-pr, dw-review-pr, dw-merge
+   - `commands/dev-workflow/` → dw-story, dw-plan, dw-tasks, dw-implement, dw-test-design, dw-create-pr, dw-review-pr, dw-merge
 3. **Audit all projects** — Run `/review-install all` to scan every project for duplicates, misplacements, and drift
 4. **Clean up duplicates** — Run `/review-install --fix` per project to remove commands shadowed by home level
 5. **Update project CLAUDE.md files** — Remove references to deleted commands, update counts and listings
@@ -134,15 +134,34 @@ Updates follow the same flow as installation. The agent re-reads this CLAUDE.md 
 
 ## Architecture
 
+### Three-Tier Route: CLAUDE.md → Skills → Commands
+
+The agent navigates this project in three layers. Each layer has a specific job and a specific size.
+
+1. **CLAUDE.md (this file) — Orientation.** Read first. Provides the project overview, directory map, Skills table (when to invoke what), and Key Workflows (the 7-phase test lifecycle). The agent reads CLAUDE.md to find the right entry point for the user's intent.
+
+2. **Skills (`skills/<name>/SKILL.md`) — Routers.** Loaded on demand when the trigger condition matches. Each skill is a thin step sequence + progress checklist; it orchestrates the workflow and delegates implementation to commands. Skills answer WHAT to do at the workflow level. Typical size: 50-150 lines.
+
+3. **Commands (`commands/<folder>/<cmd>.md`) — Implementation.** Hold the detail: MCP tool names, parameter shapes, HTML formatting rules, API quirks, error handling. Commands answer HOW each step is executed. Size varies by complexity — some are 8 lines, some are 500.
+
+### Why the layering
+
+- **Skills stay lean** because the heavy lifting lives in commands.
+- **Commands can be minimal where the task is LLM-native** (e.g., "summarize this page" needs no instructions beyond the MCP tool name) and rich where it's not (e.g., a TestLink CRUD command with HTML formatting and entity encoding).
+- **CLAUDE.md changes once** when adding a new workflow; skills change per orchestration tweak; commands change per integration detail.
+
+### When to write what
+
+| You're adding... | Touch... |
+|------------------|----------|
+| A new top-level workflow / lifecycle phase | CLAUDE.md (Skills table, Key Workflows) + new skill + supporting commands |
+| A new step in an existing workflow | Existing skill (insert step) + new command (the step's detail) |
+| A new way to call an existing integration | New command in the right subfolder; no skill change needed |
+| A reusable convention (HTML rules, format guides) | Reference command (e.g. `tl-format`) + cross-references from siblings |
+
 ### Command-as-Documentation Pattern
 
-Each command is a markdown file in `commands/` that serves as both documentation and executable instruction for AI agents. Commands include:
-- Purpose and expected input format
-- Step-by-step agent processing instructions
-- HTML formatting rules (for TestLink)
-- API call details and best practices
-
-Commands are installed by copying markdown files to `~/.claude/commands/`. Skills are thin routers that delegate to slash commands — each SKILL.md contains only the step sequence and progress checklist, routing to commands for implementation details.
+Each command markdown file is both documentation and executable instruction. Commands include: purpose, expected input format, step-by-step processing, MCP call details. Skills are installed to `.claude/skills/`; commands are installed to `.claude/commands/` or `~/.claude/commands/` depending on whether they're project-specific or universal (see [Tier Design](#tier-design)).
 
 ### Directory Structure
 
@@ -182,31 +201,15 @@ Commands expect these MCP servers configured in the IDE:
 - **mcp-atlassian** (sooperset/mcp-atlassian) - Jira/Confluence API access
 - **testlink-mcp** (dogkeeper886/testlink-mcp) - TestLink API access
 - **playwright-mcp** (microsoft/playwright-mcp) - Browser automation
-- **wpa-mcp** (dogkeeper886/wpa-mcp) - WPA supplicant control
-- **radius-sql** (dogkeeper886/ldap) - RADIUS database queries
+
+Additional integrations documented in `docs/integrations/` but not currently used by any command: `wpa-mcp` (WPA supplicant control), `radius-sql` (RADIUS database queries).
 
 ## Adding New Commands
 
 1. Create markdown file in appropriate `commands/` subfolder
-2. Follow this template structure:
-   ```markdown
-   # Command Name
-
-   ## Purpose
-   One-sentence description
-
-   ## Agent Instructions:
-   1. Step-by-step processing guidance
-   
-   ## Expected User Input Format:
-   What parameters the user should provide
-   
-   ## Example Usage:
-   Concrete examples with agent processing steps
-   
-   ## API Notes:
-   MCP tool calls and quirks
-   ```
+2. Follow the conventions of sibling commands in the same subfolder. Two reference exemplars:
+   - **Task commands** (multi-step workflows with `gh`/MCP calls): `commands/dev-workflow/dw-implement.md` — `## PURPOSE`, `## WORKFLOW` (ASCII tree), `## EXAMPLE`, `## API Notes`
+   - **Reference commands** (rules/conventions): `commands/utility/rewrite-text.md` — minimal task statement + guidelines table
 3. Tell your AI agent to re-read `CLAUDE.md` and sync the new command
 4. Commit only the source file in `commands/`
 
@@ -232,7 +235,7 @@ Skills are thin routers — each SKILL.md contains the step sequence and progres
 
 ## Key Workflows
 
-The test lifecycle flows through 6 phases:
+The test lifecycle flows through 7 phases:
 1. **Discover** - Gather requirements via `/jr-trace`
 2. **Baseline** - Capture live UI state via `/tw-baseline-trace` (recommended before planning)
 3. **Plan** - Create test strategy via `/tw-plan-init` (routes to feature/enhance/bugfix). Plans follow the ISO/IEC/IEEE 29119-3 layout: `test_plan/sections/` (lean strategy) + `test_plan/test_design/{scenarios/, traceability_matrix.md, risk_register.md}`. The Confluence publish runs `reviewing-typography` as its final gate.

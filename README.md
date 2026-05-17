@@ -13,6 +13,19 @@ Enable **end-to-end test automation** from a single source of truth. Instead of 
 5. **Automate** test execution with the dual-judge framework
 6. **Report** results back to source systems
 
+## Notable Features
+
+| Feature | Description |
+|---------|-------------|
+| **Agent-Driven Installation** | No installer script — the AI agent reads CLAUDE.md, detects context, and syncs commands |
+| **Two-Tier Architecture** | Home tier (universal) + project tier (specific) eliminates duplication across projects |
+| **Single Source of Truth** | Requirements flow from Jira/Confluence through test design to execution |
+| **MCP Integrations** | Direct access to Atlassian, TestLink, and Playwright via Model Context Protocol |
+| **Detect-and-Route** | Entry commands detect the type of work (new feature / enhancement / bug fix) and hand off to the right specialist command |
+| **Agent Skills** | Thin routers covering complete lifecycle phases with progress checklists |
+| **Dual-Judge Framework** | Test execution checked by both deterministic assertions and an LLM judge — catches the cases each misses |
+| **Self-Improvement** | `/evolve` analyzes project history and proposes actionable improvements |
+
 ## Quick Start
 
 ### Installation
@@ -35,10 +48,15 @@ The agent will:
 
 ### After Installation
 
+**Activate:**
+
 1. Restart your IDE to load new commands
-2. Skills available as slash commands (e.g., `/receiving-tickets`)
-3. All commands also available (e.g., `/jr-trace`)
-4. Configure MCP integrations (see [docs/integrations/](docs/integrations/))
+2. Configure MCP integrations (see [docs/integrations/](docs/integrations/))
+
+**What's now available:**
+
+- Skills as slash commands (e.g., `/receiving-tickets`)
+- Individual commands (e.g., `/jr-trace`)
 
 ### Updating
 
@@ -73,36 +91,27 @@ Commands are organized in two tiers to reduce maintenance across multiple projec
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                         COMPLETE TEST LIFECYCLE                         │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                         │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐              │
-│  │   PHASE 1    │    │   PHASE 2    │    │   PHASE 3    │              │
-│  │   DISCOVER   │───▶│    PLAN      │───▶│   DESIGN     │              │
-│  │              │    │              │    │              │              │
-│  │ Jira/Conflu- │    │ Test Plan    │    │ Test Cases   │              │
-│  │ ence via MCP │    │ Checklist    │    │ Checklist    │              │
-│  └──────────────┘    └──────────────┘    └──────────────┘              │
-│         │                   │                   │                      │
-│         ▼                   ▼                   ▼                      │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐              │
-│  │   PHASE 4    │    │   PHASE 5    │    │   PHASE 6    │              │
-│  │   MANAGE     │───▶│   AUTOMATE   │───▶│   EXECUTE    │              │
-│  │              │    │              │    │              │              │
-│  │ TestLink     │    │ Test         │    │ Run & Report │              │
-│  │ via MCP      │    │ Framework    │    │ Results      │              │
-│  └──────────────┘    └──────────────┘    └──────────────┘              │
-│                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
+
+  ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐
+  │ DISCOVER │ → │ BASELINE │ → │   PLAN   │ → │  DESIGN  │
+  └──────────┘   └──────────┘   └──────────┘   └──────────┘
+                                                     │
+                                                     ▼
+  ┌──────────┐   ┌──────────┐   ┌──────────┐
+  │ EXECUTE  │ ← │ AUTOMATE │ ← │  MANAGE  │
+  └──────────┘   └──────────┘   └──────────┘
 ```
 
 | Phase | Action | Skill | Key Command |
 |-------|--------|-------|-------------|
 | 1. Discover | Gather requirements | `/receiving-tickets` | `/jr-trace` |
-| 2. Plan | Create test strategy | `/planning-tests` | `/tw-plan-init` |
-| 3. Design | Write test cases | `/designing-cases` | `/tw-case-init` |
-| 4. Manage | Import to TestLink | `/syncing-testlink` | `/tl-sync` |
-| 5. Automate | Create YAML tests | — | [test-framework-template](https://github.com/dogkeeper886/test-framework-template) |
-| 6. Execute | Run & record results | `/executing-tests` | `/tl-execute-case` |
+| 2. Baseline | Capture live UI state (recommended before planning) | — | `/tw-baseline-trace` |
+| 3. Plan | Create test strategy | `/planning-tests` | `/tw-plan-init` |
+| 4. Design | Write test cases | `/designing-cases` | `/tw-case-init` |
+| 5. Manage | Import to TestLink | `/syncing-testlink` | `/tl-sync` |
+| 6. Automate | Create YAML tests | — | [test-framework-template](https://github.com/dogkeeper886/test-framework-template) |
+| 7. Execute | Run & record results | `/executing-tests` | `/tl-execute-case` |
 
 See [docs/workflows/test-lifecycle.md](docs/workflows/test-lifecycle.md) for the complete workflow guide.
 
@@ -126,9 +135,9 @@ Skills are the recommended high-level interface. Each skill is a thin router tha
 
 See [docs/workflows/skills.md](docs/workflows/skills.md) for invocation patterns, trigger phrases, and MCP requirements per skill.
 
-## Issue-Driven Development with `dw-*`
+## Issue-Driven Development
 
-The dev workflow commands provide a structured development lifecycle where every change is driven by a GitHub issue.
+The dev workflow commands (`dw-*`) provide a structured development lifecycle where every change is driven by a GitHub issue.
 
 ```
 /dw-plan → /dw-implement → /dw-create-pr → /dw-review-pr → /dw-merge
@@ -149,7 +158,7 @@ The dev workflow commands provide a structured development lifecycle where every
 
 Branches follow `issue-<N>-<short-slug>` convention (e.g., `issue-27-release-notes`). Issues get status labels and progress comments automatically. The PR's `Fixes #N` auto-closes the issue on merge.
 
-## Self-Improvement with `/evolve`
+## Self-Improvement Loop
 
 The `/evolve` command analyzes project history and proposes improvements to CLAUDE.md, commands, and skills.
 
@@ -167,14 +176,14 @@ The `/evolve` command analyzes project history and proposes improvements to CLAU
 ## Available Commands
 
 ### [Jira Commands (jr-*)](commands/jira/)
-Trace tickets, fetch linked issues, and convert Jira content to Markdown.
+Trace tickets and fetch linked issues.
 
-`jr-trace` · `jr-trace-fetch` · `jr-trace-structure` · `jr-trace-docs` · `jr-trace-verify` · `jr-issue-summary` · `jr-to-markdown`
+`jr-trace` · `jr-trace-fetch` · `jr-trace-structure` · `jr-trace-docs` · `jr-trace-verify`
 
 ### [Confluence Commands (cf-*)](commands/confluence/)
-Summarize, convert, create, update, and review Confluence pages.
+Create, update, and review Confluence pages.
 
-`cf-page-summary` · `cf-to-markdown` · `cf-create-page` · `cf-update-page` · `cf-review-page` · `cf-format-guide`
+`cf-create-page` · `cf-update-page` · `cf-review-page` · `cf-format-guide`
 
 ### [Test Workflow Commands (tw-*)](commands/test-workflow/)
 Plan test strategies and design test cases, with fan-out routing by ticket type (feature/enhance/bugfix). Includes `tw-baseline-trace` to capture the live UI state via Playwright before scenarios are drafted (anchors the plan in observable reality, prevents over-specified test plans — see `skills/planning-tests/references/scenario-conventions.md`).
@@ -194,40 +203,35 @@ Set up milestone/label tracking for QA artifacts and monitor progress through Gi
 ### [Dev Workflow Commands (dw-*)](commands/dev-workflow/)
 Issue-driven development lifecycle: plan issues, implement on branches, open PRs, review, and merge.
 
-`dw-story` · `dw-plan` · `dw-implement` · `dw-create-pr` · `dw-review-pr` · `dw-merge`
+`dw-story` · `dw-plan` · `dw-tasks` · `dw-implement` · `dw-test-design` · `dw-create-pr` · `dw-review-pr` · `dw-merge`
 
 ### [Project Commands (pm-*)](commands/project/)
 Cross-cutting project management: bug reports, scrum tasks, meeting invites, demo materials, and script review.
 
-`pm-init` · `pm-bug-report` · `pm-scrum-task` · `pm-meeting-invite` · `pm-demo-content` · `pm-demo-review` · `pm-demo-ppt` · `pm-demo-email` · `pm-script-review`
+`pm-init` · `pm-bug-report` · `pm-meeting-invite` · `pm-demo-content` · `pm-demo-review` · `pm-demo-ppt` · `pm-demo-email` · `pm-script-review`
 
 ### [Utility Commands](commands/utility/)
 Text rewriting, log analysis, self-improvement, cross-repo sync, installation auditing, and command quality review.
 
 `rewrite-text` · `robot-log-analyzer` · `evolve` · `session-summary` · `command-review` · `compare` · `sync` · `review-install`
 
-## Notable Features
-
-| Feature | Description |
-|---------|-------------|
-| **Agent-Driven Installation** | No installer script — the AI agent reads CLAUDE.md, detects context, and syncs commands |
-| **Two-Tier Architecture** | Home tier (universal) + project tier (specific) eliminates duplication across projects |
-| **Single Source of Truth** | Requirements flow from Jira/Confluence through test design to execution |
-| **MCP Integrations** | Direct access to Atlassian, TestLink, and Playwright via Model Context Protocol |
-| **Detect-and-Route** | Entry commands classify context (feature/enhance/bugfix) and route to specialist commands |
-| **Agent Skills** | Thin routers covering complete lifecycle phases with progress checklists |
-| **Dual-Judge Framework** | Test execution with both deterministic and semantic (LLM) verification |
-| **Self-Improvement** | `/evolve` analyzes project history and proposes actionable improvements |
-
 ## Documentation
 
 ### Integrations
 
+**Required** — used by current commands:
+
 - [MCP Atlassian](docs/integrations/mcp-atlassian.md) - Jira and Confluence access
 - [MCP TestLink](docs/integrations/mcp-testlink.md) - Test management
 - [MCP Playwright](docs/integrations/mcp-playwright.md) - Browser automation
+
+**Optional** — documented but not currently called by any command:
+
 - [MCP WPA](docs/integrations/mcp-wpa.md) - WPA supplicant control
 - [MCP RADIUS SQL](docs/integrations/mcp-radius-sql.md) - RADIUS database queries
+
+**Related framework:**
+
 - [Test Framework Template](docs/integrations/test-framework-template.md) - Dual-judge execution
 
 ### Workflows
@@ -279,14 +283,13 @@ ai-qa-workflow/
 │   ├── reviewing-typography/  # Audit just-published Confluence pages
 │   ├── syncing-testlink/      # Import cases to TestLink
 │   └── tracking-changes/      # GitHub artifact tracking
-├── templates/          # Project templates
+├── templates/          # Sample CLAUDE.md for projects adopting this workflow
 ├── docs/
 │   ├── design/         # Design principles and patterns
 │   ├── examples/       # Sample command outputs
 │   ├── integrations/   # MCP integration guides
 │   ├── references/     # Command and skill format specs
 │   └── workflows/      # End-to-end workflows
-├── Makefile            # Legacy installation (deprecated)
 └── README.md
 ```
 
