@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI QA Workflow is a QA automation toolkit that connects AI coding agents with test management systems through MCP (Model Context Protocol) integrations. It provides slash commands and skills for test automation across TestLink and Playwright, with GitHub-driven development via the dev-workflow commands.
+AI QA Workflow provides slash commands for a GitHub-driven development lifecycle (the dev-workflow commands) plus project and utility commands for AI coding agents.
 
 ## Git Workflow
 
@@ -87,7 +87,6 @@ Installation is agent-driven. When an AI agent reads this file, it should guide 
 | Utility (rewrite-text, evolve, session-summary) | `~/.claude/commands/` | Universal, useful in any project |
 | Compare, sync, command-review, review-install | `~/.claude/commands/` | Cross-repo tools, used everywhere |
 | Dev Workflow (dw-*) | `~/.claude/commands/` | Generic dev lifecycle |
-| TestLink (tl-*) | `.claude/commands/` | Project-specific, needs testlink-mcp |
 | Project (pm-*) | `.claude/commands/` | Project-specific |
 | Skills | `.claude/skills/` | Project-specific, lifecycle phases |
 
@@ -143,7 +142,7 @@ The agent navigates this project in three layers. Each layer has a specific job 
 ### Why the layering
 
 - **Skills stay lean** because the heavy lifting lives in commands.
-- **Commands can be minimal where the task is LLM-native** (e.g., "summarize this page" needs no instructions beyond the MCP tool name) and rich where it's not (e.g., a TestLink CRUD command with HTML formatting and entity encoding).
+- **Commands can be minimal where the task is LLM-native** (e.g., "summarize this page" needs no instructions beyond the tool name) and rich where it's not (e.g., a `dw-implement` command with branch setup, issue linkage, and `gh` calls).
 - **CLAUDE.md changes once** when adding a new workflow; skills change per orchestration tweak; commands change per integration detail.
 
 ### When to write what
@@ -153,7 +152,7 @@ The agent navigates this project in three layers. Each layer has a specific job 
 | A new top-level workflow / lifecycle phase | CLAUDE.md (Skills table, Key Workflows) + new skill + supporting commands |
 | A new step in an existing workflow | Existing skill (insert step) + new command (the step's detail) |
 | A new way to call an existing integration | New command in the right subfolder; no skill change needed |
-| A reusable convention (HTML rules, format guides) | Reference command (e.g. `tl-format`) + cross-references from siblings |
+| A reusable convention (rules, format guides) | Reference command (e.g. `rewrite-text`) + cross-references from siblings |
 
 ### Command-as-Documentation Pattern
 
@@ -165,10 +164,7 @@ Each command markdown file is both documentation and executable instruction. Com
 commands/
 ├── dev-workflow/  # Dev lifecycle: story, plan, implement, PR, review, merge (dw-*)
 ├── project/       # Project management commands (pm-*)
-├── testlink/      # TestLink CRUD and execution (tl-*)
 └── utility/       # Text rewriting, log analysis, self-improvement, cross-repo sync
-skills/
-└── syncing-testlink/     # Import test cases into TestLink, build test plan
 docs/
 ├── design/        # Design principles
 ├── integrations/  # MCP server setup guides
@@ -177,8 +173,7 @@ docs/
 
 ### MCP Dependencies
 
-Commands expect these MCP servers configured in the IDE:
-- **testlink-mcp** (dogkeeper886/testlink-mcp) - TestLink API access
+The remaining commands require no MCP servers — the dev-workflow commands use the `gh` CLI. The following MCP integration is configured but no longer used by any command in this repo:
 - **playwright-mcp** (microsoft/playwright-mcp) - Browser automation
 
 Additional integrations documented in `docs/integrations/` but not currently used by any command: `wpa-mcp` (WPA supplicant control), `radius-sql` (RADIUS database queries).
@@ -194,24 +189,10 @@ Additional integrations documented in `docs/integrations/` but not currently use
 
 ## Skills
 
-Skills are loaded on demand. The agent reads this table to decide which skill to invoke.
-
-| Skill | Trigger Condition |
-|-------|-------------------|
-| `syncing-testlink` | When test cases need to be imported into TestLink |
-
-Skills are thin routers — each SKILL.md contains the step sequence and progress checklist, delegating to commands for implementation details. Do not load all skills at once; load only when the trigger condition matches.
+Root `skills/` is currently empty — no lifecycle skills are defined in this repo.
 
 Governance skills live in `.claude/skills/` (`auditing-artifacts`, `auditing-readme`) and are project-local audit helpers rather than lifecycle phases.
 
 ## Key Workflows
 
-The end-to-end QA test workflow (discover → plan → design → manage → execute) is being migrated to a forthcoming `qa-workflow` command group, which is not yet present in the repo. Until it lands, TestLink management still runs through the `tl-*` commands and the `syncing-testlink` skill.
-
-## TestLink HTML Formatting
-
-TestLink commands automatically apply HTML formatting:
-- Summaries: `<p>` tags with `<strong>` for emphasis
-- Preconditions: `<ul><li>` lists
-- Steps: `<p>` for actions, `<br>•` or `<ul><li>` for expected results
-- HTML entities: `&gt;`, `&lt;`, `&quot;`, `&amp;`, `&apos;`
+The end-to-end QA test workflow (discover → plan → design → manage → execute) is being migrated to a forthcoming `qa-workflow` command group, which is not yet present in the repo. Test-management integration has moved to a separate repo.

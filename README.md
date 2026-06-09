@@ -1,16 +1,16 @@
 # AI QA Workflow
 
-A QA automation toolkit that connects AI coding agents with test management systems through MCP (Model Context Protocol). Slash commands and agent skills cover TestLink management and browser-driven execution, plus a GitHub-driven development lifecycle.
+A toolkit of slash commands for AI coding agents, covering a GitHub-driven development lifecycle plus project and utility commands.
 
 ## Project Goal
 
-Enable **test automation** from a single source of truth. Instead of manually copying information between TestLink and test scripts, AI coding agents:
+Enable **issue-driven development** where every change flows from a GitHub issue through implementation, PR, review, and merge. AI coding agents:
 
-1. **Manage** tests in TestLink via MCP
-2. **Automate** test execution with the dual-judge framework
-3. **Report** results back to source systems
+1. **Plan** work as GitHub issues
+2. **Implement** on feature branches with story-aware context
+3. **Ship** through PRs with automated review and merge
 
-> **Note:** The end-to-end QA test workflow (discover → plan → design) is being migrated to a forthcoming `qa-workflow` command group, not yet present in the repo.
+> **Note:** The end-to-end QA test workflow (discover → plan → design → manage → execute) is being migrated to a forthcoming `qa-workflow` command group, not yet present in the repo. Test-management integration has moved to a separate repo.
 
 ## Notable Features
 
@@ -18,11 +18,10 @@ Enable **test automation** from a single source of truth. Instead of manually co
 |---------|-------------|
 | **Agent-Driven Installation** | No installer script — the AI agent reads CLAUDE.md, detects context, and syncs commands |
 | **Two-Tier Architecture** | Home tier (universal) + project tier (specific) eliminates duplication across projects |
-| **Single Source of Truth** | Requirements flow through test design to execution |
-| **MCP Integrations** | Direct access to TestLink and Playwright via Model Context Protocol |
+| **Single Source of Truth** | Work flows from GitHub issues through implementation to merge |
+| **Issue-Driven Development** | Every change is driven by a GitHub issue, from planning through PR and merge |
 | **Detect-and-Route** | Entry commands detect the type of work (new feature / enhancement / bug fix) and hand off to the right specialist command |
 | **Agent Skills** | Thin routers covering complete lifecycle phases with progress checklists |
-| **Dual-Judge Framework** | Test execution checked by both deterministic assertions and an LLM judge — catches the cases each misses |
 | **Self-Improvement** | `/evolve` analyzes project history and proposes actionable improvements |
 
 ## Quick Start
@@ -41,7 +40,7 @@ Then tell your AI agent:
 
 The agent will:
 1. Detect your project context and configured MCP servers
-2. Recommend relevant modules (e.g., TestLink commands if you use testlink-mcp)
+2. Recommend relevant modules (e.g., dev-workflow commands for issue-driven development)
 3. Ask where to install — home folder or project folder (see [Two-Tier Architecture](#two-tier-architecture))
 4. Compare with any existing commands and sync only the differences
 
@@ -54,8 +53,7 @@ The agent will:
 
 **What's now available:**
 
-- Skills as slash commands (e.g., `/syncing-testlink`)
-- Individual commands (e.g., `/tl-sync`)
+- Individual commands (e.g., `/dw-plan`, `/dw-implement`)
 
 ### Updating
 
@@ -75,7 +73,7 @@ Commands are organized in two tiers to reduce maintenance across multiple projec
 - Dev Workflow: `dw-story`, `dw-plan`, `dw-implement`, `dw-create-pr`, `dw-review-pr`, `dw-merge`
 
 **Project tier** — install per project as needed:
-- TestLink (`tl-*`), Project (`pm-*`), Skills
+- Project (`pm-*`)
 
 ### Maintenance Tools
 
@@ -87,23 +85,11 @@ Commands are organized in two tiers to reduce maintenance across multiple projec
 
 ## Test Lifecycle
 
-The current toolkit covers the management and execution end of the lifecycle:
-
-| Phase | Action | Skill | Key Command |
-|-------|--------|-------|-------------|
-| Manage | Import to TestLink | `/syncing-testlink` | `/tl-sync` |
-| Automate | Create YAML tests | — | [test-framework-template](https://github.com/dogkeeper886/test-framework-template) |
-| Execute | Run & record results | — | `/tl-execute-case` |
-
-> **Note:** The discover → plan → design phases are being migrated to a forthcoming `qa-workflow` command group, not yet present in the repo.
+> **Note:** The end-to-end QA test workflow (discover → plan → design → manage → execute) is being migrated to a forthcoming `qa-workflow` command group, not yet present in the repo. Test-management integration has moved to a separate repo.
 
 ## Agent Skills
 
-Skills are the recommended high-level interface. Each skill is a thin router that covers a complete lifecycle phase with a built-in progress checklist, delegating to slash commands for each step.
-
-| Skill | Phase | Description |
-|---|---|---|
-| `/syncing-testlink` | Manage | Sync test cases into TestLink with suites, plans, and assignments |
+Root `skills/` is currently empty — no lifecycle skills are defined in this repo.
 
 Governance skills (`auditing-artifacts`, `auditing-readme`) live in `.claude/skills/` as project-local audit helpers.
 
@@ -147,11 +133,6 @@ The `/evolve` command analyzes project history and proposes improvements to CLAU
 
 ## Available Commands
 
-### [TestLink Commands (tl-*)](commands/testlink/)
-Manage test suites, cases, plans, and execution results in TestLink via MCP.
-
-`tl-list-projects` · `tl-list-suites` · `tl-list-cases` · `tl-list-requirements` · `tl-create-suite` · `tl-create-case` · `tl-get-case` · `tl-get-cases-for-plan` · `tl-update-case` · `tl-update-suite` · `tl-create-plan` · `tl-add-case-to-plan` · `tl-create-execution` · `tl-read-execution` · `tl-execute-case` · `tl-sync` · `tl-identify-type` · `tl-format`
-
 ### [Dev Workflow Commands (dw-*)](commands/dev-workflow/)
 Issue-driven development lifecycle: plan issues, implement on branches, open PRs, review, and merge.
 
@@ -171,13 +152,9 @@ Text rewriting, log analysis, self-improvement, cross-repo sync, installation au
 
 ### Integrations
 
-**Required** — used by current commands:
-
-- [MCP TestLink](docs/integrations/mcp-testlink.md) - Test management
-- [MCP Playwright](docs/integrations/mcp-playwright.md) - Browser automation
-
 **Optional** — documented but not currently called by any command:
 
+- [MCP Playwright](docs/integrations/mcp-playwright.md) - Browser automation
 - [MCP WPA](docs/integrations/mcp-wpa.md) - WPA supplicant control
 - [MCP RADIUS SQL](docs/integrations/mcp-radius-sql.md) - RADIUS database queries
 
@@ -199,7 +176,6 @@ Text rewriting, log analysis, self-improvement, cross-repo sync, installation au
 | Project | Purpose | Repository |
 |---------|---------|------------|
 | **Test Framework Template** | Dual-judge test execution | [dogkeeper886/test-framework-template](https://github.com/dogkeeper886/test-framework-template) |
-| **TestLink MCP** | TestLink API integration | [dogkeeper886/testlink-mcp](https://github.com/dogkeeper886/testlink-mcp) |
 
 ## Project Structure
 
@@ -208,10 +184,7 @@ ai-qa-workflow/
 ├── commands/
 │   ├── dev-workflow/   # Dev lifecycle commands (dw-*)
 │   ├── project/        # Project management commands (pm-*)
-│   ├── testlink/       # TestLink commands (tl-*)
 │   └── utility/        # Utility commands
-├── skills/
-│   └── syncing-testlink/      # Import cases to TestLink
 ├── templates/          # Sample CLAUDE.md for projects adopting this workflow
 ├── docs/
 │   ├── design/         # Design principles and patterns
