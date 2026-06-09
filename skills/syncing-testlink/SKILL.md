@@ -107,4 +107,4 @@ Path to project folder containing `test_cases/` with TS-XX files.
 
 ## Next Step
 
-After syncing TestLink, run `/executing-tests` to execute the test plan.
+After syncing, verify the case counts in TestLink match the local `test_cases/`.
