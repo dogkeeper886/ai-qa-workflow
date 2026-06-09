@@ -129,7 +129,7 @@ If the structure needs reordering, propose a **revised section order** with rati
 
 | Section | Original | Problem | Rewrite |
 |---------|----------|---------|---------|
-| Intro | "connects AI coding agents with test management systems through MCP" | Jargon wall | "connects AI agents to tools like Jira and TestLink" |
+| Intro | "connects AI coding agents with test management systems through MCP" | Jargon wall | "connects AI agents to your dev tools" |
 | ... | ... | ... | ... |
 
 ### 4. Content Value

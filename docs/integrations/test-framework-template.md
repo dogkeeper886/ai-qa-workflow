@@ -186,27 +186,6 @@ Edit cicd/tests/src/config.ts:
       TC-BUILD-002.json
       session.log
 
-## Integration with TestLink
-
-### Mapping TestLink to YAML
-
-| TestLink | YAML |
-|----------|------|
-| Test Case ID | id |
-| Test Case Name | name |
-| Test Suite | suite |
-| Priority | priority |
-| Preconditions | dependencies |
-| Test Steps | steps |
-| Expected Results | criteria + expectPatterns |
-
-### Workflow
-
-1. Create test case in TestLink: /create-test-case
-2. Create YAML file with matching ID
-3. Run tests: npm test
-4. Report results: /create-test-execution
-
 ## Troubleshooting
 
 ### LLM Judge Not Available
@@ -229,6 +208,4 @@ Solution: Check command output and adjust patterns.
 
 ## Related Resources
 
-- [Test Lifecycle Workflow](../workflows/test-lifecycle.md)
-- [MCP TestLink Integration](./mcp-testlink.md)
 - [Ollama](https://ollama.ai/) - Local LLM for semantic judging

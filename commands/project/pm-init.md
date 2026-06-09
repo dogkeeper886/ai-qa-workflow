@@ -91,7 +91,6 @@ mkdir -p active/[Project]/test_cases
 1. [ ] Gather requirements from Jira/Confluence
 2. [ ] Create test plan sections
 3. [ ] Write test cases
-4. [ ] Sync to TestLink
 ```
 
 **test_plan/README.md** - Test plan index:

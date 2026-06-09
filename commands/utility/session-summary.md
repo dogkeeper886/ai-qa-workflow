@@ -50,7 +50,7 @@ Classify the session into one or more workflow patterns:
 - **Discovery** — Investigating tickets, gathering requirements
 - **Planning** — Creating test plans, reviewing scope
 - **Design** — Writing test cases, designing test scenarios
-- **Sync** — Importing to TestLink, publishing to Confluence
+- **Sync** — Importing test artifacts to external systems
 - **Execute** — Running tests, browser automation
 - **Demo** — Creating presentations, screenshots
 - **Maintenance** — Updating existing artifacts, fixing bugs

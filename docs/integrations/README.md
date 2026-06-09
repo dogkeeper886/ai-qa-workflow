@@ -13,7 +13,6 @@ Each MCP server can be configured in two ways:
 
 | Server | Purpose | Runtime Options |
 |--------|---------|-----------------|
-| [mcp-testlink](mcp-testlink.md) | TestLink API access | Docker |
 | [mcp-playwright](mcp-playwright.md) | Browser automation | NPX, Docker |
 | [mcp-wpa](mcp-wpa.md) | WPA supplicant control | HTTP, Docker |
 | [mcp-radius-sql](mcp-radius-sql.md) | RADIUS database queries | HTTP |
