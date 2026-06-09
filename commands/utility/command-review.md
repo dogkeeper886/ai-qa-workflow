@@ -11,8 +11,8 @@ Arguments: {{input}}
 
 Examples:
   /command-review
-  /command-review testlink/tl-create-case.md
-  /command-review testlink
+  /command-review project/pm-init.md
+  /command-review project
   /command-review --fix
 ```
 
@@ -125,7 +125,7 @@ Commands that interact with external systems must handle failures.
 - [ ] Partial failure paths handled
 
 **Applicability:**
-- **Required** for: TestLink (`tl-*`), browser automation
+- **Required** for: MCP-backed commands, browser automation
 - **Skip** for: Pure documentation commands (`pm-*`) and reference commands
 
 ---
@@ -138,7 +138,6 @@ Commands must follow the project's established patterns.
 - [ ] File naming follows `prefix-name.md` convention
 - [ ] References to other commands use `/prefix-name` format
 - [ ] Ticket ID formats match project conventions (PROJ-NNNNN, FR-NNNN)
-- [ ] HTML formatting for TestLink content references `/tl-format` (not inlined)
 - [ ] Terminology consistent with CLAUDE.md and sibling commands
 
 ---

@@ -71,7 +71,7 @@ Apply the checklist for each artifact type.
 #### Commands (`commands/**/*.md`)
 
 - [ ] File name matches `prefix-name.md` convention (lowercase, hyphenated)
-- [ ] File lives in the correct subfolder for its prefix (e.g., `tl-*` in `commands/testlink/`)
+- [ ] File lives in the correct subfolder for its prefix (e.g., `pm-*` in `commands/project/`)
 - [ ] Has a top-level `# Heading` (command name / title)
 - [ ] Under 500 lines (official Claude Code limit)
 - [ ] Markdown is well-formed (no broken tables, unclosed code fences, dangling links)
@@ -144,16 +144,16 @@ Use this format:
 
 | Artifact | Format | Purpose | Critical | Major | Minor |
 |----------|--------|---------|----------|-------|-------|
-| commands/testlink/tl-create-case.md | ✓ | ~ | 0 | 1 | 2 |
-| skills/syncing-testlink/SKILL.md | ~ | ✓ | 0 | 1 | 0 |
+| commands/project/pm-init.md | ✓ | ~ | 0 | 1 | 2 |
+| commands/dev-workflow/dw-plan.md | ~ | ✓ | 0 | 1 | 0 |
 | CLAUDE.md | ✓ | ✓ | 0 | 0 | 1 |
 
 Legend: ✓ Pass · ~ Partial · ✗ Fail · — N/A
 
 ## Cross-Cutting Findings
 
-- <e.g., "CLAUDE.md Skills table lists `syncing-testlink` but folder is missing">
-- <e.g., "`commands/testlink/tl-foo.md` references `/tl-bar` which does not exist">
+- <e.g., "CLAUDE.md Module Groups lists `pm-*` but `commands/project/` is missing">
+- <e.g., "`commands/project/pm-foo.md` references `/pm-bar` which does not exist">
 
 ## Issues by Severity
 
