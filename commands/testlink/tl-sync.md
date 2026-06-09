@@ -6,7 +6,6 @@ Synchronize TestLink test cases with local test case files. This command automat
 
 - After creating or updating local test case files that need syncing to TestLink
 - Before test execution when TestLink must reflect the latest test cases
-- As part of `/tw-case-publish` pipeline (Step 4)
 
 ## Usage
 

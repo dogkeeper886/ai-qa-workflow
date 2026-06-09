@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI QA Workflow is a QA automation toolkit that connects AI coding agents with test management systems through MCP (Model Context Protocol) integrations. It provides slash commands and skills for end-to-end test automation across Jira, Confluence, TestLink, Playwright, and GitHub.
+AI QA Workflow is a QA automation toolkit that connects AI coding agents with test management systems through MCP (Model Context Protocol) integrations. It provides slash commands and skills for test automation across TestLink and Playwright, with GitHub-driven development via the dev-workflow commands.
 
 ## Git Workflow
 
@@ -87,11 +87,7 @@ Installation is agent-driven. When an AI agent reads this file, it should guide 
 | Utility (rewrite-text, evolve, session-summary) | `~/.claude/commands/` | Universal, useful in any project |
 | Compare, sync, command-review, review-install | `~/.claude/commands/` | Cross-repo tools, used everywhere |
 | Dev Workflow (dw-*) | `~/.claude/commands/` | Generic dev lifecycle |
-| Jira (jr-*) | `.claude/commands/` | Project-specific, needs mcp-atlassian |
-| Confluence (cf-*) | `.claude/commands/` | Project-specific, needs mcp-atlassian |
 | TestLink (tl-*) | `.claude/commands/` | Project-specific, needs testlink-mcp |
-| Test Workflow (tw-*) | `.claude/commands/` | Project-specific |
-| GitHub (gh-*) | `.claude/commands/` | Project-specific |
 | Project (pm-*) | `.claude/commands/` | Project-specific |
 | Skills | `.claude/skills/` | Project-specific, lifecycle phases |
 
@@ -138,7 +134,7 @@ Updates follow the same flow as installation. The agent re-reads this CLAUDE.md 
 
 The agent navigates this project in three layers. Each layer has a specific job and a specific size.
 
-1. **CLAUDE.md (this file) — Orientation.** Read first. Provides the project overview, directory map, Skills table (when to invoke what), and Key Workflows (the 7-phase test lifecycle). The agent reads CLAUDE.md to find the right entry point for the user's intent.
+1. **CLAUDE.md (this file) — Orientation.** Read first. Provides the project overview, directory map, Skills table (when to invoke what), and Key Workflows. The agent reads CLAUDE.md to find the right entry point for the user's intent.
 
 2. **Skills (`skills/<name>/SKILL.md`) — Routers.** Loaded on demand when the trigger condition matches. Each skill is a thin step sequence + progress checklist; it orchestrates the workflow and delegates implementation to commands. Skills answer WHAT to do at the workflow level. Typical size: 50-150 lines.
 
@@ -167,38 +163,21 @@ Each command markdown file is both documentation and executable instruction. Com
 
 ```
 commands/
-├── confluence/    # Confluence page operations (cf-*)
 ├── dev-workflow/  # Dev lifecycle: story, plan, implement, PR, review, merge (dw-*)
-├── github/        # GitHub tracking and traceability (gh-*)
-├── jira/          # Jira ticket tracing and conversion (jr-*)
 ├── project/       # Project management commands (pm-*)
 ├── testlink/      # TestLink CRUD and execution (tl-*)
-├── test-workflow/ # Test planning and case workflows (tw-*)
 └── utility/       # Text rewriting, log analysis, self-improvement, cross-repo sync
 skills/
-├── receiving-tickets/    # Fetch Jira ticket + set up project workspace
-├── planning-tests/       # Create test plan from ticket, publish to Confluence
-├── designing-cases/      # Write test cases from plan, publish to Confluence
-├── reviewing-typography/ # Audit just-published Confluence pages for proximity / hierarchy issues
-├── drafting-review-email/ # Draft stakeholder review email + meeting invite
-├── syncing-testlink/     # Import test cases into TestLink, build test plan
-├── executing-tests/      # Execute TestLink plan via browser automation
-├── creating-demo/        # Create PPTX demo with browser-verified screenshots
-├── analyzing-logs/       # Analyze Robot Framework logs, report failures
-├── tracking-changes/     # Track QA artifact changes in GitHub
-└── reviewing-commands/   # Audit command quality against best practices
+└── syncing-testlink/     # Import test cases into TestLink, build test plan
 docs/
 ├── design/        # Design principles
-├── examples/      # Sample command outputs
 ├── integrations/  # MCP server setup guides
-├── references/    # Claude Code command and skill format specs
-└── workflows/     # End-to-end test lifecycle guide
+└── references/    # Claude Code command and skill format specs
 ```
 
 ### MCP Dependencies
 
 Commands expect these MCP servers configured in the IDE:
-- **mcp-atlassian** (sooperset/mcp-atlassian) - Jira/Confluence API access
 - **testlink-mcp** (dogkeeper886/testlink-mcp) - TestLink API access
 - **playwright-mcp** (microsoft/playwright-mcp) - Browser automation
 
@@ -219,30 +198,15 @@ Skills are loaded on demand. The agent reads this table to decide which skill to
 
 | Skill | Trigger Condition |
 |-------|-------------------|
-| `receiving-tickets` | When given a Jira ticket ID to investigate or start a new QA project |
-| `planning-tests` | When requirements are gathered and a test plan is needed |
-| `designing-cases` | When a test plan exists and detailed test cases need to be written |
-| `reviewing-typography` | After `planning-tests` / `designing-cases` publish — audit the just-published Confluence pages for proximity + hierarchy problems on actual rendered content |
-| `drafting-review-email` | When test artifacts are ready for stakeholder review |
 | `syncing-testlink` | When test cases need to be imported into TestLink |
-| `executing-tests` | When a TestLink test plan is ready for browser-based execution |
-| `creating-demo` | When a demo presentation needs to be created from test results |
-| `analyzing-logs` | When Robot Framework logs need failure analysis |
-| `tracking-changes` | When QA artifacts are created, modified, or reviewed — track in GitHub |
-| `reviewing-commands` | When command files need quality auditing against best practices |
 
 Skills are thin routers — each SKILL.md contains the step sequence and progress checklist, delegating to commands for implementation details. Do not load all skills at once; load only when the trigger condition matches.
 
+Governance skills live in `.claude/skills/` (`auditing-artifacts`, `auditing-readme`) and are project-local audit helpers rather than lifecycle phases.
+
 ## Key Workflows
 
-The test lifecycle flows through 7 phases:
-1. **Discover** - Gather requirements via `/jr-trace`
-2. **Baseline** - Capture live UI state via `/tw-baseline-trace` (recommended before planning)
-3. **Plan** - Create test strategy via `/tw-plan-init` (routes to feature/enhance/bugfix). Plans follow the ISO/IEC/IEEE 29119-3 layout: `test_plan/sections/` (lean strategy) + `test_plan/test_design/{scenarios/, traceability_matrix.md, risk_register.md}`. The Confluence publish runs `reviewing-typography` as its final gate.
-4. **Design** - Write test cases via `/tw-case-init` (routes to feature/enhance/bugfix); same typography gate after publish
-5. **Manage** - Import to TestLink via `/tl-create-case`
-6. **Automate** - Create YAML tests with test-framework-template
-7. **Execute** - Run tests and record via `/tl-create-execution`
+The end-to-end QA test workflow (discover → plan → design → manage → execute) is being migrated to a forthcoming `qa-workflow` command group, which is not yet present in the repo. Until it lands, TestLink management still runs through the `tl-*` commands and the `syncing-testlink` skill.
 
 ## TestLink HTML Formatting
 

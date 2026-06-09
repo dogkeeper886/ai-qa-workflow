@@ -42,7 +42,7 @@ Read `README.md`. Index every `##` and `###` heading with line range and the blo
 
 ### Step 2: Typography Audit
 
-The visual job of a README is to let a skimming reader find their answer without reading every word. Bad typography forces linear reading. The principles below come from `skills/reviewing-typography/references/typography-principles.md` (proximity / hierarchy / emphasis) — adapted to GitHub-rendered markdown.
+The visual job of a README is to let a skimming reader find their answer without reading every word. Bad typography forces linear reading. The principles below (proximity / hierarchy / emphasis) are adapted to GitHub-rendered markdown.
 
 #### Proximity — space tells the reader what goes together
 
@@ -84,7 +84,7 @@ The README is public-facing. The reader is a developer evaluating the project, n
 
 #### Voice — direct and human
 
-- [ ] Active voice over passive ("Run `/jr-trace` to fetch the ticket" ✓ / "The ticket is fetched by `/jr-trace`" ✗)
+- [ ] Active voice over passive ("Run `/dw-plan` to draft the approach" ✓ / "The approach is drafted by `/dw-plan`" ✗)
 - [ ] Direct address ("you" or imperative) over impersonal ("the user shall...")
 - [ ] No corporate-marketing voice ("leverages cutting-edge AI", "revolutionizes workflows" ✗)
 - [ ] No robotic voice ("the system processes requests", "the module is initialized" ✗)
@@ -215,8 +215,6 @@ The audit may identify issues at three different scopes. `--fix` only applies th
 |-------|----------|-------|
 | `auditing-readme` (this) | Public reader on GitHub | Typography + Phrasing — readability |
 | `auditing-artifacts` | The agent executing this project | Format + Purpose — internal correctness |
-| `reviewing-typography` (source skill) | Confluence reader | Proximity + hierarchy on rendered HTML |
-| `reviewing-commands` (source skill) | Command authors | 6-dimension deep audit of one command |
 
 ## Next Step
 

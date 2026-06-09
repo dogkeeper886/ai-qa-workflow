@@ -16,7 +16,7 @@ Two-axis audit across the three artifact types in this repo:
 - `skills/*/SKILL.md` — skill source files
 - `CLAUDE.md` — project root config
 
-This skill is the **top-level sweep**. For a deep, command-only audit, use `reviewing-commands` (8 quality dimensions, line-level issues).
+This skill is the **top-level sweep** across commands, skills, and CLAUDE.md.
 
 ## The Two Axes
 
@@ -145,14 +145,14 @@ Use this format:
 | Artifact | Format | Purpose | Critical | Major | Minor |
 |----------|--------|---------|----------|-------|-------|
 | commands/testlink/tl-create-case.md | ✓ | ~ | 0 | 1 | 2 |
-| skills/planning-tests/SKILL.md | ~ | ✓ | 0 | 1 | 0 |
+| skills/syncing-testlink/SKILL.md | ~ | ✓ | 0 | 1 | 0 |
 | CLAUDE.md | ✓ | ✓ | 0 | 0 | 1 |
 
 Legend: ✓ Pass · ~ Partial · ✗ Fail · — N/A
 
 ## Cross-Cutting Findings
 
-- <e.g., "CLAUDE.md Skills table lists `reviewing-commands` but folder is missing">
+- <e.g., "CLAUDE.md Skills table lists `syncing-testlink` but folder is missing">
 - <e.g., "`commands/testlink/tl-foo.md` references `/tl-bar` which does not exist">
 
 ## Issues by Severity
@@ -196,18 +196,8 @@ Severity rubric:
 - `claude.md` → CLAUDE.md only
 - Append `--fix` to any of the above to apply fixes after the report
 
-## Relationship to `reviewing-commands`
-
-| Skill | Scope | Depth |
-|-------|-------|-------|
-| `auditing-artifacts` (this) | commands + skills + CLAUDE.md | Two-axis sweep, cross-cutting checks |
-| `reviewing-commands` | commands only | 8 quality dimensions, line-level issues |
-
-Run this skill first for a project-wide health check. Drill into specific commands with `reviewing-commands` when this skill flags something at the command level.
-
 ## Next Step
 
 After the report, common follow-ups:
-- `reviewing-commands <path>` — deep audit on any command flagged here
 - Fix orphan references in CLAUDE.md (most common Major finding)
 - Re-run `auditing-artifacts` after fixes to confirm scorecard improvement

@@ -13,7 +13,6 @@ Each MCP server can be configured in two ways:
 
 | Server | Purpose | Runtime Options |
 |--------|---------|-----------------|
-| [mcp-atlassian](mcp-atlassian.md) | Jira and Confluence API access | Docker, uvx |
 | [mcp-testlink](mcp-testlink.md) | TestLink API access | Docker |
 | [mcp-playwright](mcp-playwright.md) | Browser automation | NPX, Docker |
 | [mcp-wpa](mcp-wpa.md) | WPA supplicant control | HTTP, Docker |
@@ -29,5 +28,4 @@ Each MCP server can be configured in two ways:
 
 ## Related Resources
 
-- [Test Lifecycle Workflow](../workflows/test-lifecycle.md)
 - [Design Principles](../design/)
