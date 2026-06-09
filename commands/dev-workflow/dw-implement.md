@@ -22,14 +22,20 @@ and prepares for PR creation when done.
         │   - Read acceptance criteria, technical notes, dependencies
         │   - Check labels — type and priority should already be set
         │   - Check for linked/blocking issues
+        │   - If the issue body links a plan ("Part of #<plan>"), read that plan
+        │     issue — its Approach is the agreed checkpoint to build from, so a fresh
+        │     session resumes without re-deriving it: gh issue view <plan>
         │   - If issue title contains [STORY-XXX], read docs/stories/STORY-XXX.md
-        │     for full context (user story, broader acceptance criteria, related tasks)
+        │     for full context (the user story and the need it serves)
         │   - If anything is unclear, ask the user before starting
         │
         ├─► Step 2: Create Branch
         │   - Branch name: issue-<N>-<short-slug>
         │     Example: issue-27-release-notes
-        │   - Run: git checkout -b issue-<N>-<slug> main
+        │   - Branch from the repo's default branch — derive it, don't hardcode
+        │     `main` (e.g. gh repo view --json defaultBranchRef -q
+        │     .defaultBranchRef.name); check it out and pull, then:
+        │     git checkout -b issue-<N>-<slug>
         │   - Comment on issue:
         │     gh issue comment <N> --body "Starting work on branch \`issue-<N>-<slug>\`"
         │   - Add status label:
@@ -44,9 +50,9 @@ and prepares for PR creation when done.
         ├─► Step 4a: On Success
         │   - Comment on issue:
         │     gh issue comment <N> --body "Implementation complete, tests passing. Ready for PR."
-        │   - If linked to STORY-XXX, update docs/stories/STORY-XXX.md:
-        │     check off completed acceptance criteria for this task
-        │   - Proceed to /dw-create-pr
+        │   - Progress is recorded on the issue, not the story — the story stays the
+        │     stable statement of the need
+        │   - Proceed to /dw-review-implement to gate the changes before the PR
         │
         ├─► Step 4b: On Failure
         │   - Do NOT silently retry — update the issue:
@@ -61,7 +67,8 @@ and prepares for PR creation when done.
         │
         └─► Step 4c: On Partial Fix
             - Comment: what was fixed, what remains, blockers
-            - Proceed to /dw-create-pr if the partial fix is independently useful
+            - If the partial fix is independently useful: run /dw-review-implement,
+              then a human reviews + tests before a PR is opened (/dw-create-pr)
             - Create follow-up issues for remaining work
 
 ---
@@ -84,7 +91,7 @@ GitHub auto-creates backlinks when issues reference each other.
 **Agent reads issue #27, creates branch, implements:**
 
     $ gh issue view 27
-    $ git checkout -b issue-27-release-notes main
+    $ git checkout -b issue-27-release-notes   # from the repo's default branch
     $ gh issue comment 27 --body "Starting work on branch `issue-27-release-notes`"
     $ gh issue edit 27 --add-label "status:in-progress"
 
@@ -92,7 +99,8 @@ GitHub auto-creates backlinks when issues reference each other.
 
     $ gh issue comment 27 --body "Implementation complete, tests passing. Ready for PR."
 
-**Next step:** /dw-create-pr 27
+**Next step:** /dw-review-implement 27 (local gate). Then a human reviews + tests
+before a PR is opened (/dw-create-pr 27) — the workflow doesn't auto-advance to a PR.
 
 ---
 
@@ -109,4 +117,7 @@ history — start, failures, fixes, and resolution.
 - Branch naming convention: `issue-<number>-<short-slug>`
 - Always comment on the issue before and after implementation
 - Label management: `status:in-progress` while working, `status:blocked` if stuck
+- For a planned task, the linked plan issue (`Part of #<plan>`) holds the agreed
+  approach — the checkpoint a fresh session resumes from (see
+  `.claude/rules/dev-workflow.md`)
 ```
