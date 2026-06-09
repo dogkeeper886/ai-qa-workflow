@@ -6,7 +6,6 @@ Update test case in TestLink with proper HTML formatting and TestLink compliance
 
 - After modifying local test case files that are already synced to TestLink
 - When test case summary, preconditions, or steps need updating in TestLink
-- After `/tw-case-review` identifies content that needs correction in TestLink
 
 ## Agent Instructions:
 1. Extract test case data from user input

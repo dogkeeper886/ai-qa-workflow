@@ -125,8 +125,8 @@ Commands that interact with external systems must handle failures.
 - [ ] Partial failure paths handled
 
 **Applicability:**
-- **Required** for: TestLink (`tl-*`), Confluence (`cf-*`), Jira (`jr-*`), GitHub (`gh-*`), browser automation
-- **Skip** for: Pure documentation commands (`tw-*`, `pm-*`) and reference commands
+- **Required** for: TestLink (`tl-*`), browser automation
+- **Skip** for: Pure documentation commands (`pm-*`) and reference commands
 
 ---
 

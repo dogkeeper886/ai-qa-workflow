@@ -214,7 +214,6 @@ active/PROJ-12345_Feature_Integration/
 
 ## Tips:
 
-- Use `/jr-trace` first if you need full ticket hierarchy
 - Don't create empty test scenario files - create during test case design
 - Update README.md as project progresses
 - Use consistent naming throughout
