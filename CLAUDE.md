@@ -171,10 +171,8 @@ skills/
 └── syncing-testlink/     # Import test cases into TestLink, build test plan
 docs/
 ├── design/        # Design principles
-├── examples/      # Sample command outputs
 ├── integrations/  # MCP server setup guides
-├── references/    # Claude Code command and skill format specs
-└── workflows/     # End-to-end test lifecycle guide
+└── references/    # Claude Code command and skill format specs
 ```
 
 ### MCP Dependencies

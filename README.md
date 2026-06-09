@@ -215,10 +215,8 @@ ai-qa-workflow/
 ├── templates/          # Sample CLAUDE.md for projects adopting this workflow
 ├── docs/
 │   ├── design/         # Design principles and patterns
-│   ├── examples/       # Sample command outputs
 │   ├── integrations/   # MCP integration guides
-│   ├── references/     # Command and skill format specs
-│   └── workflows/      # End-to-end workflows
+│   └── references/     # Command and skill format specs
 └── README.md
 ```
 
