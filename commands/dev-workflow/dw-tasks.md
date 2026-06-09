@@ -1,19 +1,22 @@
-# Break Story into GitHub Issues
+# Break a Plan into GitHub Task Issues
 
 ```
-Read a user story file and create GitHub issues for each task.
+Break a reviewed plan (or a story) into GitHub task issues, each linked back to it.
 
 Story ID: {{input}}
 
 ## PURPOSE
 
-Reads an existing story file from `docs/stories/STORY-XXX.md` and breaks it into
-implementable GitHub issues. Each issue is linked back to the story via title prefix.
-Updates the story file with created issue numbers.
+Reads the reviewed **plan issue** for a story (`[STORY-XXX] Plan`, written by `/dw-plan`)
+and breaks its approach into implementable GitHub task issues, each linking back to the
+plan. When no plan issue exists — trivial work that skipped the plan stage — it falls
+back to breaking the story directly. Updates the story file with the created issue
+numbers. See `.claude/rules/dev-workflow.md`.
 
-Fits between `/dw-story` (creates story) and `/dw-implement` (works on an issue):
+Fits in the dev-workflow:
 
-    dw-story → dw-tasks → dw-implement → dw-create-pr → dw-review-pr → dw-merge
+    dw-story → dw-review-story → dw-plan → [human reviews the plan issue]
+             → dw-tasks → dw-review-tasks → dw-implement → …
 
 ---
 
@@ -21,14 +24,19 @@ Fits between `/dw-story` (creates story) and `/dw-implement` (works on an issue)
 
     /dw-tasks STORY-003
         │
-        ├─► Step 1: Read the Story
+        ├─► Step 1: Read the plan (or the story)
         │   - If no story ID provided, list files in docs/stories/ and ask user to pick
-        │   - Read docs/stories/STORY-XXX.md
-        │   - Extract: title, acceptance criteria, technical notes
+        │   - Read docs/stories/STORY-XXX.md for the need + "Success Looks Like"
+        │   - Find the reviewed plan issue:
+        │     gh issue list --search "[STORY-XXX] Plan" --label plan --state open
+        │     • If found: read it — its Approach + Acceptance Criteria are what you
+        │       break into tasks (the plan is the agreed how). Note its number <plan>.
+        │     • If none: fall back to breaking the story directly (trivial work that
+        │       skipped the plan stage). <plan> is empty.
         │   - If the story file doesn't exist, report and stop
         │
         ├─► Step 2: Break into Tasks
-        │   - Analyze the story and break it into tasks
+        │   - Break the plan's approach (or the story, when no plan) into tasks
         │   - Each task should be:
         │     • Small — completable in one session
         │     • Independent — minimal dependencies between tasks
@@ -52,30 +60,32 @@ Fits between `/dw-story` (creates story) and `/dw-implement` (works on an issue)
         ├─► Step 5: Create GitHub Issues
         │   - One issue per task
         │   - Title: [STORY-XXX] Task description
-        │   - Body:
+        │   - Body — start lean; the issue grows as the *how* is worked out
+        │     (research, PoC, clarification, fixes) and recorded in comments:
         │       ## Context
-        │       Part of [STORY-XXX](../docs/stories/STORY-XXX.md)
+        │       Part of [STORY-XXX](../docs/stories/STORY-XXX.md) · plan #<plan>
         │
-        │       ## Acceptance Criteria
-        │       - [ ] [criterion from task breakdown]
+        │       ## Goal
+        │       [what this task achieves, from the plan's approach / the story's need]
         │
-        │       ## Technical Notes
-        │       [relevant notes from the story]
-        │   - Labels: type + priority (infer from story content)
-        │   - Link related issues: "Part of STORY-XXX"
+        │       ## Done When
+        │       - [ ] [observable done condition for this task]
+        │   - Labels: type + priority (infer from the plan / story content)
+        │   - Trace back: "Part of #<plan>" in the body links each task to the plan
+        │     issue (GitHub backlinks it). Omit the plan reference when there is none.
         │
         ├─► Step 6: Update Story File
         │   - Update the Status section in docs/stories/STORY-XXX.md:
         │     ## Status
         │     - Created: [original date]
-        │     - Tasks: #1, #2, #3
-        │     - Tests: none
+        │     - Issues: #1, #2, #3
         │
         └─► Step 7: Report
             - Show table of created issues:
               | Issue | Title | Type | Priority |
             - Suggest implementation order based on dependencies
-            - Suggest: /dw-implement <N> to start on the first task
+            - Suggest: /dw-review-tasks STORY-XXX to gate the breakdown, then
+              /dw-implement <N> to start on the first task
 
 ---
 
@@ -83,13 +93,14 @@ Fits between `/dw-story` (creates story) and `/dw-implement` (works on an issue)
 
     /dw-tasks STORY-003
 
-**Agent reads story, breaks into tasks, creates issues:**
+**Agent reads the plan, breaks it into tasks, creates issues:**
 
     $ cat docs/stories/STORY-003.md
-    $ gh issue list --search "[STORY-003]" --state all
+    $ gh issue list --search "[STORY-003] Plan" --label plan --state open   # → plan #28
+    $ gh issue list --search "[STORY-003]" --state all                      # dup check
     $ gh issue create --title "[STORY-003] Add input validation" \
         --label "enhancement" --label "priority:high" \
-        --body "## Context\nPart of STORY-003\n\n## Acceptance Criteria\n..."
+        --body "## Context\nPart of STORY-003 · plan #28\n\n## Goal\n...\n\n## Done When\n- [ ] ..."
     $ gh issue create --title "[STORY-003] Add error response formatting" \
         --label "enhancement" --label "priority:medium" \
         --body "..."
@@ -98,8 +109,7 @@ Fits between `/dw-story` (creates story) and `/dw-implement` (works on an issue)
 
     ## Status
     - Created: 2026-04-01
-    - Tasks: #15, #16
-    - Tests: none
+    - Issues: #15, #16
 
 **Output:**
 
@@ -118,5 +128,8 @@ Fits between `/dw-story` (creates story) and `/dw-implement` (works on an issue)
 - Uses `gh` CLI for issue operations
 - Story files live in `docs/stories/STORY-XXX.md` (created by /dw-story)
 - Issue titles use `[STORY-XXX]` prefix for traceability
-- The story file is the persistent record linking requirements → tasks → tests
+- The reviewed plan issue (`[STORY-XXX] Plan`, from /dw-plan) is the source for the
+  breakdown when present, and each task links back to it; no plan → break the story
+- The story file records the need; the issue is the single source of truth for *how*,
+  growing with research, decisions, and fixes as the work proceeds
 ```
