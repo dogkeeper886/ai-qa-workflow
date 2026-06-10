@@ -70,7 +70,7 @@ Commands are organized in two tiers to reduce maintenance across multiple projec
 
 **Home tier** — install once, use everywhere:
 - Utility: `evolve`, `session-summary`
-- Dev Workflow: `dw-story`, `dw-plan`, `dw-implement`, `dw-create-pr`, `dw-review-pr`, `dw-merge`
+- Dev Workflow: `dw-story`, `dw-plan`, `dw-implement`, `dw-create-pr`, `dw-merge`
 - QA Workflow: `qw-plan`, `qw-review-plan`, `qw-cases`, `qw-review-cases`
 
 **Project tier** — install per project as needed:
@@ -91,19 +91,18 @@ Governance skills (`auditing-artifacts`, `auditing-readme`) live in `.claude/ski
 The dev workflow commands (`dw-*`) provide a structured development lifecycle where every change is driven by a GitHub issue.
 
 ```
-/dw-plan → /dw-implement → /dw-create-pr → /dw-review-pr → /dw-merge
-    │            │               │                │              │
- Create      Branch &        Push & open       Approve or    Merge PR,
- issues      implement       PR (Fixes #N)     request       auto-close
- with        on feature      with summary       changes       issue,
- labels      branch          & test plan                      clean up
+/dw-plan → /dw-implement → /dw-create-pr → /dw-merge
+    │            │               │             │
+ Create      Branch &        Push & open    Merge PR,
+ issues      implement       PR (Fixes #N)  auto-close
+ with        on feature      with summary   issue,
+ labels      branch          & test plan    clean up
 ```
 
 ```
 /dw-plan Add cross-repo sync commands     # Break request into GitHub issues
 /dw-implement 27                           # Pick up issue, create branch, implement
 /dw-create-pr 27                           # Push branch, open PR linked to issue
-/dw-review-pr 30                           # Review PR against checklist
 /dw-merge 30                               # Merge PR, clean up branch and labels
 ```
 
@@ -129,7 +128,7 @@ The `/evolve` command analyzes project history and proposes improvements to CLAU
 ### [Dev Workflow Commands (dw-*)](.claude/commands/dev-workflow/)
 Issue-driven development lifecycle: plan issues, implement on branches, open PRs, review, and merge.
 
-`dw-story` · `dw-plan` · `dw-tasks` · `dw-implement` · `dw-test-design` · `dw-create-pr` · `dw-review-pr` · `dw-merge`
+`dw-story` · `dw-plan` · `dw-tasks` · `dw-implement` · `dw-test-design` · `dw-create-pr` · `dw-merge`
 
 ### [QA Workflow Commands (qw-*)](.claude/commands/qa-workflow/)
 Test-doc authoring: turn a story into trustworthy test docs in `docs/tests/`, each producer paired with a review.

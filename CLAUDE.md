@@ -41,8 +41,7 @@ For structured issue-driven development, use the `dw-*` commands:
 4. `/dw-implement` — Pick up issue, create branch, implement (story-aware)
 5. `/dw-test-design` — Design tests for the implementation (detects project test infra)
 6. `/dw-create-pr` — Push and open PR with issue linkage (story-aware)
-7. `/dw-review-pr` — Review PR against checklist (adapts to CI and project type)
-8. `/dw-merge` — Merge PR and clean up (story-aware)
+7. `/dw-merge` — Merge PR and clean up (story-aware)
 
 ## Information Leak Check
 
@@ -108,7 +107,7 @@ When adopting ai-qa-workflow across multiple projects for the first time:
 1. **Create `~/.claude/CLAUDE.md`** — Define your identity (roles, project types), universal git workflow rules, information leak prevention rules, and the command hierarchy (what's at home vs project level)
 2. **Install home-level commands** — Install the universal commands at `~/.claude/commands/`:
    - Utility (home tier): evolve, session-summary
-   - `.claude/commands/dev-workflow/` → dw-story, dw-plan, dw-tasks, dw-implement, dw-test-design, dw-create-pr, dw-review-pr, dw-merge
+   - `.claude/commands/dev-workflow/` → dw-story, dw-plan, dw-tasks, dw-implement, dw-test-design, dw-create-pr, dw-merge
 3. **Update project CLAUDE.md files** — Remove references to deleted commands, update counts and listings
 
 ### Updates
