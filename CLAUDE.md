@@ -60,7 +60,7 @@ All commands must return **no results**. Examples must use only generic placehol
 
 ## Installation
 
-Installation is agent-driven. When an AI agent reads this file, it should guide the user through installing commands and skills using the compare/sync protocol.
+Installation is agent-driven. When an AI agent reads this file, it should guide the user through installing commands and skills — comparing the source against what's already installed and copying only the differences.
 
 ### Agent Installation Flow
 
@@ -73,7 +73,7 @@ Installation is agent-driven. When an AI agent reads this file, it should guide 
 3. **Ask the user**:
    - Where to install: project folder (`.claude/commands/`) or home folder (`~/.claude/commands/`), or per-module
    - What modules to install: recommend based on context, let user override
-4. **Compare & sync** — Read `commands/utility/compare.md` and `commands/utility/sync.md` for the protocol, then:
+4. **Compare & sync** — For each selected module, compare source against the target and copy only the differences:
    - Compare source (`commands/`) with target for each selected module
    - Classify each file: new / identical / diverged / target-only
    - For key changes: prompt user with explanation before applying
@@ -84,11 +84,9 @@ Installation is agent-driven. When an AI agent reads this file, it should guide 
 
 | Module | Default Target | Reason |
 |--------|---------------|--------|
-| Utility (rewrite-text, evolve, session-summary) | `~/.claude/commands/` | Universal, useful in any project |
-| Compare, sync, command-review, review-install | `~/.claude/commands/` | Cross-repo tools, used everywhere |
+| Utility (evolve, session-summary) | `~/.claude/commands/` | Universal, useful in any project |
 | Dev Workflow (dw-*) | `~/.claude/commands/` | Generic dev lifecycle |
-| Project (pm-*) | `.claude/commands/` | Project-specific |
-| Skills | `.claude/skills/` | Project-specific, lifecycle phases |
+| Skills | `.claude/skills/` | Project-specific, governance/review |
 
 ### Tier Design
 
@@ -103,25 +101,15 @@ Commands and skills are organized in two tiers to reduce maintenance across mult
 
 **Same-name conflict:** Home level wins. A project-level command with the same name as a home command is shadowed (unreachable) and should be removed.
 
-**Audit:** Run `/review-install` to detect duplicates, misplacements, and drift between home, project, and this source repo.
-
 ### First-Time Home Setup
 
 When adopting ai-qa-workflow across multiple projects for the first time:
 
 1. **Create `~/.claude/CLAUDE.md`** — Define your identity (roles, project types), universal git workflow rules, information leak prevention rules, and the command hierarchy (what's at home vs project level)
-2. **Install home-level commands** — Copy universal commands from this repo to `~/.claude/commands/`:
-   - `commands/utility/` → evolve, session-summary, compare, sync, command-review, review-install, rewrite-text, robot-log-analyzer
+2. **Install home-level commands** — Install the universal commands at `~/.claude/commands/`:
+   - Utility (home tier): evolve, session-summary
    - `commands/dev-workflow/` → dw-story, dw-plan, dw-tasks, dw-implement, dw-test-design, dw-create-pr, dw-review-pr, dw-merge
-3. **Audit all projects** — Run `/review-install all` to scan every project for duplicates, misplacements, and drift
-4. **Clean up duplicates** — Run `/review-install --fix` per project to remove commands shadowed by home level
-5. **Update project CLAUDE.md files** — Remove references to deleted commands, update counts and listings
-
-### Ongoing Maintenance
-
-- **After updating a command in ai-qa-workflow:** copy it to `~/.claude/commands/` and run `/review-install all` to check for drift
-- **After adding a new project:** run `/review-install` in that project to verify no duplicates
-- **Periodic audit:** run `/review-install all` quarterly to catch drift and info leaks
+3. **Update project CLAUDE.md files** — Remove references to deleted commands, update counts and listings
 
 ### Updates
 
@@ -152,7 +140,7 @@ The agent navigates this project in three layers. Each layer has a specific job 
 | A new top-level workflow / lifecycle phase | CLAUDE.md (Skills table, Key Workflows) + new skill + supporting commands |
 | A new step in an existing workflow | Existing skill (insert step) + new command (the step's detail) |
 | A new way to call an existing integration | New command in the right subfolder; no skill change needed |
-| A reusable convention (rules, format guides) | Reference command (e.g. `rewrite-text`) + cross-references from siblings |
+| A reusable convention (rules, format guides) | Reference command (rules/conventions) + cross-references from siblings |
 
 ### Command-as-Documentation Pattern
 
@@ -162,9 +150,7 @@ Each command markdown file is both documentation and executable instruction. Com
 
 ```
 commands/
-├── dev-workflow/  # Dev lifecycle: story, plan, implement, PR, review, merge (dw-*)
-├── project/       # Project management commands (pm-*)
-└── utility/       # Text rewriting, log analysis, self-improvement, cross-repo sync
+└── dev-workflow/  # Dev lifecycle: story, plan, implement, PR, review, merge (dw-*)
 docs/
 ├── design/        # Design principles
 ├── integrations/  # MCP server setup guides
@@ -181,9 +167,8 @@ Additional integrations documented in `docs/integrations/` but not currently use
 ## Adding New Commands
 
 1. Create markdown file in appropriate `commands/` subfolder
-2. Follow the conventions of sibling commands in the same subfolder. Two reference exemplars:
+2. Follow the conventions of sibling commands in the same subfolder. Reference exemplar:
    - **Task commands** (multi-step workflows with `gh`/MCP calls): `commands/dev-workflow/dw-implement.md` — `## PURPOSE`, `## WORKFLOW` (ASCII tree), `## EXAMPLE`, `## API Notes`
-   - **Reference commands** (rules/conventions): `commands/utility/rewrite-text.md` — minimal task statement + guidelines table
 3. Tell your AI agent to re-read `CLAUDE.md` and sync the new command
 4. Commit only the source file in `commands/`
 

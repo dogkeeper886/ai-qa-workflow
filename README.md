@@ -1,6 +1,6 @@
 # AI QA Workflow
 
-A toolkit of slash commands for AI coding agents, covering a GitHub-driven development lifecycle plus project and utility commands.
+A toolkit of slash commands for AI coding agents, covering a GitHub-driven development lifecycle.
 
 ## Project Goal
 
@@ -57,7 +57,7 @@ The agent will:
 
 ### Updating
 
-Same flow — tell your agent to re-read `CLAUDE.md`. It compares, detects changes, and syncs updates. Use `/compare` to preview drift before syncing.
+Same flow — tell your agent to re-read `CLAUDE.md`. It compares, detects changes, and syncs updates.
 
 ## Two-Tier Architecture
 
@@ -69,19 +69,11 @@ Commands are organized in two tiers to reduce maintenance across multiple projec
 | **Project** | `.claude/commands/`, `.claude/skills/` | One project | Commands needing project-specific MCP servers or paths |
 
 **Home tier** — install once, use everywhere:
-- Utility: `rewrite-text`, `evolve`, `session-summary`, `compare`, `sync`, `command-review`, `review-install`, `robot-log-analyzer`
+- Utility: `evolve`, `session-summary`
 - Dev Workflow: `dw-story`, `dw-plan`, `dw-implement`, `dw-create-pr`, `dw-review-pr`, `dw-merge`
 
 **Project tier** — install per project as needed:
-- Project (`pm-*`)
-
-### Maintenance Tools
-
-| Command | Purpose |
-|---------|---------|
-| `/review-install` | Audit your setup — catches duplicates, misplacements, and drift |
-| `/compare` | Detect what's out of sync between source repo and installed commands |
-| `/sync` | Push updates from source to target |
+- Governance skills (`auditing-artifacts`, `auditing-readme`)
 
 ## Test Lifecycle
 
@@ -138,15 +130,10 @@ Issue-driven development lifecycle: plan issues, implement on branches, open PRs
 
 `dw-story` · `dw-plan` · `dw-tasks` · `dw-implement` · `dw-test-design` · `dw-create-pr` · `dw-review-pr` · `dw-merge`
 
-### [Project Commands (pm-*)](commands/project/)
-Cross-cutting project management: bug reports, scrum tasks, meeting invites, demo materials, and script review.
+### Utility Commands (home tier)
+Self-improvement and session recording. These live at the home tier (`~/.claude/commands/`), not in this repo.
 
-`pm-init` · `pm-bug-report` · `pm-meeting-invite` · `pm-demo-content` · `pm-demo-review` · `pm-demo-ppt` · `pm-demo-email` · `pm-script-review`
-
-### [Utility Commands](commands/utility/)
-Text rewriting, log analysis, self-improvement, cross-repo sync, installation auditing, and command quality review.
-
-`rewrite-text` · `robot-log-analyzer` · `evolve` · `session-summary` · `command-review` · `compare` · `sync` · `review-install`
+`evolve` · `session-summary`
 
 ## Documentation
 
@@ -182,9 +169,7 @@ Text rewriting, log analysis, self-improvement, cross-repo sync, installation au
 ```
 ai-qa-workflow/
 ├── commands/
-│   ├── dev-workflow/   # Dev lifecycle commands (dw-*)
-│   ├── project/        # Project management commands (pm-*)
-│   └── utility/        # Utility commands
+│   └── dev-workflow/   # Dev lifecycle commands (dw-*)
 ├── templates/          # Sample CLAUDE.md for projects adopting this workflow
 ├── docs/
 │   ├── design/         # Design principles and patterns
@@ -211,7 +196,7 @@ ai-qa-workflow/
 
 ### Updating Commands
 
-Pull the latest changes, then tell your AI agent to re-read `CLAUDE.md` — it will compare and sync updates automatically. Use `/review-install` to audit across projects.
+Pull the latest changes, then tell your AI agent to re-read `CLAUDE.md` — it will compare and sync updates automatically.
 
 ## License
 

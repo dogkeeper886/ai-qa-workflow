@@ -1,11 +1,11 @@
 ## AI QA Workflow
 
-This section provides AI coding agents with project and utility command guidance.
+This section provides AI coding agents with command guidance.
 
-> **Note:** The QA test workflow (ticket intake, test planning, case design) is being migrated to a forthcoming `qa-workflow` command group. The commands below cover project/demo tasks; structured development uses the `dw-*` dev-workflow commands.
+> **Note:** The QA test workflow (ticket intake, test planning, case design) is being migrated to a forthcoming `qa-workflow` command group. Structured development uses the `dw-*` dev-workflow commands.
 
 ### Available Commands
 
-**Project (pm-*):** `/pm-init`, `/pm-demo-content`, `/pm-demo-review`, `/pm-demo-ppt`, `/pm-demo-email`, `/pm-meeting-invite`, `/pm-bug-report`
+**Dev Workflow (dw-*):** `/dw-story`, `/dw-plan`, `/dw-tasks`, `/dw-implement`, `/dw-test-design`, `/dw-create-pr`, `/dw-review-pr`, `/dw-merge`
 
-**Utility:** `/rewrite-text`, `/robot-log-analyzer`
+**Utility (home tier, `~/.claude/commands/`):** `/evolve`, `/session-summary`
