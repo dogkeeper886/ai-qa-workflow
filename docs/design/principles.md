@@ -21,7 +21,7 @@
 
 ### File Structure
 ```
-commands/
+.claude/commands/
 ├── test-generation.md
 ├── code-review.md
 └── bug-analysis.md

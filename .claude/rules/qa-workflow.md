@@ -1,6 +1,6 @@
 ---
 paths:
-  - "commands/qa-workflow/**/*.md"
+  - ".claude/commands/qa-workflow/**/*.md"
 ---
 
 # qa-workflow

@@ -1,6 +1,6 @@
 # AI QA Workflow
 
-A toolkit of slash commands for AI coding agents, covering a GitHub-driven development lifecycle.
+A toolkit of slash commands for AI coding agents: a GitHub-driven development lifecycle (**dev-workflow**) and test-doc authoring (**qa-workflow**), both in `.claude/commands/`.
 
 ## Project Goal
 
@@ -10,7 +10,7 @@ Enable **issue-driven development** where every change flows from a GitHub issue
 2. **Implement** on feature branches with story-aware context
 3. **Ship** through PRs with automated review and merge
 
-> **Note:** The end-to-end QA test workflow (discover → plan → design → manage → execute) is being migrated to a forthcoming `qa-workflow` command group, not yet present in the repo. Test-management integration has moved to a separate repo.
+> **Note:** This repo now ships two products — **dev-workflow** (the issue-driven lifecycle below) and **qa-workflow** (test-doc authoring, `qw-*`). Binding test docs to a runner and executing them is the consuming project's own layer.
 
 ## Notable Features
 
@@ -71,17 +71,18 @@ Commands are organized in two tiers to reduce maintenance across multiple projec
 **Home tier** — install once, use everywhere:
 - Utility: `evolve`, `session-summary`
 - Dev Workflow: `dw-story`, `dw-plan`, `dw-implement`, `dw-create-pr`, `dw-review-pr`, `dw-merge`
+- QA Workflow: `qw-plan`, `qw-review-plan`, `qw-cases`, `qw-review-cases`
 
 **Project tier** — install per project as needed:
 - Governance skills (`auditing-artifacts`, `auditing-readme`)
 
 ## Test Lifecycle
 
-> **Note:** The end-to-end QA test workflow (discover → plan → design → manage → execute) is being migrated to a forthcoming `qa-workflow` command group, not yet present in the repo. Test-management integration has moved to a separate repo.
+The **qa-workflow** commands (`qw-*`) turn a story into trustworthy test docs in `docs/tests/`: `qw-plan` → `qw-cases`, each paired with a review (`qw-review-plan`, `qw-review-cases`). The authoring is self-contained (markdown + GitHub); binding docs to a runner and executing them is the consuming project's layer. See [`.claude/rules/qa-workflow.md`](.claude/rules/qa-workflow.md) and the [test-doc format](docs/tests/README.md).
 
 ## Agent Skills
 
-Root `skills/` is currently empty — no lifecycle skills are defined in this repo.
+No lifecycle router skills are defined — the workflow logic lives in the `dev-workflow` and `qa-workflow` command groups under `.claude/commands/`.
 
 Governance skills (`auditing-artifacts`, `auditing-readme`) live in `.claude/skills/` as project-local audit helpers.
 
@@ -125,10 +126,15 @@ The `/evolve` command analyzes project history and proposes improvements to CLAU
 
 ## Available Commands
 
-### [Dev Workflow Commands (dw-*)](commands/dev-workflow/)
+### [Dev Workflow Commands (dw-*)](.claude/commands/dev-workflow/)
 Issue-driven development lifecycle: plan issues, implement on branches, open PRs, review, and merge.
 
 `dw-story` · `dw-plan` · `dw-tasks` · `dw-implement` · `dw-test-design` · `dw-create-pr` · `dw-review-pr` · `dw-merge`
+
+### [QA Workflow Commands (qw-*)](.claude/commands/qa-workflow/)
+Test-doc authoring: turn a story into trustworthy test docs in `docs/tests/`, each producer paired with a review.
+
+`qw-plan` · `qw-review-plan` · `qw-cases` · `qw-review-cases`
 
 ### Utility Commands (home tier)
 Self-improvement and session recording. These live at the home tier (`~/.claude/commands/`), not in this repo.
@@ -168,13 +174,19 @@ Self-improvement and session recording. These live at the home tier (`~/.claude/
 
 ```
 ai-qa-workflow/
-├── commands/
-│   └── dev-workflow/   # Dev lifecycle commands (dw-*)
+├── .claude/
+│   ├── commands/
+│   │   ├── dev-workflow/   # Dev lifecycle commands (dw-*)
+│   │   └── qa-workflow/    # Test-doc authoring commands (qw-*)
+│   ├── skills/             # Governance/review skills
+│   └── rules/              # Workflow rules (dev-workflow, qa-workflow)
 ├── templates/          # Sample CLAUDE.md for projects adopting this workflow
 ├── docs/
 │   ├── design/         # Design principles and patterns
 │   ├── integrations/   # MCP integration guides
-│   └── references/     # Command and skill format specs
+│   ├── references/     # Command and skill format specs
+│   ├── stories/        # User stories (STORY-*)
+│   └── tests/          # Test-doc format contract (qa-workflow output)
 └── README.md
 ```
 
@@ -182,17 +194,17 @@ ai-qa-workflow/
 
 ### Adding New Commands
 
-1. Create markdown file in the appropriate `commands/` subfolder
+1. Create markdown file in the appropriate `.claude/commands/` subfolder
 2. Follow the [command format spec](docs/references/command-format.md) (or use existing commands as examples)
 3. Tell your AI agent to re-read `CLAUDE.md` and sync the new command
 4. Commit only the source file
 
 ### Adding New Skills
 
-1. Create `skills/<gerund-name>/SKILL.md` with YAML frontmatter (`name`, `description`)
+1. Create `.claude/skills/<gerund-name>/SKILL.md` with YAML frontmatter (`name`, `description`)
 2. Route each step to an existing slash command — skills should not duplicate command logic
 3. Tell your AI agent to re-read `CLAUDE.md` and sync the new skill
-4. Commit only the source file under `skills/`
+4. Commit only the source file under `.claude/skills/`
 
 ### Updating Commands
 
