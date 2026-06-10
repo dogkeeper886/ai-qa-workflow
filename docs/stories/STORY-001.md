@@ -39,6 +39,7 @@ loosely related groups.
 
 ## Status
 
+- **Completed: 2026-06-10** — all task issues merged; repo is the two-product layout (`.claude/commands/{dev-workflow,qa-workflow}` + governance skills), install/README match.
 - Created: 2026-06-09
 - Plan: #57
-- Issues: ✅ #58 (merged, PR #64), ✅ #59 (merged, PR #65), ✅ #61 (merged, PR #67), ✅ #62 (merged, PR #67), #63 (PR #69 open) — #60 folded into #58
+- Issues: ✅ #58 (merged, PR #64), ✅ #59 (merged, PR #65), ✅ #61 (merged, PR #67), ✅ #62 (merged, PR #67), ✅ #63 (merged, PR #69) — #60 folded into #58
