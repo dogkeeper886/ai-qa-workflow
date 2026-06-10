@@ -1,6 +1,6 @@
 ---
 paths:
-  - "commands/dev-workflow/**/*.md"
+  - ".claude/commands/dev-workflow/**/*.md"
 ---
 
 # dev-workflow

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI QA Workflow provides slash commands for a GitHub-driven development lifecycle (the dev-workflow commands) plus project and utility commands for AI coding agents.
+AI QA Workflow provides two slash-command products for AI coding agents, both living in `.claude/commands/`: **dev-workflow** (a GitHub-driven development lifecycle) and **qa-workflow** (test-doc authoring).
 
 ## Git Workflow
 
@@ -46,7 +46,7 @@ For structured issue-driven development, use the `dw-*` commands:
 
 ## Information Leak Check
 
-This is an open-source repository. Before committing, verify no private identifiers remain in `commands/` or `demo/`:
+This is an open-source repository. Before committing, verify no private identifiers remain in `.claude/commands/`:
 
 All commands must return **no results**. Examples must use only generic placeholders:
 
@@ -74,7 +74,7 @@ Installation is agent-driven. When an AI agent reads this file, it should guide 
    - Where to install: project folder (`.claude/commands/`) or home folder (`~/.claude/commands/`), or per-module
    - What modules to install: recommend based on context, let user override
 4. **Compare & sync** — For each selected module, compare source against the target and copy only the differences:
-   - Compare source (`commands/`) with target for each selected module
+   - Compare source (`.claude/commands/`) with target for each selected module
    - Classify each file: new / identical / diverged / target-only
    - For key changes: prompt user with explanation before applying
    - Adapt project-specific values when installing into a different repo
@@ -108,7 +108,7 @@ When adopting ai-qa-workflow across multiple projects for the first time:
 1. **Create `~/.claude/CLAUDE.md`** — Define your identity (roles, project types), universal git workflow rules, information leak prevention rules, and the command hierarchy (what's at home vs project level)
 2. **Install home-level commands** — Install the universal commands at `~/.claude/commands/`:
    - Utility (home tier): evolve, session-summary
-   - `commands/dev-workflow/` → dw-story, dw-plan, dw-tasks, dw-implement, dw-test-design, dw-create-pr, dw-review-pr, dw-merge
+   - `.claude/commands/dev-workflow/` → dw-story, dw-plan, dw-tasks, dw-implement, dw-test-design, dw-create-pr, dw-review-pr, dw-merge
 3. **Update project CLAUDE.md files** — Remove references to deleted commands, update counts and listings
 
 ### Updates
@@ -123,9 +123,9 @@ The agent navigates this project in three layers. Each layer has a specific job 
 
 1. **CLAUDE.md (this file) — Orientation.** Read first. Provides the project overview, directory map, Skills table (when to invoke what), and Key Workflows. The agent reads CLAUDE.md to find the right entry point for the user's intent.
 
-2. **Skills (`skills/<name>/SKILL.md`) — Routers.** Loaded on demand when the trigger condition matches. Each skill is a thin step sequence + progress checklist; it orchestrates the workflow and delegates implementation to commands. Skills answer WHAT to do at the workflow level. Typical size: 50-150 lines.
+2. **Skills (`.claude/skills/<name>/SKILL.md`) — Routers.** Loaded on demand when the trigger condition matches. Each skill is a thin step sequence + progress checklist; it orchestrates the workflow and delegates implementation to commands. Skills answer WHAT to do at the workflow level. Typical size: 50-150 lines.
 
-3. **Commands (`commands/<folder>/<cmd>.md`) — Implementation.** Hold the detail: MCP tool names, parameter shapes, HTML formatting rules, API quirks, error handling. Commands answer HOW each step is executed. Size varies by complexity — some are 8 lines, some are 500.
+3. **Commands (`.claude/commands/<folder>/<cmd>.md`) — Implementation.** Hold the detail: MCP tool names, parameter shapes, HTML formatting rules, API quirks, error handling. Commands answer HOW each step is executed. Size varies by complexity — some are 8 lines, some are 500.
 
 ### Why the layering
 
@@ -149,35 +149,45 @@ Each command markdown file is both documentation and executable instruction. Com
 ### Directory Structure
 
 ```
-commands/
-└── dev-workflow/  # Dev lifecycle: story, plan, implement, PR, review, merge (dw-*)
+.claude/
+├── commands/
+│   ├── dev-workflow/  # Dev lifecycle: story, plan, implement, PR, review, merge (dw-*)
+│   └── qa-workflow/   # Test-doc authoring: plan, cases + their reviews (qw-*)
+├── skills/            # Governance/review skills (auditing-artifacts, auditing-readme)
+└── rules/             # Workflow rules (dev-workflow, qa-workflow)
 docs/
 ├── design/        # Design principles
 ├── integrations/  # MCP server setup guides
-└── references/    # Claude Code command and skill format specs
+├── references/    # Claude Code command and skill format specs
+├── stories/       # User stories (STORY-*)
+└── tests/         # Test-doc format contract (qa-workflow output)
 ```
 
 ### MCP Dependencies
 
-The remaining commands require no MCP servers — the dev-workflow commands use the `gh` CLI. The following MCP integration is configured but no longer used by any command in this repo:
+The commands require no MCP servers — the dev-workflow and qa-workflow commands use the `gh` CLI. The following MCP integration is configured but no longer used by any command in this repo:
 - **playwright-mcp** (microsoft/playwright-mcp) - Browser automation
 
 Additional integrations documented in `docs/integrations/` but not currently used by any command: `wpa-mcp` (WPA supplicant control), `radius-sql` (RADIUS database queries).
 
 ## Adding New Commands
 
-1. Create markdown file in appropriate `commands/` subfolder
+1. Create markdown file in appropriate `.claude/commands/` subfolder
 2. Follow the conventions of sibling commands in the same subfolder. Reference exemplar:
-   - **Task commands** (multi-step workflows with `gh`/MCP calls): `commands/dev-workflow/dw-implement.md` — `## PURPOSE`, `## WORKFLOW` (ASCII tree), `## EXAMPLE`, `## API Notes`
+   - **Task commands** (multi-step workflows with `gh`/MCP calls): `.claude/commands/dev-workflow/dw-implement.md` — `## PURPOSE`, `## WORKFLOW` (ASCII tree), `## EXAMPLE`, `## API Notes`
 3. Tell your AI agent to re-read `CLAUDE.md` and sync the new command
-4. Commit only the source file in `commands/`
+4. Commit only the source file in `.claude/commands/`
 
 ## Skills
 
-Root `skills/` is currently empty — no lifecycle skills are defined in this repo.
+No lifecycle router skills are defined — the workflow logic lives directly in the `dev-workflow` and `qa-workflow` command groups under `.claude/commands/`.
 
 Governance skills live in `.claude/skills/` (`auditing-artifacts`, `auditing-readme`) and are project-local audit helpers rather than lifecycle phases.
 
 ## Key Workflows
 
-The end-to-end QA test workflow (discover → plan → design → manage → execute) is being migrated to a forthcoming `qa-workflow` command group, which is not yet present in the repo. Test-management integration has moved to a separate repo.
+Two workflow products live in `.claude/commands/`:
+- **dev-workflow** (`dw-*`) — turns a need into shipped code: story → plan → implement → PR → merge.
+- **qa-workflow** (`qw-*`) — turns a story into trustworthy test docs in `docs/tests/`: plan → cases, each with its own review pass.
+
+See `.claude/rules/dev-workflow.md` and `.claude/rules/qa-workflow.md` for the flows.

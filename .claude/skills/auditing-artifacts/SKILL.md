@@ -1,7 +1,7 @@
 ---
 name: auditing-artifacts
 description: |
-  Audits this repo's commands/, skills/, and CLAUDE.md on two axes — Format (structural
+  Audits this repo's .claude/commands/, .claude/skills/, and CLAUDE.md on two axes — Format (structural
   correctness) and Purpose (does the artifact deliver its stated goal). Use when the
   user wants to audit, review, or sanity-check the project's commands, skills, or
   CLAUDE.md as a whole.
@@ -12,8 +12,8 @@ disable-model-invocation: true
 
 Two-axis audit across the three artifact types in this repo:
 
-- `commands/**/*.md` — slash command source files
-- `skills/*/SKILL.md` — skill source files
+- `.claude/commands/**/*.md` — slash command source files
+- `.claude/skills/*/SKILL.md` — skill source files
 - `CLAUDE.md` — project root config
 
 This skill is the **top-level sweep** across commands, skills, and CLAUDE.md.
@@ -48,9 +48,9 @@ Parse user input:
 
 | Input | Scope |
 |-------|-------|
-| (no args) | All three: `commands/`, `skills/`, `CLAUDE.md` |
-| `commands` or `commands/<subfolder>` | Commands only (folder or subfolder) |
-| `skills` or `skills/<name>` | Skills only (all or one) |
+| (no args) | All three: `.claude/commands/`, `.claude/skills/`, `CLAUDE.md` |
+| `commands` or `commands/<subfolder>` | Commands only (`.claude/commands/`, folder or subfolder) |
+| `skills` or `skills/<name>` | Skills only (`.claude/skills/`, all or one) |
 | `claude.md` | CLAUDE.md only |
 | `--fix` | After report, apply fixes with user confirmation |
 
@@ -58,8 +58,8 @@ Parse user input:
 
 Use `Glob` for each in-scope target:
 
-- Commands: `commands/**/*.md`
-- Skills: `skills/*/SKILL.md`
+- Commands: `.claude/commands/**/*.md`
+- Skills: `.claude/skills/*/SKILL.md`
 - Root: `CLAUDE.md`
 
 Announce the count before reading.
@@ -68,17 +68,17 @@ Announce the count before reading.
 
 Apply the checklist for each artifact type.
 
-#### Commands (`commands/**/*.md`)
+#### Commands (`.claude/commands/**/*.md`)
 
 - [ ] File name matches `prefix-name.md` convention (lowercase, hyphenated)
-- [ ] File lives in the correct subfolder for its prefix (e.g., `dw-*` in `commands/dev-workflow/`)
+- [ ] File lives in the correct subfolder for its prefix (e.g., `dw-*` in `.claude/commands/dev-workflow/`)
 - [ ] Has a top-level `# Heading` (command name / title)
 - [ ] Under 500 lines (official Claude Code limit)
 - [ ] Markdown is well-formed (no broken tables, unclosed code fences, dangling links)
 - [ ] Cross-references to other commands use `/prefix-name` and the target exists
 - [ ] No private identifiers leaked (real ticket IDs, page IDs, project names — see CLAUDE.md "Information Leak Check")
 
-#### Skills (`skills/*/SKILL.md`)
+#### Skills (`.claude/skills/*/SKILL.md`)
 
 - [ ] File is named exactly `SKILL.md`
 - [ ] Folder name matches `name:` in frontmatter
@@ -93,9 +93,9 @@ Apply the checklist for each artifact type.
 
 - [ ] Has `## Project Overview` and `## Architecture` (or equivalent)
 - [ ] `## Skills` table is present (when the project ships skills)
-- [ ] Directory Structure block reflects the actual `commands/` and `skills/` layout
-- [ ] Skills table entries match `skills/*/` folders (no orphans, no missing)
-- [ ] Command subfolders listed match `commands/*/` folders
+- [ ] Directory Structure block reflects the actual `.claude/commands/` and `.claude/skills/` layout
+- [ ] Skills table entries match `.claude/skills/*/` folders (no orphans, no missing)
+- [ ] Command subfolders listed match `.claude/commands/*/` folders
 - [ ] MCP dependencies section lists each MCP server referenced in commands
 
 Score Format per artifact: **Pass** (all applicable checks satisfied), **Partial** (minor gaps), **Fail** (key checks missing).
@@ -121,8 +121,8 @@ Score Purpose per artifact: **Pass** (all four sub-checks satisfied), **Partial*
 
 Run these even when scope is narrower than all-three, if CLAUDE.md is in scope or all three are in scope:
 
-1. **Skills drift** — every row in CLAUDE.md's Skills table has a matching `skills/<name>/SKILL.md`, and vice versa.
-2. **Command folder drift** — every subfolder listed in the Directory Structure block exists in `commands/`, and every actual subfolder appears in the block.
+1. **Skills drift** — every row in CLAUDE.md's Skills table has a matching `.claude/skills/<name>/SKILL.md`, and vice versa.
+2. **Command folder drift** — every subfolder listed in the Directory Structure block exists in `.claude/commands/`, and every actual subfolder appears in the block.
 3. **Orphan references** — search CLAUDE.md for `/cmd-name` patterns; confirm each resolves to an existing command file.
 4. **MCP references** — every MCP server name appearing in command bodies appears in CLAUDE.md's MCP Dependencies section.
 
@@ -144,16 +144,16 @@ Use this format:
 
 | Artifact | Format | Purpose | Critical | Major | Minor |
 |----------|--------|---------|----------|-------|-------|
-| commands/dev-workflow/dw-story.md | ✓ | ~ | 0 | 1 | 2 |
-| commands/dev-workflow/dw-plan.md | ~ | ✓ | 0 | 1 | 0 |
+| .claude/commands/dev-workflow/dw-story.md | ✓ | ~ | 0 | 1 | 2 |
+| .claude/commands/dev-workflow/dw-plan.md | ~ | ✓ | 0 | 1 | 0 |
 | CLAUDE.md | ✓ | ✓ | 0 | 0 | 1 |
 
 Legend: ✓ Pass · ~ Partial · ✗ Fail · — N/A
 
 ## Cross-Cutting Findings
 
-- <e.g., "CLAUDE.md Module Groups lists `dw-tasks` but `commands/dev-workflow/dw-tasks.md` is missing">
-- <e.g., "`commands/dev-workflow/dw-foo.md` references `/dw-bar` which does not exist">
+- <e.g., "CLAUDE.md Module Groups lists `dw-tasks` but `.claude/commands/dev-workflow/dw-tasks.md` is missing">
+- <e.g., "`.claude/commands/dev-workflow/dw-foo.md` references `/dw-bar` which does not exist">
 
 ## Issues by Severity
 
@@ -191,8 +191,8 @@ Severity rubric:
 ## Expected Input
 
 - `(no args)` → audit all three artifact types
-- `commands` | `commands/<subfolder>` → commands only
-- `skills` | `skills/<name>` → skills only
+- `commands` | `commands/<subfolder>` → commands only (`.claude/commands/`)
+- `skills` | `skills/<name>` → skills only (`.claude/skills/`)
 - `claude.md` → CLAUDE.md only
 - Append `--fix` to any of the above to apply fixes after the report
 
