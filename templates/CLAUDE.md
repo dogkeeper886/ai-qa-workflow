@@ -8,4 +8,4 @@ This section provides AI coding agents with command guidance.
 
 **Dev Workflow (dw-*):** `/dw-story`, `/dw-plan`, `/dw-tasks`, `/dw-implement`, `/dw-test-design`, `/dw-create-pr`, `/dw-review-pr`, `/dw-merge`
 
-**Utility (home tier, `~/.claude/commands/`):** `/evolve`, `/session-summary`, `/compare`, `/sync`, `/review-install`
+**Utility (home tier, `~/.claude/commands/`):** `/evolve`, `/session-summary`

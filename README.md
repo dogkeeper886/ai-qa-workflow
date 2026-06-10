@@ -57,7 +57,7 @@ The agent will:
 
 ### Updating
 
-Same flow — tell your agent to re-read `CLAUDE.md`. It compares, detects changes, and syncs updates. Use `/compare` to preview drift before syncing.
+Same flow — tell your agent to re-read `CLAUDE.md`. It compares, detects changes, and syncs updates.
 
 ## Two-Tier Architecture
 
@@ -69,19 +69,11 @@ Commands are organized in two tiers to reduce maintenance across multiple projec
 | **Project** | `.claude/commands/`, `.claude/skills/` | One project | Commands needing project-specific MCP servers or paths |
 
 **Home tier** — install once, use everywhere:
-- Utility: `evolve`, `session-summary`, `compare`, `sync`, `review-install`
+- Utility: `evolve`, `session-summary`
 - Dev Workflow: `dw-story`, `dw-plan`, `dw-implement`, `dw-create-pr`, `dw-review-pr`, `dw-merge`
 
 **Project tier** — install per project as needed:
 - Governance skills (`auditing-artifacts`, `auditing-readme`)
-
-### Maintenance Tools
-
-| Command | Purpose |
-|---------|---------|
-| `/review-install` | Audit your setup — catches duplicates, misplacements, and drift |
-| `/compare` | Detect what's out of sync between source repo and installed commands |
-| `/sync` | Push updates from source to target |
 
 ## Test Lifecycle
 
@@ -139,9 +131,9 @@ Issue-driven development lifecycle: plan issues, implement on branches, open PRs
 `dw-story` · `dw-plan` · `dw-tasks` · `dw-implement` · `dw-test-design` · `dw-create-pr` · `dw-review-pr` · `dw-merge`
 
 ### Utility Commands (home tier)
-Self-improvement, cross-repo sync, and installation auditing. These live at the home tier (`~/.claude/commands/`), not in this repo.
+Self-improvement and session recording. These live at the home tier (`~/.claude/commands/`), not in this repo.
 
-`evolve` · `session-summary` · `compare` · `sync` · `review-install`
+`evolve` · `session-summary`
 
 ## Documentation
 
@@ -204,7 +196,7 @@ ai-qa-workflow/
 
 ### Updating Commands
 
-Pull the latest changes, then tell your AI agent to re-read `CLAUDE.md` — it will compare and sync updates automatically. Use `/review-install` to audit across projects.
+Pull the latest changes, then tell your AI agent to re-read `CLAUDE.md` — it will compare and sync updates automatically.
 
 ## License
 

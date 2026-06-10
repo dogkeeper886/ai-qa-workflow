@@ -60,7 +60,7 @@ All commands must return **no results**. Examples must use only generic placehol
 
 ## Installation
 
-Installation is agent-driven. When an AI agent reads this file, it should guide the user through installing commands and skills using the compare/sync protocol.
+Installation is agent-driven. When an AI agent reads this file, it should guide the user through installing commands and skills — comparing the source against what's already installed and copying only the differences.
 
 ### Agent Installation Flow
 
@@ -73,7 +73,7 @@ Installation is agent-driven. When an AI agent reads this file, it should guide 
 3. **Ask the user**:
    - Where to install: project folder (`.claude/commands/`) or home folder (`~/.claude/commands/`), or per-module
    - What modules to install: recommend based on context, let user override
-4. **Compare & sync** — Read `~/.claude/commands/compare.md` and `~/.claude/commands/sync.md` for the protocol (the utility commands live at the home tier), then:
+4. **Compare & sync** — For each selected module, compare source against the target and copy only the differences:
    - Compare source (`commands/`) with target for each selected module
    - Classify each file: new / identical / diverged / target-only
    - For key changes: prompt user with explanation before applying
@@ -84,7 +84,7 @@ Installation is agent-driven. When an AI agent reads this file, it should guide 
 
 | Module | Default Target | Reason |
 |--------|---------------|--------|
-| Utility (evolve, session-summary, compare, sync, review-install) | `~/.claude/commands/` | Universal cross-repo tools, used everywhere |
+| Utility (evolve, session-summary) | `~/.claude/commands/` | Universal, useful in any project |
 | Dev Workflow (dw-*) | `~/.claude/commands/` | Generic dev lifecycle |
 | Skills | `.claude/skills/` | Project-specific, governance/review |
 
@@ -101,25 +101,15 @@ Commands and skills are organized in two tiers to reduce maintenance across mult
 
 **Same-name conflict:** Home level wins. A project-level command with the same name as a home command is shadowed (unreachable) and should be removed.
 
-**Audit:** Run `/review-install` to detect duplicates, misplacements, and drift between home, project, and this source repo.
-
 ### First-Time Home Setup
 
 When adopting ai-qa-workflow across multiple projects for the first time:
 
 1. **Create `~/.claude/CLAUDE.md`** — Define your identity (roles, project types), universal git workflow rules, information leak prevention rules, and the command hierarchy (what's at home vs project level)
 2. **Install home-level commands** — Install the universal commands at `~/.claude/commands/`:
-   - Utility (home tier): evolve, session-summary, compare, sync, review-install
+   - Utility (home tier): evolve, session-summary
    - `commands/dev-workflow/` → dw-story, dw-plan, dw-tasks, dw-implement, dw-test-design, dw-create-pr, dw-review-pr, dw-merge
-3. **Audit all projects** — Run `/review-install all` to scan every project for duplicates, misplacements, and drift
-4. **Clean up duplicates** — Run `/review-install --fix` per project to remove commands shadowed by home level
-5. **Update project CLAUDE.md files** — Remove references to deleted commands, update counts and listings
-
-### Ongoing Maintenance
-
-- **After updating a command in ai-qa-workflow:** copy it to `~/.claude/commands/` and run `/review-install all` to check for drift
-- **After adding a new project:** run `/review-install` in that project to verify no duplicates
-- **Periodic audit:** run `/review-install all` quarterly to catch drift and info leaks
+3. **Update project CLAUDE.md files** — Remove references to deleted commands, update counts and listings
 
 ### Updates
 
