@@ -41,4 +41,4 @@ loosely related groups.
 
 - Created: 2026-06-09
 - Plan: #57
-- Issues: ✅ #58 (merged, PR #64), ✅ #59 (merged, PR #65), #61 (PR #67 open), #62 (PR #67 open), #63 — #60 folded into #58
+- Issues: ✅ #58 (merged, PR #64), ✅ #59 (merged, PR #65), ✅ #61 (merged, PR #67), ✅ #62 (merged, PR #67), #63 — #60 folded into #58
