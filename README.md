@@ -1,6 +1,6 @@
 # AI QA Workflow
 
-A toolkit of slash commands for AI coding agents, covering a GitHub-driven development lifecycle plus project and utility commands.
+A toolkit of slash commands for AI coding agents, covering a GitHub-driven development lifecycle.
 
 ## Project Goal
 
@@ -69,11 +69,11 @@ Commands are organized in two tiers to reduce maintenance across multiple projec
 | **Project** | `.claude/commands/`, `.claude/skills/` | One project | Commands needing project-specific MCP servers or paths |
 
 **Home tier** — install once, use everywhere:
-- Utility: `rewrite-text`, `evolve`, `session-summary`, `compare`, `sync`, `command-review`, `review-install`, `robot-log-analyzer`
+- Utility: `evolve`, `session-summary`, `compare`, `sync`, `review-install`
 - Dev Workflow: `dw-story`, `dw-plan`, `dw-implement`, `dw-create-pr`, `dw-review-pr`, `dw-merge`
 
 **Project tier** — install per project as needed:
-- Project (`pm-*`)
+- Governance skills (`auditing-artifacts`, `auditing-readme`)
 
 ### Maintenance Tools
 
@@ -138,15 +138,10 @@ Issue-driven development lifecycle: plan issues, implement on branches, open PRs
 
 `dw-story` · `dw-plan` · `dw-tasks` · `dw-implement` · `dw-test-design` · `dw-create-pr` · `dw-review-pr` · `dw-merge`
 
-### [Project Commands (pm-*)](commands/project/)
-Cross-cutting project management: bug reports, scrum tasks, meeting invites, demo materials, and script review.
+### Utility Commands (home tier)
+Self-improvement, cross-repo sync, and installation auditing. These live at the home tier (`~/.claude/commands/`), not in this repo.
 
-`pm-init` · `pm-bug-report` · `pm-meeting-invite` · `pm-demo-content` · `pm-demo-review` · `pm-demo-ppt` · `pm-demo-email` · `pm-script-review`
-
-### [Utility Commands](commands/utility/)
-Text rewriting, log analysis, self-improvement, cross-repo sync, installation auditing, and command quality review.
-
-`rewrite-text` · `robot-log-analyzer` · `evolve` · `session-summary` · `command-review` · `compare` · `sync` · `review-install`
+`evolve` · `session-summary` · `compare` · `sync` · `review-install`
 
 ## Documentation
 
@@ -182,9 +177,7 @@ Text rewriting, log analysis, self-improvement, cross-repo sync, installation au
 ```
 ai-qa-workflow/
 ├── commands/
-│   ├── dev-workflow/   # Dev lifecycle commands (dw-*)
-│   ├── project/        # Project management commands (pm-*)
-│   └── utility/        # Utility commands
+│   └── dev-workflow/   # Dev lifecycle commands (dw-*)
 ├── templates/          # Sample CLAUDE.md for projects adopting this workflow
 ├── docs/
 │   ├── design/         # Design principles and patterns
