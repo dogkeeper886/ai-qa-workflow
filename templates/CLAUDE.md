@@ -6,6 +6,6 @@ This section provides AI coding agents with command guidance.
 
 ### Available Commands
 
-**Dev Workflow (dw-*):** `/dw-story`, `/dw-plan`, `/dw-tasks`, `/dw-implement`, `/dw-test-design`, `/dw-create-pr`, `/dw-review-pr`, `/dw-merge`
+**Dev Workflow (dw-*):** `/dw-story`, `/dw-plan`, `/dw-tasks`, `/dw-implement`, `/dw-test-design`, `/dw-create-pr`, `/dw-merge`
 
 **Utility (home tier, `~/.claude/commands/`):** `/evolve`, `/session-summary`
