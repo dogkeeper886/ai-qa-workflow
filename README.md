@@ -1,16 +1,15 @@
-# AI QA Workflow
+# agent-workflows
 
-A toolkit of slash commands for AI coding agents: a GitHub-driven development lifecycle (**dev-workflow**) and test-doc authoring (**qa-workflow**), both in `.claude/commands/`.
+Slash commands that make an AI coding agent follow an **exact, documented order** — driven by GitHub issues and a repo's file structure. Two workflows live in `.claude/commands/`:
 
-## Project Goal
+- **dev-workflow** (`dw-*`) — turn a need into shipped work through an ordered lifecycle: story → plan → tasks → implement → PR → merge. Each step is paired with a review; nothing skips ahead. The lifecycle is general — it disciplines any ordered action, not just code.
+- **qa-workflow** (`qw-*`) — author test **docs** kept *separate* from the test scripts, each mapped to the story it verifies (test ↔ script ↔ story). Splitting the doc from the script means coverage isn't silently lost as the code changes across cycles.
 
-Enable **issue-driven development** where every change flows from a GitHub issue through implementation, PR, review, and merge. AI coding agents:
+## Why two workflows
 
-1. **Plan** work as GitHub issues
-2. **Implement** on feature branches with story-aware context
-3. **Ship** through PRs with automated review and merge
+**dev-workflow is the discipline.** An agent that follows the order instead of improvising. Every change flows from a GitHub issue through implementation, review, PR, and merge — the issue is the single source of truth, and each producer (`dw-story`, `dw-plan`, `dw-tasks`, `dw-implement`) is paired with a review so nothing ships ungated.
 
-> **Note:** This repo now ships two products — **dev-workflow** (the issue-driven lifecycle below) and **qa-workflow** (test-doc authoring, `qw-*`). Binding test docs to a runner and executing them is the consuming project's own layer.
+**qa-workflow is the anti-drift layer.** A test is a markdown **doc** (what to verify, mapped to a story); the **script** that runs it lives in the runner repo. The doc records a `story` + `story_hash`, so when the story changes the hash no longer matches and the test is flagged stale — drift is caught instead of quietly accumulating. Authoring is self-contained (markdown + GitHub); executing the scripts is the runner's job — see the [agent-* family](#the-agent-family) below.
 
 ## Notable Features
 
@@ -49,7 +48,7 @@ The agent will:
 **Activate:**
 
 1. Restart your IDE to load new commands
-2. Configure MCP integrations (see [docs/integrations/](docs/integrations/))
+2. (Optional) Wire up MCP servers to extend what your agents can do (see [docs/integrations/](docs/integrations/))
 
 **What's now available:**
 
@@ -142,17 +141,23 @@ Self-improvement and session recording. These live at the home tier (`~/.claude/
 
 ## Documentation
 
-### Integrations
+### Optional MCP servers
 
-**Optional** — documented but not currently called by any command:
+The workflows themselves need no MCP servers — they run on the `gh` CLI. These are **optional**: wire any of them up to extend what your agents can *do* (drive a browser, control WiFi, query a database, work a Jira ticket). The first three ship a full config cheat-sheet; the rest link to their own repos for setup.
 
-- [MCP Playwright](docs/integrations/mcp-playwright.md) - Browser automation
-- [MCP WPA](docs/integrations/mcp-wpa.md) - WPA supplicant control
-- [MCP RADIUS SQL](docs/integrations/mcp-radius-sql.md) - RADIUS database queries
+| Server | Wire an agent to… | Setup |
+|--------|-------------------|-------|
+| **Playwright** | drive a browser for end-to-end web testing | [cheat-sheet](docs/integrations/mcp-playwright.md) |
+| **wpa-mcp** | control WiFi via `wpa_supplicant` | [cheat-sheet](docs/integrations/mcp-wpa.md) |
+| **RADIUS SQL** | query RADIUS auth/accounting records | [cheat-sheet](docs/integrations/mcp-radius-sql.md) |
+| **ai-qa-step-graph** | reuse test steps semantically from a pgvector step-store | [repo](https://github.com/dogkeeper886/ai-qa-step-graph) |
+| **android-wifi-mcp** | control WiFi on Android devices via ADB | [repo](https://github.com/dogkeeper886/android-wifi-mcp) |
+| **testlink-mcp** | read/write cases in [TestLink](https://github.com/dogkeeper886/testlink-code) | [repo](https://github.com/dogkeeper886/testlink-mcp) |
+| **Atlassian Rovo MCP** | work Jira / Confluence from the agent | [docs](https://www.atlassian.com/platform/remote-mcp-server) |
 
-**Related framework:**
+### Related framework
 
-- [Test Framework Template](docs/integrations/test-framework-template.md) - Dual-judge execution
+- [Test Framework Template](docs/integrations/test-framework-template.md) — dual-judge execution; the runner that executes qa-workflow's test scripts
 
 ### Design
 
@@ -163,14 +168,22 @@ Self-improvement and session recording. These live at the home tier (`~/.claude/
 - [Command Format](docs/references/command-format.md) - Slash command format specification
 - [Skill Format](docs/references/skill-format.md) - Skill directory and SKILL.md format
 
-## Related Projects
+## The agent family
 
-This repo is **`agent-workflows`**, part of the `agent-*` family:
+This repo is the **`agent-workflows`** layer — the commands and the test docs they author. Two sibling repos complete the picture:
 
-| Project | Role | Repository |
-|---------|------|------------|
-| **agent-workflows-runner** | Executes the test scripts the qa-workflow docs map to (rename planned) | [dogkeeper886/test-framework-template](https://github.com/dogkeeper886/test-framework-template) |
-| **agent-studio** | Product layer over the workflows + runner (rename planned) | currently `ai-qa-studio` |
+```
+agent-workflows   →   agent-workflows-runner   →   agent-studio
+ (this repo)            (executes the scripts)        (product layer)
+ commands +             the qa-workflow docs          over the workflows
+ test docs              map test → script             + runner
+```
+
+| Repo | Role | Status |
+|------|------|--------|
+| **agent-workflows** (this repo) | dev-workflow + qa-workflow commands and the test docs they author | — |
+| **agent-workflows-runner** | executes the test scripts the qa-workflow docs map to | rename planned ([test-framework-template](https://github.com/dogkeeper886/test-framework-template)) |
+| **agent-studio** | product layer over the workflows + runner | rename planned (currently `ai-qa-studio`) |
 
 ## Project Structure
 

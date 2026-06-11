@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI QA Workflow provides two slash-command products for AI coding agents, both living in `.claude/commands/`: **dev-workflow** (a GitHub-driven development lifecycle) and **qa-workflow** (test-doc authoring).
+agent-workflows provides two slash-command products for AI coding agents, both living in `.claude/commands/`: **dev-workflow** (a GitHub-driven development lifecycle) and **qa-workflow** (test-doc authoring).
 
 ## Git Workflow
 
@@ -162,12 +162,9 @@ docs/
 └── tests/         # Test-doc format contract (qa-workflow output)
 ```
 
-### MCP Dependencies
+### MCP servers (optional)
 
-The commands require no MCP servers — the dev-workflow and qa-workflow commands use the `gh` CLI. The following MCP integration is configured but no longer used by any command in this repo:
-- **playwright-mcp** (microsoft/playwright-mcp) - Browser automation
-
-Additional integrations documented in `docs/integrations/` but not currently used by any command: `wpa-mcp` (WPA supplicant control), `radius-sql` (RADIUS database queries).
+The commands require no MCP servers — dev-workflow and qa-workflow run on the `gh` CLI. MCP servers are **optional**: wire any up to extend what an agent can *do* (browser, WiFi, RADIUS, TestLink, Jira/Confluence). See [`docs/integrations/`](docs/integrations/) for the list and setup.
 
 ## Adding New Commands
 

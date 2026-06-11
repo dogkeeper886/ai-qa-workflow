@@ -1,4 +1,4 @@
-## AI QA Workflow
+## agent-workflows
 
 This section provides AI coding agents with command guidance.
 

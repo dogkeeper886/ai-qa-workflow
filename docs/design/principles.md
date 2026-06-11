@@ -1,4 +1,4 @@
-# AI QA Workflow Agent - Design Guidelines
+# agent-workflows — Design Guidelines
 
 ## Core Design Principles
 
