@@ -152,7 +152,7 @@ Each command markdown file is both documentation and executable instruction. Com
 ├── commands/
 │   ├── dev-workflow/  # Dev lifecycle: story, plan, implement, PR, review, merge (dw-*)
 │   └── qa-workflow/   # Test-doc authoring: plan, cases + their reviews (qw-*)
-├── skills/            # Governance/review skills (auditing-artifacts, auditing-readme)
+├── skills/            # Review skills (reviewing-artifacts, reviewing-phrasing, reviewing-typography)
 └── rules/             # Workflow rules (dev-workflow, qa-workflow)
 docs/
 ├── design/        # Design principles
@@ -178,7 +178,11 @@ The commands require no MCP servers — dev-workflow and qa-workflow run on the 
 
 No lifecycle router skills are defined — the workflow logic lives directly in the `dev-workflow` and `qa-workflow` command groups under `.claude/commands/`.
 
-Governance skills live in `.claude/skills/` (`auditing-artifacts`, `auditing-readme`) and are project-local audit helpers rather than lifecycle phases.
+Review skills live in `.claude/skills/` and are project-local helpers rather than lifecycle phases. They review by judgment ("floor, not ceiling"), not by scored checklist:
+
+- `reviewing-artifacts` — judges whether any workflow artifact (command, skill, README, story, CLAUDE.md) does its job, via five goal questions plus a producer→review pairing pass.
+- `reviewing-phrasing` — the *words* of a human-read doc (README, `docs/` prose): leads with the point, brief, right tone, true and complete.
+- `reviewing-typography` — the *look* of a human-read doc: hierarchy, grouping, restraint, no walls of text.
 
 ## Key Workflows
 

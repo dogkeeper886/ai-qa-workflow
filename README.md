@@ -73,7 +73,7 @@ Commands are organized in two tiers to reduce maintenance across multiple projec
 - QA Workflow: `qw-plan`, `qw-review-plan`, `qw-cases`, `qw-review-cases`
 
 **Project tier** — install per project as needed:
-- Governance skills (`auditing-artifacts`, `auditing-readme`)
+- Review skills (`reviewing-artifacts`, `reviewing-phrasing`, `reviewing-typography`)
 
 ## Test Lifecycle
 
@@ -83,7 +83,7 @@ The **qa-workflow** commands (`qw-*`) turn a story into trustworthy test docs in
 
 No lifecycle router skills are defined — the workflow logic lives in the `dev-workflow` and `qa-workflow` command groups under `.claude/commands/`.
 
-Governance skills (`auditing-artifacts`, `auditing-readme`) live in `.claude/skills/` as project-local audit helpers.
+Review skills (`reviewing-artifacts`, `reviewing-phrasing`, `reviewing-typography`) live in `.claude/skills/` as project-local helpers. They review by judgment, not a scored checklist: `reviewing-artifacts` judges whether any workflow artifact does its job, while `reviewing-phrasing` and `reviewing-typography` cover the words and the look of human-read docs.
 
 ## Issue-Driven Development
 
