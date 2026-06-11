@@ -29,7 +29,7 @@ docs/tests/
 ---
 id: TS-01                       # scenario id, unique within the namespace
 title: Login succeeds with valid credentials
-namespace: ai-qa-workflow       # which repo/tenant this test belongs to
+namespace: agent-workflows      # which repo/tenant this test belongs to
 story: STORY-003                # the need this scenario verifies (→ docs/stories/STORY-003.md)
 story_hash: 7474d8b6…           # sha256 of the linked story file at last sync (drift anchor)
 plan: 28                        # the [STORY-XXX] Test Plan issue it was authored from (qw-cases sets it)

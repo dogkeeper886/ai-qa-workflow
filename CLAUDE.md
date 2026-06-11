@@ -102,7 +102,7 @@ Commands and skills are organized in two tiers to reduce maintenance across mult
 
 ### First-Time Home Setup
 
-When adopting ai-qa-workflow across multiple projects for the first time:
+When adopting agent-workflows across multiple projects for the first time:
 
 1. **Create `~/.claude/CLAUDE.md`** — Define your identity (roles, project types), universal git workflow rules, information leak prevention rules, and the command hierarchy (what's at home vs project level)
 2. **Install home-level commands** — Install the universal commands at `~/.claude/commands/`:

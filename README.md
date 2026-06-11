@@ -31,12 +31,12 @@ Enable **issue-driven development** where every change flows from a GitHub issue
 Installation is agent-driven — no installer script, no build step. Your AI agent reads `CLAUDE.md` and does the work.
 
 ```
-git clone https://github.com/dogkeeper886/ai-qa-workflow
+git clone https://github.com/dogkeeper886/agent-workflows
 ```
 
 Then tell your AI agent:
 
-> "Read /path/to/ai-qa-workflow/CLAUDE.md and install the commands I need"
+> "Read /path/to/agent-workflows/CLAUDE.md and install the commands I need"
 
 The agent will:
 1. Detect your project context and configured MCP servers
@@ -165,14 +165,17 @@ Self-improvement and session recording. These live at the home tier (`~/.claude/
 
 ## Related Projects
 
-| Project | Purpose | Repository |
-|---------|---------|------------|
-| **Test Framework Template** | Dual-judge test execution | [dogkeeper886/test-framework-template](https://github.com/dogkeeper886/test-framework-template) |
+This repo is **`agent-workflows`**, part of the `agent-*` family:
+
+| Project | Role | Repository |
+|---------|------|------------|
+| **agent-workflows-runner** | Executes the test scripts the qa-workflow docs map to (rename planned) | [dogkeeper886/test-framework-template](https://github.com/dogkeeper886/test-framework-template) |
+| **agent-studio** | Product layer over the workflows + runner (rename planned) | currently `ai-qa-studio` |
 
 ## Project Structure
 
 ```
-ai-qa-workflow/
+agent-workflows/
 ├── .claude/
 │   ├── commands/
 │   │   ├── dev-workflow/   # Dev lifecycle commands (dw-*)
