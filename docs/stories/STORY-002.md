@@ -42,5 +42,7 @@ A consistent `agent-*` family name (`agent-workflows`, `agent-workflows-runner`,
 ## Status
 
 - Created: 2026-06-11
+- Completed: 2026-06-11
 - Plan: #71
-- Issues: #72, #73, #74
+- Issues: #72, #73, #74 (all merged/closed)
+- Follow-ups: #77 (stale template content), #78 (runner reference sweep)
