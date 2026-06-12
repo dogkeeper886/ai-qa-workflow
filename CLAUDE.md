@@ -1,193 +1,119 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
-## Project Overview
+**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
-agent-workflows provides two slash-command products for AI coding agents, both living in `.claude/commands/`: **dev-workflow** (a GitHub-driven development lifecycle) and **qa-workflow** (test-doc authoring).
+## 1. Think Before Coding
 
-## Git Workflow
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
 
-- Default: open PR for review before merging
-- PRs require review approval before merging
-- Delete the feature branch after merging
+Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them - don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
 
-### Direct Push to Main
+## 2. Simplicity First
 
-Trivial, low-risk changes may be committed and pushed directly to main without a PR:
-- Docs-only changes (adding/editing markdown, no code)
-- Typo or formatting fixes
-- CLAUDE.md or config-only updates
+**Minimum code that solves the problem. Nothing speculative.**
 
-Everything else (code changes, new commands/skills, refactors) requires a feature branch and PR.
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
 
-### Branch Naming
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
-- General work: `feature/<description>` (e.g. `feature/add-sync-commands`)
-- Issue-based work: `issue-<N>-<slug>` (e.g. `issue-27-release-notes`)
+## 3. Surgical Changes
 
-### PR Conventions
+**Touch only what you must. Clean up only your own mess.**
 
-- Title: short, imperative, under 70 characters
-- Body: include `Fixes #N` or `Closes #N` to auto-close the linked issue
-- Body: include `## Summary` (1-3 bullet points) and `## Test plan` sections
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it - don't delete it.
 
-### Dev Workflow Commands
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
 
-For structured issue-driven development, use the `dw-*` commands:
-1. `/dw-story` — Create structured user story from requirements
-2. `/dw-plan` — Break request into GitHub issues with labels
-3. `/dw-tasks` — Break an existing story file into GitHub issues
-4. `/dw-implement` — Pick up issue, create branch, implement (story-aware)
-5. `/dw-test-design` — Design tests for the implementation (detects project test infra)
-6. `/dw-create-pr` — Push and open PR with issue linkage (story-aware)
-7. `/dw-merge` — Merge PR and clean up (story-aware)
+The test: Every changed line should trace directly to the user's request.
 
-## Information Leak Check
+## 4. Goal-Driven Execution
 
-This is an open-source repository. Before committing, verify no private identifiers remain in `.claude/commands/`:
+**Define success criteria. Loop until verified.**
 
-All commands must return **no results**. Examples must use only generic placeholders:
+Transform tasks into verifiable goals:
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
 
-| Type | Allowed Pattern | Example |
-|------|----------------|---------|
-| Jira ticket | `PROJ-NNNNN` | `PROJ-12345` |
-| Feature request | `FR-NNNN` | `FR-1234` |
-| Confluence page ID | Generic digits | `123456789` |
-| Project name | `User Session Management` / `USM` | |
-| Product name | `Cloud management platform` | |
-
-## Installation
-
-Installation is agent-driven. When an AI agent reads this file, it should guide the user through installing commands and skills — comparing the source against what's already installed and copying only the differences.
-
-### Agent Installation Flow
-
-1. **Orient** — Read this CLAUDE.md to understand available modules (see Directory Structure and Skills sections)
-2. **Detect context** — Examine the user's current working directory:
-   - Read its CLAUDE.md (if it exists) to understand the project
-   - Check what MCP servers are configured: look in `.claude/settings.local.json`, `mcp.json`, or ask the user
-   - Check what's already installed in `.claude/commands/` and `.claude/skills/` (project and home)
-   - If no project context is detected (e.g., empty directory), ask the user what they're working on
-3. **Ask the user**:
-   - Where to install: project folder (`.claude/commands/`) or home folder (`~/.claude/commands/`), or per-module
-   - What modules to install: recommend based on context, let user override
-4. **Compare & sync** — For each selected module, compare source against the target and copy only the differences:
-   - Compare source (`.claude/commands/`) with target for each selected module
-   - Classify each file: new / identical / diverged / target-only
-   - For key changes: prompt user with explanation before applying
-   - Adapt project-specific values when installing into a different repo
-5. **Report** — Save a summary of what was installed, updated, or skipped
-
-### Module Groups
-
-| Module | Default Target | Reason |
-|--------|---------------|--------|
-| Utility (evolve, session-summary) | `~/.claude/commands/` | Universal, useful in any project |
-| Dev Workflow (dw-*) | `~/.claude/commands/` | Generic dev lifecycle |
-| Skills | `.claude/skills/` | Project-specific, governance/review |
-
-### Tier Design
-
-Commands and skills are organized in two tiers to reduce maintenance across multiple projects:
-
-| Tier | Location | Scope | What belongs here |
-|------|----------|-------|-------------------|
-| **Home** | `~/.claude/commands/` | Every project | Universal commands that work without modification in any project |
-| **Project** | `.claude/commands/`, `.claude/skills/` | One project | Commands with project-specific paths, tools, or workflow patterns |
-
-**Decision rule:** If a command references no project-specific paths, tools, or patterns → home level. Otherwise → project level.
-
-**Same-name conflict:** Home level wins. A project-level command with the same name as a home command is shadowed (unreachable) and should be removed.
-
-### First-Time Home Setup
-
-When adopting agent-workflows across multiple projects for the first time:
-
-1. **Create `~/.claude/CLAUDE.md`** — Define your identity (roles, project types), universal git workflow rules, information leak prevention rules, and the command hierarchy (what's at home vs project level)
-2. **Install home-level commands** — Install the universal commands at `~/.claude/commands/`:
-   - Utility (home tier): evolve, session-summary
-   - `.claude/commands/dev-workflow/` → dw-story, dw-plan, dw-tasks, dw-implement, dw-test-design, dw-create-pr, dw-merge
-3. **Update project CLAUDE.md files** — Remove references to deleted commands, update counts and listings
-
-### Updates
-
-Updates follow the same flow as installation. The agent re-reads this CLAUDE.md (from the latest repo — local or GitHub), compares with what's installed, and syncs changes. Key or breaking changes should prompt the user and save a report.
-
-## Architecture
-
-### Three-Tier Route: CLAUDE.md → Skills → Commands
-
-The agent navigates this project in three layers. Each layer has a specific job and a specific size.
-
-1. **CLAUDE.md (this file) — Orientation.** Read first. Provides the project overview, directory map, Skills table (when to invoke what), and Key Workflows. The agent reads CLAUDE.md to find the right entry point for the user's intent.
-
-2. **Skills (`.claude/skills/<name>/SKILL.md`) — Routers.** Loaded on demand when the trigger condition matches. Each skill is a thin step sequence + progress checklist; it orchestrates the workflow and delegates implementation to commands. Skills answer WHAT to do at the workflow level. Typical size: 50-150 lines.
-
-3. **Commands (`.claude/commands/<folder>/<cmd>.md`) — Implementation.** Hold the detail: MCP tool names, parameter shapes, HTML formatting rules, API quirks, error handling. Commands answer HOW each step is executed. Size varies by complexity — some are 8 lines, some are 500.
-
-### Why the layering
-
-- **Skills stay lean** because the heavy lifting lives in commands.
-- **Commands can be minimal where the task is LLM-native** (e.g., "summarize this page" needs no instructions beyond the tool name) and rich where it's not (e.g., a `dw-implement` command with branch setup, issue linkage, and `gh` calls).
-- **CLAUDE.md changes once** when adding a new workflow; skills change per orchestration tweak; commands change per integration detail.
-
-### When to write what
-
-| You're adding... | Touch... |
-|------------------|----------|
-| A new top-level workflow / lifecycle phase | CLAUDE.md (Skills table, Key Workflows) + new skill + supporting commands |
-| A new step in an existing workflow | Existing skill (insert step) + new command (the step's detail) |
-| A new way to call an existing integration | New command in the right subfolder; no skill change needed |
-| A reusable convention (rules, format guides) | Reference command (rules/conventions) + cross-references from siblings |
-
-### Command-as-Documentation Pattern
-
-Each command markdown file is both documentation and executable instruction. Commands include: purpose, expected input format, step-by-step processing, MCP call details. Skills are installed to `.claude/skills/`; commands are installed to `.claude/commands/` or `~/.claude/commands/` depending on whether they're project-specific or universal (see [Tier Design](#tier-design)).
-
-### Directory Structure
-
+For multi-step tasks, state a brief plan:
 ```
-.claude/
-├── commands/
-│   ├── dev-workflow/  # Dev lifecycle: story, plan, implement, PR, review, merge (dw-*)
-│   └── qa-workflow/   # Test-doc authoring: plan, cases + their reviews (qw-*)
-├── skills/            # Review skills (reviewing-artifacts, reviewing-phrasing, reviewing-typography)
-└── rules/             # Workflow rules (dev-workflow, qa-workflow)
-docs/
-├── design/        # Design principles
-├── integrations/  # MCP server setup guides
-├── references/    # Claude Code command and skill format specs
-├── stories/       # User stories (STORY-*)
-└── tests/         # Test-doc format contract (qa-workflow output)
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
 ```
 
-### MCP servers (optional)
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
-The commands require no MCP servers — dev-workflow and qa-workflow run on the `gh` CLI. MCP servers are **optional**: wire any up to extend what an agent can *do* (browser, WiFi, RADIUS, TestLink, Jira/Confluence). See [`docs/integrations/`](docs/integrations/) for the list and setup.
+## 5. Dev & QA workflow discipline
 
-## Adding New Commands
+Substantial work flows through a pipeline; each step is a gate that stops for a
+human decision (commands suggest the next, they never auto-run it):
 
-1. Create markdown file in appropriate `.claude/commands/` subfolder
-2. Follow the conventions of sibling commands in the same subfolder. Reference exemplar:
-   - **Task commands** (multi-step workflows with `gh`/MCP calls): `.claude/commands/dev-workflow/dw-implement.md` — `## PURPOSE`, `## WORKFLOW` (ASCII tree), `## EXAMPLE`, `## API Notes`
-3. Tell your AI agent to re-read `CLAUDE.md` and sync the new command
-4. Commit only the source file in `.claude/commands/`
+```
+dw-story → dw-review-story → dw-plan → [human reviews the plan issue]
+        → dw-tasks → dw-review-tasks → dw-implement → dw-review-implement
+        → dw-create-pr → [human review + /review] → dw-merge
+```
 
-## Skills
+The full flow + producer→review pairing lives in `.claude/rules/dev-workflow.md`. Trivial
+work skips the plan: `dw-story → dw-tasks`.
 
-No lifecycle router skills are defined — the workflow logic lives directly in the `dev-workflow` and `qa-workflow` command groups under `.claude/commands/`.
+**qa-workflow** is the sibling pipeline — same gated discipline, turning a story into
+trustworthy test docs:
 
-Review skills live in `.claude/skills/` and are project-local helpers rather than lifecycle phases. They review by judgment ("floor, not ceiling"), not by scored checklist:
+```
+qw-plan → qw-review-plan → qw-cases → qw-review-cases
+```
 
-- `reviewing-artifacts` — judges whether any workflow artifact (command, skill, README, story, CLAUDE.md) does its job, via five goal questions plus a producer→review pairing pass.
-- `reviewing-phrasing` — the *words* of a human-read doc (README, `docs/` prose): leads with the point, brief, right tone, true and complete.
-- `reviewing-typography` — the *look* of a human-read doc: hierarchy, grouping, restraint, no walls of text.
+The full flow + pairing lives in `.claude/rules/qa-workflow.md`.
 
-## Key Workflows
+Two review gates are external skills this toolkit does not own — invoke them by hand:
+- `code-review` (bundled): adversarial diff review. Run after `dw-implement`,
+  alongside `dw-review-implement`. Earns its cost on logic/risk; skip for pure docs.
+- `/review` (builtin): PR overview. Run after `dw-create-pr`, before `dw-merge`.
 
-Two workflow products live in `.claude/commands/`:
-- **dev-workflow** (`dw-*`) — turns a need into shipped code: story → plan → implement → PR → merge.
-- **qa-workflow** (`qw-*`) — turns a story into trustworthy test docs in `docs/tests/`: plan → cases, each with its own review pass.
+Don't wire these into the `dw-*` commands — they may not exist in every install,
+and a command that references a missing skill is a dangling pointer.
 
-See `.claude/rules/dev-workflow.md` and `.claude/rules/qa-workflow.md` for the flows.
+**Right-size it.** A typo or a one-line doc change does not need the full chain —
+use judgment; branch + PR + merge is enough. The three review passes overlap:
+`dw-review-implement` is the always-on substance gate, `code-review` is for real
+logic or risk, `/review` is the PR summary. Running all three on a trivial diff is
+ritual, not rigor.
+
+## 6. Artifact & doc review discipline
+
+Match the reviewer to **who reads** the file you changed:
+
+- **Human-read docs** (README, `docs/` prose): run `reviewing-phrasing` (the words)
+  + `reviewing-typography` (the look) — the human-read doc review.
+- **Agent-read tooling** (commands, skills, CLAUDE.md, rules): run
+  `reviewing-artifacts` (does it do its job — one job, complete, goal-not-spec,
+  fits the project, right for its reader).
+
+These are skills this project owns. Like the dev-workflow gates, they stop for a human
+and never auto-run — invoke them by hand.
+
+**Right-size it.** A typo or a one-line tweak does not need a review pass — use
+judgment. Reach for these when a change is substantial enough that the look, the
+wording, or the artifact's fitness actually matters.
+
+---
+
+**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
