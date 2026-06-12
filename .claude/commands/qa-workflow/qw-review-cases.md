@@ -42,7 +42,7 @@ Fits in the qa-workflow:
 
 ## API Notes
 
-- This reviews the *doc* (intent); `/qw-review-bind` reviews the doc↔script binding.
+- This reviews the *doc* (intent); the doc↔script binding is reviewed in the project's binding + run layer, not here.
 - Published-deliverable phrasing/typography is out of scope here.
 - Review paired with the producer `/qw-cases`.
 ```
