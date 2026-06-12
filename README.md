@@ -80,7 +80,7 @@ The full qa lifecycle spans two repos — this repo authors the docs; the runner
 
 Issue-driven lifecycle: capture, plan, implement, review, ship.
 
-`dw-story` · `dw-review-story` · `dw-plan` · `dw-tasks` · `dw-review-tasks` · `dw-implement` · `dw-review-implement` · `dw-test-design` · `dw-create-pr` · `dw-merge`
+`dw-story` · `dw-review-story` · `dw-plan` · `dw-tasks` · `dw-review-tasks` · `dw-implement` · `dw-review-implement` · `dw-create-pr` · `dw-merge`
 
 ### [QA Workflow (`qw-*`)](.claude/commands/qa-workflow/)
 
