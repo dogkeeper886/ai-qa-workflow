@@ -47,6 +47,7 @@ same ground two different ways.
 
 ## Status
 
+- **Completed: 2026-06-12** — PR #81 merged; `auditing-*` replaced by `reviewing-artifacts` / `reviewing-phrasing` / `reviewing-typography`, all references swept.
 - Created: 2026-06-11
 - Plan: #79
-- Issues: #80
+- Issues: ✅ #80 (merged, PR #81)
