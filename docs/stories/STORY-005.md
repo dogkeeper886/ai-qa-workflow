@@ -102,6 +102,7 @@ machine-readable instead of prose.
 
 ## Status
 
+- **Completed: 2026-06-19** — customization seam shipped: `.claude/rules/project-profile.md` plus all 18 units resolving their project-specific values from it, defaults preserving current behaviour (PRs #92, #93).
 - Created: 2026-06-19
 - Plan: #86
-- Issues: #87, #88, #89, #90, #91
+- Issues: ✅ #87 (PR #92), ✅ #88, ✅ #89, ✅ #90, ✅ #91 (PR #93)
