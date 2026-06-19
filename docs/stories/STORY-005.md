@@ -103,3 +103,5 @@ machine-readable instead of prose.
 ## Status
 
 - Created: 2026-06-19
+- Plan: #86
+- Issues: #87, #88, #89, #90, #91
