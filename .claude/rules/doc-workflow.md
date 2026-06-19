@@ -42,3 +42,10 @@ No producer ships without a review covering its output.
 - **Reuses:** the human-read doc review — `reviewing-phrasing` (the words) and
   `reviewing-typography` (the look). `doc-review-readme` calls them rather than re-judging
   prose itself.
+
+## Project-specific values
+
+The images dir, the diagram policy (SVG source → PNG), and the README output path are
+**not** owned by the `doc-*` commands — they resolve from
+`.claude/rules/project-profile.md`. The values a command shows are the defaults; change
+them in the profile, not the command.

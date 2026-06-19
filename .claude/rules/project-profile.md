@@ -70,6 +70,12 @@ project's choice.
 - story hash: `sha256` of the story file (`sha256sum`)
 - default status: `green`
 
+## Docs & diagrams
+
+- README output: `README.md`
+- diagram policy: SVG source committed + rendered to PNG (no Mermaid / inline diagram blocks)
+- images dir: `docs/images/` (also under Paths)
+
 ## Review semantics
 
 - canonical format (source of truth): `markdown`
