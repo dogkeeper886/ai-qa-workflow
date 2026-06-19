@@ -45,7 +45,9 @@ cp -r agent-workflows/.claude/rules/*                your-repo/.claude/rules/
 
 Restart your IDE to load the new commands. The `dw-*` / `qw-*` commands run on the `gh` CLI — make sure [`gh`](https://cli.github.com/) is installed and authenticated (`gh auth status`).
 
-> The `rules/` files (`dev-workflow.md`, `qa-workflow.md`, `doc-workflow.md`) carry the full pipeline and the producer→review pairing. Copy them alongside the commands, or the commands' references to them will dangle.
+> The `rules/` files (`dev-workflow.md`, `qa-workflow.md`, `doc-workflow.md`) carry the full pipeline and the producer→review pairing; `project-profile.md` holds your project's paths, IDs, labels, and conventions. Copy them alongside the commands, or the commands' references to them will dangle.
+
+**Customize for your repo:** edit `.claude/rules/project-profile.md` — the one place for paths, ID schemes, labels, branch/merge conventions, front-matter, and review semantics (live integrations, canonical format, audience). The commands and skills read their values from it, so you adapt the workflow there instead of editing the units. The shipped defaults match this repo's behaviour, so changing nothing is safe.
 
 ## Usage
 
