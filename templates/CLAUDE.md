@@ -60,7 +60,7 @@ For multi-step tasks, state a brief plan:
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
-## 5. Dev & QA workflow discipline
+## 5. Workflow discipline
 
 Substantial work flows through a pipeline; each step is a gate that stops for a
 human decision (commands suggest the next, they never auto-run it):
@@ -82,6 +82,15 @@ qw-plan → qw-review-plan → qw-cases → qw-review-cases
 ```
 
 The full flow + pairing lives in `.claude/rules/qa-workflow.md`.
+
+**doc-workflow** is the sibling that turns a codebase into its README — same gated
+discipline:
+
+```
+doc-gen-readme → doc-review-readme → [human reviews] → PR
+```
+
+The full flow + pairing lives in `.claude/rules/doc-workflow.md`.
 
 Two review gates are external skills this toolkit does not own — invoke them by hand:
 - `code-review` (bundled): adversarial diff review. Run after `dw-implement`,

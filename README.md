@@ -38,13 +38,14 @@ git clone https://github.com/dogkeeper886/agent-workflows
 # copy the commands, review skills, and workflow rules into your repo
 cp -r agent-workflows/.claude/commands/dev-workflow  your-repo/.claude/commands/
 cp -r agent-workflows/.claude/commands/qa-workflow   your-repo/.claude/commands/
+cp -r agent-workflows/.claude/commands/doc-workflow  your-repo/.claude/commands/
 cp -r agent-workflows/.claude/skills/*               your-repo/.claude/skills/
 cp -r agent-workflows/.claude/rules/*                your-repo/.claude/rules/
 ```
 
 Restart your IDE to load the new commands. The `dw-*` / `qw-*` commands run on the `gh` CLI — make sure [`gh`](https://cli.github.com/) is installed and authenticated (`gh auth status`).
 
-> The `rules/` files (`dev-workflow.md`, `qa-workflow.md`) carry the full pipeline and the producer→review pairing. Copy them alongside the commands, or the commands' references to them will dangle.
+> The `rules/` files (`dev-workflow.md`, `qa-workflow.md`, `doc-workflow.md`) carry the full pipeline and the producer→review pairing. Copy them alongside the commands, or the commands' references to them will dangle.
 
 ## Usage
 
