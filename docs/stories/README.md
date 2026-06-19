@@ -14,11 +14,11 @@ approach evolve on the issues without rewriting the need.
 
 ```
 docs/stories/
-  STORY-001-….md   # one story: the need + success, nothing about the build
-  STORY-002-….md
+  STORY-001.md   # one story: the need + success, nothing about the build
+  STORY-002.md
 ```
 
-- File + id follow the project's `STORY-XXX` convention (see `.claude/rules/project-profile.md`).
+- File + id follow the project's `STORY-XXX` convention — `STORY-NNN.md`, no slug (see `.claude/rules/project-profile.md`).
 - A story is **plain markdown — no front-matter.** It opens with `# STORY-NNN: <Title>`.
 
 ## Sections
