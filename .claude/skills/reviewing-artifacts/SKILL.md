@@ -39,19 +39,20 @@ Ask these of any artifact. The artifact's type shifts which ones bite hardest.
    where room belongs, instead of freezing a "how" that will drift? Flag stale paths or
    filenames, magic values that should be derived, rigid step-by-step where a principle
    would do, and references to tools or layouts that have moved.
-4. **Fits the project.** Does it match the conventions this project actually uses —
-   markdown as the source of truth, plus the tools and layout the repo relies on now —
-   rather than a stack it has moved past? Flag coupling to a tool or layout the project
-   has genuinely retired or relocated; an integration the project still uses, or a
-   deliberate adapter, is not a violation. Cross-references resolve to files that exist.
-   Skills must be flat under `.claude/skills/<name>/` — a foldered skill is undiscoverable;
-   a unit that needs folders to group is a command, not a skill.
+4. **Fits the project.** Does it match the project's conventions as declared in
+   `project-profile.md` — the **canonical format** (its source of truth) and the **live
+   integrations** listed there — rather than a stack it has moved past? Flag coupling to
+   a tool the profile does not list as live (one genuinely retired or relocated); an
+   integration the profile lists as live, or a deliberate adapter, is not a violation.
+   Cross-references resolve to files that exist. Skills must be flat under
+   `.claude/skills/<name>/` — a foldered skill is undiscoverable; a unit that needs
+   folders to group is a command, not a skill.
 5. **Right for its reader.** Agent-facing (commands, skills): unambiguous instructions
    the agent can follow. Human-facing (README, story): reads like a person wrote it for
    a person — clear, concrete, scannable.
-6. **Paired (producers only).** If this artifact *produces or changes* a deliverable —
-   a `create-`/`sync-`/`publish-`/`draft-`/`init-` step, or a producing gerund skill
-   (`planning-…`, `drafting-…`) — does a review cover its output? Every producer needs a
+6. **Paired (producers only).** If this artifact *produces or changes* a **deliverable**
+   (as `project-profile.md` → Review semantics defines one), does a review cover its
+   output? Every producer needs a
    paired review — a standing rule (the `## Producer → review pairing` tables in
    `.claude/rules/*.md`). A producer with no
    review is a gap to flag, not an exception; one that yields no outward deliverable
