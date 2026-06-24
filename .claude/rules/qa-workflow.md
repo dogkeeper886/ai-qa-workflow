@@ -47,6 +47,19 @@ No producer ships without a review covering its output.
 - **Hands off:** binding each case to an executable and running it is the **project's binding +
   run layer**. Reusing vetted steps (a search index) is an **optional** project enhancement.
 
+## Closing the loop — when a Test Plan is done
+
+The authoring flow leaves the `[STORY-XXX] Test Plan` issue **open**; it is the live record of
+outstanding coverage. It reaches its terminal state when the story is implemented and its
+`docs/tests/TS-*.md` are **verified green** — run by hand until the binding + run layer exists:
+
+- As you verify each TS doc, set its front-matter `status` (`green` pass / `red` fail) and
+  `issue:` (the implementation issue it verified).
+- When all of a story's TS docs are green, **close** the `[STORY-XXX] Test Plan` issue. This is
+  wired through the dev side: the implementation PR that completes the story puts
+  `Closes #<test-plan>` in its description (see `dw-create-pr`), so merging it closes the Test
+  Plan. A `red` doc leaves the Test Plan open.
+
 The format a test doc must follow is `docs/tests/README.md`.
 
 ## Project-specific values

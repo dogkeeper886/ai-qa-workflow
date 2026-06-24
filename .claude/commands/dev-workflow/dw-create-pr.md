@@ -32,6 +32,10 @@ via "Fixes #N" for auto-closure. Updates issue labels to reflect PR status.
         ├─► Step 3: Create PR
         │   - Title: short, imperative, under 70 characters
         │   - Body must include "Fixes #N" or "Closes #N"
+        │   - If the issue's story has a `[STORY-XXX] Test Plan` (label `test-plan`) and the
+        │     story's docs/tests/TS-*.md are verified green, add `Closes #<test-plan>` to the
+        │     body so merging closes the Test Plan (qa-workflow terminal step). Find it:
+        │     gh issue list --search "[STORY-XXX] Test Plan" --label test-plan --state all
         │   - Use this template:
         │
         │       gh pr create --title "<title>" --body "$(cat <<'EOF'
@@ -40,6 +44,7 @@ via "Fixes #N" for auto-closure. Updates issue labels to reflect PR status.
         │
         │       Fixes #<issue-number>
         │       (if linked to story: "Part of STORY-XXX")
+        │       (if the story's tests are verified green: "Closes #<test-plan>")
         │
         │       ## Test plan
         │       - [ ] ...
