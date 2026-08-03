@@ -48,8 +48,8 @@ Fits in the qa-workflow:
 
 ## OUTPUT
 
-The decision from Step 4 — recorded as a comment on the test-plan issue, and printed
-for the reader. Trace carries the issue URL. Reported per `.claude/rules/agent-report.md` —
+The decision from Step 4 — recorded as a comment on the test-plan issue, and printed for
+the reader. Trace carries the issue URL. Reported per `.claude/rules/agent-report.md` —
 the verdict first, and a section with nothing to report says so.
 
 ---

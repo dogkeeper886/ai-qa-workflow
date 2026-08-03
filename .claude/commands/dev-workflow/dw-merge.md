@@ -56,7 +56,8 @@ and issue labels. The linked issue auto-closes via "Fixes #N" in the PR body.
             - Report per .claude/rules/agent-report.md; Trace carries the merged PR URL
             - Next: /dw-implement <next-issue> if the story has open tasks left,
               otherwise say the story is complete
-            - Unresolved carries any follow-up the merge leaves behind
+            - A follow-up the merge deliberately leaves behind is Not done (a choice);
+              Unresolved is for what the merge left genuinely uncertain
 
 ---
 

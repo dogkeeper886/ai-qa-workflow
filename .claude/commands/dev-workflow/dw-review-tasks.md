@@ -89,7 +89,12 @@ Fits between `/dw-tasks` (creates issues) and `/dw-implement` (works one):
 **Output:**
 
     PASS — the breakdown covers STORY-007 and each issue stays a goal.
-    Next: /dw-implement 21
+
+    Checked     every Success Looks Like item maps to an issue; each issue one job
+    Not done    none
+    Unresolved  none
+    Trace       docs/stories/STORY-007.md · #21 #22
+    Next        /dw-implement 21
 
 (Illustrative — a hypothetical clean breakdown. Real reviews often return REVISE.)
 

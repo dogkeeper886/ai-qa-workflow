@@ -112,10 +112,18 @@ Fits in the dev-workflow:
 
 **Output:**
 
+    PASS — STORY-003 broken into 2 issues; together they cover the plan.
+
     | Issue | Title                              | Type        | Priority |
     |-------|------------------------------------|-------------|----------|
     | #15   | [STORY-003] Add input validation   | enhancement | high     |
     | #16   | [STORY-003] Add error formatting   | enhancement | medium   |
+
+    Checked     every Acceptance Criterion in plan #28 maps to an issue
+    Not done    none
+    Unresolved  none
+    Trace       docs/stories/STORY-003.md · plan #28 · #15 #16
+    Next        /dw-review-tasks STORY-003 to gate the breakdown
 
     Suggested order: #15 → #16
     Start: /dw-implement 15

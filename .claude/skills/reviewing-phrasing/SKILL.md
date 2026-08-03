@@ -71,7 +71,7 @@ redundant, buried, or missing a hook. That spot is the finding.
 
 Report per `.claude/rules/agent-report.md` — the verdict first, findings as a table,
 and a section with nothing to report saying so. The verdict vocabulary is
-`project-profile.md` → Reports. No numeric score.
+`project-profile.md` → Reports. No numeric score. In this review they mean:
 
 - **PASS** — fits its reader, leads with the point, says the right thing.
 - **REVISE** — specific, fixable findings (buried point, padding, wrong register, missing fact).

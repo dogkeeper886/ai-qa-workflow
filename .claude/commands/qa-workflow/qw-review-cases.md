@@ -42,8 +42,9 @@ Fits in the qa-workflow:
 
 ## OUTPUT
 
-The decision from Step 3, printed — with the findings behind it. Trace carries each doc reviewed. Reported per `.claude/rules/agent-report.md` — the verdict
-first, and a section with nothing to report says so.
+The decision from Step 3, printed — with the findings behind it. Trace carries each doc
+reviewed. Reported per `.claude/rules/agent-report.md` — the verdict first, and a
+section with nothing to report says so.
 
 ---
 

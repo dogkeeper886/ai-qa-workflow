@@ -53,8 +53,9 @@ Fits in the qa-workflow:
 
 ## OUTPUT
 
-The test docs written. Trace carries each doc's path and the test-plan issue. Reported per `.claude/rules/agent-report.md` — the verdict
-first, and a section with nothing to report says so.
+The test docs written. Trace carries each doc's path and the test-plan issue. Reported
+per `.claude/rules/agent-report.md` — the verdict first, and a section with nothing to
+report says so.
 
 ---
 

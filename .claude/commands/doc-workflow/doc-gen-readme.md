@@ -91,8 +91,9 @@ This writes the README only. It does NOT open a PR.
 
 ## OUTPUT
 
-The README, and any diagrams authored with it. Trace carries their paths. Reported per `.claude/rules/agent-report.md` — the verdict
-first, and a section with nothing to report says so.
+The README, and any diagrams authored with it. Trace carries their paths. Reported per
+`.claude/rules/agent-report.md` — the verdict first, and a section with nothing to
+report says so.
 
 ---
 
