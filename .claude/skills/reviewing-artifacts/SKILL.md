@@ -39,6 +39,12 @@ Ask these of any artifact. The artifact's type shifts which ones bite hardest.
    where room belongs, instead of freezing a "how" that will drift? Flag stale paths or
    filenames, magic values that should be derived, rigid step-by-step where a principle
    would do, and references to tools or layouts that have moved.
+   **Bakes in a mechanism?** Hardest bite of this question. A value `project-profile.md`
+   owns may appear inline as a default (see its "Two wiring styles"), but a *procedure* —
+   how drift is detected, how files are laid out — cannot be overridden by any value, so a
+   project that does it differently must edit the shipped unit. Flag every "compute X this
+   way" or "write it at this path" that the profile cannot redirect; the fix is to state
+   the goal and let the profile or the project's layer name the mechanism.
 4. **Fits the project.** Does it match the project's conventions as declared in
    `project-profile.md` — the **canonical format** (its source of truth) and the **live
    integrations** listed there — rather than a stack it has moved past? Flag coupling to
