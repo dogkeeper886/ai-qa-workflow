@@ -17,11 +17,24 @@ project-profile → Labels"). The values below are the **defaults**: they reprod
 repo's current behaviour, so a project that changes nothing behaves exactly as it does
 now. Adoption is opt-in — change a line here and every unit follows.
 
+**Two wiring styles, and when each applies.** A **skill** points at this file at each point
+of use — it is read on its own, with no rule loaded beside it. A **command** may show a
+value inline as an illustrated default; its group rule (`.claude/rules/*.md`) carries the
+"these resolve from the profile" statement for the whole group, so the pointer is not
+repeated line by line. Both are correct. Which one applies is decided by whether the unit
+is read together with its rule — not by preference.
+
 **What belongs here vs. not.** This file is for **declarative** customization — a value
 or a list. A whole **procedure** (e.g. how to publish to Confluence and review the
 render) is *not* a value; it belongs in its own project-owned skill, never crammed into
 a general unit. Lists → here; procedures → a project skill. This is the rules files'
 "what this owns vs. what it hands off" boundary, made concrete.
+
+The same line binds the **units**. A value this file can restate is safe for a unit to show
+inline; a *procedure* never is — how drift is detected, how files are laid out. No value can
+override a procedure, so a project that does it another way is forced to edit the shipped
+unit, and its repo then reads as drifted when it was only working around us. State the goal;
+let this file or the project's own layer name the mechanism.
 
 ---
 
@@ -29,7 +42,7 @@ a general unit. Lists → here; procedures → a project skill. This is the rule
 
 - stories dir: `docs/stories/`
 - tests dir: `docs/tests/`
-- images dir: `docs/images/`
+- diagrams dir: `docs/diagrams/` (SVG source) + `docs/diagrams/png/` (rendered)
 - story format contract: `docs/stories/README.md`
 - test format contract: `docs/tests/README.md`
 
@@ -66,15 +79,19 @@ project's choice.
 ## Front-matter & format contract (test docs)
 
 - test-doc filename: `TS-NN-<slug>.md` in the tests dir
-- front-matter fields: `id, title, namespace, story, story_hash, plan, issue, status`
-- story hash: `sha256` of the story file (`sha256sum`)
+- front-matter fields: `id, title, namespace, story, story_hash, plan, issue, status` — the
+  anchor field tracks the drift anchor below; drop it when that is `none`
+- drift anchor: `story_hash` — the `sha256` of the story file (`sha256sum`), recorded so a
+  later gate can tell the story has moved. A project that detects drift another way (a
+  derived link check, say) names that here instead, or `none`. The `qw-*` commands record
+  whatever this declares; they do not assume hashing.
 - default status: `green`
 
 ## Docs & diagrams
 
 - README output: `README.md`
 - diagram policy: SVG source committed + rendered to PNG (no Mermaid / inline diagram blocks)
-- images dir: `docs/images/` (also under Paths)
+- diagrams dir: `docs/diagrams/` (SVG source) + `docs/diagrams/png/` (rendered) — also under Paths
 
 ## Review semantics
 
