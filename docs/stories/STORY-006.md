@@ -68,6 +68,7 @@ already committed in someone else's repo and reads as their mistake.
 
 ## Status
 
+- **Completed: 2026-08-03** — the false images-dir default corrected, the diagrams location and the drift anchor demoted from baked-in mechanisms to profile-declared choices, and the two wiring styles written down with `reviewing-artifacts` Q3 now biting on baked-in mechanisms (PR #102).
 - Created: 2026-08-03
 - Plan: #98
-- Issues: #99, #100, #101 (PR #102, open)
+- Issues: ✅ #99, ✅ #100, ✅ #101 (PR #102)
