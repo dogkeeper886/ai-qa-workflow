@@ -53,11 +53,11 @@ and issue labels. The linked issue auto-closes via "Fixes #N" in the PR body.
         │   - Run: git branch -d <branch-name>
         │
         └─► Step 7: Report
-            - Confirm merge to the user
-            - Show the merged PR URL
-            - If story has remaining open tasks, suggest: /dw-implement <next-issue>
-            - If story is complete, mention it
-            - Mention any follow-up issues if applicable
+            - Report per .claude/rules/agent-report.md; Trace carries the merged PR URL
+            - Next: /dw-implement <next-issue> if the story has open tasks left,
+              otherwise say the story is complete
+            - A follow-up the merge deliberately leaves behind is Not done (a choice);
+              Unresolved is for what the merge left genuinely uncertain
 
 ---
 
