@@ -46,8 +46,8 @@ story's plans when its last task lands.
         │   - If linked to STORY-XXX and docs/stories/STORY-XXX.md exists:
         │     • Check off completed acceptance criteria for this task
         │     • If all story tasks are closed, mark story status as Completed
-        │   - When that was the story's LAST open task, close its plan issues — no PR
-        │     ever targets a plan, so nothing else will:
+        │   - On that same condition — all story tasks closed — also close its plan
+        │     issues. No PR ever targets a plan, so nothing else will:
         │       gh issue list --search "[STORY-XXX]" --label plan --state open
         │       gh issue list --search "[STORY-XXX]" --label test-plan --state open
         │     Close each, naming the PR that finished the story. Both kinds orphan the
