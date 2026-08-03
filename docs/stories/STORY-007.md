@@ -92,6 +92,8 @@ downstream trips over it.
 
 ## Status
 
+- **Completed: 2026-08-03** — every gate report now has one shape, stated as goals in
+  `.claude/rules/agent-report.md` with its words declared in the profile (PR #109).
 - Created: 2026-08-03
 - Plan: #104
-- Issues: #105, #106, #107, #108
+- Issues: ✅ #105 (PR #109), ✅ #106 (PR #109), ✅ #107 (PR #109), ✅ #108 (PR #109)
