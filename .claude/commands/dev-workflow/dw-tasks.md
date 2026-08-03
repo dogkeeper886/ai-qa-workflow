@@ -81,11 +81,10 @@ Fits in the dev-workflow:
         │     - Issues: #1, #2, #3
         │
         └─► Step 7: Report
-            - Show table of created issues:
-              | Issue | Title | Type | Priority |
-            - Suggest implementation order based on dependencies
-            - Suggest: /dw-review-tasks STORY-XXX to gate the breakdown, then
-              /dw-implement <N> to start on the first task
+            - Report per .claude/rules/agent-report.md; the created issues are a
+              table (| Issue | Title | Type | Priority |) plus the build order
+            - Trace carries the story path, the plan issue, and the issue links
+            - Next: /dw-review-tasks STORY-XXX to gate the breakdown
 
 ---
 

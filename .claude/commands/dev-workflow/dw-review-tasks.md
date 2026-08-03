@@ -62,9 +62,10 @@ Fits between `/dw-tasks` (creates issues) and `/dw-implement` (works one):
         │     → back to /dw-tasks to re-decompose
         │
         └─► Step 6: Report
-            - Per issue: verdict + findings
-            - A coverage verdict against the story
-            - The story path + issue links + suggested next step
+            - Report per .claude/rules/agent-report.md
+            - The verdict covers the breakdown as a whole; Checked carries the
+              coverage of the story's "Success Looks Like" and the per-issue passes
+            - Trace carries the story path and the issue links
 
 ---
 

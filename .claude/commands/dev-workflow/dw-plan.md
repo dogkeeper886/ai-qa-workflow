@@ -124,6 +124,13 @@ This command produces the plan only. It does NOT create task issues — that is 
 
 ---
 
+## OUTPUT
+
+The plan issue. Trace carries its URL; Next is the human gate on that issue, never /dw-tasks. Reported per `.claude/rules/agent-report.md` — the verdict
+first, and a section with nothing to report says so.
+
+---
+
 ## API Notes
 
 - Uses `gh` CLI — must be authenticated (`gh auth status`)

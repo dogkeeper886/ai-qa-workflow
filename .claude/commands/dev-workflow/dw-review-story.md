@@ -54,8 +54,9 @@ hands it back to `/dw-story` if the need itself is unclear.
         │     wording), stop and route to /dw-story to re-capture it with the user
         │
         └─► Step 5: Report
-            - Print the verdict (PASS / REVISED / HAND BACK) and the findings
-            - Print the path to the story and the suggested next step
+            - Report per .claude/rules/agent-report.md — the verdict vocabulary is
+              project-profile → Reports, not a set this command names
+            - Checked carries both checklists; Trace carries the story path
 
 ---
 
