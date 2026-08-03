@@ -54,5 +54,6 @@ someone scans for when asking "what is still in flight here?".
 
 ## Status
 
+- **Completed: 2026-08-03** — `dw-merge` now closes a story's `plan` and `test-plan` issues on the condition it already computes for the story file, all tasks closed; both rules state who closes a plan (PR #111).
 - Created: 2026-08-03
-- Issues: #110
+- Issues: ✅ #110 (PR #111)
