@@ -24,18 +24,17 @@ value inline as an illustrated default; its group rule (`.claude/rules/*.md`) ca
 repeated line by line. Both are correct. Which one applies is decided by whether the unit
 is read together with its rule — not by preference.
 
-**What a unit must never bake in is a *mechanism*.** A value this file can restate — a
-path, a label, an id — is safe to show inline. A *procedure* is not: how drift is detected,
-how files are laid out. No value can override a procedure, so a project that does it another
-way is forced to edit the shipped unit, and its repo then reads as drifted when it was only
-working around us. State the goal; let this file or the project's own layer name the
-mechanism.
-
 **What belongs here vs. not.** This file is for **declarative** customization — a value
 or a list. A whole **procedure** (e.g. how to publish to Confluence and review the
 render) is *not* a value; it belongs in its own project-owned skill, never crammed into
 a general unit. Lists → here; procedures → a project skill. This is the rules files'
 "what this owns vs. what it hands off" boundary, made concrete.
+
+The same line binds the **units**. A value this file can restate is safe for a unit to show
+inline; a *procedure* never is — how drift is detected, how files are laid out. No value can
+override a procedure, so a project that does it another way is forced to edit the shipped
+unit, and its repo then reads as drifted when it was only working around us. State the goal;
+let this file or the project's own layer name the mechanism.
 
 ---
 
@@ -80,7 +79,8 @@ project's choice.
 ## Front-matter & format contract (test docs)
 
 - test-doc filename: `TS-NN-<slug>.md` in the tests dir
-- front-matter fields: `id, title, namespace, story, story_hash, plan, issue, status`
+- front-matter fields: `id, title, namespace, story, story_hash, plan, issue, status` — the
+  anchor field tracks the drift anchor below; drop it when that is `none`
 - drift anchor: `story_hash` — the `sha256` of the story file (`sha256sum`), recorded so a
   later gate can tell the story has moved. A project that detects drift another way (a
   derived link check, say) names that here instead, or `none`. The `qw-*` commands record
