@@ -70,4 +70,4 @@ already committed in someone else's repo and reads as their mistake.
 
 - Created: 2026-08-03
 - Plan: #98
-- Issues: #99, #100, #101
+- Issues: #99, #100, #101 (PR #102, open)
