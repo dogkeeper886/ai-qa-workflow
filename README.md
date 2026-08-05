@@ -13,7 +13,7 @@ Slash commands that make an AI coding agent follow an **exact, documented order*
 - [Installation](#installation)
 - [Usage](#usage)
 - [Available commands](#available-commands)
-- [Review skills](#review-skills)
+- [Skills](#skills)
 - [Project structure](#project-structure)
 - [The agent family](#the-agent-family)
 - [License](#license)
@@ -35,7 +35,7 @@ No installer, no build step. The workflows are plain markdown files under `.clau
 ```
 git clone https://github.com/dogkeeper886/agent-workflows
 
-# copy the commands, review skills, and workflow rules into your repo
+# copy the commands, skills, and workflow rules into your repo
 cp -r agent-workflows/.claude/commands/dev-workflow  your-repo/.claude/commands/
 cp -r agent-workflows/.claude/commands/qa-workflow   your-repo/.claude/commands/
 cp -r agent-workflows/.claude/commands/doc-workflow  your-repo/.claude/commands/
@@ -91,11 +91,15 @@ Test-doc authoring, each producer paired with a review.
 
 `qw-plan` · `qw-review-plan` · `qw-cases` · `qw-review-cases`
 
-## Review skills
+## Skills
 
-Project-local skills in `.claude/skills/`. They review by judgment, not a scored checklist — a minimum bar, not an exhaustive one. Invoke them by hand.
+Project-local skills in `.claude/skills/`.
+
+**The review skills (`reviewing-*`)** judge finished work — by judgment, not a scored checklist; a minimum bar, not an exhaustive one. Invoke them by hand.
 
 ![Review skills: human-read docs go to reviewing-phrasing (words) + reviewing-typography (look); agent-read tooling goes to reviewing-artifacts](docs/diagrams/png/07-review-skills.png)
+
+**`reporting-outcomes`** shapes the reply an agent writes when it reports back in chat — the turn carrying progress, a verdict, reasons and a status at once. `agent-report.md` binds what a *command* prints at a gate; this puts the same shape on the conversational report-back, which nothing else covers. It fires on its own, not by hand, and states as carefully when it should stay out of the way.
 
 ## Project structure
 
@@ -106,7 +110,7 @@ agent-workflows/
 │   │   ├── dev-workflow/   # Dev lifecycle commands (dw-*)
 │   │   ├── qa-workflow/    # Test-doc authoring commands (qw-*)
 │   │   └── doc-workflow/   # README authoring commands (doc-*)
-│   ├── skills/             # Review skills (reviewing-*)
+│   ├── skills/             # Review skills (reviewing-*) + reporting-outcomes
 │   └── rules/              # The pipelines, the report contract, project-profile
 ├── templates/             # Sample CLAUDE.md for projects adopting these workflows
 ├── docs/
