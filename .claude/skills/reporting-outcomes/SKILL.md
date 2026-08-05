@@ -128,9 +128,9 @@ cannot see it needs the shape. That is what a model-invoked skill is for.
 
 The `## Producer → review pairing` tables in `.claude/rules/*.md` pair every
 producer with a review. This produces nothing — no artifact, no file, no run,
-and no gate output of its own — so there is nothing for a review to check. It is a reference, not a deliverable
-as `project-profile.md` → Review semantics defines one: it changes only how a
-reply that was being written anyway is arranged.
+and no gate output of its own — so there is nothing for a review to check. It is
+a reference, not a deliverable as `project-profile.md` → Review semantics defines
+one: it changes only how a reply that was being written anyway is arranged.
 
 Written down because the gerund name reads like a producer and the
 `reviewing-artifacts` pairing question is right to ask — better answered here
