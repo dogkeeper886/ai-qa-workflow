@@ -20,7 +20,7 @@ the issue asked for. Running this skill in its place leaves the change unreviewe
 axes. Running it *before* means sweeping debris out of code that may still be rewritten.
 
 Run it **after** the diff review, once the findings are settled, and before
-`/dw-create-pr`.
+`/ship-create-pr`.
 
 What it covers is what a reviewer reading a diff structurally cannot do:
 

@@ -28,7 +28,7 @@ preceding command it needs — run it straight after whatever produced the commi
 
 ## WORKFLOW
 
-    /dw-create-pr 27
+    /ship-create-pr 27
         │
         ├─► Step 1: Verify Readiness
         │   - Confirm you're on a feature branch, not the default branch —
@@ -77,13 +77,13 @@ preceding command it needs — run it straight after whatever produced the commi
         └─► Step 5: Report
             - Report per `agent-report`; Trace carries the PR URL
             - Next is the HUMAN review + test — stop here, don't auto-advance.
-              Merge with /dw-merge <PR> only once a human is satisfied.
+              Merge with /ship-merge <PR> only once a human is satisfied.
 
 ---
 
 ## EXAMPLE
 
-    /dw-create-pr 27
+    /ship-create-pr 27
 
 **Agent verifies, pushes, creates PR:**
 
@@ -97,7 +97,7 @@ preceding command it needs — run it straight after whatever produced the commi
 **Output:**
 
     PR #30 created: https://github.com/owner/repo/pull/30
-    A human reviews + tests it; merge with /dw-merge 30 when satisfied.
+    A human reviews + tests it; merge with /ship-merge 30 when satisfied.
 
 ---
 
