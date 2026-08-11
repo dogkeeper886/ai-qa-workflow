@@ -1,0 +1,10 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "agent-workflows",
+  "description": "Ordered, gated workflows for an AI coding agent: dev-workflow (dw-*), qa-workflow (qw-*), and doc-workflow (doc-*). Doctrine travels in this plugin; a project's values stay in that project's .claude/rules/project-profile.md.",
+  "author": {
+    "name": "dogkeeper886"
+  },
+  "homepage": "https://github.com/dogkeeper886/agent-workflows",
+  "license": "MIT"
+}

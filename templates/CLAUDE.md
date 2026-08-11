@@ -71,8 +71,8 @@ dw-story → dw-review-story → dw-plan → [human reviews the plan issue]
         → dw-create-pr → [human review + /review] → dw-merge
 ```
 
-The full flow + producer→review pairing lives in `.claude/rules/dev-workflow.md`. Trivial
-work skips the plan: `dw-story → dw-tasks`.
+The full flow + producer→review pairing lives in the plugin's `rules/dev-workflow.md`.
+Trivial work skips the plan: `dw-story → dw-tasks`.
 
 **qa-workflow** is the sibling pipeline — same gated discipline, turning a story into
 trustworthy test docs:
@@ -81,7 +81,7 @@ trustworthy test docs:
 qw-plan → qw-review-plan → qw-cases → qw-review-cases
 ```
 
-The full flow + pairing lives in `.claude/rules/qa-workflow.md`.
+The full flow + pairing lives in the plugin's `rules/qa-workflow.md`.
 
 **doc-workflow** is the sibling that turns a codebase into its README — same gated
 discipline:
@@ -90,7 +90,7 @@ discipline:
 doc-gen-readme → doc-review-readme → [human reviews] → PR
 ```
 
-The full flow + pairing lives in `.claude/rules/doc-workflow.md`.
+The full flow + pairing lives in the plugin's `rules/doc-workflow.md`.
 
 Two review gates are external skills this toolkit does not own — invoke them by hand:
 - `code-review` (bundled): adversarial diff review. Run after `dw-implement`,
@@ -116,7 +116,7 @@ Match the reviewer to **who reads** the file you changed:
   `reviewing-artifacts` (does it do its job — one job, complete, goal-not-spec,
   fits the project, right for its reader).
 
-These are skills this project owns. Like the dev-workflow gates, they stop for a human
+These are skills the plugin ships. Like the dev-workflow gates, they stop for a human
 and never auto-run — invoke them by hand.
 
 **Right-size it.** A typo or a one-line tweak does not need a review pass — use

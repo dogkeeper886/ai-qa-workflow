@@ -13,8 +13,9 @@ identically to every project.
 _Avoid_: file, artifact, component
 
 **Rule**:
-A markdown file a unit cites by path for something too long to inline — a pipeline's
-shape, what a report owes its reader, a project's values.
+A markdown file a unit cites — by name where the unit already inlines it, by path where
+it must be found — for something too long to state inline: a pipeline's shape, what a
+report owes its reader, a project's values.
 _Avoid_: doc, guideline, config
 
 **Profile doctrine**:
