@@ -58,7 +58,8 @@ silently.
 - change-request noun: `PR` (GitLab: `MR`) — wording, which is the one thing derivation
   cannot supply
 - where the verbs differ: change requests `gh pr <verb>` / `glab mr <verb>` · comment on
-  an issue `gh issue comment` / `glab issue note` · label an issue
+  an issue `gh issue comment` / `glab issue note` · comment on a change request
+  `gh pr comment` / `glab mr note` · label an issue
   `gh issue edit --add-label` / `glab issue update --label`. The rest — `issue view`,
   `issue list`, `issue create`, `label create` — read the same on both.
 

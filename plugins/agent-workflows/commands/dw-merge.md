@@ -33,25 +33,47 @@ this step it survives on closed work forever.
     /dw-merge 30
         │
         ├─► Step 1: Verify Ready to Merge
-        │   - Run: gh pr view <PR> --json mergeStateStatus,headRefName,reviewDecision
+        │   - Run: gh pr view <PR> --json mergeStateStatus,headRefName,headRefOid,comments
         │   - Must be mergeable (no conflicts)
         │   - Run: gh pr checks <PR> — any CI checks must pass (if applicable)
-        │   - The merge gate is HUMAN review + test, not a GitHub approval. On a
-        │     solo repo GitHub blocks self-approval, so do NOT require
-        │     reviewDecision=APPROVED. Before merging, confirm a human has reviewed
-        │     and tested the change. If not yet reviewed/tested, stop and say so.
+        │   - Note headRefOid, the head SHA. Step 2's confirmation is pinned to it
         │
-        ├─► Step 2: Identify the Linked Issue
+        ├─► Step 2: The Human Gate — Look, Ask, Record
+        │   - The gate is HUMAN review + test, not a platform approval. On a solo
+        │     repo the host blocks self-approval, so do NOT require
+        │     reviewDecision=APPROVED — and do not read an empty review list as
+        │     either a yes or a no. It is not a signal in either direction.
+        │   - Look first, in the comments Step 1 already fetched. A confirmation
+        │     naming the current headRefOid IS the gate — say it was found and go
+        │     to Step 3 without asking again
+        │   - Otherwise ask the human outright: has this change been reviewed and
+        │     tested at <headRefOid>? A green /code-review-2axis or
+        │     reviewing-finish does not answer it — those are agent passes, and
+        │     this gate is a person's judgment on the change as a whole
+        │   - On no, or on no answer: do not merge. Stop here and report per Step 7,
+        │     with the missing confirmation as the finding — a refused gate is a
+        │     gate output, and it owes the human the same report a merge does
+        │   - On yes, record it before merging so the gate leaves a trace (the
+        │     comment verb is a project value — see project-profile → Platform):
+        │     gh pr comment <PR> --body "Human review + test confirmed at <SHA>."
+        │   - A confirmation covers the diff it was given for. If the head moved —
+        │     the only confirmation names an older SHA, or the head changes
+        │     mid-run — it does not carry. Ask again against the new head
+        │
+        ├─► Step 3: Identify the Linked Issue
         │   - Read the PR body for its closure keyword (see project-profile →
         │     Linking & branch) and note the issue number for label cleanup
-        │   - If the PR closes no issue, skip Step 4 and say so in the report
+        │   - If the PR closes no issue, skip Step 5 and say so in the report
         │
-        ├─► Step 3: Merge
+        ├─► Step 4: Merge
+        │   - Re-read headRefOid first. If it no longer matches the SHA Step 2
+        │     confirmed, the head moved under the gate: stop, say so, and go back
+        │     to Step 2 against the new head. Do not merge on a stale confirmation
         │   - Run: gh pr merge <PR> --merge --delete-branch
         │   - The merge strategy is a project value (see project-profile → Git)
         │   - --delete-branch cleans up the remote branch
         │
-        ├─► Step 4: Clear the Issue's Labels
+        ├─► Step 5: Clear the Issue's Labels
         │   - Remove the status label the ship tail set, and the triage state
         │     label (see project-profile → Labels):
         │     gh issue edit <N> --remove-label "status:needs-review" \
@@ -59,17 +81,17 @@ this step it survives on closed work forever.
         │   - A label the issue does not carry is not an error — skip it and say so
         │   - The issue auto-closes via its closure keyword — no manual close needed
         │
-        ├─► Step 5: Confirm the Branch Is Gone
+        ├─► Step 6: Confirm the Branch Is Gone
         │   - Switch to the repo's default branch and pull — derive it, don't
         │     hardcode `main` (see project-profile → Git):
         │     git checkout <default> && git pull
-        │   - Step 3 usually removed the local branch already. Confirm, and remove
+        │   - Step 4 usually removed the local branch already. Confirm, and remove
         │     it if it survived: git branch -d <branch-name>
-        │   - "branch not found" here means Step 3 did its job — not a failure
+        │   - "branch not found" here means Step 4 did its job — not a failure
         │
-        └─► Step 6: Report
-            - Report per `agent-report`; Trace carries the merged PR URL and the
-              labels cleared
+        └─► Step 7: Report
+            - Report per `agent-report`; Trace carries the merged PR URL, the head
+              SHA the gate was confirmed at, and the labels cleared
             - Next: nothing in this toolkit. The change has shipped — say so.
             - A follow-up the merge deliberately leaves behind is Not done (a choice);
               Unresolved is for what the merge left genuinely uncertain
@@ -80,10 +102,16 @@ this step it survives on closed work forever.
 
     /dw-merge 30
 
-**Agent verifies, merges, cleans up:**
+**Agent verifies, asks for the gate, records it, merges, cleans up:**
 
-    $ gh pr view 30 --json mergeStateStatus,headRefName,reviewDecision  # mergeable? (don't gate on self-approval)
+    $ gh pr view 30 --json mergeStateStatus,headRefName,headRefOid,comments
+                                       # mergeable? head SHA a1b2c3d; confirmed already? no
     $ gh pr checks 30
+
+    > Has PR #30 been reviewed and tested by a human at a1b2c3d?
+    < yes
+
+    $ gh pr comment 30 --body "Human review + test confirmed at a1b2c3d."
     $ gh pr merge 30 --merge --delete-branch
     $ gh issue edit 27 --remove-label "status:needs-review" --remove-label "ready-for-agent"
     $ git checkout <default-branch> && git pull
@@ -91,9 +119,13 @@ this step it survives on closed work forever.
 
 **Output:**
 
-    PR #30 merged: https://github.com/owner/repo/pull/30
+    PR #30 merged at a1b2c3d: https://github.com/owner/repo/pull/30
+    Human review + test confirmed and recorded on the PR.
     Issue #27 auto-closed; status:needs-review and ready-for-agent cleared.
     Branch issue-27-release-notes deleted (local + remote). You are on <default-branch>.
+
+Run it again on the same PR and Step 2 finds its own comment at the unchanged head
+SHA — the gate is satisfied from the record, and nobody is asked twice.
 
 ---
 
@@ -106,6 +138,9 @@ this step it survives on closed work forever.
   -d` on an already-deleted branch is a harmless error, and the checkout + pull is what
   leaves you somewhere sane either way.
 - If the PR is not mergeable or CI fails, report the blocker instead of merging
+- The gate comment is written by the agent on the human's answer, not by the human. That
+  is deliberate: a signal a solo maintainer has to remember to leave is one that stops
+  being left. Naming the SHA is what makes it a record rather than a rubber stamp
 - `git branch -d` refuses an unmerged branch — that refusal is a signal, not a
   nuisance. Report it; do not reach for `-D`.
 ```

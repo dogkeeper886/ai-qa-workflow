@@ -53,6 +53,13 @@ No producer ships without a review covering its output. The review paired with
 `doc-workflow`. The merge gate is a person's judgment, not a platform approval: on a solo
 repo the host blocks self-approval, so neither command may require one.
 
+A gate a person's judgment passes still has to be **observable**, or the command is left
+inferring it. An empty review list is not evidence either way — a carefully reviewed PR
+and an untouched one look identical. So `dw-merge` asks outright and records the answer on
+the change request against the head SHA, and reads that record on a later run. The
+judgment stays the human's; what changes is that it leaves a trace, and a trace pinned to
+a SHA stops covering the diff once the head moves.
+
 ## Project-specific values
 
 The label names, the closure keyword, the branch-name pattern, the merge strategy, the
