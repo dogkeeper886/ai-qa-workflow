@@ -83,7 +83,7 @@ and watch where their eye snags or stalls; that spot is the finding.
 
 Report per `${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md` — the verdict first, findings
 as a table, and a section with nothing to report saying so. The verdict vocabulary is
-`project-profile.md` → Reports. No numeric score. In this review they mean:
+`.claude/rules/project-profile.md` → Reports. No numeric score. In this review they mean:
 
 - **PASS** — the eye finds the point; hierarchy and grouping hold.
 - **REVISE** — specific, fixable findings (no hierarchy, fused groups, bold inflation, wall of text).

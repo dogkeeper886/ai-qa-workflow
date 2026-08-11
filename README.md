@@ -71,13 +71,15 @@ The full qa lifecycle spans two repos — this repo authors the docs; the runner
 
 ## Available commands
 
-### [Dev Workflow (`dw-*`)](plugins/agent-workflows/commands/)
+All of them live in [`plugins/agent-workflows/commands/`](plugins/agent-workflows/commands/).
+
+### Dev Workflow (`dw-*`)
 
 Issue-driven lifecycle: capture, plan, implement, review, ship.
 
 `dw-story` · `dw-review-story` · `dw-plan` · `dw-tasks` · `dw-review-tasks` · `dw-implement` · `dw-review-implement` · `dw-create-pr` · `dw-merge`
 
-### [QA Workflow (`qw-*`)](plugins/agent-workflows/commands/)
+### QA Workflow (`qw-*`)
 
 Test-doc authoring, each producer paired with a review.
 

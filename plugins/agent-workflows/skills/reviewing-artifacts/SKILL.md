@@ -105,7 +105,7 @@ Where each type leans:
 
 Report per `${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md` — the verdict first, findings
 as a table, and a section with nothing to report saying so. The verdict vocabulary is
-`project-profile.md` → Reports. No numeric score. This review also uses
+`.claude/rules/project-profile.md` → Reports. No numeric score. This review also uses
 **CUT**, declared there as the artifact review's own. In this review they mean:
 
 - **PASS** — does its job, fits the project, nothing leaked.

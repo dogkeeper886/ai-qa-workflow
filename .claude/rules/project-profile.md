@@ -10,8 +10,8 @@ borrowing another project's values.
 
 How that resolution works — the two wiring styles, what belongs here rather than in a
 project skill, and what happens when a value cannot be resolved — is
-`${CLAUDE_PLUGIN_ROOT}/rules/profile-doctrine.md`, which ships with the units. That file
-is the same in every project; this one is not.
+the plugin's `rules/profile-doctrine.md`, which ships with the units. That file is the
+same in every project; this one is not.
 
 ## Paths
 
@@ -89,8 +89,7 @@ silently.
 ## Reports
 
 The words a gate report uses. The contract itself — the questions a report answers and
-why — is `${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md`; a unit resolves the wording from
-here.
+why — is the plugin's `rules/agent-report.md`; a unit resolves the wording from here.
 
 - verdict vocabulary: `PASS` · `REVISE` · `HAND BACK`
 - extra verdict (artifact review only): `CUT` — the artifact duplicates another or does

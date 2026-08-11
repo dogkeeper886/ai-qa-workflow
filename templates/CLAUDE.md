@@ -116,7 +116,7 @@ Match the reviewer to **who reads** the file you changed:
   `reviewing-artifacts` (does it do its job — one job, complete, goal-not-spec,
   fits the project, right for its reader).
 
-These are skills this project owns. Like the dev-workflow gates, they stop for a human
+These are skills the plugin ships. Like the dev-workflow gates, they stop for a human
 and never auto-run — invoke them by hand.
 
 **Right-size it.** A typo or a one-line tweak does not need a review pass — use
