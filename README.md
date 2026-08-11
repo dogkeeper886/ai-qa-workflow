@@ -10,7 +10,7 @@ Slash commands that make an AI coding agent follow an **exact, documented order*
 ## Contents
 
 - [Why two workflows](#why-two-workflows)
-- [Installation](#installation)
+- [Getting started](#getting-started)
 - [Usage](#usage)
 - [Available commands](#available-commands)
 - [Skills](#skills)
@@ -28,18 +28,44 @@ Slash commands that make an AI coding agent follow an **exact, documented order*
 
 ![qa-workflow anti-drift: the test doc records the story hash; when the story changes the hash mismatches and the test is flagged stale](docs/diagrams/png/05-anti-drift.png)
 
-## Installation
+## Getting started
 
-No build step. The toolkit ships as one Claude Code plugin, `agent-workflows`, and this repository is its own marketplace — so you install it once and every project on the machine gets it, at whatever version is placed.
+Two separate things, and only one of them repeats.
+
+### Placement — once, for all projects
+
+The toolkit is a single Claude Code plugin, and this repository is its own marketplace. Nothing to clone, no files to copy, no build step:
 
 ```
 /plugin marketplace add dogkeeper886/agent-workflows
 /plugin install agent-workflows@agent-workflows
 ```
 
-Restart your IDE to load the commands. The `dw-*` / `qw-*` commands run on your host's CLI — [`gh`](https://cli.github.com/) for GitHub, [`glab`](https://gitlab.com/gitlab-org/cli) for GitLab, worked out from the repository's git remote — so make sure the one you need is installed and authenticated.
+Restart your IDE and the commands are there. One copy exists, so `/plugin update agent-workflows@agent-workflows` moves every project at once — there is no per-project copy to go stale behind you.
 
-**Then tell each project what it is:** every project that uses the workflows keeps its own `.claude/rules/project-profile.md` — paths, ID schemes, labels, branch/merge conventions, front-matter, platform wording, and review semantics. The commands and skills resolve every project-specific value from it, so you adapt the workflow there instead of editing the units. A project that has not declared one stops and says so rather than quietly borrowing another project's. Start from [this repo's](.claude/rules/project-profile.md).
+The `dw-*` / `qw-*` commands drive your host's CLI — [`gh`](https://cli.github.com/) for GitHub, [`glab`](https://gitlab.com/gitlab-org/cli) for GitLab — worked out from the repo's git remote. Make sure the one you need is authenticated.
+
+### Adoption — once per project
+
+The placed commands don't know what *your* project is. Each repo says so in one file:
+
+```
+mkdir -p .claude/rules && curl -o .claude/rules/project-profile.md \
+  https://raw.githubusercontent.com/dogkeeper886/agent-workflows/main/.claude/rules/project-profile.md
+```
+
+Then edit it. What it declares:
+
+- where stories and test docs live, and how they're numbered
+- label names and colours
+- the branch-name pattern and merge strategy
+- test-doc front matter and how staleness is detected
+- the change-request noun your host uses — `PR` or `MR`
+- the verdict words a review reports in
+
+Everything a command would otherwise hardcode resolves from this file — you adapt the workflow here, never the units. The shipped values reproduce this repo's own behaviour, so changing nothing is safe.
+
+This is the one file adoption touches, and it cannot be shared between projects. A repo that declares nothing **stops and says so** — there is deliberately no fallback to a global profile, because a silent one would run another project's conventions with nothing in the session to reveal it.
 
 ## Usage
 

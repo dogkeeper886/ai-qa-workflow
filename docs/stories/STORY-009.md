@@ -71,6 +71,7 @@ after months away and silently runs something other than what it says it runs.
 
 ## Status
 
+- **Completed: 2026-08-11** — the toolkit ships as the `agent-workflows` plugin, placed once from this repo's own marketplace; this repo consumes it rather than a private `.claude/`. Three of the Open Questions above are answered on #114: platform derivation holds on self-hosted GitLab over SSH:2222; no plugin version needs bumping, because the commit is the version; and the dogfooding loop costs one `claude plugin update` plus a restart. The README's "no installer" claim did not survive — `/plugin install` is one — so it now claims only "no build step".
 - Created: 2026-08-11
 - Plan: #114
-- Issues: #115 (PR #120), #116 (PR #120), #117 (PR #120), #118, #119
+- Issues: ✅ #115 (merged, PR #120), ✅ #116 (merged, PR #120), ✅ #117 (merged, PR #120), #118 (PR #121), #119
