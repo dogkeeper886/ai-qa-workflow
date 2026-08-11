@@ -124,6 +124,23 @@ and never auto-run — invoke them by hand.
 judgment. Reach for these when a change is substantial enough that the look, the
 wording, or the artifact's fitness actually matters.
 
+## 7. This repo runs the plugin it ships
+
+The units live in `plugins/agent-workflows/`, not in `.claude/`. The session loads the
+**installed** plugin — a snapshot pinned to a commit — so editing a unit here does not
+change the command you are running. That trade is [ADR-0001](docs/adr/0001-ship-as-one-dogfooded-plugin.md);
+the cost is one command and a restart:
+
+```
+claude plugin update agent-workflows@agent-workflows
+```
+
+Qualify the name with the marketplace — the bare `agent-workflows` does not resolve.
+There is no version to bump: the commit is the version.
+
+Only `.claude/rules/project-profile.md` stays in the repo — this project's values, loaded
+because the units cite it by name.
+
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
