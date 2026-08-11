@@ -1,19 +1,17 @@
----
-paths:
-  - ".claude/commands/**/*.md"
-  - ".claude/skills/**/*.md"
----
-
 # project-profile
 
 **The values this project declares.** Every unit resolves its project-specific values from
 here rather than hardcoding them, so a workflow is customized by editing this file and not
 the units. Change a line here and every unit follows.
 
+This file is reached by name: a unit cites `.claude/rules/project-profile.md`, and a
+project that has not written one leaves that reference unresolved rather than quietly
+borrowing another project's values.
+
 How that resolution works — the two wiring styles, what belongs here rather than in a
 project skill, and what happens when a value cannot be resolved — is
-`.claude/rules/profile-doctrine.md`. That file is the same in every project; this one is
-not.
+`${CLAUDE_PLUGIN_ROOT}/rules/profile-doctrine.md`, which ships with the units. That file
+is the same in every project; this one is not.
 
 ## Paths
 
@@ -91,7 +89,8 @@ silently.
 ## Reports
 
 The words a gate report uses. The contract itself — the questions a report answers and
-why — is `.claude/rules/agent-report.md`; a unit resolves the wording from here.
+why — is `${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md`; a unit resolves the wording from
+here.
 
 - verdict vocabulary: `PASS` · `REVISE` · `HAND BACK`
 - extra verdict (artifact review only): `CUT` — the artifact duplicates another or does

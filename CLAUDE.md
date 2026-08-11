@@ -71,8 +71,9 @@ dw-story → dw-review-story → dw-plan → [human reviews the plan issue]
         → dw-create-pr → [human review + /review] → dw-merge
 ```
 
-The full flow + producer→review pairing lives in `.claude/rules/dev-workflow.md`. Trivial
-work skips the plan: `dw-story → dw-tasks`.
+The full flow + producer→review pairing lives in
+`plugins/agent-workflows/rules/dev-workflow.md`. Trivial work skips the plan:
+`dw-story → dw-tasks`.
 
 **qa-workflow** is the sibling pipeline — same gated discipline, turning a story into
 trustworthy test docs:
@@ -81,7 +82,7 @@ trustworthy test docs:
 qw-plan → qw-review-plan → qw-cases → qw-review-cases
 ```
 
-The full flow + pairing lives in `.claude/rules/qa-workflow.md`.
+The full flow + pairing lives in `plugins/agent-workflows/rules/qa-workflow.md`.
 
 **doc-workflow** is the sibling that turns a codebase into its README — same gated
 discipline:
@@ -90,7 +91,7 @@ discipline:
 doc-gen-readme → doc-review-readme → [human reviews] → PR
 ```
 
-The full flow + pairing lives in `.claude/rules/doc-workflow.md`.
+The full flow + pairing lives in `plugins/agent-workflows/rules/doc-workflow.md`.
 
 Two review gates are external skills this toolkit does not own — invoke them by hand:
 - `code-review` (bundled): adversarial diff review. Run after `dw-implement`,

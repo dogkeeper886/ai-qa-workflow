@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "agent-workflows",
+  "description": "This repository is its own marketplace: it hosts the agent-workflows plugin from the same tree it develops it in, so the placed copy and the tested copy are one thing.",
+  "owner": {
+    "name": "dogkeeper886"
+  },
+  "plugins": [
+    {
+      "name": "agent-workflows",
+      "description": "Slash commands that make an AI coding agent follow an exact, documented order: dev-workflow (dw-*) turns a need into shipped work, qa-workflow (qw-*) authors test docs, doc-workflow (doc-*) writes a README. Each producer is paired with a review gate; every project-specific value resolves from that project's .claude/rules/project-profile.md.",
+      "source": "./plugins/agent-workflows",
+      "category": "workflow",
+      "homepage": "https://github.com/dogkeeper886/agent-workflows"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # agent-workflows
 
-Slash commands that make an AI coding agent follow an **exact, documented order** — driven by GitHub issues and the story files in the repo. Two workflows live in `.claude/commands/`:
+Slash commands that make an AI coding agent follow an **exact, documented order** — driven by GitHub issues and the story files in the repo. Two workflows ship in the plugin:
 
 - **dev-workflow** (`dw-*`) — turn a need into shipped work through an ordered lifecycle: story → plan → tasks → implement → PR → merge. Each step is paired with a review; nothing skips ahead. The lifecycle is general — it disciplines any ordered action, not just code.
 - **qa-workflow** (`qw-*`) — author test **docs** kept *separate* from the test scripts, each mapped to the story it verifies (**test ↔ script ↔ story**). Splitting the doc from the script means coverage isn't silently lost as the code changes across cycles.
@@ -30,24 +30,16 @@ Slash commands that make an AI coding agent follow an **exact, documented order*
 
 ## Installation
 
-No installer, no build step. The workflows are plain markdown files under `.claude/`; you install them by copying the ones you want into your project's `.claude/` directory.
+No build step. The toolkit ships as one Claude Code plugin, `agent-workflows`, and this repository is its own marketplace — so you install it once and every project on the machine gets it, at whatever version is placed.
 
 ```
-git clone https://github.com/dogkeeper886/agent-workflows
-
-# copy the commands, skills, and workflow rules into your repo
-cp -r agent-workflows/.claude/commands/dev-workflow  your-repo/.claude/commands/
-cp -r agent-workflows/.claude/commands/qa-workflow   your-repo/.claude/commands/
-cp -r agent-workflows/.claude/commands/doc-workflow  your-repo/.claude/commands/
-cp -r agent-workflows/.claude/skills/*               your-repo/.claude/skills/
-cp -r agent-workflows/.claude/rules/*                your-repo/.claude/rules/
+/plugin marketplace add dogkeeper886/agent-workflows
+/plugin install agent-workflows@agent-workflows
 ```
 
-Restart your IDE to load the new commands. The `dw-*` / `qw-*` commands run on the `gh` CLI — make sure [`gh`](https://cli.github.com/) is installed and authenticated (`gh auth status`).
+Restart your IDE to load the commands. The `dw-*` / `qw-*` commands run on your host's CLI — [`gh`](https://cli.github.com/) for GitHub, [`glab`](https://gitlab.com/gitlab-org/cli) for GitLab, worked out from the repository's git remote — so make sure the one you need is installed and authenticated.
 
-> The `rules/` files (`dev-workflow.md`, `qa-workflow.md`, `doc-workflow.md`) carry the full pipeline and the producer→review pairing; `agent-report.md` states what a command reports back at a gate; `project-profile.md` holds your project's paths, IDs, labels, and conventions. Copy them alongside the commands, or the commands' references to them will dangle.
-
-**Customize for your repo:** edit `.claude/rules/project-profile.md` — the one place for paths, ID schemes, labels, branch/merge conventions, front-matter, and review semantics (live integrations, canonical format, audience). The commands and skills read their values from it, so you adapt the workflow there instead of editing the units. The shipped defaults match this repo's behaviour, so changing nothing is safe.
+**Then tell each project what it is:** every project that uses the workflows keeps its own `.claude/rules/project-profile.md` — paths, ID schemes, labels, branch/merge conventions, front-matter, platform wording, and review semantics. The commands and skills resolve every project-specific value from it, so you adapt the workflow there instead of editing the units. A project that has not declared one stops and says so rather than quietly borrowing another project's. Start from [this repo's](.claude/rules/project-profile.md).
 
 ## Usage
 
@@ -62,7 +54,7 @@ Drive a change from need to merge through the dev-workflow pipeline — each ste
 /dw-merge    27                      # merge, close the issue, clean up
 ```
 
-Each producer has a paired review gate — `dw-review-story`, `dw-review-tasks`, `dw-review-implement` — run between the steps above. The full flow lives in [`.claude/rules/dev-workflow.md`](.claude/rules/dev-workflow.md).
+Each producer has a paired review gate — `dw-review-story`, `dw-review-tasks`, `dw-review-implement` — run between the steps above. The full flow lives in [`rules/dev-workflow.md`](plugins/agent-workflows/rules/dev-workflow.md).
 
 The qa-workflow turns a story into test docs the same gated way:
 
@@ -79,13 +71,13 @@ The full qa lifecycle spans two repos — this repo authors the docs; the runner
 
 ## Available commands
 
-### [Dev Workflow (`dw-*`)](.claude/commands/dev-workflow/)
+### [Dev Workflow (`dw-*`)](plugins/agent-workflows/commands/)
 
 Issue-driven lifecycle: capture, plan, implement, review, ship.
 
 `dw-story` · `dw-review-story` · `dw-plan` · `dw-tasks` · `dw-review-tasks` · `dw-implement` · `dw-review-implement` · `dw-create-pr` · `dw-merge`
 
-### [QA Workflow (`qw-*`)](.claude/commands/qa-workflow/)
+### [QA Workflow (`qw-*`)](plugins/agent-workflows/commands/)
 
 Test-doc authoring, each producer paired with a review.
 
@@ -93,7 +85,7 @@ Test-doc authoring, each producer paired with a review.
 
 ## Skills
 
-Project-local skills in `.claude/skills/`.
+Skills shipped in the plugin, alongside the commands.
 
 **The review skills (`reviewing-*`)** judge finished work — by judgment, not a scored checklist; a minimum bar, not an exhaustive one. Invoke them by hand.
 
@@ -105,15 +97,17 @@ Project-local skills in `.claude/skills/`.
 
 ```
 agent-workflows/
-├── .claude/
-│   ├── commands/
-│   │   ├── dev-workflow/   # Dev lifecycle commands (dw-*)
-│   │   ├── qa-workflow/    # Test-doc authoring commands (qw-*)
-│   │   └── doc-workflow/   # README authoring commands (doc-*)
-│   ├── skills/             # Review skills (reviewing-*) + reporting-outcomes
-│   └── rules/              # The pipelines, the report contract, project-profile
+├── .claude-plugin/
+│   └── marketplace.json   # This repo is its own marketplace
+├── plugins/agent-workflows/   # The shipped plugin — placed once, reaching every project
+│   ├── commands/          # dw-* (dev), qw-* (qa), doc-* (README authoring)
+│   ├── skills/            # Review skills (reviewing-*) + reporting-outcomes
+│   └── rules/             # Doctrine: the pipelines, the report contract, profile-doctrine
+├── .claude/rules/
+│   └── project-profile.md # This project's values — the one file adoption touches
 ├── templates/             # Sample CLAUDE.md for projects adopting these workflows
 ├── docs/
+│   ├── adr/               # Architecture decisions (ADR-*)
 │   ├── stories/           # User stories (STORY-*)
 │   └── tests/             # qa-workflow test-doc output
 ├── CLAUDE.md              # Behavioral guidelines + workflow discipline for the agent
