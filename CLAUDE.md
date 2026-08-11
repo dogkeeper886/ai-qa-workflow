@@ -63,20 +63,21 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ## 5. Workflow discipline
 
 Substantial work flows through a pipeline; each step is a gate that stops for a
-human decision (commands suggest the next, they never auto-run it):
+human decision (nothing auto-runs the next):
 
 ```
-dw-story → dw-review-story → dw-plan → [human reviews the plan issue]
-        → dw-tasks → dw-review-tasks → dw-implement → dw-review-implement
-        → dw-create-pr → [human review + /review] → dw-merge
+/grill-with-docs → /to-spec → /to-tickets → /implement → /code-review-2axis
+                → reviewing-finish → dw-create-pr → [human review] → dw-merge
 ```
 
-The full flow + producer→review pairing lives in
-`plugins/agent-workflows/rules/dev-workflow.md`. Trivial work skips the plan:
-`dw-story → dw-tasks`.
+**Idea through commit belongs to [`mattpocock/skills`](https://github.com/mattpocock/skills)**,
+which this repo installs. Don't rebuild any of it here — [ADR-0002](docs/adr/0002-complement-mattpocock-skills.md).
 
-**qa-workflow** is the sibling pipeline — same gated discipline, turning a story into
-trustworthy test docs:
+**Commit through merge is ours** — the ship tail (`dw-create-pr` → `dw-merge`) plus
+`reviewing-finish`, the pass that runs the tooling and clears the leftovers a
+diff-reading review cannot see. Run it *after* `/code-review-2axis`, not instead of it.
+
+**qa-workflow** turns a story into trustworthy test docs, same gated discipline:
 
 ```
 qw-plan → qw-review-plan → qw-cases → qw-review-cases
@@ -84,8 +85,7 @@ qw-plan → qw-review-plan → qw-cases → qw-review-cases
 
 The full flow + pairing lives in `plugins/agent-workflows/rules/qa-workflow.md`.
 
-**doc-workflow** is the sibling that turns a codebase into its README — same gated
-discipline:
+**doc-workflow** turns a codebase into its README — same gated discipline:
 
 ```
 doc-gen-readme → doc-review-readme → [human reviews] → PR
@@ -93,19 +93,23 @@ doc-gen-readme → doc-review-readme → [human reviews] → PR
 
 The full flow + pairing lives in `plugins/agent-workflows/rules/doc-workflow.md`.
 
-Two review gates are external skills this toolkit does not own — invoke them by hand:
-- `code-review` (bundled): adversarial diff review. Run after `dw-implement`,
-  alongside `dw-review-implement`. Earns its cost on logic/risk; skip for pure docs.
-- `/review` (builtin): PR overview. Run after `dw-create-pr`, before `dw-merge`.
-
-Don't wire these into the `dw-*` commands — they may not exist in every install,
-and a command that references a missing skill is a dangling pointer.
-
 **Right-size it.** A typo or a one-line doc change does not need the full chain —
-use judgment; branch + PR + merge is enough. The three review passes overlap:
-`dw-review-implement` is the always-on substance gate, `code-review` is for real
-logic or risk, `/review` is the PR summary. Running all three on a trivial diff is
-ritual, not rigor.
+use judgment; branch + PR + merge is enough. The review passes overlap:
+`/code-review-2axis` reads the diff against the standards and the spec,
+`reviewing-finish` runs the tooling and sweeps the leftovers. Running both on a
+trivial diff is ritual, not rigor.
+
+## 5a. How to report
+
+Every reply reporting on work — progress, a verdict, a finding, a status — keeps its
+parts distinct: what was done, what is suspected, what was skipped on purpose, what is
+still uncertain, and what is next. Blending those into one paragraph is the failure this
+guards against. The contract is
+`plugins/agent-workflows/rules/agent-report.md`; the words it uses are
+`.claude/rules/project-profile.md` → Reports.
+
+This binds the session rather than waiting for a skill to invoke itself. An agent
+producing a muddled report is the least likely thing to notice it is producing one.
 
 ## 6. Artifact & doc review discipline
 
@@ -117,7 +121,7 @@ Match the reviewer to **who reads** the file you changed:
   `reviewing-artifacts` (does it do its job — one job, complete, goal-not-spec,
   fits the project, right for its reader).
 
-These are skills this project owns. Like the dev-workflow gates, they stop for a human
+These are skills this project owns. Like every gate in this toolkit, they stop for a human
 and never auto-run — invoke them by hand.
 
 **Right-size it.** A typo or a one-line tweak does not need a review pass — use
@@ -140,6 +144,22 @@ There is no version to bump: the commit is the version.
 
 Only `.claude/rules/project-profile.md` stays in the repo — this project's values, loaded
 because the units cite it by name.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on this repo, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five canonical roles, each label string equal to its name. Distinct from this project's
+`status:*` labels, which track pipeline position rather than readiness.
+See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/agents/domain.md`.
 
 ---
 

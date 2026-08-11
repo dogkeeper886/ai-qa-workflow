@@ -26,23 +26,23 @@ same in every project; this one is not.
 - story id: `STORY-XXX` (zero-padded sequential, e.g. `STORY-001`)
 - scenario id: `TS-NN`
 - case id: `TC-NN`
-- title prefixes: `[STORY-XXX] Plan` · `[STORY-XXX] Test Plan` · `[STORY-XXX] <task>`
+- title prefixes: `[STORY-XXX] Test Plan`
 
 ## Labels
 
 Names the workflow uses; colours where the workflow pins one (`#hex`), otherwise the
 project's choice.
 
-- plan: `plan` (`#5319e7`)
 - test plan: `test-plan` (`#006b75`)
-- priority: `priority:high` · `priority:medium` · `priority:low`
-- type: `feature` · `enhancement` · `bug` · `docs`
-- status: `status:in-progress` · `status:needs-review` · `status:blocked`
+- status: `status:in-progress` · `status:needs-review` — pipeline position, set by
+  `dw-create-pr` and cleared by `dw-merge`
+- triage state (cleared on merge): `ready-for-agent` — readiness, applied by whatever
+  triages this repo's issues. `dw-merge` is the only thing that clears it; without that
+  step it survives on closed work forever.
 
 ## Linking & branch
 
 - story back-reference (in titles/bodies): `[STORY-XXX]`
-- plan back-reference (task → plan): `Part of #<plan>`
 - issue closure (PR → issue): `Fixes #N` / `Closes #N`
 - feature branch name: `issue-<N>-<slug>`
 

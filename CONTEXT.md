@@ -1,9 +1,9 @@
 # agent-workflows
 
-The toolkit that makes an AI coding agent follow an exact, documented order — the
-`dev-workflow`, `qa-workflow`, and `doc-workflow` pipelines, plus the rules and skills
-they read. This glossary fixes the words used to talk about the toolkit *itself*, as
-distinct from the stories, issues, and test docs it produces.
+The layer wrapped around [`mattpocock/skills`](https://github.com/mattpocock/skills) — the
+ship tail, the report contract, the finish review, the `qa-workflow` and `doc-workflow`
+pipelines, plus the rules and skills they read. This glossary fixes the words used to talk
+about the toolkit *itself*, as distinct from the specs, issues, and test docs it produces.
 
 ## Language
 
@@ -42,3 +42,13 @@ _Avoid_: install, configuration, setup
 A project-local copy of a unit taking precedence over the placed one. Harmful when the
 local copy is the older of the two, because nothing in the session says which one ran.
 _Avoid_: overriding, drift, stale copy
+
+**Ship tail**:
+The stretch of a change's life between committed and merged — opening the change request,
+moving labels, merging, deleting the branch.
+_Avoid_: PR flow, merge process, release steps
+
+**Report contract**:
+What a report owes its reader: a verdict, findings, what was checked, what is unresolved,
+and what is next — each kept distinct rather than blended into one paragraph.
+_Avoid_: report format, output template, response style
