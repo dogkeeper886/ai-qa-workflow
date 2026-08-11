@@ -33,8 +33,7 @@ and prepares for PR creation when done.
         │   - Branch name: issue-<N>-<short-slug>
         │     Example: issue-27-release-notes
         │   - Branch from the repo's default branch — derive it, don't hardcode
-        │     `main` (e.g. gh repo view --json defaultBranchRef -q
-        │     .defaultBranchRef.name); check it out and pull, then:
+        │     `main` (see project-profile → Git); check it out and pull, then:
         │     git checkout -b issue-<N>-<slug>
         │   - Comment on issue:
         │     gh issue comment <N> --body "Starting work on branch \`issue-<N>-<slug>\`"

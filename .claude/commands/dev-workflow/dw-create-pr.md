@@ -20,8 +20,7 @@ via "Fixes #N" for auto-closure. Updates issue labels to reflect PR status.
         │   - Confirm you're on the correct branch (issue-<N>-<slug>)
         │   - Run: git status — check for uncommitted changes
         │   - Review the branch's commits against the repo's default branch —
-        │     derive it, don't hardcode `main` (gh repo view --json
-        │     defaultBranchRef -q .defaultBranchRef.name):
+        │     derive it, don't hardcode `main` (see project-profile → Git):
         │     git log --oneline <default>..HEAD
         │   - If no argument given, infer issue number from branch name
         │   - Run: gh issue view <N> — check if title contains [STORY-XXX]

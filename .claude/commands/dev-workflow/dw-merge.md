@@ -56,8 +56,8 @@ story's plans when its last task lands.
         │
         ├─► Step 6: Clean Up Local Branch
         │   - Switch to the repo's default branch and pull — derive it, don't
-        │     hardcode `main` (gh repo view --json defaultBranchRef -q
-        │     .defaultBranchRef.name): git checkout <default> && git pull
+        │     hardcode `main` (see project-profile → Git):
+        │     git checkout <default> && git pull
         │   - Run: git branch -d <branch-name>
         │
         └─► Step 7: Report
