@@ -34,11 +34,11 @@ Names the workflow uses; colours where the workflow pins one (`#hex`), otherwise
 project's choice.
 
 - test plan: `test-plan` (`#006b75`)
-- status: `status:in-progress` · `status:needs-review` — pipeline position, set by
-  `dw-create-pr` and cleared by `dw-merge`
-- triage state (cleared on merge): `ready-for-agent` — readiness, applied by whatever
-  triages this repo's issues. `dw-merge` is the only thing that clears it; without that
-  step it survives on closed work forever.
+- status (pipeline position): `status:in-progress` · `status:needs-review`
+- triage state (readiness): `ready-for-agent`
+
+Which unit sets or clears which is the ship tail's business, not this file's — see the
+plugin's `rules/ship-tail.md`.
 
 ## Linking & branch
 

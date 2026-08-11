@@ -31,6 +31,14 @@ the binding, run, and drift half.
   is deleted instead; front matter keeps an unhashed `spec: <issue#>` so a human can still
   trace a test to its intent.
 
+## Landing this in two steps
+
+The `qw-*` commands, `docs/tests/`, and the drift-anchor change do **not** move in the same
+change as the deletions. They move when `agent-workflows-runner#76` lands, so the QA half is
+never absent from both repos at once. Until then this repo still ships `qw-*`,
+`rules/qa-workflow.md`, and the `story_hash` anchor the profile declares — the third and
+fourth options above describe the decided end state, not today's tree.
+
 ## Consequences
 
 Two plugins now exist, and the runner's `qw-*` cite `agent-report.md` from this one. Claude

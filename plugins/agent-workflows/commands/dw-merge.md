@@ -3,6 +3,7 @@
 ## Rules
 
 Doctrine — the same in every project, and travels with these units:
+@${CLAUDE_PLUGIN_ROOT}/rules/ship-tail.md
 @${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md
 @${CLAUDE_PLUGIN_ROOT}/rules/profile-doctrine.md
 
@@ -58,11 +59,13 @@ this step it survives on closed work forever.
         │   - A label the issue does not carry is not an error — skip it and say so
         │   - The issue auto-closes via its closure keyword — no manual close needed
         │
-        ├─► Step 5: Clean Up Local Branch
+        ├─► Step 5: Confirm the Branch Is Gone
         │   - Switch to the repo's default branch and pull — derive it, don't
         │     hardcode `main` (see project-profile → Git):
         │     git checkout <default> && git pull
-        │   - Run: git branch -d <branch-name>
+        │   - Step 3 usually removed the local branch already. Confirm, and remove
+        │     it if it survived: git branch -d <branch-name>
+        │   - "branch not found" here means Step 3 did its job — not a failure
         │
         └─► Step 6: Report
             - Report per `agent-report`; Trace carries the merged PR URL and the
@@ -98,7 +101,10 @@ this step it survives on closed work forever.
 
 - Uses `gh` CLI for PR and issue operations
 - `--merge` preserves full commit history; the strategy is a profile value
-- `--delete-branch` removes the remote branch; `git branch -d` removes the local one
+- `--delete-branch` removes the remote branch, and the local one too when run inside a
+  clone. Step 5 is the check that it actually happened, not a second attempt: `git branch
+  -d` on an already-deleted branch is a harmless error, and the checkout + pull is what
+  leaves you somewhere sane either way.
 - If the PR is not mergeable or CI fails, report the blocker instead of merging
 - `git branch -d` refuses an unmerged branch — that refusal is a signal, not a
   nuisance. Report it; do not reach for `-D`.

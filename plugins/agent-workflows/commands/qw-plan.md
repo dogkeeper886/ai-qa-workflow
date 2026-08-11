@@ -46,7 +46,7 @@ Fits in the qa-workflow:
         │     behaviour, so the plan reuses vetted coverage instead of duplicating it (optional).
         │   - Check for an existing test-plan issue (extend it, don't duplicate):
         │       gh issue list --search "[STORY-XXX] Test Plan" --label test-plan --state all
-        │     (`test-plan` is qa's own label — distinct from dev's `plan`)
+        │     (`test-plan` — see project-profile → Labels)
         │
         ├─► Step 3: Propose scenarios
         │   - Break the need into scenarios (TS-to-be), each:

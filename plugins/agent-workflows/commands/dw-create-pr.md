@@ -3,6 +3,7 @@
 ## Rules
 
 Doctrine — the same in every project, and travels with these units:
+@${CLAUDE_PLUGIN_ROOT}/rules/ship-tail.md
 @${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md
 @${CLAUDE_PLUGIN_ROOT}/rules/profile-doctrine.md
 
@@ -37,6 +38,9 @@ preceding command it needs — run it straight after whatever produced the commi
         │   - If no argument given, infer the issue number from the branch name
         │     (see project-profile → Linking & branch)
         │   - Run: gh issue view <N> — confirm the issue is the one this branch delivers
+        │   - If there is no issue — none given, none inferable — say so and carry on
+        │     without one. Steps 3 and 4 adapt below; do NOT invent an issue number,
+        │     and do NOT stop. Not every change has a ticket behind it.
         │
         ├─► Step 2: Push Branch
         │   - Run: git push -u origin $(git branch --show-current)
@@ -44,7 +48,8 @@ preceding command it needs — run it straight after whatever produced the commi
         ├─► Step 3: Create PR
         │   - Title: short, imperative, under 70 characters
         │   - Body must carry the issue closure keyword (see project-profile →
-        │     Linking & branch)
+        │     Linking & branch). With no issue, omit that line — and say in the
+        │     report that this PR closes nothing.
         │   - Use this template:
         │
         │       gh pr create --title "<title>" --body "$(cat <<'EOF'
@@ -60,7 +65,7 @@ preceding command it needs — run it straight after whatever produced the commi
         │       EOF
         │       )"
         │
-        ├─► Step 4: Update Issue Labels
+        ├─► Step 4: Update Issue Labels   (skip entirely if there is no issue)
         │   - Move the issue's status label to "under review" (see project-profile
         │     → Labels):
         │     gh issue edit <N> --remove-label "status:in-progress" \

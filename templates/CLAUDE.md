@@ -77,7 +77,8 @@ install it alongside this plugin; nothing here duplicates it.
 which pushes, opens the change request linked to its issue, merges, clears the issue's
 labels, and deletes the branch. Plus `reviewing-finish`: the pass that runs this project's
 tooling and clears the leftovers and orphans a diff-reading review cannot see. Run it
-*after* `/code-review-2axis`, not instead of it.
+*after* `/code-review-2axis`, not instead of it. The full flow + pairing lives in the
+plugin's `rules/ship-tail.md`.
 
 **qa-workflow** turns a story into trustworthy test docs, same gated discipline:
 
