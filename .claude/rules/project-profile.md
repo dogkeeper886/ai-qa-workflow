@@ -59,12 +59,10 @@ silently.
   remote, so neither takes a `-R` / `--repo` argument while inside the repo
 - change-request noun: `PR` (GitLab: `MR`) — wording, which is the one thing derivation
   cannot supply
-- where the verbs differ: comment on an issue `gh issue comment` / `glab issue note` ·
-  label an issue `gh issue edit --add-label` / `glab issue update --label`
-
-A command shows one platform's commands inline as the illustrated default; a project on
-the other host resolves them here rather than editing the command (see
-`profile-doctrine.md` → Two wiring styles).
+- where the verbs differ: change requests `gh pr <verb>` / `glab mr <verb>` · comment on
+  an issue `gh issue comment` / `glab issue note` · label an issue
+  `gh issue edit --add-label` / `glab issue update --label`. The rest — `issue view`,
+  `issue list`, `issue create`, `label create` — read the same on both.
 
 ## Git
 
