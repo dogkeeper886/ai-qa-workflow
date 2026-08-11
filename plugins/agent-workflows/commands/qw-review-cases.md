@@ -18,8 +18,7 @@ Target: the docs/tests/TS-*.md docs written by /qw-cases for a STORY-XXX.
 
 ## PURPOSE
 
-The paired review for `/qw-cases`. The test-doc analogue of `dw-review-implement`:
-gates the written docs for quality and traceability.
+The paired review for `/qw-cases`. Gates the written docs for quality and traceability.
 
 Fits in the qa-workflow:
 

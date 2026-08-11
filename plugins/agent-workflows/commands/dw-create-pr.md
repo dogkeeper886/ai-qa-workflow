@@ -3,7 +3,6 @@
 ## Rules
 
 Doctrine — the same in every project, and travels with these units:
-@${CLAUDE_PLUGIN_ROOT}/rules/dev-workflow.md
 @${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md
 @${CLAUDE_PLUGIN_ROOT}/rules/profile-doctrine.md
 
@@ -17,8 +16,12 @@ Issue number: {{input}}
 
 ## PURPOSE
 
-Creates a pull request for the current branch, linking it to the GitHub Issue
-via "Fixes #N" for auto-closure. Updates issue labels to reflect PR status.
+The first half of the **ship tail** — the stretch between a commit and a merge.
+Pushes the current branch, opens a pull request, and links it to its issue via
+"Fixes #N" so the issue closes on merge instead of by hand.
+
+Takes a committed branch and nothing else. There is no story file, plan issue, or
+preceding command it needs — run it straight after whatever produced the commits.
 
 ---
 
@@ -27,20 +30,21 @@ via "Fixes #N" for auto-closure. Updates issue labels to reflect PR status.
     /dw-create-pr 27
         │
         ├─► Step 1: Verify Readiness
-        │   - Confirm you're on the correct branch (issue-<N>-<slug>)
-        │   - Run: git status — check for uncommitted changes
-        │   - Review the branch's commits against the repo's default branch —
-        │     derive it, don't hardcode `main` (see project-profile → Git):
-        │     git log --oneline <default>..HEAD
-        │   - If no argument given, infer issue number from branch name
-        │   - Run: gh issue view <N> — check if title contains [STORY-XXX]
+        │   - Confirm you're on a feature branch, not the default branch —
+        │     derive the default, don't hardcode `main` (see project-profile → Git)
+        │   - Run: git status — the branch must be committed and clean
+        │   - Review the branch's commits: git log --oneline <default>..HEAD
+        │   - If no argument given, infer the issue number from the branch name
+        │     (see project-profile → Linking & branch)
+        │   - Run: gh issue view <N> — confirm the issue is the one this branch delivers
         │
         ├─► Step 2: Push Branch
         │   - Run: git push -u origin $(git branch --show-current)
         │
         ├─► Step 3: Create PR
         │   - Title: short, imperative, under 70 characters
-        │   - Body must include "Fixes #N" or "Closes #N"
+        │   - Body must carry the issue closure keyword (see project-profile →
+        │     Linking & branch)
         │   - Use this template:
         │
         │       gh pr create --title "<title>" --body "$(cat <<'EOF'
@@ -48,7 +52,6 @@ via "Fixes #N" for auto-closure. Updates issue labels to reflect PR status.
         │       <1-3 bullet points>
         │
         │       Fixes #<issue-number>
-        │       (if linked to story: "Part of STORY-XXX")
         │
         │       ## Test plan
         │       - [ ] ...
@@ -58,21 +61,18 @@ via "Fixes #N" for auto-closure. Updates issue labels to reflect PR status.
         │       )"
         │
         ├─► Step 4: Update Issue Labels
-        │   - Run: gh issue edit <N> --remove-label "status:in-progress" \
-        │          --add-label "status:needs-review"
+        │   - Move the issue's status label to "under review" (see project-profile
+        │     → Labels):
+        │     gh issue edit <N> --remove-label "status:in-progress" \
+        │            --add-label "status:needs-review"
+        │   - A label the issue does not carry is not an error — skip it and say so
         │   - Comment on issue:
         │     gh issue comment <N> --body "PR #<PR> created. Summary: <what changed>"
         │
-        ├─► Step 5: Update Story File (if linked)
-        │   - If the issue title contains [STORY-XXX]:
-        │     update docs/stories/STORY-XXX.md status to reflect PR is open
-        │   - Skip silently if no story link or docs/stories/ doesn't exist
-        │
-        └─► Step 6: Report
+        └─► Step 5: Report
             - Report per `agent-report`; Trace carries the PR URL
-            - Next is the HUMAN review + test — stop here, don't auto-advance. Merge
-              with /dw-merge <PR> only once a human is satisfied. (The change's
-              substance was already gated locally by /dw-review-implement.)
+            - Next is the HUMAN review + test — stop here, don't auto-advance.
+              Merge with /dw-merge <PR> only once a human is satisfied.
 
 ---
 

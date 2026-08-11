@@ -78,7 +78,7 @@ Where each type leans:
 |----------|----------|
 | Command / skill | Q3 (no hardcoding), Q5 (agent can follow it), Q6 if it produces |
 | README / user doc | Q5 (reads for a human), Q1 (one clear job) |
-| Story | Q3 (goal, not spec) — this is what `dw-review-story` checks at the story stage |
+| Story / spec | Q3 (goal, not spec) — the need, not a frozen design |
 | CLAUDE.md | Q2/Q4 (matches the repo as it actually is — no orphaned references) |
 
 ## Steps

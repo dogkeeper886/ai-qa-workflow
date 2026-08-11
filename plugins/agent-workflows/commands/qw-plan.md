@@ -93,8 +93,7 @@ report says so.
 
 - A scenario here is a *plan item*, not yet a file — `qw-cases` writes the doc.
 - The scenarios persist as a `[STORY-XXX] Test Plan` issue (label `test-plan`; ad-hoc →
-  `Test Plan: <subject>`) — the same plan-as-issue form `dev-workflow` uses, with its own
-  `test-plan` label so it never collides with dev's `[STORY-XXX] Plan` (label `plan`).
+  `Test Plan: <subject>`) — the plan lives where the work does, not in a separate store.
 - The story is the goal; keep the plan to coverage, not step detail.
 - Producer paired with `/qw-review-plan`, which reviews the issue.
 ```

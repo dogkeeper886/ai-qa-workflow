@@ -18,7 +18,7 @@ Target: the reviewed `[STORY-XXX] Test Plan` issue from `/qw-review-plan` (its s
 
 ## PURPOSE
 
-The authoring producer of the qa-workflow — the test analogue of `dw-implement`.
+The authoring producer of the qa-workflow.
 Writes each planned scenario as a `docs/tests/TS-*.md` doc in the format contract
 (docs/tests/README.md): front-matter + cases, each case a Steps table of
 Action / Expected Result rows.

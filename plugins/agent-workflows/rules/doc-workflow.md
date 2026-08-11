@@ -1,7 +1,7 @@
 # doc-workflow
 
-A sibling to `dev-workflow` and `qa-workflow`. Where dev-workflow turns a need into shipped
-code, doc-workflow turns a **codebase into its README** — a newcomer-facing document grounded
+A sibling to `qa-workflow`. Where qa-workflow turns a story into trustworthy test docs,
+doc-workflow turns a **codebase into its README** — a newcomer-facing document grounded
 in current best practice, leading with the few ideas worth a diagram, and true to the code.
 
 ## The flow

@@ -1,7 +1,6 @@
 # qa-workflow
 
-A sibling to `dev-workflow`. Where dev-workflow turns a need into shipped code, qa-workflow
-turns a story into **trustworthy test docs** — readable markdown in `docs/tests/`, authored
+Turns a story into **trustworthy test docs** — readable markdown in `docs/tests/`, authored
 from a reviewed test plan. This repo owns the **authoring** half (markdown + GitHub); binding
 those docs to a runner and running them is the project's own layer.
 
@@ -23,10 +22,9 @@ those docs to a runner and running them is the project's own layer.
 ## The test-plan issue
 
 `qw-plan`'s scenarios persist as a **GitHub issue**, titled `[STORY-XXX] Test Plan`, labelled
-`test-plan` (distinct from dev's `[STORY-XXX] Plan`). `qw-review-plan` reviews it; `qw-cases`
-reads it and records the issue number in each `TS-*.md` `plan:` field. Closing it falls to
-`dw-merge`: this pipeline has no terminal gate of its own, and the docs reach the default
-branch through the dev-workflow like any other change.
+`test-plan`. `qw-review-plan` reviews it; `qw-cases` reads it and records the issue number in
+each `TS-*.md` `plan:` field. Nothing auto-closes it — no change request targets a test plan
+— so close it by hand once its docs have landed.
 
 ## Producer → review pairing
 
