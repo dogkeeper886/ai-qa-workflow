@@ -6,37 +6,14 @@ paths:
 
 # project-profile
 
-The one place a downstream project declares its specifics. The shipped commands and
-skills state their *intent* and resolve any project-specific value — a path, an ID
-scheme, a label, an integration, a format, an audience — **from this file**, instead of
-hardcoding it. Customize a workflow by editing this file, not the units.
+**The values this project declares.** Every unit resolves its project-specific values from
+here rather than hardcoding them, so a workflow is customized by editing this file and not
+the units. Change a line here and every unit follows.
 
-**How a unit uses it.** Where a command or skill would otherwise bake in a value, it
-points at the matching section here (e.g. "create the *plan* label — see
-project-profile → Labels"). The values below are the **defaults**: they reproduce this
-repo's current behaviour, so a project that changes nothing behaves exactly as it does
-now. Adoption is opt-in — change a line here and every unit follows.
-
-**Two wiring styles, and when each applies.** A **skill** points at this file at each point
-of use — it is read on its own, with no rule loaded beside it. A **command** may show a
-value inline as an illustrated default; its group rule (`.claude/rules/*.md`) carries the
-"these resolve from the profile" statement for the whole group, so the pointer is not
-repeated line by line. Both are correct. Which one applies is decided by whether the unit
-is read together with its rule — not by preference.
-
-**What belongs here vs. not.** This file is for **declarative** customization — a value
-or a list. A whole **procedure** (e.g. how to publish to Confluence and review the
-render) is *not* a value; it belongs in its own project-owned skill, never crammed into
-a general unit. Lists → here; procedures → a project skill. This is the rules files'
-"what this owns vs. what it hands off" boundary, made concrete.
-
-The same line binds the **units**. A value this file can restate is safe for a unit to show
-inline; a *procedure* never is — how drift is detected, how files are laid out. No value can
-override a procedure, so a project that does it another way is forced to edit the shipped
-unit, and its repo then reads as drifted when it was only working around us. State the goal;
-let this file or the project's own layer name the mechanism.
-
----
+How that resolution works — the two wiring styles, what belongs here rather than in a
+project skill, and what happens when a value cannot be resolved — is
+`.claude/rules/profile-doctrine.md`. That file is the same in every project; this one is
+not.
 
 ## Paths
 
@@ -71,9 +48,29 @@ project's choice.
 - issue closure (PR → issue): `Fixes #N` / `Closes #N`
 - feature branch name: `issue-<N>-<slug>`
 
+## Platform
+
+The code host and issue tracker. **Worked out, not written down** — a unit derives the
+host from `git remote get-url origin`. No hostname, owner, or repository path belongs in
+this file or in any unit; an address a person has to keep correct is one that goes stale
+silently.
+
+- CLI: `gh` (GitHub) · `glab` (GitLab) — both read the current repository from the git
+  remote, so neither takes a `-R` / `--repo` argument while inside the repo
+- change-request noun: `PR` (GitLab: `MR`) — wording, which is the one thing derivation
+  cannot supply
+- where the verbs differ: comment on an issue `gh issue comment` / `glab issue note` ·
+  label an issue `gh issue edit --add-label` / `glab issue update --label`
+
+A command shows one platform's commands inline as the illustrated default; a project on
+the other host resolves them here rather than editing the command (see
+`profile-doctrine.md` → Two wiring styles).
+
 ## Git
 
-- default branch: *derive it* (`gh repo view --json defaultBranchRef -q .defaultBranchRef.name`), don't assume `main`
+- default branch: *derive it* (`git symbolic-ref --quiet refs/remotes/origin/HEAD`, minus
+  the `refs/remotes/origin/` prefix), don't assume `main` — no network call and no
+  platform CLI, so it reads the same on every host
 - merge strategy: `--merge` (preserve history; switch to `--squash` only if the project requires)
 
 ## Front-matter & format contract (test docs)

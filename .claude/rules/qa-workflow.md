@@ -54,6 +54,11 @@ The format a test doc must follow is `docs/tests/README.md`.
 ## Project-specific values
 
 The `docs/tests/` path, the `test-plan` label + colour, the `TS-`/`TC-` id schemes, the
-test-doc front-matter fields, the drift anchor, and the default status are **not** owned
-by the `qw-*` commands — they resolve from `.claude/rules/project-profile.md`. The values
-a command shows are the defaults; change them in the profile, not the command.
+test-doc front-matter fields, the drift anchor, the default status, and **the platform** —
+the CLI and the verbs that differ between hosts — are **not** owned by the `qw-*` commands.
+They resolve from `.claude/rules/project-profile.md`. The values a command shows are the
+defaults; change them in the profile, not the command.
+
+The `gh` invocations in these commands are that kind of illustrated default; a project on
+another host reads its equivalents from the profile's **Platform** section rather than
+editing the command.

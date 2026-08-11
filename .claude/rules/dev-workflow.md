@@ -75,7 +75,13 @@ review passes plus a plan issue on a typo is ritual, not rigor.
 ## Project-specific values
 
 Story paths, the `STORY-XXX` id scheme, label names + colours, the `[STORY-XXX]` /
-`Part of #<plan>` linking patterns, the `issue-<N>-<slug>` branch name, and the merge
-strategy are **not** owned by the `dw-*` commands — they resolve from
+`Part of #<plan>` linking patterns, the `issue-<N>-<slug>` branch name, the merge
+strategy, and **the platform** — the CLI, the change-request noun, and the verbs that
+differ between hosts — are **not** owned by the `dw-*` commands. They resolve from
 `.claude/rules/project-profile.md`. The values a command shows are the defaults; change
 them in the profile, not the command.
+
+The `gh` invocations throughout these commands are that kind of illustrated default. A
+project on another host reads its equivalents from the profile's **Platform** section; no
+`dw-*` command names a hostname, an owner, or a repository path, and none should be edited
+to add one.

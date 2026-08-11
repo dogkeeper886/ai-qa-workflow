@@ -46,7 +46,8 @@ Ask these of any artifact. The artifact's type shifts which ones bite hardest.
    filenames, magic values that should be derived, rigid step-by-step where a principle
    would do, and references to tools or layouts that have moved.
    **Bakes in a mechanism?** Hardest bite of this question. A value `project-profile.md`
-   owns may appear inline as a default (see its "Two wiring styles"), but a *procedure* —
+   owns may appear inline as a default (see `profile-doctrine.md` → "Two wiring styles"),
+   but a *procedure* —
    how drift is detected, how files are laid out — cannot be overridden by any value, so a
    project that does it differently must edit the shipped unit. Flag every "compute X this
    way" or "write it at this path" that the profile cannot redirect; the fix is to state

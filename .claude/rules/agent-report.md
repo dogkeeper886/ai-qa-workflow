@@ -71,5 +71,5 @@ when it finishes and hands a decision to a human. Below that, use judgment.
 A frozen block of headings is a *procedure* — no profile value can override it, so a
 project that reports differently would be forced to edit a shipped unit and its repo
 would then read as drifted when it was only working around us (see
-`project-profile.md` → what belongs here vs. not). State the questions; let the profile
-name the words.
+`profile-doctrine.md` → what belongs in the profile, and what does not). State the
+questions; let the profile name the words.
