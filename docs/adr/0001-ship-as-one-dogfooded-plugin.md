@@ -26,6 +26,16 @@ reinstall first. That is a real cost for the one repo whose job is editing units
 is accepted deliberately: fidelity between tested and shipped is worth more than the
 inner loop.
 
+> **Correction, 2026-08-11.** That cost was predicted and never materialised for the repo
+> it was accepted for. Placed the way this repo is dogfooded — a marketplace added from a
+> *directory* rather than from GitHub — the plugin is served from the working tree, so an
+> edit takes effect on the next session restart with no reinstall. The cost is real only
+> for a GitHub placement, which is what downstreams use and what the README documents.
+>
+> The decision stands and its motive is unchanged: the tested copy and the shipped copy
+> are still one thing. Only the accepted cost was wrong, and in our favour. Observed by
+> finding a skill loaded in-session that existed in no cache snapshot.
+
 Doctrine and values separate by citation syntax rather than by convention.
 `${CLAUDE_PLUGIN_ROOT}/rules/…` means doctrine and resolves inside the plugin;
 `.claude/rules/project-profile.md` means values and resolves in the project. A project

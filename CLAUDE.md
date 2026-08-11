@@ -131,17 +131,24 @@ wording, or the artifact's fitness actually matters.
 
 ## 7. This repo runs the plugin it ships
 
-The units live in `plugins/agent-workflows/`, not in `.claude/`. The session loads the
-**installed** plugin — a snapshot pinned to a commit — so editing a unit here does not
-change the command you are running. That trade is [ADR-0001](docs/adr/0001-ship-as-one-dogfooded-plugin.md);
-the cost is one command and a restart:
+The units live in `plugins/agent-workflows/`, not in `.claude/` — this repo consumes the
+plugin it ships ([ADR-0001](docs/adr/0001-ship-as-one-dogfooded-plugin.md)). **How your
+edits take effect depends on how you placed it**, and the two cases differ enough to be
+worth knowing which you are in — check `~/.claude/plugins/known_marketplaces.json`:
 
-```
-claude plugin update agent-workflows@agent-workflows
-```
+| Placed from | What loads | To see an edit |
+|---|---|---|
+| a **directory** (`/plugin marketplace add <path to this repo>`) | the working tree | restart the session |
+| **GitHub** (`dogkeeper886/agent-workflows`, as the README tells downstreams) | a snapshot pinned to a commit | `claude plugin update agent-workflows@agent-workflows`, then restart |
 
-Qualify the name with the marketplace — the bare `agent-workflows` does not resolve.
-There is no version to bump: the commit is the version.
+Qualify the name with the marketplace — the bare `agent-workflows` does not resolve. There
+is no version to bump either way: the commit is the version.
+
+On a directory install, two things follow. A restart also picks up **uncommitted** edits —
+convenient while authoring a unit, a trap if you restart mid-edit with one half-written.
+And `~/.claude/plugins/` reads as authoritative when it is not: `installed_plugins.json`
+pins an `installPath` into a cache snapshot that may be many commits stale, and that
+snapshot is not what loads. Trust the tree.
 
 Only `.claude/rules/project-profile.md` stays in the repo — this project's values, loaded
 because the units cite it by name.
