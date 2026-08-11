@@ -1,15 +1,14 @@
 # agent-workflows
 
-Slash commands that make an AI coding agent follow an **exact, documented order** — driven by GitHub issues and the story files in the repo. Two workflows ship in the plugin:
+**The layer wrapped around [`mattpocock/skills`](https://github.com/mattpocock/skills).** His set carries an idea to a commit — `/grill-with-docs`, `/to-spec`, `/to-tickets`, `/implement`, `/code-review-2axis` — and stops there. This plugin carries it the rest of the way, and adds the checks his diff-reading review cannot make.
 
-- **dev-workflow** (`dw-*`) — turn a need into shipped work through an ordered lifecycle: story → plan → tasks → implement → PR → merge. Each step is paired with a review; nothing skips ahead. The lifecycle is general — it disciplines any ordered action, not just code.
-- **qa-workflow** (`qw-*`) — author test **docs** kept *separate* from the test scripts, each mapped to the story it verifies (**test ↔ script ↔ story**). Splitting the doc from the script means coverage isn't silently lost as the code changes across cycles.
+These two are **complements, not alternatives**. Install both.
 
-![agent-workflows: two workflows — dev-workflow (dw-*) and qa-workflow (qw-*)](docs/diagrams/png/01-two-workflows.png)
+![The pipeline: mattpocock/skills carries idea to commit; agent-workflows carries commit to merged](docs/diagrams/png/01-the-complement.png)
 
 ## Contents
 
-- [Why two workflows](#why-two-workflows)
+- [What this adds](#what-this-adds)
 - [Getting started](#getting-started)
 - [Usage](#usage)
 - [Available commands](#available-commands)
@@ -18,13 +17,19 @@ Slash commands that make an AI coding agent follow an **exact, documented order*
 - [The agent family](#the-agent-family)
 - [License](#license)
 
-## Why two workflows
+## What this adds
 
-**dev-workflow is the discipline.** An agent that follows the order instead of improvising — every change flows from a single GitHub issue (the source of truth), and a human gate sits between each step, so nothing runs ahead of your review.
+Four things his set does not reach.
 
-![dev-workflow pipeline: each producer gated by a paired review, from dw-story to dw-merge](docs/diagrams/png/02-dev-workflow-pipeline.png)
+**The ship tail.** `/implement` ends at *"commit your work to the current branch"* — nothing pushes, opens a change request, or merges. `dw-create-pr` pushes and opens the PR already linked to its issue; `dw-merge` merges, clears the labels, deletes the branch, and puts you back on the default branch. `/triage` applies a `ready-for-agent` state and nothing upstream ever clears it — the merge step is that label's only exit.
 
-**qa-workflow is the anti-drift layer.** A test is a markdown **doc** (what to verify, mapped to a story); the **script** that runs it lives in the runner repo. The doc records its `story` + `story_hash`, so when the story changes the hash no longer matches and the test is flagged stale — drift is caught instead of quietly accumulating. Authoring is self-contained (markdown + GitHub); executing the scripts is the runner's job — see [the agent family](#the-agent-family).
+**The finish review.** `/code-review-2axis` reads the diff. It cannot run your build, and it does not look for the debris a change leaves behind. `reviewing-finish` runs the project's own tooling, sweeps the debug prints and commented-out blocks and stray TODOs, and removes the imports and files *your* change orphaned. It runs **after** the two-axis review, never instead of it.
+
+**The report contract.** A reply that blends what was done, what is suspected, what was skipped on purpose and what is still uncertain into one paragraph is unreadable at exactly the moment it matters. `rules/agent-report.md` keeps those parts distinct — bound from your project's `CLAUDE.md`, so it holds even when the agent is the one producing the mess.
+
+**Review gates for existing documents.** His writing skills generate prose; none of them judges a document that already exists. `reviewing-phrasing`, `reviewing-typography`, and `reviewing-artifacts` do — and `doc-gen-readme` / `doc-review-readme` are a README author and its accuracy gate.
+
+Also here: **qa-workflow** (`qw-*`), which turns a story into test **docs** kept separate from the scripts that run them, so coverage isn't silently lost as the code changes.
 
 ![qa-workflow anti-drift: the test doc records the story hash; when the story changes the hash mismatches and the test is flagged stale](docs/diagrams/png/05-anti-drift.png)
 
@@ -34,16 +39,16 @@ Two separate things, and only one of them repeats.
 
 ### Placement — once, for all projects
 
-The toolkit is a single Claude Code plugin, and this repository is its own marketplace. Nothing to clone, no files to copy, no build step:
+Both plugins. This one is its own marketplace; nothing to clone, no build step:
 
 ```
 /plugin marketplace add dogkeeper886/agent-workflows
 /plugin install agent-workflows@agent-workflows
 ```
 
-Restart your IDE and the commands are there. One copy exists, so `/plugin update agent-workflows@agent-workflows` moves every project at once — there is no per-project copy to go stale behind you.
+Then install [`mattpocock/skills`](https://github.com/mattpocock/skills) for the front half, following its own instructions. Restart your IDE and both sets are there. `/plugin update agent-workflows@agent-workflows` moves every project at once — there is no per-project copy to go stale behind you.
 
-The `dw-*` / `qw-*` commands drive your host's CLI — [`gh`](https://cli.github.com/) for GitHub, [`glab`](https://gitlab.com/gitlab-org/cli) for GitLab — worked out from the repo's git remote. Make sure the one you need is authenticated.
+The commands drive your host's CLI — [`gh`](https://cli.github.com/) for GitHub, [`glab`](https://gitlab.com/gitlab-org/cli) for GitLab — worked out from the repo's git remote. Make sure the one you need is authenticated.
 
 ### Adoption — once per project
 
@@ -56,31 +61,35 @@ mkdir -p .claude/rules && curl -o .claude/rules/project-profile.md \
 
 Then edit it. What it declares:
 
-- where stories and test docs live, and how they're numbered
-- label names and colours
-- the branch-name pattern and merge strategy
+- where test docs and diagrams live, and how they're numbered
+- label names — including the triage state `dw-merge` clears
+- the branch-name pattern, the closure keyword, and the merge strategy
 - test-doc front matter and how staleness is detected
 - the change-request noun your host uses — `PR` or `MR`
 - the verdict words a review reports in
 
 Everything a command would otherwise hardcode resolves from this file — you adapt the workflow here, never the units. The shipped values reproduce this repo's own behaviour, so changing nothing is safe.
 
-This is the one file adoption touches, and it cannot be shared between projects. A repo that declares nothing **stops and says so** — there is deliberately no fallback to a global profile, because a silent one would run another project's conventions with nothing in the session to reveal it.
+A repo that declares nothing **stops and says so**. There is deliberately no fallback to a global profile: a silent one would run another project's conventions with nothing in the session to reveal it.
+
+Finally, copy [`templates/CLAUDE.md`](templates/CLAUDE.md) into your repo — it is what binds the report contract to every session.
 
 ## Usage
 
-Drive a change from need to merge through the dev-workflow pipeline — each step suggests the next, none auto-runs it:
+Drive a change from idea to merged. The first five steps are Matt's; the last three are this plugin's:
 
 ```
-/dw-story    Add cross-repo sync     # capture the need as docs/stories/STORY-XXX.md
-/dw-plan     STORY-007               # research → one GitHub plan issue (the approach)
-/dw-tasks    STORY-007               # break the plan into task issues
-/dw-implement 27                     # branch issue-27-<slug>, implement, commit
-/dw-create-pr 27                     # push the branch, open the PR (Closes #27)
-/dw-merge    27                      # merge, close the issue, clean up
+/grill-with-docs   Add cross-repo sync   # interview the idea until it holds up
+/to-spec                                 # publish the agreed need as a spec issue
+/to-tickets                              # decompose it, with blocking edges declared
+/implement         27                    # build it, ending at a commit
+/code-review-2axis                       # the diff, against standards and spec
+                                         # ── the handoff ──
+reviewing-finish                         # run the tooling; clear leftovers and orphans
+/dw-create-pr      27                    # push, open the PR, link it (Fixes #27)
+                                         # ── a human reviews and tests ──
+/dw-merge          30                    # merge, clear the labels, delete the branch
 ```
-
-Each producer has a paired review gate — `dw-review-story`, `dw-review-tasks`, `dw-review-implement` — run between the steps above. The full flow lives in [`rules/dev-workflow.md`](plugins/agent-workflows/rules/dev-workflow.md).
 
 The qa-workflow turns a story into test docs the same gated way:
 
@@ -91,7 +100,7 @@ The qa-workflow turns a story into test docs the same gated way:
 /qw-review-cases STORY-007           # gate the docs
 ```
 
-The full qa lifecycle spans two repos — this repo authors the docs; the runner binds and runs them:
+Its full lifecycle spans two repos — this repo authors the docs; the runner binds and runs them:
 
 ![qa-workflow full lifecycle: authoring in agent-workflows hands off to execution (bind, review-bind, ci-run, drift) in agent-workflows-runner](docs/diagrams/png/03-qa-workflow-pipeline.png)
 
@@ -99,27 +108,23 @@ The full qa lifecycle spans two repos — this repo authors the docs; the runner
 
 All of them live in [`plugins/agent-workflows/commands/`](plugins/agent-workflows/commands/).
 
-### Dev Workflow (`dw-*`)
-
-Issue-driven lifecycle: capture, plan, implement, review, ship.
-
-`dw-story` · `dw-review-story` · `dw-plan` · `dw-tasks` · `dw-review-tasks` · `dw-implement` · `dw-review-implement` · `dw-create-pr` · `dw-merge`
-
-### QA Workflow (`qw-*`)
-
-Test-doc authoring, each producer paired with a review.
-
-`qw-plan` · `qw-review-plan` · `qw-cases` · `qw-review-cases`
+| Group | Commands | Job |
+|-------|----------|-----|
+| **Ship tail** | `dw-create-pr` · `dw-merge` | commit → merged, with the branch and labels cleaned up |
+| **QA workflow** | `qw-plan` · `qw-review-plan` · `qw-cases` · `qw-review-cases` | a story → test docs, each producer paired with a review |
+| **Doc workflow** | `doc-gen-readme` · `doc-review-readme` | a codebase → its README, and the accuracy gate |
 
 ## Skills
 
-Skills shipped in the plugin, alongside the commands.
+Shipped in the plugin alongside the commands. All are invoked by hand.
 
-**The review skills (`reviewing-*`)** judge finished work — by judgment, not a scored checklist; a minimum bar, not an exhaustive one. Invoke them by hand.
+**`reviewing-finish`** is the pass after `/code-review-2axis`: it runs the project's tooling so "verified" means observed, sweeps leftovers, removes the orphans your change created, and ends in a verdict that routes somewhere.
+
+**The review skills (`reviewing-*`)** judge finished work by judgment, not a scored checklist — a minimum bar, not an exhaustive one.
 
 ![Review skills: human-read docs go to reviewing-phrasing (words) + reviewing-typography (look); agent-read tooling goes to reviewing-artifacts](docs/diagrams/png/07-review-skills.png)
 
-**`reporting-outcomes`** shapes the reply an agent writes when it reports back in chat — the turn carrying progress, a verdict, reasons and a status at once. `agent-report.md` binds what a *command* prints at a gate; this puts the same shape on the conversational report-back, which nothing else covers. It fires on its own, not by hand, and states as carefully when it should stay out of the way.
+**`reporting-outcomes`** shapes the reply an agent writes when it reports back in chat — the turn carrying progress, a verdict, reasons and a status at once. `agent-report.md` binds what a *command* prints at a gate; this puts the same shape on the conversational report-back.
 
 ## Project structure
 
@@ -128,15 +133,15 @@ agent-workflows/
 ├── .claude-plugin/
 │   └── marketplace.json   # This repo is its own marketplace
 ├── plugins/agent-workflows/   # The shipped plugin — placed once, reaching every project
-│   ├── commands/          # dw-* (dev), qw-* (qa), doc-* (README authoring)
-│   ├── skills/            # Review skills (reviewing-*) + reporting-outcomes
+│   ├── commands/          # dw-* (ship tail), qw-* (qa), doc-* (README authoring)
+│   ├── skills/            # reviewing-* + reporting-outcomes
 │   └── rules/             # Doctrine: the pipelines, the report contract, profile-doctrine
 ├── .claude/rules/
 │   └── project-profile.md # This project's values — the one file adoption touches
-├── templates/             # Sample CLAUDE.md for projects adopting these workflows
+├── templates/             # CLAUDE.md for projects adopting these workflows
 ├── docs/
 │   ├── adr/               # Architecture decisions (ADR-*)
-│   ├── stories/           # User stories (STORY-*)
+│   ├── stories/           # Historical story records (no command writes these now)
 │   └── tests/             # qa-workflow test-doc output
 ├── CLAUDE.md              # Behavioral guidelines + workflow discipline for the agent
 └── README.md
@@ -144,13 +149,13 @@ agent-workflows/
 
 ## The agent family
 
-This repo is the **`agent-workflows`** layer — the commands and the test docs they author. Two sibling repos complete the picture:
+This repo is the **`agent-workflows`** layer. Two sibling repos complete the picture:
 
 ![The agent family: agent-workflows authors commands and test docs; agent-workflows-runner executes them; agent-studio wraps both into a product](docs/diagrams/png/09-agent-family.png)
 
 | Repo | Role | Status |
 |------|------|--------|
-| **agent-workflows** (this repo) | dev-workflow + qa-workflow commands and the test docs they author | — |
+| **agent-workflows** (this repo) | the ship tail, the review skills, and the qa/doc workflows | — |
 | [**agent-workflows-runner**](https://github.com/dogkeeper886/agent-workflows-runner) | executes the test scripts the qa-workflow docs map to — a dual-judge framework (fast checks + opt-in LLM judge) | shipped |
 | **agent-studio** | local-first web GUI over the workflows + runner; closes the Dev → QA → PM loop | working name (currently `ai-qa-studio`), planning |
 

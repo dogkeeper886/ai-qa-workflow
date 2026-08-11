@@ -3,7 +3,11 @@
 Each story is a **readable markdown document** that lives here. It states a **need** — a
 goal, not a spec — in the user's terms. The markdown is the *canonical* record of *why* a
 piece of work exists; it is the stable anchor the plan and task issues trace back to.
-`dw-story` writes these; `dw-review-story` reviews them.
+
+**No command in this plugin writes these any more.** New intent is captured as a spec
+issue by [`mattpocock/skills`](https://github.com/mattpocock/skills)' `/to-spec`; the files
+here are the historical record, and the format below is what a reader (or `qw-plan`) can
+still expect from them.
 
 The **how** — the agreed approach and the work itself — lives in the **plan issue** and the
 **task issues** on GitHub, **not here**. A story says what's needed and what success looks
@@ -66,15 +70,13 @@ The Status block grows as the work moves, linking the story to its GitHub artifa
 ```
 
 - `Created:` on every story; the **bold `Completed:`** line is added (first) once delivered.
-- `Plan:` is the `[STORY-XXX] Plan` issue (`dw-plan`); `Issues:` are the tasks (`dw-tasks`),
-  ✅ when closed.
+- `Plan:` is the `[STORY-XXX] Plan` issue; `Issues:` are the task issues, ✅ when closed.
 
 ## Goal, not spec
 
-`dw-review-story` gates exactly this: the story is **complete** (every section present and
-substantive) and stays a **goal document** — no leaked implementation, success written as
-outcomes, the technical *how* left to the issues. A story decidable by someone who won't
-build it has passed.
+A story is **complete** (every section present and substantive) and stays a **goal
+document** — no leaked implementation, success written as outcomes, the technical *how*
+left to the issues. A story decidable by someone who won't build it has passed.
 
 ## Traceability
 
@@ -87,5 +89,4 @@ path / `gh`.
 ## Beyond the story (the plan + issues)
 
 The approach, the task breakdown, and the build history are the **plan issue** and **task
-issues'** concern, not this format's. The story records the need; the issues carry the how
-(see the plugin's `rules/dev-workflow.md`).
+issues'** concern, not this format's. The story records the need; the issues carry the how.

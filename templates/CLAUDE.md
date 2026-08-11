@@ -63,19 +63,24 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ## 5. Workflow discipline
 
 Substantial work flows through a pipeline; each step is a gate that stops for a
-human decision (commands suggest the next, they never auto-run it):
+human decision (nothing auto-runs the next):
 
 ```
-dw-story → dw-review-story → dw-plan → [human reviews the plan issue]
-        → dw-tasks → dw-review-tasks → dw-implement → dw-review-implement
-        → dw-create-pr → [human review + /review] → dw-merge
+/grill-with-docs → /to-spec → /to-tickets → /implement → /code-review-2axis
+                → reviewing-finish → dw-create-pr → [human review] → dw-merge
 ```
 
-The full flow + producer→review pairing lives in the plugin's `rules/dev-workflow.md`.
-Trivial work skips the plan: `dw-story → dw-tasks`.
+**Idea through commit** is [`mattpocock/skills`](https://github.com/mattpocock/skills) —
+install it alongside this plugin; nothing here duplicates it.
 
-**qa-workflow** is the sibling pipeline — same gated discipline, turning a story into
-trustworthy test docs:
+**Commit through merge** is this plugin — the **ship tail** (`dw-create-pr` → `dw-merge`),
+which pushes, opens the change request linked to its issue, merges, clears the issue's
+labels, and deletes the branch. Plus `reviewing-finish`: the pass that runs this project's
+tooling and clears the leftovers and orphans a diff-reading review cannot see. Run it
+*after* `/code-review-2axis`, not instead of it. The full flow + pairing lives in the
+plugin's `rules/ship-tail.md`.
+
+**qa-workflow** turns a story into trustworthy test docs, same gated discipline:
 
 ```
 qw-plan → qw-review-plan → qw-cases → qw-review-cases
@@ -83,8 +88,7 @@ qw-plan → qw-review-plan → qw-cases → qw-review-cases
 
 The full flow + pairing lives in the plugin's `rules/qa-workflow.md`.
 
-**doc-workflow** is the sibling that turns a codebase into its README — same gated
-discipline:
+**doc-workflow** turns a codebase into its README — same gated discipline:
 
 ```
 doc-gen-readme → doc-review-readme → [human reviews] → PR
@@ -92,19 +96,22 @@ doc-gen-readme → doc-review-readme → [human reviews] → PR
 
 The full flow + pairing lives in the plugin's `rules/doc-workflow.md`.
 
-Two review gates are external skills this toolkit does not own — invoke them by hand:
-- `code-review` (bundled): adversarial diff review. Run after `dw-implement`,
-  alongside `dw-review-implement`. Earns its cost on logic/risk; skip for pure docs.
-- `/review` (builtin): PR overview. Run after `dw-create-pr`, before `dw-merge`.
-
-Don't wire these into the `dw-*` commands — they may not exist in every install,
-and a command that references a missing skill is a dangling pointer.
-
 **Right-size it.** A typo or a one-line doc change does not need the full chain —
-use judgment; branch + PR + merge is enough. The three review passes overlap:
-`dw-review-implement` is the always-on substance gate, `code-review` is for real
-logic or risk, `/review` is the PR summary. Running all three on a trivial diff is
-ritual, not rigor.
+use judgment; branch + PR + merge is enough. The review passes overlap:
+`/code-review-2axis` reads the diff against the standards and the spec,
+`reviewing-finish` runs the tooling and sweeps the leftovers. Running both on a
+trivial diff is ritual, not rigor.
+
+## 5a. How to report
+
+Every reply reporting on work — progress, a verdict, a finding, a status — keeps its
+parts distinct: what was done, what is suspected, what was skipped on purpose, what is
+still uncertain, and what is next. Blending those into one paragraph is the failure this
+guards against. The contract is the plugin's `rules/agent-report.md`; the words it uses
+are `.claude/rules/project-profile.md` → Reports.
+
+This binds the session rather than waiting for a skill to invoke itself. An agent
+producing a muddled report is the least likely thing to notice it is producing one.
 
 ## 6. Artifact & doc review discipline
 
@@ -116,7 +123,7 @@ Match the reviewer to **who reads** the file you changed:
   `reviewing-artifacts` (does it do its job — one job, complete, goal-not-spec,
   fits the project, right for its reader).
 
-These are skills the plugin ships. Like the dev-workflow gates, they stop for a human
+These are skills the plugin ships. Like every gate in this toolkit, they stop for a human
 and never auto-run — invoke them by hand.
 
 **Right-size it.** A typo or a one-line tweak does not need a review pass — use
