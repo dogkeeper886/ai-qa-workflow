@@ -67,13 +67,13 @@ human decision (nothing auto-runs the next):
 
 ```
 /grill-with-docs → /to-spec → /to-tickets → /implement → /code-review-2axis
-                → reviewing-finish → dw-create-pr → [human review] → dw-merge
+                → reviewing-finish → ship-create-pr → [human review] → ship-merge
 ```
 
 **Idea through commit** is [`mattpocock/skills`](https://github.com/mattpocock/skills) —
 install it alongside this plugin; nothing here duplicates it.
 
-**Commit through merge** is this plugin — the **ship tail** (`dw-create-pr` → `dw-merge`),
+**Commit through merge** is this plugin — the **ship tail** (`ship-create-pr` → `ship-merge`),
 which pushes, opens the change request linked to its issue, merges, clears the issue's
 labels, and deletes the branch. Plus `reviewing-finish`: the pass that runs this project's
 tooling and clears the leftovers and orphans a diff-reading review cannot see. Run it

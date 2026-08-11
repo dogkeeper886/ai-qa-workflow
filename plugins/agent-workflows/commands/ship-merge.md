@@ -30,7 +30,7 @@ this step it survives on closed work forever.
 
 ## WORKFLOW
 
-    /dw-merge 30
+    /ship-merge 30
         │
         ├─► Step 1: Verify Ready to Merge
         │   - Run: gh pr view <PR> --json mergeStateStatus,headRefName,headRefOid,comments
@@ -103,7 +103,7 @@ this step it survives on closed work forever.
 
 ## EXAMPLE
 
-    /dw-merge 30
+    /ship-merge 30
 
 **Agent verifies, asks for the gate, records it, merges, cleans up:**
 

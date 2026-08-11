@@ -21,7 +21,7 @@ These two are **complements, not alternatives**. Install both.
 
 Four things his set does not reach.
 
-**The ship tail.** `/implement` ends at *"commit your work to the current branch"* — nothing pushes, opens a change request, or merges. `dw-create-pr` pushes and opens the PR already linked to its issue; `dw-merge` merges, clears the labels, deletes the branch, and puts you back on the default branch. `/triage` applies a `ready-for-agent` state and nothing upstream ever clears it — the merge step is that label's only exit.
+**The ship tail.** `/implement` ends at *"commit your work to the current branch"* — nothing pushes, opens a change request, or merges. `ship-create-pr` pushes and opens the PR already linked to its issue; `ship-merge` merges, clears the labels, deletes the branch, and puts you back on the default branch. `/triage` applies a `ready-for-agent` state and nothing upstream ever clears it — the merge step is that label's only exit.
 
 **The finish review.** `/code-review-2axis` reads the diff. It cannot run your build, and it does not look for the debris a change leaves behind. `reviewing-finish` runs the project's own tooling, sweeps the debug prints and commented-out blocks and stray TODOs, and removes the imports and files *your* change orphaned. It runs **after** the two-axis review, never instead of it.
 
@@ -62,7 +62,7 @@ mkdir -p .claude/rules && curl -o .claude/rules/project-profile.md \
 Then edit it. What it declares:
 
 - where test docs and diagrams live, and how they're numbered
-- label names — including the triage state `dw-merge` clears
+- label names — including the triage state `ship-merge` clears
 - the branch-name pattern, the closure keyword, and the merge strategy
 - test-doc front matter and how staleness is detected
 - the change-request noun your host uses — `PR` or `MR`
@@ -86,9 +86,9 @@ Drive a change from idea to merged. The first five steps are Matt's; the last th
 /code-review-2axis                       # the diff, against standards and spec
                                          # ── the handoff ──
 reviewing-finish                         # run the tooling; clear leftovers and orphans
-/dw-create-pr      27                    # push, open the PR, link it (Fixes #27)
+/ship-create-pr    27                    # push, open the PR, link it (Fixes #27)
                                          # ── a human reviews and tests ──
-/dw-merge          30                    # merge, clear the labels, delete the branch
+/ship-merge        30                    # merge, clear the labels, delete the branch
 ```
 
 The qa-workflow turns a story into test docs the same gated way:
@@ -110,7 +110,7 @@ All of them live in [`plugins/agent-workflows/commands/`](plugins/agent-workflow
 
 | Group | Commands | Job |
 |-------|----------|-----|
-| **Ship tail** | `dw-create-pr` · `dw-merge` | commit → merged, with the branch and labels cleaned up |
+| **Ship tail** | `ship-create-pr` · `ship-merge` | commit → merged, with the branch and labels cleaned up |
 | **QA workflow** | `qw-plan` · `qw-review-plan` · `qw-cases` · `qw-review-cases` | a story → test docs, each producer paired with a review |
 | **Doc workflow** | `doc-gen-readme` · `doc-review-readme` | a codebase → its README, and the accuracy gate |
 

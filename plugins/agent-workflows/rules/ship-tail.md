@@ -13,10 +13,10 @@ work to the current branch"*. This is what picks it up there.
    reviewing-finish ──► run the project's tooling; clear the leftovers and
         │                orphans a diff-reading review cannot see
         ▼
-   dw-create-pr ─────► [human review + test]   push, open the change request,
-        │                                        link it to its issue
+   ship-create-pr ───► [human review + test]   push, open the change request,
+        │                                      link it to its issue
         ▼
-   dw-merge            merge · clear the labels · delete the branch · back to default
+   ship-merge          merge · clear the labels · delete the branch · back to default
 ```
 
 Each step stops for a human. None auto-runs the next.
@@ -33,11 +33,11 @@ does — those artifacts have no producer here. See
 
 ## Two kinds of label, and only one of them is ours
 
-`dw-create-pr` sets a **status** label and `dw-merge` clears it — that pair is this
+`ship-create-pr` sets a **status** label and `ship-merge` clears it — that pair is this
 pipeline's own bookkeeping, and it closes itself.
 
 The **triage state** label is different. Something upstream applies it to mark an issue
-ready to be worked, and nothing upstream ever removes it. `dw-merge` is that label's only
+ready to be worked, and nothing upstream ever removes it. `ship-merge` is that label's only
 exit; without this step it accumulates on closed work forever. Both names resolve from the
 profile.
 
@@ -45,17 +45,17 @@ profile.
 
 | Producer | Review | Covers |
 |----------|--------|--------|
-| `dw-create-pr` | **human review + test** (before the merge) | the change as a whole, on the change request |
-| `dw-merge` | *(is the terminal gate)* | mergeable, checks green, a human has reviewed |
+| `ship-create-pr` | **human review + test** (before the merge) | the change as a whole, on the change request |
+| `ship-merge` | *(is the terminal gate)* | mergeable, checks green, a human has reviewed |
 
 No producer ships without a review covering its output. The review paired with
-`dw-create-pr` is a **human gate**, not a command — the same shape as the human gate in
+`ship-create-pr` is a **human gate**, not a command — the same shape as the human gate in
 `doc-workflow`. The merge gate is a person's judgment, not a platform approval: on a solo
 repo the host blocks self-approval, so neither command may require one.
 
 A gate a person's judgment passes still has to be **observable**, or the command is left
 inferring it. An empty review list is not evidence either way — a carefully reviewed PR
-and an untouched one look identical. So `dw-merge` asks outright and records the answer on
+and an untouched one look identical. So `ship-merge` asks outright and records the answer on
 the change request against the head SHA, and reads that record on a later run. The
 judgment stays the human's; what changes is that it leaves a trace, and a trace pinned to
 a SHA stops covering the diff once the head moves.

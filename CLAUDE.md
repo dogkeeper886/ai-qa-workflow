@@ -67,13 +67,13 @@ human decision (nothing auto-runs the next):
 
 ```
 /grill-with-docs → /to-spec → /to-tickets → /implement → /code-review-2axis
-                → reviewing-finish → dw-create-pr → [human review] → dw-merge
+                → reviewing-finish → ship-create-pr → [human review] → ship-merge
 ```
 
 **Idea through commit belongs to [`mattpocock/skills`](https://github.com/mattpocock/skills)**,
 which this repo installs. Don't rebuild any of it here — [ADR-0002](docs/adr/0002-complement-mattpocock-skills.md).
 
-**Commit through merge is ours** — the ship tail (`dw-create-pr` → `dw-merge`) plus
+**Commit through merge is ours** — the ship tail (`ship-create-pr` → `ship-merge`) plus
 `reviewing-finish`, the pass that runs the tooling and clears the leftovers a
 diff-reading review cannot see. Run it *after* `/code-review-2axis`, not instead of it.
 The full flow + pairing lives in `plugins/agent-workflows/rules/ship-tail.md`.
