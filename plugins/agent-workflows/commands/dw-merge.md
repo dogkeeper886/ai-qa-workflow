@@ -50,6 +50,9 @@ this step it survives on closed work forever.
         │     tested at <headRefOid>? A green /code-review-2axis or
         │     reviewing-finish does not answer it — those are agent passes, and
         │     this gate is a person's judgment on the change as a whole
+        │   - Nor does being told to run this command answer it. The instruction
+        │     is to open the gate, not to pass it: "merge PR <N>" is a request to
+        │     reach this question, never the answer to it. Ask, and wait
         │   - On no, or on no answer: do not merge. Stop here and report per Step 7,
         │     with the missing confirmation as the finding — a refused gate is a
         │     gate output, and it owes the human the same report a merge does
