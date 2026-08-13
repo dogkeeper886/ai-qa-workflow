@@ -31,10 +31,14 @@ same in every project; this one is not.
 ## Labels
 
 Names the workflow uses; colours where the workflow pins one (`#hex`), otherwise the
-project's choice.
+project's choice. A unit that **applies** a label creates it first, so that label — and
+only that one — also declares the colour and description to create it with. See the
+plugin's `rules/ship-tail.md`.
 
 - test plan: `test-plan` (`#006b75`)
 - status (pipeline position): `status:in-progress` · `status:needs-review`
+  - `status:needs-review` is the one the ship tail applies, so it carries creation values:
+    colour `#fbca04`, description "PR open, awaiting review"
 - triage state (readiness): `ready-for-agent`
 
 Which unit sets or clears which is the ship tail's business, not this file's — see the
