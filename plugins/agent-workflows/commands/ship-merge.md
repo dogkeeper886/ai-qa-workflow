@@ -37,12 +37,27 @@ this step it survives on closed work forever.
         │   - Must be mergeable (no conflicts)
         │   - Run: gh pr checks <PR> — any CI checks must pass (if applicable)
         │   - Note headRefOid, the head SHA. Step 2's confirmation is pinned to it
+        │   - Resolve BOTH label names Step 5 clears — the status label and the
+        │     triage state label (see project-profile → Labels) — now, while
+        │     nothing has happened yet. A name the profile never declares is not
+        │     the same as a label the issue happens not to carry: the first means
+        │     this project was never configured for the step, the second is
+        │     routine. Carry any undeclared key to Step 2; do NOT guess a name
+        │     and do NOT quietly clear one label and forget the other
         │
         ├─► Step 2: The Human Gate — Look, Ask, Record
         │   - The gate is HUMAN review + test, not a platform approval. On a solo
         │     repo the host blocks self-approval, so do NOT require
         │     reviewDecision=APPROVED — and do not read an empty review list as
         │     either a yes or a no. It is not a signal in either direction.
+        │   - Before either path below: if Step 1 could not resolve a label name,
+        │     raise it HERE, naming the key and the profile section it belongs
+        │     in. This gate is the last point before something irreversible, so
+        │     it is raised whether or not a question gets asked — in the question
+        │     when one is asked, alongside the found confirmation when it is not.
+        │     Do not make it a second stop and do not refuse the merge over it: a
+        │     missing key is configuration, not a reason to hold reviewed work.
+        │     Raised before the merge it can still be acted on; after, it is news
         │   - Look first, in the comments Step 1 already fetched. A confirmation
         │     naming the current headRefOid IS the gate — say it was found and go
         │     to Step 3 without asking again
@@ -84,10 +99,14 @@ this step it survives on closed work forever.
         │   - Remove the status label the ship tail set, and the triage state
         │     label (see project-profile → Labels), passing only the ones the
         │     issue actually carries:
-        │     gh issue edit <N> --remove-label "status:needs-review" \
-        │            --remove-label "ready-for-agent"
+        │     gh issue edit <N> --remove-label "<status label>" \
+        │            --remove-label "<triage state label>"
         │   - A label the issue does not carry is not an error — drop it from the
         │     command and say so
+        │   - A label the PROFILE does not declare is different: it was already
+        │     raised at the gate, so clear the ones that did resolve and carry it
+        │     to Step 7 as a finding. Never invent a name to fill the hole — a
+        │     guessed label either fails the call or clears the wrong thing
         │   - Never create a label here (see ship-tail → Who creates a label)
         │   - The issue auto-closes via its closure keyword — no manual close needed
         │
@@ -102,6 +121,10 @@ this step it survives on closed work forever.
         └─► Step 7: Report
             - Report per `agent-report`; Trace carries the merged PR URL, the head
               SHA the gate was confirmed at, and the labels cleared
+            - A label name the profile never declared belongs in Findings, not in a
+              footnote: name the key and the profile section it belongs in. Whatever
+              that key would have named is still on the issue and now survives on
+              closed work, which is the thing Step 5 exists to prevent
             - Next: nothing in this toolkit. The change has shipped — say so.
             - A follow-up the merge deliberately leaves behind is Not done (a choice);
               Unresolved is for what the merge left genuinely uncertain
