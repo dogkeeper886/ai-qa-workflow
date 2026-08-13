@@ -29,9 +29,7 @@ Four things his set does not reach.
 
 **Review gates for existing documents.** His writing skills generate prose; none of them judges a document that already exists. `reviewing-phrasing`, `reviewing-typography`, and `reviewing-artifacts` do — and `doc-gen-readme` / `doc-review-readme` are a README author and its accuracy gate.
 
-Also here: **qa-workflow** (`qw-*`), which turns a story into test **docs** kept separate from the scripts that run them, so coverage isn't silently lost as the code changes.
-
-![qa-workflow anti-drift: the test doc records the story hash; when the story changes the hash mismatches and the test is flagged stale](docs/diagrams/png/05-anti-drift.png)
+Looking for the QA half — planning what to test, writing the test docs, binding them to what runs? That lives in [`agent-workflows-runner`](https://github.com/dogkeeper886/agent-workflows-runner), which owns authoring and execution together.
 
 ## Getting started
 
@@ -61,10 +59,9 @@ mkdir -p .claude/rules && curl -o .claude/rules/project-profile.md \
 
 Then edit it. What it declares:
 
-- where test docs and diagrams live, and how they're numbered
+- where stories and diagrams live, and how they're numbered
 - label names — including the triage state `ship-merge` clears
 - the branch-name pattern, the closure keyword, and the merge strategy
-- test-doc front matter and how staleness is detected
 - the change-request noun your host uses — `PR` or `MR`
 - the verdict words a review reports in
 
@@ -91,19 +88,6 @@ reviewing-finish                         # run the tooling; clear leftovers and 
 /ship-merge        30                    # merge, clear the labels, delete the branch
 ```
 
-The qa-workflow turns a story into test docs the same gated way:
-
-```
-/qw-plan         STORY-007           # plan what to test
-/qw-review-plan  STORY-007           # gate the plan
-/qw-cases        STORY-007           # write the test docs in docs/tests/
-/qw-review-cases STORY-007           # gate the docs
-```
-
-Its full lifecycle spans two repos — this repo authors the docs; the runner binds and runs them:
-
-![qa-workflow full lifecycle: authoring in agent-workflows hands off to execution (bind, review-bind, ci-run, drift) in agent-workflows-runner](docs/diagrams/png/03-qa-workflow-pipeline.png)
-
 ## Available commands
 
 All of them live in [`plugins/agent-workflows/commands/`](plugins/agent-workflows/commands/).
@@ -111,7 +95,6 @@ All of them live in [`plugins/agent-workflows/commands/`](plugins/agent-workflow
 | Group | Commands | Job |
 |-------|----------|-----|
 | **Ship tail** | `ship-create-pr` · `ship-merge` | commit → merged, with the branch and labels cleaned up |
-| **QA workflow** | `qw-plan` · `qw-review-plan` · `qw-cases` · `qw-review-cases` | a story → test docs, each step gated before the next |
 | **Doc workflow** | `doc-gen-readme` · `doc-review-readme` | a codebase → its README, and the accuracy gate |
 
 ## Skills
@@ -133,7 +116,7 @@ agent-workflows/
 ├── .claude-plugin/
 │   └── marketplace.json   # This repo is its own marketplace
 ├── plugins/agent-workflows/   # The shipped plugin — placed once, reaching every project
-│   ├── commands/          # dw-* (ship tail), qw-* (qa), doc-* (README authoring)
+│   ├── commands/          # ship-* (ship tail), doc-* (README authoring)
 │   ├── skills/            # reviewing-* + reporting-outcomes
 │   └── rules/             # Doctrine: the pipelines, the report contract, anti-slop, profile-doctrine
 ├── .claude/rules/
@@ -141,8 +124,7 @@ agent-workflows/
 ├── templates/             # CLAUDE.md for projects adopting these workflows
 ├── docs/
 │   ├── adr/               # Architecture decisions (ADR-*)
-│   ├── stories/           # Historical story records (no command writes these now)
-│   └── tests/             # qa-workflow test-doc output
+│   └── stories/           # Historical story records (no command writes these now)
 ├── CLAUDE.md              # Behavioral guidelines + workflow discipline for the agent
 └── README.md
 ```
@@ -151,12 +133,12 @@ agent-workflows/
 
 This repo is the **`agent-workflows`** layer. Two sibling repos complete the picture:
 
-![The agent family: agent-workflows authors commands and test docs; agent-workflows-runner executes them; agent-studio wraps both into a product](docs/diagrams/png/09-agent-family.png)
+![The agent family: agent-workflows authors the commands and review skills; agent-workflows-runner owns the test docs and runs them; agent-studio wraps both into a product](docs/diagrams/png/09-agent-family.png)
 
 | Repo | Role | Status |
 |------|------|--------|
-| **agent-workflows** (this repo) | the ship tail, the review skills, and the qa/doc workflows | — |
-| [**agent-workflows-runner**](https://github.com/dogkeeper886/agent-workflows-runner) | executes the test scripts the qa-workflow docs map to — a dual-judge framework (fast checks + opt-in LLM judge) | shipped |
+| **agent-workflows** (this repo) | the ship tail, the review skills, and the doc workflow | — |
+| [**agent-workflows-runner**](https://github.com/dogkeeper886/agent-workflows-runner) | the whole QA half — planning what to test, writing the test docs, binding them, and running them under a dual judge (fast checks + opt-in LLM judge) | shipped |
 | **agent-studio** | local-first web GUI over the workflows + runner; closes the Dev → QA → PM loop | working name (currently `ai-qa-studio`), planning |
 
 ## License

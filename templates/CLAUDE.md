@@ -86,14 +86,6 @@ tooling and clears the leftovers and orphans a diff-reading review cannot see. R
 *after* `/code-review-2axis`, not instead of it. The full flow lives in the
 plugin's `rules/ship-tail.md`.
 
-**qa-workflow** turns a story into trustworthy test docs, same gated discipline:
-
-```
-qw-plan → qw-review-plan → qw-cases → qw-review-cases
-```
-
-The full flow lives in the plugin's `rules/qa-workflow.md`.
-
 **doc-workflow** turns a codebase into its README — same gated discipline:
 
 ```

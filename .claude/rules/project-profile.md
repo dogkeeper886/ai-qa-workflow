@@ -16,17 +16,12 @@ same in every project; this one is not.
 ## Paths
 
 - stories dir: `docs/stories/`
-- tests dir: `docs/tests/`
 - diagrams dir: `docs/diagrams/` (SVG source) + `docs/diagrams/png/` (rendered)
 - story format contract: `docs/stories/README.md`
-- test format contract: `docs/tests/README.md`
 
 ## ID schemes
 
 - story id: `STORY-XXX` (zero-padded sequential, e.g. `STORY-001`)
-- scenario id: `TS-NN`
-- case id: `TC-NN`
-- title prefixes: `[STORY-XXX] Test Plan`
 
 ## Labels
 
@@ -35,7 +30,6 @@ project's choice. A unit that **applies** a label creates it first, so that labe
 only that one — also declares the colour and description to create it with. See the
 plugin's `rules/ship-tail.md`.
 
-- test plan: `test-plan` (`#006b75`)
 - status (pipeline position): `status:in-progress` · `status:needs-review`
   - `status:needs-review` is the one the ship tail applies, so it carries creation values:
     colour `#fbca04`, description "PR open, awaiting review"
@@ -73,17 +67,6 @@ silently.
   the `refs/remotes/origin/` prefix), don't assume `main` — no network call and no
   platform CLI, so it reads the same on every host
 - merge strategy: `--merge` (preserve history; switch to `--squash` only if the project requires)
-
-## Front-matter & format contract (test docs)
-
-- test-doc filename: `TS-NN-<slug>.md` in the tests dir
-- front-matter fields: `id, title, namespace, story, story_hash, plan, issue, status` — the
-  anchor field tracks the drift anchor below; drop it when that is `none`
-- drift anchor: `story_hash` — the `sha256` of the story file (`sha256sum`), recorded so a
-  later gate can tell the story has moved. A project that detects drift another way (a
-  derived link check, say) names that here instead, or `none`. The `qw-*` commands record
-  whatever this declares; they do not assume hashing.
-- default status: `green`
 
 ## Docs & diagrams
 

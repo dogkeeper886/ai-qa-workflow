@@ -1,9 +1,9 @@
 # agent-workflows
 
 The layer wrapped around [`mattpocock/skills`](https://github.com/mattpocock/skills) — the
-ship tail, the report contract, the finish review, the `qa-workflow` and `doc-workflow`
-pipelines, plus the rules and skills they read. This glossary fixes the words used to talk
-about the toolkit *itself*, as distinct from the specs, issues, and test docs it produces.
+ship tail, the report contract, the finish review, the `doc-workflow` pipeline, plus the
+rules and skills they read. This glossary fixes the words used to talk about the toolkit
+*itself*, as distinct from the specs, issues, and documents it produces.
 
 ## Language
 

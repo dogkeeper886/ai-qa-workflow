@@ -6,8 +6,8 @@ piece of work exists; it is the stable anchor the plan and task issues trace bac
 
 **No command in this plugin writes these any more.** New intent is captured as a spec
 issue by [`mattpocock/skills`](https://github.com/mattpocock/skills)' `/to-spec`; the files
-here are the historical record, and the format below is what a reader (or `qw-plan`) can
-still expect from them.
+here are the historical record, and the format below is what a reader can still expect
+from them.
 
 The **how** — the agreed approach and the work itself — lives in the **plan issue** and the
 **task issues** on GitHub, **not here**. A story says what's needed and what success looks
