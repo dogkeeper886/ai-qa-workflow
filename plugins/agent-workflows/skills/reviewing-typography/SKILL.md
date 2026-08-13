@@ -1,92 +1,78 @@
 ---
 name: reviewing-typography
 description: |
-  Reviews how a human-read document looks — the README, the prose and tables in docs/, or
-  any human-read document — for visual hierarchy, Gestalt proximity, restraint,
-  and walls of text, so a reader can find the point at a glance. The look half of the
-  human-read doc review (reviewing-phrasing handles the words). Use when such a doc is
-  written or restructured. Judgment over checklist; floor, not ceiling.
+  Hunts agent slop in how a human-read document looks — the README, the prose, tables and
+  lists in docs/: bold-label inflation, heading sprawl, everything-a-bullet, walls of text.
+  Use when such a doc is written or restructured. The look half of the human-read doc
+  review — reviewing-phrasing judges the words, reviewing-artifacts judges agent-read
+  tooling.
 ---
 
 # reviewing-typography
 
-One reviewer for how a human-read document **looks**. Its partner `reviewing-phrasing`
-judges how a doc *reads*; this judges how it *scans*. Together they are the human-read doc
-review.
+**Kill the slop.** A human-read doc should look like a person shaped it for a reader, not
+like a generator filled a template. This reviewer judges the **look**; its partner
+`reviewing-phrasing` judges the **words**. Together they are the human-read doc review.
 
-This skill's job is **human-read** documents in the project's canonical format
-(`project-profile.md` — markdown by default) — the README, the prose, tables, and lists in
-`docs/`, and any doc aimed at a person. The **agent-read** workflow tooling — commands,
-skills, rules, CLAUDE.md, stories — is **not** this skill's job; whether those do their job
-goes to `reviewing-artifacts`.
+Scope is text aimed at a **person** — the README, the prose, tables and lists in `docs/`.
+Agent-read tooling — commands, skills, rules, CLAUDE.md, stories — goes to
+`reviewing-artifacts`.
 
-The principles are medium-agnostic; each format expresses them through its own levers. In
-markdown (the default) a doc has no fonts to set, but it has the same levers UI typography
-uses: **heading levels** are size/weight, **blank lines and grouping** are spacing,
-**bold/italic** are weight, and **paragraph and list length** decide whether the page reads
-as structure or as soup.
+The principles are medium-agnostic; each format works them through its own levers. In the
+project's canonical format (`.claude/rules/project-profile.md` → Review semantics —
+markdown by default) there are no fonts to set, but the levers are the ones UI typography
+uses: **heading levels** are size and weight, **blank lines and grouping** are spacing,
+**bold and italic** are weight, and **paragraph and list length** decide whether the page
+reads as structure or as soup.
 
-## Why this is a judgment skill, not a checklist
+## Slop, and what it should be
 
-The right structure depends on the content's actual shape, which no rule can predict. A
-metadata line reads fine until real prose lands under it and the two fuse. One bold label
-anchors the eye; ten bold labels compete and the hierarchy collapses. A 4-item list reads
-cleanly; a 17-item list reads as a paragraph. **Look at the doc and decide** — there is no
-rule set that survives contact with arbitrary content.
+Each marker with the target that replaces it. Hunt all of them, and anything else that
+reads as generated — the list is a floor, not a ceiling.
 
-## What to weigh
+| Marker | Target |
+|---|---|
+| **Bold-label inflation** — every paragraph opening `**Label:**` | Emphasis spent as a budget: weight on the few things the reader should land on, the rest toned down so those few can anchor |
+| **Heading sprawl** — a nested heading over every two sentences | Heading depth that matches the doc's real hierarchy, and stops there |
+| **Everything a bullet** — prose chopped into a list because a list looks organized | Lists for peer items; prose for an argument the reader has to follow |
+| **Uniform rhythm** — every section the same length, every list the same three items | The length each point actually needs |
+| **Wall of text** — a long undifferentiated paragraph, or a stretch with no heading break | A break at the natural boundary; a `**Label:**` over a long list promoted to a real heading |
+| **Fused layers** — metadata running into prose, intro into first section | The loosest separation where ideas cross layers, so the eye can see the seam |
+| **Decoration** — emoji headings, a rule between every section, a table holding one row | The plain structure the content's own shape asks for |
 
-These are **lenses, not steps**. Weigh them together; flag anything that weakens the look
-even if it isn't named here.
+## What decides a finding
 
-- **Hierarchy.** Can the eye find the point of focus? A doc with no heading structure reads
-  as one undifferentiated blob — the reader has no idea what they're looking at. The title
-  and section heads should be visibly heavier than the body; each level distinct from the
-  next.
-- **Proximity (grouping).** Spacing groups or separates. Related lines sit together; a real
-  break — a blank line, a heading, a rule — sits between things that aren't one group.
-  Where ideas cross layers (metadata → prose, intro → first section) they need the loosest
-  separation, or they fuse.
-- **Restraint.** You need very few levels. A handful of heading depths plus weight is enough
-  to build any doc; piling on nested headings, or bolding every other phrase, *destroys*
-  hierarchy rather than adding it.
-- **Emphasis by de-emphasis.** To make something stand out, tone the rest down. If every
-  paragraph opens with a bold phrase, none of them anchor anything. Emphasis is a budget —
-  spend it on the few things the reader should land on.
-- **Wall of text.** A long undifferentiated paragraph, or an 800-word stretch with no
-  heading break, reads as soup. Break at the natural boundary; promote a `**Label:**`
-  followed by a long list into a real heading.
-- **Structure for the true shape, then for focus.** Use heading levels for the doc's real
-  hierarchy — but also use common sense about what the reader should focus on and let that
-  stand out. Don't structure for structure's sake; structure for whether the reader can
-  *use* the doc.
+A marker is a symptom; the finding is whether the eye finds the point. These three lenses
+are what that judgment weighs — together, not in order.
 
-## The test
-
-Squint at the rendered doc — or scan it without reading any word. The visible weight order
-(title → headings → emphasis → body) should be obvious at a glance. If you can't tell the
-levels apart unfocused, the hierarchy isn't doing its job. When unsure, show it to someone
-and watch where their eye snags or stalls; that spot is the finding.
+- **Hierarchy.** Read the headings and bold runs alone, with the body ignored. That
+  skeleton should give the doc's shape and its point of focus on its own; where it goes
+  flat, or reads the same at every level, is the finding.
+- **Proximity.** Spacing groups or separates. Related lines sit together, and a real break
+  — a blank line, a heading, a rule — sits between things that are not one group.
+- **Use.** Structure serves what the reader came to do, not the doc's own symmetry. A shape
+  that is technically correct and still unusable is a finding.
 
 ## Steps
 
-1. **Scope.** Which doc(s). If unclear, ask before reviewing.
-2. **Scan it as a reader would** — unfocused first (does the shape read?), then through.
-3. **Weigh the lenses** above by judgment; note anything else that hurts the look.
+1. **Scope.** Which doc(s). If unclear, ask.
+2. **Scan it twice** — the heading and emphasis skeleton first, for whether the shape
+   reads on its own; then the whole doc, as a reader who wants one thing from it.
+3. **Pass the whole doc against every marker and every lens** — every section accounted
+   for, top to bottom.
 4. **Report** (below).
-5. **Fix (if asked).** The smallest change that fixes the look — a heading break, a blank
-   line, removing bold from the labels that aren't anchors. Don't restructure what already
-   reads well; don't invent findings on a clean doc (it trains everyone to ignore the real
-   ones).
+5. **Fix (if asked).** The smallest change that lands the look — a heading break, a blank
+   line, weight taken off the labels that were never anchors. Leave what already reads
+   well. A doc that comes back clean is reported clean — findings earn their place by
+   being real, and a table padded to look thorough spends the credit the real ones need.
 
 ## Report
 
-Report per `${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md` — the verdict first, findings
-as a table, and a section with nothing to report saying so. The verdict vocabulary is
-`.claude/rules/project-profile.md` → Reports. No numeric score. In this review they mean:
+Per `${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md`, in the words from
+`.claude/rules/project-profile.md` → Reports. The verdict is the whole grade — here it
+means:
 
 - **PASS** — the eye finds the point; hierarchy and grouping hold.
-- **REVISE** — specific, fixable findings (no hierarchy, fused groups, bold inflation, wall of text).
+- **REVISE** — findings, each naming a marker or a lens and the smallest fix.
 
-Each finding names the location of what hurts the look and gives the smallest fix. Trace
-carries the doc(s) reviewed.
+Every finding names where the look breaks. Trace carries the doc(s) reviewed.
