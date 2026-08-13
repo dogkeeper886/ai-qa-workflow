@@ -31,6 +31,15 @@ to another project's — a unit that needs a value it cannot resolve stops and s
 silent fallback would run one project's paths, labels, and ID scheme inside another, with
 nothing in the session to reveal it.
 
+**Where a stop is not available.** A unit sometimes needs a value only *after* something it
+cannot undo — tidying up after a merge, say. Stopping there is not a stop; it is a report
+in a stop's clothing. So a unit like that resolves the value at its **earliest** point
+instead, raises whatever will not resolve at the human gate it already has, and then
+proceeds and reports the gap. The promise above is unchanged in substance: the value still
+never resolves silently, and nothing is ever guessed to fill the hole. What moves is only
+*where* it is said — because refusing finished work over a missing key protects nobody, and
+a gap named after the fact is news rather than a decision.
+
 ## Two halves, two citation forms
 
 A unit reaches each half by a different path, so the two carry the distinction themselves
