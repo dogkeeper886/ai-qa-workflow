@@ -31,6 +31,19 @@ Where a step would once have updated a story file or closed a plan issue, it no 
 does — those artifacts have no producer here. See
 [ADR-0002](../../../docs/adr/0002-complement-mattpocock-skills.md).
 
+## The branch has no producer either
+
+Nothing upstream creates it. `/implement` ends at *"commit your work to the current
+branch"* and nothing before it branches, so a flow run straight through commits to the
+**default** branch and arrives here with nowhere to push from.
+
+That is a gap between two toolkits rather than anyone's mistake, and `/implement` is not
+ours to edit (see the ADR above). So `ship-create-pr` repairs it where it already detects
+it: create the branch at HEAD, rewind the default to the remote. That moves the commits
+without touching the working tree and without discarding one — which is what makes it a
+safe thing for a command to offer at all. It still shows what will move and asks first,
+because the one thing it must never do is carry along work belonging to something else.
+
 ## Two kinds of label, and only one of them is ours
 
 `ship-create-pr` sets a **status** label and `ship-merge` clears it — that pair is this
