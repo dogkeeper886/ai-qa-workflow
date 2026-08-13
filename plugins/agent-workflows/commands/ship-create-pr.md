@@ -111,9 +111,14 @@ preceding command it needs — run it straight after whatever produced the commi
         │     intent above — the issue's number when this PR finishes it, empty
         │     otherwise:
         │       gh pr view <PR> --json closingIssuesReferences
-        │     A mismatch is cheap here and expensive after a merge, where the
-        │     repair is reopening an issue that closed itself. Fix the body with
-        │     gh pr edit --body and read it back again
+        │     The link is computed a moment after the PR exists, so an empty
+        │     first read can simply be too early. Read it again before believing
+        │     an empty one, and treat a keyword you actually wrote as the truth
+        │     the second read should confirm
+        │   - A mismatch that survives the re-read is cheap here and expensive
+        │     after a merge, where the repair is reopening an issue that closed
+        │     itself. Fix the body with gh pr edit --body, then read it back once
+        │     more
         │
         ├─► Step 4: Update Issue Labels   (skip entirely if there is no issue)
         │   - Ensure the label this step APPLIES exists — applying one the repo
