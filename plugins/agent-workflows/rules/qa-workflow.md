@@ -26,14 +26,11 @@ those docs to a runner and running them is the project's own layer.
 each `TS-*.md` `plan:` field. Nothing auto-closes it — no change request targets a test plan
 — so close it by hand once its docs have landed.
 
-## Producer → review pairing
+## Where a human decides
 
-| Producer | Review | Covers |
-|----------|--------|--------|
-| `qw-plan`  | `qw-review-plan`  | does the plan cover the story? |
-| `qw-cases` | `qw-review-cases` | each doc: one job, observable, traces back |
-
-No producer ships without a review covering its output.
+`qw-review-plan` gates the plan — does it cover the story? `qw-review-cases` gates the
+docs — each one job, observable, traceable. Both stop for a person; neither auto-runs the
+step after it.
 
 ## What this owns — and what it hands off
 

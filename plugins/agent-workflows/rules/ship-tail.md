@@ -80,17 +80,14 @@ on repos that never use it, purely to delete it again. A downstream hitting
 `'ready-for-agent' not found` while *publishing* has found the upstream toolkit's gap, not
 this one's.
 
-## Producer → review pairing
+## Where a human decides
 
-| Producer | Review | Covers |
-|----------|--------|--------|
-| `ship-create-pr` | **human review + test** (before the merge) | the change as a whole, on the change request |
-| `ship-merge` | *(is the terminal gate)* | mergeable, checks green, a human has reviewed |
+Between the two commands, and again inside the second. `ship-create-pr` opens the change
+request and stops; a person reviews and tests the change as a whole. `ship-merge` is the
+terminal gate — mergeable, checks green, and a human has reviewed.
 
-No producer ships without a review covering its output. The review paired with
-`ship-create-pr` is a **human gate**, not a command — the same shape as the human gate in
-`doc-workflow`. The merge gate is a person's judgment, not a platform approval: on a solo
-repo the host blocks self-approval, so neither command may require one.
+That gate is a person's judgment, never a platform approval: on a solo repo the host
+blocks self-approval, so neither command may require one.
 
 A gate a person's judgment passes still has to be **observable**, or the command is left
 inferring it. An empty review list is not evidence either way — a carefully reviewed PR

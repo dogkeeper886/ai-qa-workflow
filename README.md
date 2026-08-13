@@ -111,7 +111,7 @@ All of them live in [`plugins/agent-workflows/commands/`](plugins/agent-workflow
 | Group | Commands | Job |
 |-------|----------|-----|
 | **Ship tail** | `ship-create-pr` · `ship-merge` | commit → merged, with the branch and labels cleaned up |
-| **QA workflow** | `qw-plan` · `qw-review-plan` · `qw-cases` · `qw-review-cases` | a story → test docs, each producer paired with a review |
+| **QA workflow** | `qw-plan` · `qw-review-plan` · `qw-cases` · `qw-review-cases` | a story → test docs, each step gated before the next |
 | **Doc workflow** | `doc-gen-readme` · `doc-review-readme` | a codebase → its README, and the accuracy gate |
 
 ## Skills
