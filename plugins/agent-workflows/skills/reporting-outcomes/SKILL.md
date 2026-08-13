@@ -1,16 +1,20 @@
 ---
 name: reporting-outcomes
 description: |
-  Shapes the ordinary reply that reports back on work — the chat turn carrying
-  progress, a verdict, reasons, a summary and a status all at once. Use whenever
-  answering with what was done, what was found, whether it worked, where things
-  stand, or what is left, and the answer runs longer than a line. Not for
-  command or gate output, which already resolves the contract itself. Holds the
-  trigger and the mapping; the questions live in `agent-report.md` and the words
-  in `project-profile.md` → Reports.
+  Kills the slop in the ordinary reply that reports back on work — the chat turn
+  carrying progress, a verdict, reasons, a summary and a status at once, in the
+  order they occurred to the writer. Use whenever answering with what was done,
+  what was found, whether it worked, where things stand, or what is left, and the
+  answer runs longer than a line. Gate output already resolves the contract
+  itself. The questions live in `agent-report.md`, the words in
+  `project-profile.md` → Reports.
 ---
 
 # reporting-outcomes
+
+**Kill the slop.** Here it is the reply that reads like a complete report and makes
+the reader do the sorting. The mission and the rules a finding is held to:
+`${CLAUDE_PLUGIN_ROOT}/rules/anti-slop.md`.
 
 ## The shape this catches
 
@@ -24,18 +28,14 @@ Every one of those is worth saying. Together, unsorted, they are a narrative the
 reader has to mine. They open the message wanting one thing — *is this good, and
 what do I do now* — and get a story they must read to the end twice.
 
-This is the most common shape in an agentic session and the only one with no
-contract on it. Gate output has `agent-report.md` wired into the commands that
-produce it. A conversational report-back has nothing.
-
-## Where the format lives — do not restate it
+## Where the format lives
 
 | You need | Read |
 |---|---|
 | The questions a report answers, and why | `${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md` |
 | Verdict words, section names, finding columns, empty marker | `.claude/rules/project-profile.md` → **Reports** |
 
-Resolve both from there each time. A copy here would go stale silently: nothing
+Resolve both from there each time; leave them unrestated here. A copy would go stale silently: nothing
 breaks when a duplicated verdict word drifts from the profile's, so nothing
 announces it — the skill simply starts teaching a shape the rest of the toolkit
 no longer uses. `agent-report.md` makes the same argument for itself under *Why
@@ -98,7 +98,7 @@ Leave it alone when:
 three lines and no headings. Reaching for the full shape on a small result is
 the failure mode, not the safe default.
 
-## What it prevents
+## The markers
 
 Four ways a report-back fails while still reading like a complete one.
 
@@ -117,9 +117,3 @@ missing.
 **Confidence not matched to method.** A thing fixed on reading and a thing
 reproduced then fixed are stated in the same voice. Only the writer knows the
 difference, so only the writer can record it.
-
-## Why a skill
-
-A command runs when a person types `/name`. This has to fire when nobody thought
-to ask — the reply is already being written, and the writer is the one who
-cannot see it needs the shape. That is what a model-invoked skill is for.
