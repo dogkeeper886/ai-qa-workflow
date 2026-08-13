@@ -82,9 +82,17 @@ preceding command it needs — run it straight after whatever produced the commi
         │
         ├─► Step 3: Create PR
         │   - Title: short, imperative, under 70 characters
-        │   - Body must carry the issue closure keyword (see project-profile →
-        │     Linking & branch). With no issue, omit that line — and say in the
-        │     report that this PR closes nothing.
+        │   - The body's issue line follows what this PR does to the issue:
+        │       finishes it     → the closure keyword (see project-profile →
+        │                         Linking & branch)
+        │       one of several  → "Part of #N". The issue outlives this PR, so
+        │                         the keyword would close it early
+        │       no issue        → no line, and the report says this PR closes
+        │                         nothing
+        │   - A closure keyword fires from ANYWHERE in the body, and the parser
+        │     reads the keyword and the number and nothing around them — so a
+        │     sentence explaining that this PR must NOT close #N closes it. On
+        │     the middle case write "Part of #N" and leave keywords unmentioned
         │   - Use this template:
         │
         │       gh pr create --title "<title>" --body "$(cat <<'EOF'
@@ -99,6 +107,18 @@ preceding command it needs — run it straight after whatever produced the commi
         │       Generated with [Claude Code](https://claude.com/claude-code)
         │       EOF
         │       )"
+        │   - Read back what the PR actually links and confirm it matches the
+        │     intent above — the issue's number when this PR finishes it, empty
+        │     otherwise:
+        │       gh pr view <PR> --json closingIssuesReferences
+        │     The link is computed a moment after the PR exists, so an empty
+        │     first read can simply be too early. Read it again before believing
+        │     an empty one, and treat a keyword you actually wrote as the truth
+        │     the second read should confirm
+        │   - A mismatch that survives the re-read is cheap here and expensive
+        │     after a merge, where the repair is reopening an issue that closed
+        │     itself. Fix the body with gh pr edit --body, then read it back once
+        │     more
         │
         ├─► Step 4: Update Issue Labels   (skip entirely if there is no issue)
         │   - Ensure the label this step APPLIES exists — applying one the repo
@@ -137,6 +157,8 @@ preceding command it needs — run it straight after whatever produced the commi
     $ git log --oneline <default-branch>..HEAD
     $ git push -u origin issue-27-release-notes
     $ gh pr create --title "Add release notes generator command" --body "..."
+    $ gh pr view 30 --json closingIssuesReferences
+                                       # [27] — this PR finishes the issue, as intended
     $ gh label create "status:needs-review" --color "fbca04" \
              --description "PR open, awaiting review" --force
                                        # all three resolved from project-profile → Labels
@@ -170,7 +192,8 @@ preceding command it needs — run it straight after whatever produced the commi
 ## API Notes
 
 - Uses `gh` CLI for PR and issue operations
-- `Fixes #N` in PR body auto-closes the issue when PR is merged
+- `Fixes #N` in PR body auto-closes the issue when PR is merged — from anywhere in the
+  body, prose included, which is why Step 3 reads the link back instead of trusting it
 - Copy relevant labels from the issue to the PR if needed
 - If branch is already pushed, the push step is a no-op
 - Step 1a only ever moves what the remote does not already have, so a commit already
