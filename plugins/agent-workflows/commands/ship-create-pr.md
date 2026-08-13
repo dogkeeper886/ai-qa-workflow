@@ -31,9 +31,13 @@ preceding command it needs — run it straight after whatever produced the commi
     /ship-create-pr 27
         │
         ├─► Step 1: Verify Readiness
-        │   - Confirm you're on a feature branch, not the default branch —
-        │     derive the default, don't hardcode `main` (see project-profile → Git)
-        │   - Run: git status — the branch must be committed and clean
+        │   - Derive the default branch, don't hardcode `main` (see
+        │     project-profile → Git)
+        │   - Run: git status — the tree must be committed and clean, whichever
+        │     branch you are on
+        │   - If you are ON the default branch, go to Step 1a and come back.
+        │     Nothing upstream creates a feature branch, so commits landing here
+        │     is the ordinary case, not a mistake to scold anyone for
         │   - Review the branch's commits: git log --oneline <default>..HEAD
         │   - If no argument given, infer the issue number from the branch name
         │     (see project-profile → Linking & branch)
@@ -41,6 +45,31 @@ preceding command it needs — run it straight after whatever produced the commi
         │   - If there is no issue — none given, none inferable — say so and carry on
         │     without one. Steps 3 and 4 adapt below; do NOT invent an issue number,
         │     and do NOT stop. Not every change has a ticket behind it.
+        │
+        ├─► Step 1a: On the Default Branch — Move the Commits
+        │   (skip entirely if Step 1 found you on a feature branch)
+        │   - `/implement` ends at "commit your work to the current branch" and
+        │     nothing before it branches, so the commits land on the default.
+        │     Repair that here rather than refusing — but never silently
+        │   - Show exactly what would move, and move nothing else:
+        │       git fetch origin
+        │       git log --oneline origin/<default>..HEAD
+        │     Empty means there is nothing to ship at all — hand back per Step 5.
+        │     If anything listed does not belong to this change, STOP and say so:
+        │     carrying someone else's work onto this branch is not this command's
+        │     call to make
+        │   - The branch name comes from the profile's pattern, which needs the
+        │     issue number (see project-profile → Linking & branch). This is the
+        │     one place where having no issue is NOT survivable — with no number
+        │     there is nothing to name the branch from, so stop and ask for one
+        │   - Ask before touching history. On yes:
+        │       git switch -c <branch-name>
+        │       git branch -f <default> origin/<default>
+        │     The first carries the commits onto the new branch; the second
+        │     rewinds the default to what the remote already has. Nothing is
+        │     discarded and the working tree is never touched — the commits are
+        │     safe on the new branch, which is why no --hard reset appears here
+        │   - Then return to Step 1's remaining checks on the branch you now have
         │
         ├─► Step 2: Push Branch
         │   - Run: git push -u origin $(git branch --show-current)
@@ -115,6 +144,21 @@ preceding command it needs — run it straight after whatever produced the commi
     PR #30 created: https://github.com/owner/repo/pull/30
     A human reviews + tests it; merge with /ship-merge 30 when satisfied.
 
+**Started on the default branch instead — Step 1a first, then the above:**
+
+    $ git status
+                                       # on <default-branch>, clean
+    $ git fetch origin
+    $ git log --oneline origin/<default-branch>..HEAD
+                                       # a1b2c3d feat(#27): add release notes generator
+                                       # one commit, and it is this change's
+
+    > Move that commit onto issue-27-release-notes and rewind <default-branch>?
+    < yes
+
+    $ git switch -c issue-27-release-notes
+    $ git branch -f <default-branch> origin/<default-branch>
+
 ---
 
 ## API Notes
@@ -123,4 +167,9 @@ preceding command it needs — run it straight after whatever produced the commi
 - `Fixes #N` in PR body auto-closes the issue when PR is merged
 - Copy relevant labels from the issue to the PR if needed
 - If branch is already pushed, the push step is a no-op
+- Step 1a moves commits by creating a branch at HEAD and rewinding the default's
+  ref. Neither command touches the working tree or drops a commit, which is why no
+  `git reset --hard` appears — a repair step that can lose work is worse than the
+  refusal it replaces. It also only ever moves what is absent from the remote, so
+  a pushed commit on the default is out of its reach by construction
 ```
