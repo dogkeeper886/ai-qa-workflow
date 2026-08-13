@@ -29,8 +29,7 @@ each `TS-*.md` `plan:` field. Nothing auto-closes it — no change request targe
 ## Where a human decides
 
 `qw-review-plan` gates the plan — does it cover the story? `qw-review-cases` gates the
-docs — each one job, observable, traceable. Both stop for a person; neither auto-runs the
-step after it.
+docs — each doc one job, observable, traceable.
 
 ## What this owns — and what it hands off
 

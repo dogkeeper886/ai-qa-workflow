@@ -82,9 +82,9 @@ this one's.
 
 ## Where a human decides
 
-Between the two commands, and again inside the second. `ship-create-pr` opens the change
-request and stops; a person reviews and tests the change as a whole. `ship-merge` is the
-terminal gate — mergeable, checks green, and a human has reviewed.
+`ship-create-pr` opens the change request and stops; a person reviews and tests the change
+as a whole. `ship-merge` is the terminal gate — mergeable, checks green, and a human has
+reviewed.
 
 That gate is a person's judgment, never a platform approval: on a solo repo the host
 blocks self-approval, so neither command may require one.

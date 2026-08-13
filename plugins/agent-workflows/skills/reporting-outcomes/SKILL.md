@@ -123,12 +123,3 @@ difference, so only the writer can record it.
 A command runs when a person types `/name`. This has to fire when nobody thought
 to ask — the reply is already being written, and the writer is the one who
 cannot see it needs the shape. That is what a model-invoked skill is for.
-
-## Why nothing reviews this
-
-It produces nothing — no artifact, no file, no run, no gate output of its own — so
-there is nothing for a review to read. It changes only how a reply that was being
-written anyway is arranged.
-
-Written down because the gerund name reads like a producer, and a reader who
-notices that deserves the answer here rather than working it out again.

@@ -112,6 +112,6 @@ report says so.
 - Reads the repo + the web; writes README.md (+ the diagrams dir if diagrams). No PR.
 - The WebSearch step is mandatory — it is what keeps this command from going stale.
 - Diagrams are optional; when used, SVG is the source of truth and the PNG is rendered.
-- Producer paired with the review `/doc-review-readme` (see `doc-workflow`).
+- `/doc-review-readme` gates what this writes, before a person reads it.
 - Right-size: a tiny project may need no diagrams; don't manufacture them.
 ```

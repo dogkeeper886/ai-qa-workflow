@@ -62,6 +62,7 @@ Ask these of any artifact. The artifact's type shifts which ones bite hardest.
 5. **Right for its reader.** Agent-facing (commands, skills): unambiguous instructions
    the agent can follow. Human-facing (README, story): reads like a person wrote it for
    a person — clear, concrete, scannable.
+
 Where each type leans:
 
 | Artifact | Leans on |
