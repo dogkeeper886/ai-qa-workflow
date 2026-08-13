@@ -59,10 +59,9 @@ mkdir -p .claude/rules && curl -o .claude/rules/project-profile.md \
 
 Then edit it. What it declares:
 
-- where test docs and diagrams live, and how they're numbered
+- where stories and diagrams live, and how they're numbered
 - label names — including the triage state `ship-merge` clears
 - the branch-name pattern, the closure keyword, and the merge strategy
-- test-doc front matter and how staleness is detected
 - the change-request noun your host uses — `PR` or `MR`
 - the verdict words a review reports in
 
