@@ -113,7 +113,4 @@ why — is the plugin's `rules/agent-report.md`; a unit resolves the wording fro
 - live integrations: `GitHub` — tools the project genuinely uses; coupling to one
   listed here is correct, not drift. (A downstream adds its own, e.g. Jira, Confluence,
   TestLink.)
-- deliverable (triggers a paired review): a unit that *produces or changes* an output —
-  by name (`create-`/`sync-`/`publish-`/`draft-`/`init-`) or as a producing gerund skill
-  (`planning-…`, `drafting-…`)
 - audience (human-read docs): engineers and newcomers

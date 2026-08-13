@@ -3,9 +3,8 @@ name: reviewing-artifacts
 description: |
   Reviews any workflow artifact — the commands, skills, and project docs that are the
   tooling (READMEs, stories, CLAUDE.md, and the like) — against a few goal questions:
-  one clear job, complete, a goal not a frozen spec, fits the project, right for its
-  reader, and (for producers) paired with a review. Its pairing question flags any
-  producer shipped without a paired review. It judges whether an artifact does its job;
+  one clear job, complete, a goal not a frozen spec, fits the project, and right for
+  its reader. It judges whether an artifact does its job;
   how a human-read doc (the README, docs/ prose) looks and reads goes to the typography +
   phrasing review. Floor, not ceiling.
 ---
@@ -63,20 +62,12 @@ Ask these of any artifact. The artifact's type shifts which ones bite hardest.
 5. **Right for its reader.** Agent-facing (commands, skills): unambiguous instructions
    the agent can follow. Human-facing (README, story): reads like a person wrote it for
    a person — clear, concrete, scannable.
-6. **Paired (producers only).** If this artifact *produces or changes* a **deliverable**
-   (as `project-profile.md` → Review semantics defines one), does a review cover its
-   output? Every producer needs a
-   paired review — a standing rule (the `## Producer → review pairing` tables in
-   `${CLAUDE_PLUGIN_ROOT}/rules/*.md`). A producer with no
-   review is a gap to flag, not an exception; one that yields no outward deliverable
-   (internal scaffolding, an authoring input) is exempt, not a gap. This skill is the
-   enforcement arm. Bites only on producers.
 
 Where each type leans:
 
 | Artifact | Leans on |
 |----------|----------|
-| Command / skill | Q3 (no hardcoding), Q5 (agent can follow it), Q6 if it produces |
+| Command / skill | Q3 (no hardcoding), Q5 (agent can follow it) |
 | README / user doc | Q5 (reads for a human), Q1 (one clear job) |
 | Story / spec | Q3 (goal, not spec) — the need, not a frozen design |
 | CLAUDE.md | Q2/Q4 (matches the repo as it actually is — no orphaned references) |

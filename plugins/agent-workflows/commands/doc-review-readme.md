@@ -78,5 +78,5 @@ verdict first, and a section with nothing to report says so.
 - Enforces what the producer promises: SVG→PNG diagrams (no Mermaid) and a README that
   leads with the key point. If the producer's rules change, update this pass to match.
 - Read-mostly: reads the README + the code; on REVISE, edits the README in place.
-- Review paired with the producer `/doc-gen-readme` (see `doc-workflow`).
+- Gates what `/doc-gen-readme` wrote.
 ```

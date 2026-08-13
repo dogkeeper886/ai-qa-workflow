@@ -22,13 +22,10 @@ in current best practice, leading with the few ideas worth a diagram, and true t
 convention rather than a frozen template. Diagrams are optional: when used, the SVG is the
 source of truth and the embedded PNG is rendered reproducibly.
 
-## Producer → review pairing
+## Where a human decides
 
-| Producer | Review | Covers |
-|----------|--------|--------|
-| `doc-gen-readme` | `doc-review-readme` | reads + looks right (via the reviewing skills), true to the code, delivers for a newcomer |
-
-No producer ships without a review covering its output.
+`doc-review-readme` gates what `doc-gen-readme` wrote — reads and looks right, true to the
+code, delivers for a newcomer. It stops there: a person reads the result before it lands.
 
 ## What this owns — and what it reuses
 

@@ -76,7 +76,7 @@ which this repo installs. Don't rebuild any of it here — [ADR-0002](docs/adr/0
 **Commit through merge is ours** — the ship tail (`ship-create-pr` → `ship-merge`) plus
 `reviewing-finish`, the pass that runs the tooling and clears the leftovers a
 diff-reading review cannot see. Run it *after* `/code-review-2axis`, not instead of it.
-The full flow + pairing lives in `plugins/agent-workflows/rules/ship-tail.md`.
+The full flow lives in `plugins/agent-workflows/rules/ship-tail.md`.
 
 **qa-workflow** turns a story into trustworthy test docs, same gated discipline:
 
@@ -84,7 +84,7 @@ The full flow + pairing lives in `plugins/agent-workflows/rules/ship-tail.md`.
 qw-plan → qw-review-plan → qw-cases → qw-review-cases
 ```
 
-The full flow + pairing lives in `plugins/agent-workflows/rules/qa-workflow.md`.
+The full flow lives in `plugins/agent-workflows/rules/qa-workflow.md`.
 
 **doc-workflow** turns a codebase into its README — same gated discipline:
 
@@ -92,7 +92,7 @@ The full flow + pairing lives in `plugins/agent-workflows/rules/qa-workflow.md`.
 doc-gen-readme → doc-review-readme → [human reviews] → PR
 ```
 
-The full flow + pairing lives in `plugins/agent-workflows/rules/doc-workflow.md`.
+The full flow lives in `plugins/agent-workflows/rules/doc-workflow.md`.
 
 **Right-size it.** A typo or a one-line doc change does not need the full chain —
 use judgment; branch + PR + merge is enough. The review passes overlap:
