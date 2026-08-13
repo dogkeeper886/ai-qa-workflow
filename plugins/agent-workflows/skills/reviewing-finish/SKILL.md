@@ -1,26 +1,28 @@
 ---
 name: reviewing-finish
 description: |
-  The last pass over a change before it becomes a change request: runs the project's own
-  tooling so "verified" means observed rather than read, sweeps the leftovers a change
-  left behind (debug output, commented-out blocks, stray TODOs), removes the imports,
-  variables and files that *this* change orphaned, and ends in a verdict that routes
-  somewhere. Covers what a diff-reading review structurally cannot — it runs **after**
-  such a review, never instead of one. Use when a change is committed and about to be
-  pushed. Floor, not ceiling.
+  Hunts the slop a change leaves in the codebase — debug output, commented-out blocks,
+  stray TODOs, scaffolding, and the imports and files this change orphaned — and runs the
+  project's own tooling so "verified" means observed rather than asserted. Use when a
+  change is committed and about to be pushed, after a diff-reading review rather than
+  instead of one.
 ---
 
 # reviewing-finish
 
-The pass that runs the code instead of reading it.
+**Kill the slop.** The other reviewers judge what a document says; this one checks what a
+change left lying in the codebase, and whether the claims about it were observed or merely
+asserted. An agent reporting a suite green without running it is the costliest slop there
+is — every later decision rests on it. The three checks below are what this unit hunts for.
 
-**This is not a second opinion on the diff.** A diff-reading review — `/code-review-2axis`
-and its kind — already judges the change against the project's standards and against what
-the issue asked for. Running this skill in its place leaves the change unreviewed on both
-axes. Running it *before* means sweeping debris out of code that may still be rewritten.
+The mission and the rules a finding is held to:
+`${CLAUDE_PLUGIN_ROOT}/rules/anti-slop.md`.
 
-Run it **after** the diff review, once the findings are settled, and before
-`/ship-create-pr`.
+Run it **after** the diff review — `/code-review-2axis` and its kind — once the findings
+are settled, and before `/ship-create-pr`. That review already judges the change against
+the project's standards and against what the issue asked for; running this skill in its
+place leaves the change unreviewed on both axes, and running it *before* means sweeping
+debris out of code that may still be rewritten.
 
 What it covers is what a reviewer reading a diff structurally cannot do:
 
@@ -30,26 +32,24 @@ What it covers is what a reviewer reading a diff structurally cannot do:
 | **Sweep the leftovers** | Debug output and commented-out code are *plausible-looking added lines*. They read as intentional. |
 | **Remove the orphans** | An import left dangling is in a file the diff may not touch. The evidence is repo-wide, not diff-local. |
 
-Scope creep and speculative generality are **already** covered by the two-axis review —
-its Spec axis and its Standards axis respectively. Don't re-flag them here.
+Scope creep and speculative generality stay with the two-axis review — its Spec axis and
+its Standards axis respectively.
 
 ## The three checks
 
 ### 1. Verify by running, not by reading
 
-Find the project's own tooling and run it. Don't assume a stack — look for what this repo
-actually declares: a package manifest's scripts, a `Makefile`, a CI workflow, a task
-runner's config, the commands the project's `CLAUDE.md` names.
+Find the project's own tooling and run it. Look for what this repo actually declares: a
+package manifest's scripts, a `Makefile`, a CI workflow, a task runner's config, the
+commands the project's `CLAUDE.md` names.
 
 Run what applies: typecheck, lint, the test suite, the build, whatever renders a
 generated artifact. Run the **full** suite here, not the one file you were iterating on.
 
 **A claim is verified when it was observed.** Report the command and what it printed. If
 nothing runnable exists — a docs-only repo, a markdown toolkit — say that plainly. That
-is a finding about the change's verifiability, not a silent pass, and "there is no test
-suite" is a far more useful sentence than an unqualified *verified*.
-
-Never report a check as passing because it looked like it would.
+is a finding about the change's verifiability, and "there is no test suite" is a far more
+useful sentence than an unqualified *verified*.
 
 ### 2. Sweep the leftovers
 
@@ -64,8 +64,8 @@ Debris the change added and did not take back out:
 - **Scaffolding** — a temporary fixture, a hardcoded stub, a skipped or `.only` test, a
   commented-out assertion, a debug flag flipped and left.
 
-**Only what this change added.** Pre-existing debris in a file you touched is not yours to
-sweep — mention it, don't remove it. `git diff <base>...HEAD` is the boundary.
+**Only what this change added.** Pre-existing debris in a file you touched stays; mention
+it and leave it. `git diff <base>...HEAD` is the boundary.
 
 ### 3. Remove the orphans
 
@@ -77,11 +77,11 @@ Cleanup is scoped to the mess **this change** made:
 - Dangling references pointing at something this change moved or deleted — a cited path, a
   link, a name in a doc.
 
-Verify each one, don't guess. Search for remaining references before removing anything;
-dynamic references and re-exports are easy to miss. A deletion you can't justify by a
-search is a finding to raise, not an edit to make.
+Verify each one by search. Look for remaining references before removing anything;
+dynamic references and re-exports are easy to miss. A deletion a search cannot justify
+is a finding to raise rather than an edit to make.
 
-**Removing a whole file needs explicit approval.** Flag it; don't do it unasked.
+**Removing a whole file needs explicit approval.** Flag it and leave it in place.
 
 ## Steps
 
@@ -100,9 +100,9 @@ search is a finding to raise, not an edit to make.
 
 ## Report
 
-Report per `${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md` — the verdict first, findings as
-a table, and a section with nothing to report saying so. The verdict vocabulary is
-`.claude/rules/project-profile.md` → Reports. No numeric score. In this review they mean:
+Per `${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md`, in the words from
+`.claude/rules/project-profile.md` → Reports. The verdict is the whole grade — here they
+mean:
 
 - **PASS** — the tooling ran and passed, and no leftovers or orphans remain.
 - **REVISE** — specific, fixable findings. Sweep them and run again.
@@ -112,6 +112,6 @@ a table, and a section with nothing to report saying so. The verdict vocabulary 
 **Checked** carries the commands actually run and their result — this is where "verified"
 earns the word. **Trace** carries the base the diff was taken against.
 
-**Every finding routes.** A verdict that ends in a report nobody acts on is the failure
-this section exists to prevent. Say where each finding goes: swept here, needs approval,
-belongs in a tracked issue, or hands back. A finding with no destination is not finished.
+**Every finding routes.** Say where each one goes: swept here, needs approval, belongs in
+a tracked issue, or hands back. A finding with no destination is not finished, and a
+verdict that ends in a report nobody acts on is the failure this section exists to prevent.
