@@ -40,10 +40,9 @@ branch"* and nothing before it branches, so a flow run straight through commits 
 That is a gap between two toolkits rather than anyone's mistake, and `/implement` is not
 ours to edit (see the ADR above). So `ship-create-pr` repairs it where it already detects
 it: create the branch at HEAD, rewind the default to the remote. That moves the commits
-without touching the working tree and without discarding one — which is the whole reason
-it is a safe thing for a command to do unprompted. It still shows what will move and asks
-first, because the one thing it must never do is carry along work belonging to something
-else.
+without touching the working tree and without discarding one — which is what makes it a
+safe thing for a command to offer at all. It still shows what will move and asks first,
+because the one thing it must never do is carry along work belonging to something else.
 
 ## Two kinds of label, and only one of them is ours
 

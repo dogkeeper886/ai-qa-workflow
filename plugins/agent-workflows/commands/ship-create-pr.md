@@ -31,6 +31,9 @@ preceding command it needs — run it straight after whatever produced the commi
     /ship-create-pr 27
         │
         ├─► Step 1: Verify Readiness
+        │   - Confirm HEAD is on a branch at all. A detached HEAD is neither the
+        │     default nor a feature branch, and Step 1a does not repair it — stop
+        │     and say so, or Step 2 pushes an empty ref
         │   - Derive the default branch, don't hardcode `main` (see
         │     project-profile → Git)
         │   - Run: git status — the tree must be committed and clean, whichever
@@ -59,10 +62,13 @@ preceding command it needs — run it straight after whatever produced the commi
         │     carrying someone else's work onto this branch is not this command's
         │     call to make
         │   - The branch name comes from the profile's pattern, which needs the
-        │     issue number (see project-profile → Linking & branch). This is the
-        │     one place where having no issue is NOT survivable — with no number
-        │     there is nothing to name the branch from, so stop and ask for one
-        │   - Ask before touching history. On yes:
+        │     issue number and a slug from the issue title (see project-profile →
+        │     Linking & branch). This is the one place where having no issue is
+        │     NOT survivable — with no number there is nothing to name the branch
+        │     from, so stop and ask for one
+        │   - Ask before touching history. On no, hand back per Step 5 and do NOT
+        │     go on to Step 2: pushing from the default branch is the very thing
+        │     this step exists to prevent. On yes:
         │       git switch -c <branch-name>
         │       git branch -f <default> origin/<default>
         │     The first carries the commits onto the new branch; the second
@@ -167,9 +173,6 @@ preceding command it needs — run it straight after whatever produced the commi
 - `Fixes #N` in PR body auto-closes the issue when PR is merged
 - Copy relevant labels from the issue to the PR if needed
 - If branch is already pushed, the push step is a no-op
-- Step 1a moves commits by creating a branch at HEAD and rewinding the default's
-  ref. Neither command touches the working tree or drops a commit, which is why no
-  `git reset --hard` appears — a repair step that can lose work is worse than the
-  refusal it replaces. It also only ever moves what is absent from the remote, so
-  a pushed commit on the default is out of its reach by construction
+- Step 1a only ever moves what the remote does not already have, so a commit already
+  pushed to the default branch is out of its reach by construction
 ```
