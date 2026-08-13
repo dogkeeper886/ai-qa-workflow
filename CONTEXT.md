@@ -24,9 +24,9 @@ against it. Identical in every project, so it ships with the units.
 _Avoid_: preamble, header
 
 **Profile values**:
-The half of `project-profile.md` that declares one project's specifics — paths, ID
-schemes, labels, branch conventions, report vocabulary. Different in every project, so it
-stays in the repo.
+The half of `project-profile.md` that declares one project's specifics — labels, branch
+conventions, platform verbs, doc paths, report vocabulary. Different in every project, so
+it stays in the repo.
 _Avoid_: config, settings, options
 
 **Placement**:
