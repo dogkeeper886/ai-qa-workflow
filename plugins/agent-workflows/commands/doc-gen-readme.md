@@ -4,6 +4,7 @@
 
 Doctrine — the same in every project, and travels with these units:
 @${CLAUDE_PLUGIN_ROOT}/rules/doc-workflow.md
+@${CLAUDE_PLUGIN_ROOT}/rules/anti-slop.md
 @${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md
 @${CLAUDE_PLUGIN_ROOT}/rules/profile-doctrine.md
 
