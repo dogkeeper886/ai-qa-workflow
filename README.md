@@ -135,7 +135,7 @@ agent-workflows/
 ├── plugins/agent-workflows/   # The shipped plugin — placed once, reaching every project
 │   ├── commands/          # dw-* (ship tail), qw-* (qa), doc-* (README authoring)
 │   ├── skills/            # reviewing-* + reporting-outcomes
-│   └── rules/             # Doctrine: the pipelines, the report contract, profile-doctrine
+│   └── rules/             # Doctrine: the pipelines, the report contract, anti-slop, profile-doctrine
 ├── .claude/rules/
 │   └── project-profile.md # This project's values — the one file adoption touches
 ├── templates/             # CLAUDE.md for projects adopting these workflows

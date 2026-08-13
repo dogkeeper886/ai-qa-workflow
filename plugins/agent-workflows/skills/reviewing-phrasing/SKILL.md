@@ -12,15 +12,15 @@ description: |
 
 **Kill the slop.** A human-read doc should read like a person who knows the subject wrote
 it for a reader they respect. This reviewer judges the **words** against that; its partner
-`reviewing-typography` judges the **look**. Together they are the human-read doc review.
+`reviewing-typography` judges the **look**, and the two run together as the human-read doc
+review.
 
-Scope is text aimed at a **person** — the README, the prose in `docs/`. Agent-read tooling
-— commands, skills, rules, CLAUDE.md, stories — goes to `reviewing-artifacts`.
+The mission, how a marker becomes a finding, and which reviewer owns what:
+`${CLAUDE_PLUGIN_ROOT}/rules/anti-slop.md`.
 
-## Slop, and what it should be
+## Slop in the words
 
-Each marker with the target that replaces it. Hunt all of them, and anything else that
-reads as generated — the list is a floor, not a ceiling.
+Each marker with the target that replaces it.
 
 | Marker | Target |
 |---|---|
@@ -34,8 +34,8 @@ reads as generated — the list is a floor, not a ceiling.
 
 ## What decides a finding
 
-A marker is a symptom; the finding is whether the words serve **this reader**. These four
-lenses are what that judgment weighs — together, not in order.
+Here the question a marker is weighed against is whether the words serve **this reader**.
+These four lenses are what that judgment weighs — together, not in order.
 
 - **Reader.** Who reads this, and what they already know — default to the audience in
   `.claude/rules/project-profile.md` when the doc doesn't say. Jargon a newcomer can't
@@ -55,9 +55,7 @@ lenses are what that judgment weighs — together, not in order.
    for, top to bottom.
 4. **Report** (below).
 5. **Fix (if asked).** The smallest change that lands the words, in the author's voice.
-   Leave what already works. A doc that comes back clean is reported clean — findings
-   earn their place by being real, and a table padded to look thorough spends the credit
-   the real ones need.
+   Leave what already works.
 
 ## Report
 
