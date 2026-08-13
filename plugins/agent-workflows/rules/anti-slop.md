@@ -31,6 +31,10 @@ share is how a marker becomes a finding.
 | The **words** of a human-read doc — the README, the prose in `docs/` | `reviewing-phrasing` |
 | The **look** of a human-read doc — hierarchy, grouping, emphasis, density | `reviewing-typography` |
 | **Agent-read tooling** — commands, skills, rules, CLAUDE.md, stories | `reviewing-artifacts` |
+| A **committed change**, before it becomes a change request | `reviewing-finish` |
 
 The first two are halves of one pass. A doc read for its words and not its look has had
 half a review, so they run together.
+
+The last reviews a change rather than a document, and its slop is what the work left
+behind: debris in the codebase, and a claim asserted where it should have been observed.
