@@ -39,6 +39,10 @@ never absent from both repos at once. Until then this repo still ships `qw-*`,
 `rules/qa-workflow.md`, and the `story_hash` anchor the profile declares — the third and
 fourth options above describe the decided end state, not today's tree.
 
+**Both steps have landed.** `agent-workflows-runner#76` closed on 2026-08-11, and this repo
+removed `qw-*`, `rules/qa-workflow.md` and the `docs/tests/` format contract in #128. The
+`story_hash` anchor the profile still declares is the remaining piece, tracked in #129.
+
 ## Consequences
 
 Two plugins now exist, and the runner's `qw-*` cite `agent-report.md` from this one. Claude

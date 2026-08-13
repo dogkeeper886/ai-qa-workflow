@@ -84,14 +84,6 @@ which this repo installs. Don't rebuild any of it here — [ADR-0002](docs/adr/0
 diff-reading review cannot see. Run it *after* `/code-review-2axis`, not instead of it.
 The full flow lives in `plugins/agent-workflows/rules/ship-tail.md`.
 
-**qa-workflow** turns a story into trustworthy test docs, same gated discipline:
-
-```
-qw-plan → qw-review-plan → qw-cases → qw-review-cases
-```
-
-The full flow lives in `plugins/agent-workflows/rules/qa-workflow.md`.
-
 **doc-workflow** turns a codebase into its README — same gated discipline:
 
 ```

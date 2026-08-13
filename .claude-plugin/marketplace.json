@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "agent-workflows",
-      "description": "The layer wrapped around mattpocock/skills, which carries an idea only as far as a commit. Adds the ship tail (dw-create-pr, dw-merge) that takes it to merged, a finish review that runs the project's tooling and clears the leftovers a diff review cannot see, a report contract, and review gates for existing documents. Also ships qa-workflow (qw-*) for test docs and doc-workflow (doc-*) for READMEs. Every project-specific value resolves from that project's .claude/rules/project-profile.md.",
+      "description": "The layer wrapped around mattpocock/skills, which carries an idea only as far as a commit. Adds the ship tail (dw-create-pr, dw-merge) that takes it to merged, a finish review that runs the project's tooling and clears the leftovers a diff review cannot see, a report contract, and review gates for existing documents. Also ships doc-workflow (doc-*) for READMEs. Every project-specific value resolves from that project's .claude/rules/project-profile.md.",
       "source": "./plugins/agent-workflows",
       "category": "workflow",
       "homepage": "https://github.com/dogkeeper886/agent-workflows"
