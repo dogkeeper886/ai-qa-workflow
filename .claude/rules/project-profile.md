@@ -13,16 +13,6 @@ project skill, and what happens when a value cannot be resolved — is
 the plugin's `rules/profile-doctrine.md`, which ships with the units. That file is the
 same in every project; this one is not.
 
-## Paths
-
-- stories dir: `docs/stories/`
-- diagrams dir: `docs/diagrams/` (SVG source) + `docs/diagrams/png/` (rendered)
-- story format contract: `docs/stories/README.md`
-
-## ID schemes
-
-- story id: `STORY-XXX` (zero-padded sequential, e.g. `STORY-001`)
-
 ## Labels
 
 Names the workflow uses; colours where the workflow pins one (`#hex`), otherwise the
@@ -40,7 +30,6 @@ plugin's `rules/ship-tail.md`.
 
 ## Linking & branch
 
-- story back-reference (in titles/bodies): `[STORY-XXX]`
 - issue closure (PR → issue): `Fixes #N` / `Closes #N`
 - feature branch name: `issue-<N>-<slug>`
 
@@ -72,7 +61,7 @@ silently.
 
 - README output: `README.md`
 - diagram policy: SVG source committed + rendered to PNG (no Mermaid / inline diagram blocks)
-- diagrams dir: `docs/diagrams/` (SVG source) + `docs/diagrams/png/` (rendered) — also under Paths
+- diagrams dir: `docs/diagrams/` (SVG source) + `docs/diagrams/png/` (rendered)
 
 ## Reports
 

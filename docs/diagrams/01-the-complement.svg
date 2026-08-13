@@ -33,9 +33,9 @@
   <!-- handoff arrow -->
   <path d="M366,151 L394,151" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#a)"/>
 
-  <!-- also shipped -->
+  <!-- the other job: killing agent slop -->
   <rect x="32" y="262" width="696" height="52" rx="10" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
-  <text x="52" y="285" fill="#0f172a" font-size="12.5" font-weight="600">Also shipped:</text>
-  <text x="146" y="285" fill="#0f172a" font-size="12.5">the report contract · review gates for existing docs · doc-workflow</text>
+  <text x="52" y="285" fill="#0f172a" font-size="12.5" font-weight="600">Killing agent slop:</text>
+  <text x="176" y="285" fill="#0f172a" font-size="12.5">the reviewing-* skills · the report contract · the doc-workflow README gate</text>
   <text x="52" y="304" fill="#475569" font-size="11.5">Nothing here duplicates the left half. What competed with it was deleted — see ADR-0002.</text>
 </svg>

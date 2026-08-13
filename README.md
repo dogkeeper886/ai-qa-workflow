@@ -1,10 +1,10 @@
 # agent-workflows
 
-**The layer wrapped around [`mattpocock/skills`](https://github.com/mattpocock/skills).** His set carries an idea to a commit — `/grill-with-docs`, `/to-spec`, `/to-tickets`, `/implement`, `/code-review-2axis` — and stops there. This plugin carries it the rest of the way, and adds the checks his diff-reading review cannot make.
+**The layer wrapped around [`mattpocock/skills`](https://github.com/mattpocock/skills).** His set carries an idea to a commit — `/grill-with-docs`, `/to-spec`, `/to-tickets`, `/implement`, `/code-review-2axis` — and stops there. This plugin does the two things his set leaves undone: it kills the slop in what the agent writes, and it carries a commit the rest of the way to merged.
 
 These two are **complements, not alternatives**. Install both.
 
-![The pipeline: mattpocock/skills carries idea to commit; agent-workflows carries commit to merged](docs/diagrams/png/01-the-complement.png)
+![One pipeline, two halves: mattpocock/skills carries idea to commit; agent-workflows carries commit to merged, and kills agent slop with the reviewing-* skills, the report contract, and the doc-workflow README gate](docs/diagrams/png/01-the-complement.png)
 
 ## Contents
 
@@ -19,15 +19,13 @@ These two are **complements, not alternatives**. Install both.
 
 ## What this adds
 
-Four things his set does not reach.
+**Killing agent slop.** An agent writes prose that is fluent, shaped like the real thing, and carrying less than it appears to. His set generates documents; none of his skills judges one that already exists. The `reviewing-*` skills do — the words of a doc, its look, the commands and rules an agent reads, and the debris a committed change left in the codebase. `doc-gen-readme` / `doc-review-readme` are a README author and its accuracy gate — the gate leans on those same skills, then checks the claims against the code.
 
-**The ship tail.** `/implement` ends at *"commit your work to the current branch"* — nothing pushes, opens a change request, or merges. `ship-create-pr` pushes and opens the PR already linked to its issue; `ship-merge` merges, clears the labels, deletes the branch, and puts you back on the default branch. `/triage` applies a `ready-for-agent` state and nothing upstream ever clears it — the merge step is that label's only exit.
+The same discipline covers what the agent says back to you. A reply that blends what was done, what is suspected, what was skipped on purpose and what is still uncertain into one paragraph is unreadable at exactly the moment it matters. `rules/agent-report.md` keeps those parts distinct — bound from your project's `CLAUDE.md`, so it holds even when the agent is the one producing the mess.
 
-**The finish review.** `/code-review-2axis` reads the diff. It cannot run your build, and it does not look for the debris a change leaves behind. `reviewing-finish` runs the project's own tooling, sweeps the debug prints and commented-out blocks and stray TODOs, and removes the imports and files *your* change orphaned. It runs **after** the two-axis review, never instead of it.
+**Convenience at the seam** — the stretch between a commit and a merge. His chain stops just short of it: `/implement` ends at *"commit your work to the current branch"*, nothing pushes or opens a change request, no feature branch was ever cut, and `/triage` leaves a `ready-for-agent` state nothing upstream clears. `ship-create-pr` moves those commits onto a branch if they landed on the default, pushes, and opens the PR linked to its issue. `ship-merge` merges, clears both labels — that triage state included — deletes the branch, and puts you back on the default. Each stops for a human rather than running on into the next.
 
-**The report contract.** A reply that blends what was done, what is suspected, what was skipped on purpose and what is still uncertain into one paragraph is unreadable at exactly the moment it matters. `rules/agent-report.md` keeps those parts distinct — bound from your project's `CLAUDE.md`, so it holds even when the agent is the one producing the mess.
-
-**Review gates for existing documents.** His writing skills generate prose; none of them judges a document that already exists. `reviewing-phrasing`, `reviewing-typography`, and `reviewing-artifacts` do — and `doc-gen-readme` / `doc-review-readme` are a README author and its accuracy gate.
+`reviewing-finish` spans both jobs. `/code-review-2axis` reads the diff but cannot run your build; this runs the project's own tooling, so "verified" means observed rather than asserted, and it removes the imports and files *your* change orphaned. Run it **after** the two-axis review, never instead of it.
 
 Looking for the QA half — planning what to test, writing the test docs, binding them to what runs? That lives in [`agent-workflows-runner`](https://github.com/dogkeeper886/agent-workflows-runner), which owns authoring and execution together.
 
@@ -59,11 +57,12 @@ mkdir -p .claude/rules && curl -o .claude/rules/project-profile.md \
 
 Then edit it. What it declares:
 
-- where stories and diagrams live, and how they're numbered
 - label names — including the triage state `ship-merge` clears
 - the branch-name pattern, the closure keyword, and the merge strategy
 - the change-request noun your host uses — `PR` or `MR`
-- the verdict words a review reports in
+- where diagrams live, and where the README is written
+- the verdict words and section names a review reports in
+- what a review judges against — your canonical format, your audience, the tools you actually use
 
 Everything a command would otherwise hardcode resolves from this file — you adapt the workflow here, never the units. The shipped values reproduce this repo's own behaviour, so changing nothing is safe.
 
@@ -101,13 +100,21 @@ All of them live in [`plugins/agent-workflows/commands/`](plugins/agent-workflow
 
 Shipped in the plugin alongside the commands. All are invoked by hand.
 
-**`reviewing-finish`** is the pass after `/code-review-2axis`: it runs the project's tooling so "verified" means observed, sweeps leftovers, removes the orphans your change created, and ends in a verdict that routes somewhere.
+| Skill | What it's aimed at |
+|-------|--------------------|
+| `reviewing-phrasing` | the words of a human-read doc |
+| `reviewing-typography` | its look — hierarchy, grouping, emphasis, density |
+| `reviewing-artifacts` | agent-read tooling — commands, skills, rules, `CLAUDE.md` |
+| `reviewing-finish` | a committed change, before it becomes a change request |
+| `reporting-outcomes` | the reply an agent writes when it reports back in chat |
 
-**The review skills (`reviewing-*`)** judge finished work by judgment, not a scored checklist — a minimum bar, not an exhaustive one.
+`reviewing-phrasing`, `reviewing-typography` and `reviewing-artifacts` route by **who reads the file you changed**:
 
 ![Review skills: human-read docs go to reviewing-phrasing (words) + reviewing-typography (look); agent-read tooling goes to reviewing-artifacts](docs/diagrams/png/07-review-skills.png)
 
-**`reporting-outcomes`** shapes the reply an agent writes when it reports back in chat — the turn carrying progress, a verdict, reasons and a status at once. `agent-report.md` binds what a *command* prints at a gate; this puts the same shape on the conversational report-back.
+The `reviewing-*` skills judge finished work rather than score it — a minimum bar, not an exhaustive checklist — and each ends in a verdict that routes somewhere.
+
+`reporting-outcomes` is the odd one out: it shapes a chat turn rather than a file. `agent-report.md` binds what a *command* prints at a gate; this puts the same shape on the conversational report-back.
 
 ## Project structure
 

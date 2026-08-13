@@ -22,7 +22,7 @@ docs/stories/
   STORY-002.md
 ```
 
-- File + id follow the project's `STORY-XXX` convention — `STORY-NNN.md`, no slug (see `.claude/rules/project-profile.md`).
+- File + id follow the `STORY-XXX` convention — `STORY-NNN.md`, no slug.
 - A story is **plain markdown — no front-matter.** It opens with `# STORY-NNN: <Title>`.
 
 ## Sections
