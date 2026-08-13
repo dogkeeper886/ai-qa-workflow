@@ -12,11 +12,11 @@ description: |
 
 **Kill the slop.** A human-read doc should look like a person shaped it for a reader, not
 like a generator filled a template. This reviewer judges the **look**; its partner
-`reviewing-phrasing` judges the **words**. Together they are the human-read doc review.
+`reviewing-phrasing` judges the **words**, and the two run together as the human-read doc
+review.
 
-Scope is text aimed at a **person** — the README, the prose, tables and lists in `docs/`.
-Agent-read tooling — commands, skills, rules, CLAUDE.md, stories — goes to
-`reviewing-artifacts`.
+The mission, how a marker becomes a finding, and which reviewer owns what:
+`${CLAUDE_PLUGIN_ROOT}/rules/anti-slop.md`.
 
 The principles are medium-agnostic; each format works them through its own levers. In the
 project's canonical format (`.claude/rules/project-profile.md` → Review semantics —
@@ -25,10 +25,9 @@ uses: **heading levels** are size and weight, **blank lines and grouping** are s
 **bold and italic** are weight, and **paragraph and list length** decide whether the page
 reads as structure or as soup.
 
-## Slop, and what it should be
+## Slop in the look
 
-Each marker with the target that replaces it. Hunt all of them, and anything else that
-reads as generated — the list is a floor, not a ceiling.
+Each marker with the target that replaces it.
 
 | Marker | Target |
 |---|---|
@@ -42,8 +41,8 @@ reads as generated — the list is a floor, not a ceiling.
 
 ## What decides a finding
 
-A marker is a symptom; the finding is whether the eye finds the point. These three lenses
-are what that judgment weighs — together, not in order.
+Here the question a marker is weighed against is whether the eye finds the point. These
+three lenses are what that judgment weighs — together, not in order.
 
 - **Hierarchy.** Read the headings and bold runs alone, with the body ignored. That
   skeleton should give the doc's shape and its point of focus on its own; where it goes
@@ -63,8 +62,7 @@ are what that judgment weighs — together, not in order.
 4. **Report** (below).
 5. **Fix (if asked).** The smallest change that lands the look — a heading break, a blank
    line, weight taken off the labels that were never anchors. Leave what already reads
-   well. A doc that comes back clean is reported clean — findings earn their place by
-   being real, and a table padded to look thorough spends the credit the real ones need.
+   well.
 
 ## Report
 
