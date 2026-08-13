@@ -66,9 +66,15 @@ Substantial work flows through a pipeline; each step is a gate that stops for a
 human decision (nothing auto-runs the next):
 
 ```
-/grill-with-docs → /to-spec → /to-tickets → /implement → /code-review-2axis
-                → reviewing-finish → ship-create-pr → [human review] → ship-merge
+[branch] → /grill-with-docs → /to-spec → /to-tickets → /implement
+         → /code-review-2axis → reviewing-finish → ship-create-pr
+         → [human review] → ship-merge
 ```
+
+`[branch]` is yours to create, like `[human review]` — no command in either half does it.
+`/implement` ends at *"commit your work to the current branch"*, so a run started on the
+default branch commits there, and `ship-create-pr` stops to move those commits off before
+it can push.
 
 **Idea through commit belongs to [`mattpocock/skills`](https://github.com/mattpocock/skills)**,
 which this repo installs. Don't rebuild any of it here — [ADR-0002](docs/adr/0002-complement-mattpocock-skills.md).

@@ -66,9 +66,15 @@ Substantial work flows through a pipeline; each step is a gate that stops for a
 human decision (nothing auto-runs the next):
 
 ```
-/grill-with-docs → /to-spec → /to-tickets → /implement → /code-review-2axis
-                → reviewing-finish → ship-create-pr → [human review] → ship-merge
+[branch] → /grill-with-docs → /to-spec → /to-tickets → /implement
+         → /code-review-2axis → reviewing-finish → ship-create-pr
+         → [human review] → ship-merge
 ```
+
+`[branch]` is yours to create, like `[human review]` — no command in either half does it.
+`/implement` ends at *"commit your work to the current branch"*, so a run started on the
+default branch commits there, and `ship-create-pr` stops to move those commits off before
+it can push.
 
 **Idea through commit** is [`mattpocock/skills`](https://github.com/mattpocock/skills) —
 install it alongside this plugin; nothing here duplicates it.
