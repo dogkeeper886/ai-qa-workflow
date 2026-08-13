@@ -66,11 +66,22 @@ preceding command it needs — run it straight after whatever produced the commi
         │       )"
         │
         ├─► Step 4: Update Issue Labels   (skip entirely if there is no issue)
-        │   - Move the issue's status label to "under review" (see project-profile
-        │     → Labels):
+        │   - Ensure the label this step APPLIES exists — applying one the repo
+        │     lacks fails outright. Resolve name, colour and description from the
+        │     profile (see project-profile → Labels); do NOT copy a literal colour
+        │     in, because --force UPDATES an existing label and would overwrite a
+        │     downstream's own choice on every run:
+        │       gh label create "<name>" --color "<hex>" \
+        │              --description "<text>" --force
+        │   - Read what the issue actually carries, so the removal names only a
+        │     label that is there:
+        │       gh issue view <N> --json labels --jq '[.labels[].name]'
+        │   - Move the issue's status label to "under review":
         │     gh issue edit <N> --remove-label "status:in-progress" \
         │            --add-label "status:needs-review"
-        │   - A label the issue does not carry is not an error — skip it and say so
+        │   - A label the issue does not carry is not an error — drop it from the
+        │     command and say so. Leaving it in fails the whole call, and would
+        │     take the --add-label down with it
         │   - Comment on issue:
         │     gh issue comment <N> --body "PR #<PR> created. Summary: <what changed>"
         │
@@ -91,6 +102,11 @@ preceding command it needs — run it straight after whatever produced the commi
     $ git log --oneline <default-branch>..HEAD
     $ git push -u origin issue-27-release-notes
     $ gh pr create --title "Add release notes generator command" --body "..."
+    $ gh label create "status:needs-review" --color "fbca04" \
+             --description "PR open, awaiting review" --force
+                                       # all three resolved from project-profile → Labels
+    $ gh issue view 27 --json labels --jq '[.labels[].name]'
+                                       # ["status:in-progress"] — carried, so safe to remove
     $ gh issue edit 27 --remove-label "status:in-progress" --add-label "status:needs-review"
     $ gh issue comment 27 --body "PR #30 created."
 

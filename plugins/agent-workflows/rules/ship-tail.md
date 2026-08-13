@@ -41,6 +41,32 @@ ready to be worked, and nothing upstream ever removes it. `ship-merge` is that l
 exit; without this step it accumulates on closed work forever. Both names resolve from the
 profile.
 
+## Who creates a label
+
+A label must exist in the tracker before any command can touch it. `gh` fails the *whole*
+call on a name the repo does not have — taking the rest of that call with it — so this
+does not degrade gracefully. Creation belongs **where a label is applied**, never where it
+is cleared:
+
+- `ship-create-pr` **applies** the status label, so it creates it first, resolving name,
+  colour and description from the profile:
+  `gh label create "<name>" --color "<hex>" --description "<text>" --force`.
+- `ship-merge` only **clears**, so it creates nothing. A label the issue carries already
+  exists by definition, and one it does not carry is dropped from the command — which is
+  why clearing reads the issue's labels before naming any.
+
+`--force` does not mean "skip if present" — it **updates the colour and description in
+place**. So the values passed must be the profile's, never a literal copied into a command:
+on a downstream that chose its own colour, a hardcoded one would silently overwrite it on
+every run. That is also why only a label something here *applies* declares creation values
+in the profile — the rest need a name and nothing more.
+
+The triage state label is the case that makes the rule concrete: something upstream applies
+it, this plugin only clears it, so **creating it is not ours**. Doing so would mint a label
+on repos that never use it, purely to delete it again. A downstream hitting
+`'ready-for-agent' not found` while *publishing* has found the upstream toolkit's gap, not
+this one's.
+
 ## Producer → review pairing
 
 | Producer | Review | Covers |

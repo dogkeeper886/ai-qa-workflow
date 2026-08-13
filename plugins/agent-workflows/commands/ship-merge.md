@@ -77,11 +77,18 @@ this step it survives on closed work forever.
         │   - --delete-branch cleans up the remote branch
         │
         ├─► Step 5: Clear the Issue's Labels
+        │   - Read what the issue carries first. This step runs AFTER the merge,
+        │     and naming one label the repo lacks fails the whole call — leaving
+        │     a merged PR with every label still on it:
+        │       gh issue view <N> --json labels --jq '[.labels[].name]'
         │   - Remove the status label the ship tail set, and the triage state
-        │     label (see project-profile → Labels):
+        │     label (see project-profile → Labels), passing only the ones the
+        │     issue actually carries:
         │     gh issue edit <N> --remove-label "status:needs-review" \
         │            --remove-label "ready-for-agent"
-        │   - A label the issue does not carry is not an error — skip it and say so
+        │   - A label the issue does not carry is not an error — drop it from the
+        │     command and say so
+        │   - Never create a label here (see ship-tail → Who creates a label)
         │   - The issue auto-closes via its closure keyword — no manual close needed
         │
         ├─► Step 6: Confirm the Branch Is Gone
@@ -116,6 +123,8 @@ this step it survives on closed work forever.
 
     $ gh pr comment 30 --body "Human review + test confirmed at a1b2c3d."
     $ gh pr merge 30 --merge --delete-branch
+    $ gh issue view 27 --json labels --jq '[.labels[].name]'
+                                       # ["status:needs-review","ready-for-agent"] — both there
     $ gh issue edit 27 --remove-label "status:needs-review" --remove-label "ready-for-agent"
     $ git checkout <default-branch> && git pull
     $ git branch -d issue-27-release-notes
