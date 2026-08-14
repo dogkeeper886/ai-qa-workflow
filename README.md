@@ -48,27 +48,21 @@ The commands drive your host's CLI — [`gh`](https://cli.github.com/) for GitHu
 
 ### Adoption — once per project
 
-The placed commands don't know what *your* project is. Each repo says so in one file:
+The placed units don't know what *your* project is. One skill asks and writes it down:
 
 ```
-mkdir -p .claude/rules && curl -o .claude/rules/project-profile.md \
-  https://raw.githubusercontent.com/dogkeeper886/agent-workflows/main/.claude/rules/project-profile.md
+setup-agent-workflows
 ```
 
-Then edit it. What it declares:
+It derives what it can from your git remote, asks about the few values a default would get wrong, and writes `.claude/rules/project-profile.md` — the label names (including the triage state `ship-merge` clears), the branch pattern, the merge strategy, where diagrams live, the verdict words a review reports in, and the audience it judges jargon against. It also binds the report contract in your `CLAUDE.md`, and finds the forked copies of retired commands that still sit in `.claude/commands/` shadowing the placed ones.
 
-- label names — including the triage state `ship-merge` clears
-- the branch-name pattern, the closure keyword, and the merge strategy
-- the change-request noun your host uses — `PR` or `MR`
-- where diagrams live, and where the README is written
-- the verdict words and section names a review reports in
-- what a review judges against — your canonical format, your audience, the tools you actually use
+Everything a unit would otherwise hardcode resolves from that file — you adapt the workflow there, never the units. The values it writes reproduce this repo's own behaviour, so accepting all of them is safe.
 
-Everything a command would otherwise hardcode resolves from this file — you adapt the workflow here, never the units. The shipped values reproduce this repo's own behaviour, so changing nothing is safe.
+A repo that declares nothing **stops and says so**. There is deliberately no fallback to a global profile: a silent one would run another project's conventions with nothing in the session to reveal it. Running the setup skill is what stops that being your first experience of the plugin.
 
-A repo that declares nothing **stops and says so**. There is deliberately no fallback to a global profile: a silent one would run another project's conventions with nothing in the session to reveal it.
+Installing [`agent-workflows-runner`](https://github.com/dogkeeper886/agent-workflows-runner) too? It reads its own sections of the same file and has its own `setup-agent-runner`. Each writes only what it reads, in either order — neither overwrites the other.
 
-Finally, copy [`templates/CLAUDE.md`](templates/CLAUDE.md) into your repo — it is what binds the report contract to every session.
+Starting a repo with no `CLAUDE.md` at all? The skill writes the one section this plugin needs and stops there — your coding guidelines aren't its business. [`templates/CLAUDE.md`](templates/CLAUDE.md) is this repo's own, if you want a fuller starting point.
 
 ## Usage
 
@@ -102,6 +96,7 @@ Shipped in the plugin alongside the commands. All are invoked by hand.
 
 | Skill | What it's aimed at |
 |-------|--------------------|
+| `setup-agent-workflows` | adopting this plugin into a project — run once, first |
 | `reviewing-phrasing` | the words of a human-read doc |
 | `reviewing-typography` | its look — hierarchy, grouping, emphasis, density |
 | `reviewing-artifacts` | agent-read tooling — commands, skills, rules, `CLAUDE.md` |
@@ -114,7 +109,7 @@ Shipped in the plugin alongside the commands. All are invoked by hand.
 
 The `reviewing-*` skills judge finished work rather than score it — a minimum bar, not an exhaustive checklist — and each ends in a verdict that routes somewhere.
 
-`reporting-outcomes` is the odd one out: it shapes a chat turn rather than a file. `agent-report.md` binds what a *command* prints at a gate; this puts the same shape on the conversational report-back.
+The other two review nothing. `reporting-outcomes` shapes a chat turn rather than a file — `agent-report.md` binds what a unit prints at a gate, and this puts the same shape on the conversational report-back. `setup-agent-workflows` runs once per repo, before any of the rest: it writes the profile they all resolve against.
 
 ## Project structure
 
@@ -124,7 +119,7 @@ agent-workflows/
 │   └── marketplace.json   # This repo is its own marketplace
 ├── plugins/agent-workflows/   # The shipped plugin — placed once, reaching every project
 │   ├── commands/          # ship-* (ship tail), doc-* (README authoring)
-│   ├── skills/            # reviewing-* + reporting-outcomes
+│   ├── skills/            # setup-agent-workflows, reviewing-*, reporting-outcomes
 │   └── rules/             # Doctrine: the pipelines, the report contract, anti-slop, profile-doctrine
 ├── .claude/rules/
 │   └── project-profile.md # This project's values — the one file adoption touches

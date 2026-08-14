@@ -69,6 +69,31 @@ value can override a procedure, so a project that does it another way is forced 
 shipped unit, and its repo then reads as drifted when it was only working around us. State
 the goal; let the profile or the project's own layer name the mechanism.
 
+## More than one plugin writes this file
+
+A project may place several plugins that all resolve against the same
+`project-profile.md`. Each reads a different set of sections, so a **setup unit writes only
+the sections its own plugin reads** — never the whole file.
+
+That makes the write order irrelevant, which is the whole point. A project runs one
+plugin's setup today and another's next month, and must end with both plugins' values
+intact; neither setup can know which ran first, so neither may assume it is the only
+author.
+
+- **Own only what you read.** A section a plugin does not resolve against is not its
+  business — not to write, not to reformat, not to remove. A section **no** plugin claims
+  is the project's own, and is never touched.
+- **Add or update in place; never truncate.** A setup unit that finds an existing profile
+  edits the sections it owns and leaves the rest exactly as it found them. Writing the file
+  out from a template is what loses another plugin's values, and it does it silently.
+- **A value already there is a decision.** This file exists to be hand-edited, so a setup
+  unit re-running over one does not overwrite what it finds. It shows what differs from its
+  defaults and asks. Only a section that is *absent* gets written without asking.
+
+The **doctrine half** — the preamble saying what a profile is — is written by whichever
+setup unit first finds it missing. It is identical in every project, so the next one to run
+finds it already correct and leaves it alone.
+
 ## Where a project's own units live
 
 A project may have commands and skills of its own — ones no other project wants. They stay
