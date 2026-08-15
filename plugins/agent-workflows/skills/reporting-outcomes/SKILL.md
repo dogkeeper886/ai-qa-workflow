@@ -1,119 +1,136 @@
 ---
 name: reporting-outcomes
 description: |
-  Kills the slop in the ordinary reply that reports back on work — the chat turn
-  carrying progress, a verdict, reasons, a summary and a status at once, in the
-  order they occurred to the writer. Use whenever answering with what was done,
-  what was found, whether it worked, where things stand, or what is left, and the
-  answer runs longer than a line. Gate output already resolves the contract
-  itself. The questions live in `agent-report.md`, the words in
-  `project-profile.md` → Reports.
+  Reports work in two lines and a question — the verdict, the one next step, and whether
+  the reader wants it run or wants the detail — and holds everything else until asked. Findings, what was checked, risks and decisions exist but are not
+  shown by default; the reader either acts on the next step or asks for the detail. Only a
+  blocked or failed next step brings its blocker up with it. Replaces the reply that mixes
+  progress, findings, reasoning and status into a narrative the reader has to mine.
+when_to_use: |
+  Use whenever writing back about work — what was done, what was found, whether it worked,
+  where things stand, what is left, what broke, what is blocked — and the answer runs
+  longer than a line. Covers the everyday reply, not only a formal gate: a status update,
+  a summary of a run, a review verdict, a handoff note, an answer to "how did it go" or
+  "where are we". Reach for it even when nobody said the word "report", even when the
+  reply feels short enough to wing, and even when the news is good. The buried verdict is
+  the failure this prevents, and it is invisible to the person writing it.
 ---
 
-# reporting-outcomes
+# Reporting outcomes
 
-**Kill the slop.** Here it is the reply that reads like a complete report and makes
-the reader do the sorting. The mission and the rules a finding is held to:
-`${CLAUDE_PLUGIN_ROOT}/rules/anti-slop.md`.
+**Under 30 seconds, or it failed.** The reader wants two things — *is it good, and what
+happens now*. Everything else is yours to hold until they ask.
 
-## The shape this catches
+Volume is not the cost. **Interpretation burden** is: information arriving faster than
+meaning can be extracted from it. A reader handed everything and told nothing does your
+judging at their rate.
 
-An agent finishes a piece of work and writes back. The reply contains, in
-whatever order they occurred to it:
+## The default: two lines and a question
 
-> some of what happened · whether it worked · why it was done that way · what is
-> still running · what broke · what it means · what is next
+    <VERDICT> — <the one thing that decides it>.
+    Next: <one step>.
+    <run it, or see the detail?>
 
-Every one of those is worth saying. Together, unsorted, they are a narrative the
-reader has to mine. They open the message wanting one thing — *is this good, and
-what do I do now* — and get a story they must read to the end twice.
+Stop there.
 
-## Where the format lives
+    PASS — all five findings closed.
+    Next: nothing. Ready for use.
+    Want the detail?
 
-| You need | Read |
-|---|---|
-| The questions a report answers, and why | `${CLAUDE_PLUGIN_ROOT}/rules/agent-report.md` |
-| Verdict words, section names, finding columns, empty marker | `.claude/rules/project-profile.md` → **Reports** |
+    REVISE — 7 findings, 2 of them break checks that were reported working.
+    Next: fix all 7 in one pass.
+    Run it, or see the findings?
 
-Resolve both from there each time; leave them unrestated here. A copy would go stale silently: nothing
-breaks when a duplicated verdict word drifts from the profile's, so nothing
-announces it — the skill simply starts teaching a shape the rest of the toolkit
-no longer uses. `agent-report.md` makes the same argument for itself under *Why
-this is a rule, not a template*.
+    IN FLIGHT — 6 of 9 scenarios clear, 3 failing on one cause.
+    Next: fix the shared cause and re-run, ~20 min.
+    Want the failing three?
 
-## Where each piece goes
+That is the whole report. Not a summary of one.
 
-The pieces a chat reply mixes map onto the contract; they are not extra
-sections. The right-hand column names the contract's **questions** — the wording
-of any heading you actually type is the profile's.
+## What is withheld
 
-| What you are about to write | Where it belongs |
-|---|---|
-| whether it worked, is ready, is safe | the **verdict** — first, alone, before any narration |
-| what broke, what was found, what needs acting on | **findings** |
-| what you actually looked at or ran | **checked** — this is what scopes the verdict |
-| what you skipped on purpose | **not done** — a choice |
-| what you could not settle, or fixed without proving | **unresolved** — a risk |
-| files, commits, paths, IDs | **trace** |
-| the one thing to do now | **next** |
-| *why* you did it that way | inline with the finding it explains, or nowhere |
+Findings · Checked · Risks · Decisions · Not done · Unresolved · Trace.
 
-Reasoning is the piece most often given its own paragraph and it rarely earns
-one. Attach it to the thing it justifies. If it justifies nothing the reader must
-act on, cut it.
+All of it real, none of it shown. Prepare it, hold it, produce it when asked. A reader who
+trusts the verdict never spends a second on it — which is the point, not a reason to skip
+doing the work behind it.
 
-## Mid-flight is not a verdict
+**Never volunteer it. Never offer extras beyond the one choice.** Answer, then stop.
 
-A chat report-back is often not finished, and that changes the first line rather
-than removing it. What the reader decides is still the question — it is just a
-different question.
+## The one exception
 
-| State | The first line answers |
-|---|---|
-| finished | did it pass |
-| still running | what is running, and what you will do when it lands |
-| blocked | what you need, and from whom |
-| partial | what is settled, and what is not |
+**A next step that is blocked or failed brings its blocker with it**, because the reader
+cannot act without it:
 
-**Progress is not a verdict, and must not be dressed as one.** "Working through
-the scenarios" is a status. "Six of nine clear, three failing on the same
-cause" is a report.
+    BLOCKED — staging credentials missing.
+    Next: you send them, or I stub the integration and we lose real-path coverage.
+
+    FAILED — migration rolled back at step 4 of 7.
+    Next: I need a call on retry-with-fix or revert to the old schema.
+
+**These take no question line.** The choice is already inside Next, and asking again
+after it is the offered extra this format exists to kill.
+
+Nothing else surfaces uninvited. A risk that does not block the next step waits until
+asked.
+
+## Verdicts
+
+A fixed set, so the first word grades before the sentence is parsed:
+
+`PASS` · `REVISE` · `BLOCKED` · `FAILED` · `IN FLIGHT`
+
+Unfinished work still has a verdict; it changes what the line answers, not whether there
+is one. **Progress is not a verdict** — "working through the scenarios" is a status, "six
+of nine clear, three failing on one cause" is a report.
+
+## When they ask
+
+Give only what was asked. Asked for findings, give findings — not findings plus what was
+checked plus the trace.
+
+Severity order, tightest useful shape. A table where the rows are peers:
+
+    | # | Sev | Location | What's wrong | Smallest fix |
+
+**On a PASS, `Checked` is the whole substance** — no findings justify the verdict, so what
+was actually run is all that makes it worth anything. Name the command and its result.
+Asserting "verified" without the observation is the costliest slop there is; every later
+decision rests on it.
+
+## Diagrams
+
+ASCII only, only in the detail, only when the thing has a **shape** — a sequence, a break
+in one, a dependency, a before-and-after:
+
+    scrape ──► parse ──► ✗ validate ──► load ──► notify
+                          schema drift          (never ran)
+
+One per answer at most. Never in the two-line default. Never for two items, a list that is
+already a list, or decoration.
 
 ## When this does not fire
 
-Load-bearing, because a skill that fires on everything makes every reply a form.
-The rule says it plainly: a one-line reply, a confirmation, or a single fact
-asked for directly *is* the answer, and seven sections around it are ritual.
-
-Leave it alone when:
+A skill that fires on everything turns every reply into a form.
 
 - the answer is one fact and the fact is what was asked
-- it is an acknowledgement — "pushed", "done", "it is at X"
-- the work itself is the deliverable and this is just the covering note
-- it is a discussion, a design proposal, or thinking aloud — a report states a
-  conclusion, it does not develop one
-- nothing was judged. A status carrying no judgment is a status, and fine
-
-**The sections are a ceiling.** A small result answers the same questions in
-three lines and no headings. Reaching for the full shape on a small result is
-the failure mode, not the safe default.
+- an acknowledgement — "pushed", "done", "it's at X"
+- a discussion, a design proposal, or thinking aloud — a report states a conclusion, it
+  does not develop one
+- nothing was judged; a status carrying no judgment is a status, and that is fine
 
 ## The markers
 
-Four ways a report-back fails while still reading like a complete one.
+**The buried verdict.** The judgment lands after the narration, so the reader spends the
+attention the report existed to save — twice, if it is bad news.
 
-**The buried verdict.** The judgment lands after two paragraphs of how it was
-reached, so the reader spends the attention the report existed to save — and on
-a failure, spends it twice.
+**The volunteered extra.** Findings, caveats and trace shown unasked, or a "want me to
+also…" bolted onto the answer. Both spend the reader on something they did not raise, and
+both tax the two lines that mattered.
 
-**Choice collapsed into risk.** Something skipped deliberately and something
-still unknown read identically once they share a list. One needs nothing; the
-other is the reason to keep reading.
+**Progress dressed as a verdict.** A status with a grade-shaped sentence around it.
 
-**Silent omission.** An absent section cannot be told from a question never
-asked. "No issues found" and "did not look" are the same text when the text is
-missing.
+**Silent omission.** Asked for findings and given four of seven, with nothing saying so.
 
-**Confidence not matched to method.** A thing fixed on reading and a thing
-reproduced then fixed are stated in the same voice. Only the writer knows the
-difference, so only the writer can record it.
+**Confidence not matched to method.** A thing fixed on reading and a thing reproduced then
+fixed, stated in the same voice. Only the writer knows; say which.
