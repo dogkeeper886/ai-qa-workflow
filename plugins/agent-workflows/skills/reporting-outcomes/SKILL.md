@@ -2,8 +2,8 @@
 name: reporting-outcomes
 description: |
   Reports work in two lines and a question — the verdict, the one next step, and whether
-  the reader wants it run or wants the detail — and holds everything else until asked. Findings, what was checked, risks and decisions exist but are not
-  shown by default; the reader either acts on the next step or asks for the detail. Only a
+  the reader wants it run or wants the detail. Findings, what was checked, risks and
+  decisions are prepared but not shown; the reader acts on the next step or asks. Only a
   blocked or failed next step brings its blocker up with it. Replaces the reply that mixes
   progress, findings, reasoning and status into a narrative the reader has to mine.
 when_to_use: |
@@ -74,6 +74,41 @@ after it is the offered extra this format exists to kill.
 Nothing else surfaces uninvited. A risk that does not block the next step waits until
 asked.
 
+## When the verdict covers more than one thing
+
+**One subject, however many findings inside it, is one verdict and never a table.** An
+issue fixed across five files with three findings on the way is one thing:
+
+    PASS — #42 fixed, tests green.
+    Next: open the PR.
+
+Aggregate only when you judged N independent subjects that each deserve their own verdict —
+ten skills, a folder of docs. The test: **could the reader act on one without the others?**
+Ten skills, yes; one issue's five files, no.
+
+When they are independent and there are only a few — up to about three — give **one
+verdict line each and one Next**. Verdicts are cheap to scan; a count the reader has to
+expand is not:
+
+    PASS — reporting-outcomes: aggregation rule added.
+    PASS — reviewing-artifacts: CUT-sorts-first added.
+    Next: commit both.
+
+Past a handful the list of verdicts becomes its own wall, so line one reports the set:
+
+    REVISE — 3 of 10 need work; 1 is a CUT candidate.
+    Next: fix the 3, starting with the CUT — deleting a file voids its other findings.
+    See the per-item table?
+
+The worst verdict sets the grade, and the line names **every** count — `REVISE` alone
+hides the CUT, `3 of 10` alone hides what kind of trouble. The per-item table is withheld
+like any other detail, and when asked for it lists **every** item, clean ones included:
+
+    | Item | Verdict | Findings |
+
+A table of only the failures cannot be told from one that ran out of budget partway. And it
+is still exactly one next step — ranking N items is the writer's job, not the reader's.
+
 ## Verdicts
 
 A fixed set, so the first word grades before the sentence is parsed:
@@ -86,8 +121,21 @@ of nine clear, three failing on one cause" is a report.
 
 ## When they ask
 
-Give only what was asked. Asked for findings, give findings — not findings plus what was
-checked plus the trace.
+**Answer the question they asked, and only that one.** Each question has one home:
+
+| They ask | Give | Not |
+|---|---|---|
+| "what's wrong" / "the findings" | the findings | plus checked, plus trace |
+| "why" / "why that way" | the reasoning, attached to what it justifies | a standalone rationale section |
+| "what did you check" / "how do you know" | the commands run and what they printed | a restated verdict |
+| "is it risky" / "what could bite" | the risks, each with what would resolve it | risks without an ask |
+| "where" / "which files" | the trace | a narrative of getting there |
+| "show me everything" | all of it, in the order above | — |
+
+**The 30-second cap applies to the detail too.** It is not the place the held-back report
+finally lands — a second wall of text costs more than the first, because the reader paid a
+question to get it. If the honest answer does not fit, say what it is and offer the rest:
+*"12 findings, the 3 that block are below — the other 9 are cosmetic, want them?"*
 
 Severity order, tightest useful shape. A table where the rows are peers:
 
@@ -97,6 +145,10 @@ Severity order, tightest useful shape. A table where the rows are peers:
 was actually run is all that makes it worth anything. Name the command and its result.
 Asserting "verified" without the observation is the costliest slop there is; every later
 decision rests on it.
+
+**Then stop.** Do not re-offer the remaining sections, do not summarise what was just
+given, and do not close with a next step that was already stated. The answer ends when the
+question is answered.
 
 ## Diagrams
 
