@@ -52,8 +52,8 @@ and old ones change, so a fixed inventory of the current units goes stale.
    moved past? Flag coupling to a tool the profile does not list as live (one genuinely
    retired or relocated); an integration it does list, or a deliberate adapter, is not a
    violation. Cross-references resolve to files that exist. Skills are flat under
-   `skills/<name>/` — a foldered skill is undiscoverable, and a unit that needs folders to
-   group is a command.
+   `skills/<name>/` — a foldered skill is undiscoverable; supporting material sits beside
+   `SKILL.md`, never in a subdirectory under it.
 5. **Right for its reader.** Agent-read (commands, skills): instructions the agent can
    follow without guessing. Human-read (README, story): reads like a person wrote it for a
    person. This asks whether the doc does its job; its look and its words go to
@@ -72,12 +72,21 @@ Where each type leans:
 
 1. **Scope.** A single file, a folder, or "the files I just changed."
 2. **Put every question to every artifact in scope** — all five, each file accounted for.
-3. **Frontmatter hygiene (commands/skills).** Flag and recommend removing:
-   - `disable-model-invocation: true` — a unit's user-only nature comes from living in a
-     `commands/` directory, not a flag. On a skill the flag just makes it dormant (Claude
-     can't auto-invoke it); a genuinely user-only entry point belongs in `commands/`.
-   - a `tools:` / `allowed-tools:` allow-list — legacy baggage that pins the unit to
-     specific tools/servers. Drop it so the unit inherits the session's tools.
+3. **Frontmatter hygiene.** A unit is reached through its frontmatter before it is read at
+   all, so this is what decides whether the rest of the file ever runs. Flag:
+   - a missing or vague `description` — the model reads it to judge whether the unit
+     applies to what was just asked. Without one it falls back to the first paragraph of
+     the body — and a unit whose body opens on a list of rule includes describes nothing.
+     The unit is then correct and unreachable, and the agent improvises the job instead.
+   - `disable-model-invocation: true` on a unit meant to be reached. It reads like the
+     safety setting for a side-effecting workflow, but what it does is keep the
+     description out of context — so the model cannot know the unit exists and freelances
+     the work. A gate belongs in the unit's body, where a human is asked; the unit still
+     has to be found for that body to matter.
+   - an `allowed-tools:` list wider than the calls the unit actually makes. The field
+     pre-approves tools for the invoking turn, so anything past the unit's own calls is
+     permission it never needed — and an irreversible call listed there is a prompt the
+     human no longer gets.
 4. **Report** (below).
 5. **Fix (if asked).** Smallest blast radius first: remove leaked hardcoding, fill gaps,
    tighten wording. Structural changes — merging, splitting, or removing an artifact — need

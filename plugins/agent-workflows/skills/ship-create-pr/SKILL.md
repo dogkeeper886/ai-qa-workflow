@@ -1,3 +1,26 @@
+---
+name: ship-create-pr
+description: |
+  Push a committed branch, open its pull request, and link it to the issue so the issue
+  closes on merge instead of by hand. The first half of the ship tail — the stretch
+  between a commit and a merge. Moves the commits onto a feature branch first when they
+  landed on the default branch, sets the status label, and stops for a human to review
+  and test. It does not merge; ship-merge does that.
+when_to_use: |
+  Whenever committed work needs to reach a reviewer — "open a PR", "create the pull
+  request", "raise a PR for #27", "ship it", "push this branch and open a PR", "my
+  commits are on main, get them onto a branch and pushed".
+argument-hint: "[issue-number]"
+allowed-tools:
+  - Bash(git status:*)
+  - Bash(git log:*)
+  - Bash(git fetch:*)
+  - Bash(git symbolic-ref:*)
+  - Bash(git branch --show-current)
+  - Bash(gh issue view:*)
+  - Bash(gh pr view:*)
+---
+
 # Create a Pull Request
 
 ## Rules
@@ -10,10 +33,9 @@ Doctrine — the same in every project, and travels with these units:
 Values — this project's:
 @.claude/rules/project-profile.md
 
-```
 Push branch and open a pull request with issue linkage.
 
-Issue number: {{input}}
+Issue number: $ARGUMENTS
 
 ## PURPOSE
 
@@ -198,4 +220,3 @@ preceding command it needs — run it straight after whatever produced the commi
 - If branch is already pushed, the push step is a no-op
 - Step 1a only ever moves what the remote does not already have, so a commit already
   pushed to the default branch is out of its reach by construction
-```

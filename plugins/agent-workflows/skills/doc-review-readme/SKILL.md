@@ -1,3 +1,21 @@
+---
+name: doc-review-readme
+description: |
+  Gate a README before a person reads it, on three counts: it reads and looks right, it
+  is true to the code, and it delivers for a newcomer. Reuses reviewing-phrasing and
+  reviewing-typography for the words and the look rather than re-judging them, then
+  verifies every command, path, env var and link against the source. The accuracy half of
+  the doc-workflow, and the gate on what doc-gen-readme wrote.
+when_to_use: |
+  Whenever a README is about to reach a reader — "review the README", "check the README
+  is accurate", "does the README still match the code", "gate this README before I open
+  a PR", straight after doc-gen-readme.
+allowed-tools:
+  - Read
+  - Grep
+  - Glob
+---
+
 # Review a Generated README
 
 ## Rules
@@ -11,7 +29,6 @@ Doctrine — the same in every project, and travels with these units:
 Values — this project's:
 @.claude/rules/project-profile.md
 
-```
 Check a README delivers for its reader, reads and looks right, and is true to the code.
 
 Target: README.md (or the path written by /doc-gen-readme)
@@ -80,4 +97,3 @@ verdict first, and a section with nothing to report says so.
   leads with the key point. If the producer's rules change, update this pass to match.
 - Read-mostly: reads the README + the code; on REVISE, edits the README in place.
 - Gates what `/doc-gen-readme` wrote.
-```

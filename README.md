@@ -11,8 +11,7 @@ These two are **complements, not alternatives**. Install both.
 - [What this adds](#what-this-adds)
 - [Getting started](#getting-started)
 - [Usage](#usage)
-- [Available commands](#available-commands)
-- [Skills](#skills)
+- [What ships](#what-ships)
 - [Project structure](#project-structure)
 - [The agent family](#the-agent-family)
 - [License](#license)
@@ -81,18 +80,22 @@ reviewing-finish                         # run the tooling; clear leftovers and 
 /ship-merge        30                    # merge, clear the labels, delete the branch
 ```
 
-## Available commands
+## What ships
 
-All of them live in [`plugins/agent-workflows/commands/`](plugins/agent-workflows/commands/).
+Every unit is a skill under
+[`plugins/agent-workflows/skills/`](plugins/agent-workflows/skills/), and its `/` name is
+its directory name. Arriving in a plugin also gives each one a namespaced form —
+`/agent-workflows:ship-merge` — and the bare `/ship-merge` works unless something else in
+your setup already claims that name. All are invoked by hand.
 
-| Group | Commands | Job |
-|-------|----------|-----|
+**The pipelines**, run in order, each step stopping for a human:
+
+| Group | Units | Job |
+|-------|-------|-----|
 | **Ship tail** | `ship-create-pr` · `ship-merge` | commit → merged, with the branch and labels cleaned up |
 | **Doc workflow** | `doc-gen-readme` · `doc-review-readme` | a codebase → its README, and the accuracy gate |
 
-## Skills
-
-Shipped in the plugin alongside the commands. All are invoked by hand.
+**The rest**, reached when you need them:
 
 | Skill | What it's aimed at |
 |-------|--------------------|
@@ -118,8 +121,8 @@ agent-workflows/
 ├── .claude-plugin/
 │   └── marketplace.json   # This repo is its own marketplace
 ├── plugins/agent-workflows/   # The shipped plugin — placed once, reaching every project
-│   ├── commands/          # ship-* (ship tail), doc-* (README authoring)
-│   ├── skills/            # setup-agent-workflows, reviewing-*, reporting-outcomes
+│   ├── skills/            # Every unit: ship-* (ship tail), doc-* (README authoring),
+│   │                      #   setup-agent-workflows, reviewing-*, reporting-outcomes
 │   └── rules/             # Doctrine: the pipelines, the report contract, anti-slop, profile-doctrine
 ├── .claude/rules/
 │   └── project-profile.md # This project's values — the one file adoption touches

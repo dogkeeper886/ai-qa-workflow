@@ -1,3 +1,23 @@
+---
+name: doc-gen-readme
+description: |
+  Write a project's README from the code: research current README convention on the web,
+  study the repo from its ground truth rather than its existing docs, find the one
+  organizing idea a newcomer needs first, optionally draw a diagram per key idea, and
+  write the file. The producer half of the doc-workflow. It writes the README only — it
+  does not open a PR, and doc-review-readme gates what it wrote.
+when_to_use: |
+  Whenever a repo needs its README written or rewritten — "write the README", "generate
+  a README for this project", "our README is stale, redo it", "document this repo for
+  newcomers", "write a README for ../other-repo".
+argument-hint: "[repo-path]"
+allowed-tools:
+  - WebSearch
+  - Read
+  - Grep
+  - Glob
+---
+
 # Generate a README
 
 ## Rules
@@ -11,10 +31,9 @@ Doctrine — the same in every project, and travels with these units:
 Values — this project's:
 @.claude/rules/project-profile.md
 
-```
 Research best practices, study the project, and write its README — diagrams and all.
 
-Target: {{input}}  (a repo path, or empty for the current repo)
+Target: $ARGUMENTS  (a repo path, or empty for the current repo)
 
 ## PURPOSE
 
@@ -115,4 +134,3 @@ report says so.
 - Diagrams are optional; when used, SVG is the source of truth and the PNG is rendered.
 - `/doc-review-readme` gates what this writes, before a person reads it.
 - Right-size: a tiny project may need no diagrams; don't manufacture them.
-```
