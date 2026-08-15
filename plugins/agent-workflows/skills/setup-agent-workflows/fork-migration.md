@@ -8,6 +8,12 @@ menu, and are the reason a migration needs a document at all.
 the conflict. A local `dw-story.md` and the plugin's units coexist under different
 namespaces, so both appear and neither announces the other. Nobody is told which one ran.
 
+**Telling them apart while both exist.** Every unit this plugin ships is a skill, so it
+answers to a namespaced name as well as a bare one. `/agent-workflows:ship-merge` always
+reaches the placed unit; `/ship-merge` reaches a local fork of that name instead, when one
+is there. Until the fork is gone, the namespaced form is the only one that says which copy
+ran.
+
 ## The mapping
 
 **Renamed** — the unit survived under a new name. The fork is redundant; delete it and

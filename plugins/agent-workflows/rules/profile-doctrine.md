@@ -18,13 +18,13 @@ reproduce this toolkit's own behaviour, so a project that changes nothing behave
 as the toolkit does. Adoption is opt-in — change a line in the profile and every unit
 follows.
 
-**Two wiring styles, and when each applies.** A **command** inlines the profile at the top
-and may then show a value inline as an illustrated default — the whole file is already in
+**Two wiring styles, and when each applies.** A unit that **inlines the profile** at the
+top may then show a value inline as an illustrated default — the whole file is already in
 front of it, and its group rule carries the "these resolve from the profile" statement for
-the group, so the pointer is not repeated line by line. A **skill** is read on its own,
-with nothing inlined beside it, so it points at the profile at each point of use. Both are
-correct. Which one applies is decided by whether the unit inlines the profile — not by
-preference.
+the group, so the pointer is not repeated line by line. A unit that **does not inline it**
+is read on its own, with nothing beside it, so it points at the profile at each point of
+use. Both are correct. Which one applies is decided by whether the unit inlines the
+profile — not by preference.
 
 **No profile, no defaults.** A project that has not declared its values does not fall back
 to another project's — a unit that needs a value it cannot resolve stops and says so. A
@@ -50,10 +50,10 @@ and there is no resolution order to remember.
 | `${CLAUDE_PLUGIN_ROOT}/rules/…` | doctrine — identical everywhere | the plugin, travelling with the units |
 | `.claude/rules/project-profile.md` | values — this project's | the project, one file per repo |
 
-A command inlines both at the top with `@`; a skill reads them by path at the point of
-use. In a project that has declared nothing, the values reference resolves to nothing and
-the session shows it — the no-fallback rule above, enforced by mechanism rather than by
-prose.
+A unit that inlines them does so at the top with `@`; one that does not reads them by path
+at the point of use. In a project that has declared nothing, the values reference resolves
+to nothing and the session shows it — the no-fallback rule above, enforced by mechanism
+rather than by prose.
 
 ## What belongs in the profile, and what does not
 

@@ -1,3 +1,25 @@
+---
+name: ship-merge
+description: |
+  Merge an approved pull request, clear the issue's labels, delete the branch, and leave
+  you on the default branch. The second half of the ship tail and its terminal gate: it
+  asks outright whether a human has reviewed and tested the change at the current head
+  SHA, records that answer on the PR, and refuses to merge without it. Clears the triage
+  state label nothing upstream ever removes.
+when_to_use: |
+  Whenever an open pull request should land — "merge this", "merge PR 30", "land it",
+  "merge and clean up", "close out #27", "the PR is approved, ship it". Being told to run
+  it is a request to reach the review gate, never the answer to it.
+argument-hint: "[pr-number]"
+allowed-tools:
+  - Bash(git status:*)
+  - Bash(git symbolic-ref:*)
+  - Bash(git branch --show-current)
+  - Bash(gh pr view:*)
+  - Bash(gh pr checks:*)
+  - Bash(gh issue view:*)
+---
+
 # Merge a Pull Request
 
 ## Rules
@@ -10,10 +32,9 @@ Doctrine — the same in every project, and travels with these units:
 Values — this project's:
 @.claude/rules/project-profile.md
 
-```
 Merge an approved pull request and clean up.
 
-PR number: {{input}}
+PR number: $ARGUMENTS
 
 ## PURPOSE
 
@@ -178,4 +199,3 @@ SHA — the gate is satisfied from the record, and nobody is asked twice.
   being left. Naming the SHA is what makes it a record rather than a rubber stamp
 - `git branch -d` refuses an unmerged branch — that refusal is a signal, not a
   nuisance. Report it; do not reach for `-D`.
-```
