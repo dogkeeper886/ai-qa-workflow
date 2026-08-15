@@ -19,11 +19,10 @@ argument-hint: "[repo-path]"
 
 ## Values
 
-Four values come from the project, not from this skill. Read
-`.claude/rules/project-profile.md` when you reach the step that needs one — a value that
-cannot be resolved is a stop, not a guess:
+Four values belong to the project, not to this skill. Use the default unless the project
+declares otherwise; where it declares, that wins:
 
-| Value | Used by | Default if the project declares none |
+| Value | Used by | Default |
 |---|---|---|
 | README output path | Step 5 | `README.md` |
 | diagrams dir | Step 4 | `docs/diagrams/` (SVG) + `docs/diagrams/png/` |
