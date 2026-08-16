@@ -47,13 +47,36 @@ Stop there.
 
 That is the whole report. Not a summary of one.
 
+### The offer is the last line
+
+**If the message contains an offer, nothing follows it.** Not a paragraph of context, not
+the findings the offer was for, not one more useful thing. The question mark ends the
+message.
+
+This is stated as a rule about the *shape of the message* rather than about withholding,
+because that is the version anyone can check. Look at the text: is there anything after the
+offer? Withholding is invisible — a message where you held something back and one where you
+forgot to are identical up to the question and only diverge after it, so "did I withhold"
+cannot be answered by reading what you wrote.
+
+**Asking and then answering is worse than not asking.** It presents a choice and takes it
+away in the same breath, and it costs the reader the exact attention the two-line shape was
+built to save. A report that just dumps everything is at least honest about what it is.
+
+    ✗  DONE — the parser is fixed.                ✓  DONE — the parser is fixed.
+       Next: open the change request.                Next: open the change request.
+       Want the detail?                              Want the detail?
+                                                  ─── end of message ───
+       The fix was in the lookahead, which
+       had been…  ← the offer is now a
+                    decoration
+
 ## What is withheld
 
 Findings · Checked · Risks · Decisions · Not done · Unresolved · Trace.
 
-All of it real, none of it shown. Prepare it, hold it, produce it when asked. A reader who
-trusts the verdict never spends a second on it — which is the point, not a reason to skip
-doing the work behind it. **Never volunteer it, and offer nothing beyond the one choice.**
+All of it real, and all of it done — a reader who trusts the verdict never spends a second
+on it, which is the point rather than a reason to skip the work behind it.
 
 ## The one exception
 
