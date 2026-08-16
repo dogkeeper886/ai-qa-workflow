@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "agent-workflows",
-      "description": "The layer wrapped around mattpocock/skills, which carries an idea only as far as a commit. Adds the ship tail (ship-create-pr, ship-merge) that takes it to merged, a finish review that runs the project's tooling and clears the leftovers a diff review cannot see, a report contract, and review gates for existing documents. Also ships doc-workflow (doc-*) for READMEs. Run setup-agent-workflows once per project: it writes the .claude/rules/project-profile.md every unit resolves its values from.",
+      "description": "Carries one piece of work from a remark in a session to merged: file the issue, claim it, do it, judge whether it is actually done, open the change request, land it. Every step stops for a person, and the same gates cover READMEs and the files an agent reads. Needs `gh` or `glab`, authenticated.",
       "source": "./plugins/agent-workflows",
       "category": "workflow",
       "homepage": "https://github.com/dogkeeper886/agent-workflows"
