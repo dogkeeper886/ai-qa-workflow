@@ -8,12 +8,17 @@ description: |
   words it was made in rather than paraphrasing it, and states an acceptance test someone
   else can check. Creates the portal every later step resolves back to.
 when_to_use: |
-  Use whenever work is identified but not started — "this is broken", "we should track
-  this", "file an issue", "raise a bug", "that's a separate problem", "let's do that
-  later", "add it to the backlog", "someone should fix that". Reach for it when a session
+  Use whenever work is identified but not started, of any kind — not only code. Code:
+  "this is broken", "raise a bug", "we should track this", "someone should fix that".
+  Docs: "the README is wrong", "nobody can find how to run this", "that page is stale",
+  "this needs writing up". Environment: "staging is on the old version", "we should
+  upgrade that", "this config drifted", "we need a bigger instance". Operations: "the cert
+  expires next week", "someone has to rotate that key", "we need to migrate the data",
+  "that job needs re-running". Also the generic ones: "file an issue", "that's a separate
+  problem", "let's do that later", "add it to the backlog". Reach for it when a session
   surfaces a second problem while working on a first, which is the case that most often
-  goes unrecorded. Do not reach for it for a question, a thing already being done, or a
-  fix smaller than the issue describing it.
+  goes unrecorded, and when the thing is an act to perform rather than code to write. Not
+  for a question, a thing already underway, or a fix smaller than the issue describing it.
 argument-hint: "[what to file]"
 ---
 
@@ -136,14 +141,29 @@ the code binds on reality, the issue binds on scope, and the log only informs.
 The body skeleton is not in this file. It ships as a template, so that a person filing
 through the web interface gets the same sections an agent does:
 
-| The thing is | Template | The sections it exists for |
-|---|---|---|
-| something broken | [templates/bug.md](templates/bug.md) | **Root cause** and **Proposed fix** — a bug without either is a report, not an issue |
-| something to build or change | [templates/task.md](templates/task.md) | **Plan**, **Expected outcome**, **What's next** |
+| The thing is | Template | Ends in | The sections it exists for |
+|---|---|---|---|
+| something broken | [bug.md](templates/bug.md) | a diff | **Root cause**, **Proposed fix** — a bug without either is a report, not an issue |
+| something to build or change | [task.md](templates/task.md) | a diff | **Plan**, **Expected outcome**, **What's next** |
+| something to write or correct | [docs.md](templates/docs.md) | a diff | **Who reads it**, and two reviews — technical for true, editorial for readable |
+| a change to infrastructure | [environment.md](templates/environment.md) | either | **Blast radius**, **Rollback**, **Window** |
+| an act to perform | [operation.md](templates/operation.md) | evidence | **Access**, **Pre-checks**, **Verification**, **Evidence to capture** |
 
-Both carry What · Why · Done when · Context · Out of scope. **The list is a floor.** A
-kind that needs a section neither template has gets it, and the template gains it
-afterwards.
+All five carry What · Done when · Context · Out of scope. **The list is a floor.** A kind
+needing a section none of them has gets it, and the template gains it afterwards.
+
+**"Ends in" decides how the issue closes**, not how it is written. A diff closes by merging
+a change request; evidence closes by hand with the commands, their output and the
+before-and-after state on the issue. `environment` goes both ways — infrastructure as code
+produces a diff, a manual provision produces evidence — and the sections are identical
+either way, so the fork is stated in the template and resolved later rather than splitting
+it in two.
+
+**Rollback and verification are why the last two exist.** A commit reverts; a migrated
+database does not, and a rotated certificate leaves no diff to inspect. Those templates ask
+for a known-good state, a rollback that has actually been run somewhere rather than assumed,
+and verification taken from outside the change — because checking with the tool that made
+it proves the tool ran, not that the world changed.
 
 **The project's copy wins.** Look in `.github/ISSUE_TEMPLATE/` or
 `.gitlab/issue_templates/` first and fill what is there. The templates beside this skill
@@ -196,7 +216,7 @@ Copy this checklist and tick each item as you finish it:
     - [ ] Decided it needs tracking — and said why, if it was close
     - [ ] Searched for an existing issue
     - [ ] Session saved and linked, or its absence accepted and Context omitted
-    - [ ] Template picked (bug or task) and every section filled
+    - [ ] Template picked — bug · task · docs · environment · operation
     - [ ] Issue created, labelled; linking reported as what the platform gave
     - [ ] Verdict reported
 
