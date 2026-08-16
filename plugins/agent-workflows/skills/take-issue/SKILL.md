@@ -1,18 +1,21 @@
 ---
 name: take-issue
 description: |
-  Picks up a tracked issue and claims it: resolves which one, reads it whole along with the
-  session it links, judges whether it can actually be started, and refuses it back when it
-  cannot. Assigns it, sets the state label, cuts the branch, and stops before writing any
-  code — so a misreading is catchable while it is still cheap. The read half of an issue;
-  something else does the work.
+  Picks up a tracked issue of any kind and claims it: resolves which one, reads it whole
+  along with the log it links, judges whether it can actually be started, and refuses it
+  back when it cannot. Assigns it, moves the state label, cuts a branch where a diff is
+  coming, and stops before any work begins — so a misreading is catchable while it is still
+  cheap. The read half of an issue; something else does the work.
 when_to_use: |
-  Use whenever work is about to start on something already tracked — "work on #42", "what's
-  next", "pick something up", "grab the next one", "I'll take that", "what should I do now",
-  "start on the parser bug". Reach for it before any code is written, including when the
-  issue number is already known and the work looks obvious, because the point is to read
-  the issue rather than to remember it. Not for filing something new, and not for doing the
-  work once it is claimed.
+  Use whenever work is about to start on something already tracked, whatever kind it is —
+  "work on #42", "what's next", "pick something up", "grab the next one", "I'll take that",
+  "what should I do now". Code: "start on the parser bug". Docs: "fix that README issue".
+  Environment: "do the staging upgrade". Operations: "rotate that cert", "run the
+  migration", "take the cert one". Reach for it before any work begins, not only before
+  code — an operation issue is claimed the same way and is the case most likely to be
+  started without ever being picked up. Reach for it even when the issue number is known
+  and the work looks obvious, because the point is to read the issue rather than to
+  remember it. Not for filing something new, and not for doing the work once claimed.
 argument-hint: "[issue-number]"
 ---
 
@@ -20,8 +23,9 @@ argument-hint: "[issue-number]"
 
 Target: $ARGUMENTS — an issue number, or empty to take the next one available.
 
-**This claims, it does not build.** It ends with an issue assigned, a branch cut, and a
-statement of what was understood. Nothing in the working tree changes. That gap is
+**This claims, it does not build.** It ends with an issue assigned, a branch cut where one
+is warranted, and a statement of what was understood. Nothing in the working tree changes,
+and nothing is acted on — an operation issue is claimed here and performed elsewhere. That gap is
 deliberate: it is the last cheap moment to catch a misreading, and reading an issue wrong
 is the failure that survives every later review, because every later review checks the work
 against the misreading.
@@ -81,9 +85,27 @@ appears; a frontier that had to be relaxed to produce work is not a frontier.
 Body, every comment, labels, linked issues. Comments are where an issue is amended, and an
 issue read without them is read at the moment it was filed rather than as it stands.
 
-**If the issue links a session log**, open it and read the part it points at. A body has
-to compress; the log is where the reasoning behind it survives, so it is the cheap way to
-recover intent the issue could not carry.
+**If the issue links a session log**, read the part it points at. A body has to compress;
+the log is where the reasoning behind it survives, so it is the cheap way to recover intent
+the issue could not carry.
+
+**Do not open it whole.** It is raw JSONL — one record per line, megabytes of it, most of
+which is tool output and harness bookkeeping. Reading it end to end spends the context the
+work needs. Pull out what was said instead:
+
+    python3 -c "
+    import json,sys
+    for l in open(sys.argv[1]):
+        d=json.loads(l)
+        if d.get('type') not in ('user','assistant'): continue
+        c=(d.get('message') or {}).get('content')
+        if isinstance(c,str): print(d['type'],':',c[:2000]); continue
+        for b in (c or []):
+            if b.get('type')=='text': print(d['type'],':',b['text'][:2000])
+    " .sessions/<uuid>.jsonl
+
+Narrow it further where the issue names a line range or a topic. **Search the log, do not
+read it** — you are recovering one decision, not reconstructing a session.
 
 **A session log is an accuracy aid, not a requirement.** Most issues will not have one, and
 none of them is unpickable for lacking it. Say it was absent and proceed on what the issue
@@ -116,19 +138,27 @@ clearer measured how?" is one question and it makes the issue permanently better
 
 ## 4. Claim it
 
-Three acts: a branch, an assignee, a state label. **Local first, so a failure costs
-nothing that anyone else can see:**
+**First: will this end in a diff?** Not every issue does. Code, docs and
+infrastructure-as-code produce a patch; an operation — a certificate rotated, a job re-run,
+data migrated — produces evidence and never touches the tree. The issue's kind usually says
+which, and its template says how it closes.
 
-    1. branch   issue-<N>-<slug>, cut from the default branch derived rather than assumed.
-                Where the project declares its own pattern, that wins; this is the default.
-                Branch already there? Check it out. Resuming is not an error.
+**No diff, no branch.** A branch with nothing on it is noise, and deleting it later reads as
+work abandoned. Where it is genuinely unclear, ask — one question is cheaper than a stray
+branch or a missing one.
+
+Then claim it. **Local first, so a failure costs nothing anyone else can see:**
+
+    1. branch   ONLY if a diff is coming. issue-<N>-<slug>, cut from the default branch
+                derived rather than assumed. Where the project declares its own pattern,
+                that wins. Branch already there? Check it out — resuming is not an error.
     2. assign   to yourself
     3. label    move the state — new label on, old label off
 
-If 2 or 3 fails, undo backwards: delete the local branch, unassign. A half-claim is worse
-than none — a branch with no assignment reads as unclaimed work, and an assignment with no
-branch reads as work in progress nobody can find. Say which of the three landed rather than
-reporting the claim as whole.
+If a later act fails, undo backwards: delete the branch if one was cut, unassign. A
+half-claim is worse than none — a branch with no assignment reads as unclaimed work, and an
+assignment with no branch reads as work in progress nobody can find, unless no branch was
+ever meant to exist. Say which acts landed rather than reporting the claim as whole.
 
 ## 5. Say what you understood
 
@@ -152,7 +182,8 @@ Copy this checklist and tick each item as you finish it:
     - [ ] Issue read whole, comments included
     - [ ] Session log read if the issue links one — absent is normal, not a blocker
     - [ ] Pickable — or refused, with the gap named
-    - [ ] Branch, assignee, state label — all three, old label removed
+    - [ ] Diff coming? decided, and the branch cut only if so
+    - [ ] Assignee and state label set, old label removed
     - [ ] Reading stated, and stopped
 
 ## Report
