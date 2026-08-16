@@ -49,7 +49,7 @@ rsvg-convert             an external command
 if [ $# -gt 0 ]; then
   TARGETS="$1"
 else
-  TARGETS="$ROOT/plugins $ROOT/README.md $ROOT/CLAUDE.md"
+  TARGETS="$ROOT/plugins $ROOT/.claude-plugin $ROOT/README.md $ROOT/CLAUDE.md"
 fi
 
 HITS=$(mktemp)
