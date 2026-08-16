@@ -3,7 +3,7 @@ name: reporting-outcomes
 description: |
   Reports work in two lines and a question — the verdict, the one next step, and whether
   the reader wants it run or wants the detail. Findings, what was checked, risks and
-  decisions are prepared but not shown; the reader acts on the next step or asks. Only a
+  decisions are prepared and held; the reader acts on the next step or asks. Only a
   blocked or failed next step brings its blocker up with it. Replaces the reply that mixes
   progress, findings, reasoning and status into a narrative the reader has to mine.
 when_to_use: |
@@ -53,9 +53,7 @@ Findings · Checked · Risks · Decisions · Not done · Unresolved · Trace.
 
 All of it real, none of it shown. Prepare it, hold it, produce it when asked. A reader who
 trusts the verdict never spends a second on it — which is the point, not a reason to skip
-doing the work behind it.
-
-**Never volunteer it. Never offer extras beyond the one choice.** Answer, then stop.
+doing the work behind it. **Never volunteer it, and offer nothing beyond the one choice.**
 
 ## The one exception
 
@@ -101,23 +99,30 @@ Past a handful the list of verdicts becomes its own wall, so line one reports th
     See the per-item table?
 
 The worst verdict sets the grade, and the line names **every** count — `REVISE` alone
-hides the CUT, `3 of 10` alone hides what kind of trouble. The per-item table is withheld
-like any other detail, and when asked for it lists **every** item, clean ones included:
+hides the CUT, `3 of 10` alone hides what kind of trouble. When the table is asked for it
+lists **every** item, clean ones included:
 
     | Item | Verdict | Findings |
 
 A table of only the failures cannot be told from one that ran out of budget partway. And it
 is still exactly one next step — ranking N items is the writer's job, not the reader's.
 
-## Verdicts
+## Verdicts and states
 
-A fixed set, so the first word grades before the sentence is parsed:
+**A verdict judges; a state describes.** Most work is graded, and some is better described —
+*half done* and *more than one task* are real outcomes no grade carries. Either way the
+first word must come from a **declared, fixed set**, never improvised per report, because
+that is what lets it grade before the sentence is parsed.
+
+Judging:
 
 `PASS` · `REVISE` · `BLOCKED` · `FAILED` · `IN FLIGHT`
 
-Unfinished work still has a verdict; it changes what the line answers, not whether there
-is one. **Progress is not a verdict** — "working through the scenarios" is a status, "six
-of nine clear, three failing on one cause" is a report.
+Describing: whatever set the unit declares, defined where it declares them.
+
+Unfinished work still gets a first word; it changes what the line answers, not whether
+there is one. **Progress is not a verdict** — "working through the scenarios" is a status,
+"six of nine clear, three failing on one cause" is a report.
 
 ## When they ask
 
