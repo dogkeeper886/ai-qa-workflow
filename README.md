@@ -110,6 +110,11 @@ command, `rsvg-convert` by default:
 
     rsvg-convert -z 2 docs/diagrams/<name>.svg -o docs/diagrams/png/<name>.png
 
+Renaming a skill leaves citations behind in the other thirteen, in both manifests and in
+this file. Check them before opening a change request:
+
+    scripts/check-names.sh
+
 ## License
 
 MIT, as declared in
