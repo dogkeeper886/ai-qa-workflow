@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" font-family="ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#57606a"/>
+    </marker>
+  </defs>
+  <rect width="900" height="400" fill="#ffffff"/>
+
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="600" fill="#1f2328">Not all work ends in a diff</text>
+  <text x="450" y="56" text-anchor="middle" font-size="13" fill="#656d76">A cert rotated, a cluster restarted, data migrated: the act is the deliverable, and there is nothing to merge.</text>
+
+  <rect x="30" y="96" width="140" height="48" rx="6" fill="#f6f8fa" stroke="#57606a" stroke-width="1.5"/>
+  <text x="100" y="125" text-anchor="middle" font-size="15" fill="#1f2328">do-task</text>
+
+  <path d="M240,120 L330,84 L420,120 L330,156 Z" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+  <text x="330" y="125" text-anchor="middle" font-size="13" fill="#0a3069">ends in a diff?</text>
+  <line x1="170" y1="120" x2="238" y2="120" stroke="#57606a" stroke-width="1.5" marker-end="url(#b)"/>
+
+  <text x="447" y="110" text-anchor="middle" font-size="12" font-weight="600" fill="#1a7f37">yes</text>
+  <line x1="420" y1="120" x2="500" y2="120" stroke="#57606a" stroke-width="1.5" marker-end="url(#b)"/>
+  <rect x="502" y="96" width="130" height="48" rx="6" fill="#f6f8fa" stroke="#57606a" stroke-width="1.5"/>
+  <text x="567" y="125" text-anchor="middle" font-size="15" fill="#1f2328">open-pr</text>
+  <line x1="632" y1="120" x2="700" y2="120" stroke="#57606a" stroke-width="1.5" marker-end="url(#b)"/>
+  <rect x="702" y="96" width="130" height="48" rx="6" fill="#f6f8fa" stroke="#57606a" stroke-width="1.5"/>
+  <text x="767" y="125" text-anchor="middle" font-size="15" fill="#1f2328">land-pr</text>
+  <text x="667" y="176" text-anchor="middle" font-size="13" fill="#656d76">a person reviews and tests at this exact head,</text>
+  <text x="667" y="196" text-anchor="middle" font-size="13" fill="#656d76">then the merge closes the issue by keyword</text>
+
+  <text x="352" y="192" font-size="12" font-weight="600" fill="#bc4c00">no</text>
+  <line x1="330" y1="156" x2="330" y2="238" stroke="#57606a" stroke-width="1.5" marker-end="url(#b)"/>
+  <rect x="230" y="240" width="200" height="48" rx="6" fill="#fff1e5" stroke="#bc4c00" stroke-width="1.5"/>
+  <text x="330" y="269" text-anchor="middle" font-size="15" fill="#762e00">evidence on the issue</text>
+  <text x="330" y="316" text-anchor="middle" font-size="13" fill="#656d76">the command, its output, the before-and-after state</text>
+  <text x="330" y="336" text-anchor="middle" font-size="13" fill="#656d76">then closed by hand: no branch, no change request</text>
+
+  <text x="450" y="382" text-anchor="middle" font-size="13" fill="#1f2328">The branch follows the same fork. No diff, no branch.</text>
+</svg>
