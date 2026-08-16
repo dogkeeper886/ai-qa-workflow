@@ -2,12 +2,11 @@
 name: file-issue
 description: |
   Turns something said in a session into a tracked issue that a cold agent can act on, and
-  saves the raw session beside it wherever one can be had — always attempted, never a
-  reason to withhold the issue. Decides
-  first whether the thing needs tracking at all, searches for an existing issue before
-  creating a second one, quotes the request in the words it was made in rather than
-  paraphrasing it, and states an acceptance test someone else can check. Creates the
-  portal every later step resolves back to.
+  copies the session log beside it wherever one can be had — always attempted, never a
+  reason to withhold the issue. Decides first whether the thing needs tracking at all,
+  searches for an existing issue before creating a second one, quotes the request in the
+  words it was made in rather than paraphrasing it, and states an acceptance test someone
+  else can check. Creates the portal every later step resolves back to.
 when_to_use: |
   Use whenever work is identified but not started — "this is broken", "we should track
   this", "file an issue", "raise a bug", "that's a separate problem", "let's do that
@@ -99,27 +98,38 @@ On a hit, comment on the existing issue instead and say that is what you did.
 **Always attempt it. Never block on it.** The log is worth real effort — it is the only
 place the reasoning behind a compressed body survives — and it is never a reason to hold
 back an issue. The issue has to stand on its own: a reader should never *need* the log to
-act, and should almost always *have* it. Where a raw session can be obtained, write it to
-`.sessions/<YYYY-MM-DD>-<slug>.md`, commit it, and link it from Context. Where it cannot,
-file the issue anyway and leave Context out. An issue withheld for a missing record is
-worse than an issue without one.
+act, and should almost always *have* it. Where it cannot be had, file the issue anyway and
+leave Context out. An issue withheld for a missing record is worse than an issue without one.
 
-What the log buys when it exists: the reasoning the body had to compress. A body states
-the decision; the log is where the alternatives, the dead ends and the phrasing that
-produced the decision survive.
+**Where it lives.** The host writes a log per session. For Claude Code that is:
 
-**Raw. Whole. Unedited.** No summary, no "key decisions" section, no extraction. The
-moment anyone decides what mattered, the thing that mattered and was not obvious is gone.
-That is the drift this whole design exists to remove, and it is undone by one helpful edit.
+    ~/.claude/projects/<project-slug>/<session-uuid>.jsonl
 
-Put a generated heading index above the transcript so a later reader can find a section
-without reading to it:
+with subagent logs and tool-result files in a directory of the same name beside it.
+The project slug is the working directory with separators replaced. Another host will put
+it somewhere else — find it rather than assuming this path, and say so if you cannot.
 
-    grep -n '^#' <log> | sed 's/^/  /'
+**Copy the log verbatim** into `.sessions/`, keeping its own filename, and commit it:
 
-Headings and line numbers, nothing else. Generating an index is not summarising: it adds no
-judgment and removes nothing. Write it by that command rather than by hand, because a
-hand-written index is a summary wearing an index's clothes.
+    cp ~/.claude/projects/<slug>/<uuid>.jsonl .sessions/
+
+**Copy, do not render.** Any markdown version is a filter, however careful — it drops the
+records it judged uninteresting, and that judgment is the exact thing this design removes.
+A readable view can be generated from the source whenever one is wanted, precisely because
+the source kept everything.
+
+**Raw. Whole. Unedited.** No summary, no "key decisions" section, no extraction. The moment
+anyone decides what mattered, the thing that mattered and was not obvious is gone. That is
+the drift this whole design exists to remove, and it is undone by one helpful edit.
+
+Two properties worth knowing rather than discovering. A live session's file **grows as you
+work**, so any copy is a snapshot rather than a final record — say which. And these files
+are large; a project's accumulated sessions run to megabytes, which is accepted rather than
+solved. Pruning is summarising with a longer interval.
+
+**What the log buys.** A body states the decision; the log holds the alternatives, the dead
+ends, and the phrasing that produced it. It is read as background, never as specification —
+the code binds on reality, the issue binds on scope, and the log only informs.
 
 ## 4. Pick the template and fill it
 
@@ -194,7 +204,7 @@ Copy this checklist and tick each item as you finish it:
 
 Two lines and a question:
 
-    FILED — #42, blocked by #38, session at .sessions/2026-08-16-report-wall.md
+    FILED — #42, blocked by #38, log at .sessions/<uuid>.jsonl
     Next: nothing. It is pickable when #38 closes.
     Want the body?
 

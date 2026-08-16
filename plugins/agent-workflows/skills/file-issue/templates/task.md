@@ -63,7 +63,7 @@ rather than work, say what has to be decided and what it depends on.
 
 ## Context
 
-Session: `.sessions/<date>-<slug>.md`
+Session: `.sessions/<session-uuid>.jsonl`
 <the part worth reading, by heading or line range>
 
 ## Out of scope

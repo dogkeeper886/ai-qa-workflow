@@ -79,7 +79,7 @@ Name what this does NOT fix if the cause has more than one symptom.
 
 ## Context
 
-Session: `.sessions/<date>-<slug>.md`
+Session: `.sessions/<session-uuid>.jsonl`
 <the part worth reading, by heading or line range>
 
 ## Out of scope
